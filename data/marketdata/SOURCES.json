@@ -1,0 +1,169 @@
+{
+  "_comment": "Source registry (tech plan §15.3; PD-0027 / PD-0028 / PD-0031 / PD-0032 / PD-0033). Committed. A terms_check records the human product owner's decision on whether that source's terms of use permit INTERNAL DEVELOPMENT use: {\"checked_by\": \"<name>\", \"checked_on\": \"YYYY-MM-DD\", \"permits_internal_development_use\": true|false, \"notes\": \"...\"}. The loader refuses any file from a source without a permitting check (SOURCE_TERMS_NOT_ATTESTED). The 2026-10-01 checks adopt the main session's reading of each source's published terms, at the owner's instruction (PD-0031); the owner may revise any entry. upstream_provider and independence_group remain the main session's best knowledge where marked TO CONFIRM; two sources in one independence_group count as ONE source for reconciliation.",
+  "sources": [
+    {
+      "source_id": "akshare.cn",
+      "name": "AKShare (Mainland China A-share daily history)",
+      "upstream_provider": "Eastmoney (东方财富), via the AKShare open-source library - TO CONFIRM",
+      "independence_group": "eastmoney",
+      "terms_url": "https://about.eastmoney.com/home/protocol (upstream); https://akshare.akfamily.xyz/introduction.html (library disclaimer)",
+      "terms_check": {
+        "checked_by": "the product owner, adopting the main session's reading",
+        "checked_on": "2026-10-01",
+        "permits_internal_development_use": false,
+        "notes": "Eastmoney service agreement ch. 6: content and market data belong to Eastmoney; no use without prior written permission; copying or providing market data to others prohibited; PRC law. AKShare's disclaimer limits its data interfaces to academic research. PD-0031. Re-checked under PD-0032 (personal/academic use): still false. Eastmoney forbids copying its market data without written permission whatever the purpose, and the AKShare library cannot grant rights its upstream withholds."
+      }
+    },
+    {
+      "source_id": "akshare.hk",
+      "name": "AKShare (Hong Kong daily history)",
+      "upstream_provider": "Eastmoney (东方财富), via the AKShare open-source library - TO CONFIRM",
+      "independence_group": "eastmoney",
+      "terms_url": "https://about.eastmoney.com/home/protocol (upstream); https://akshare.akfamily.xyz/introduction.html (library disclaimer)",
+      "terms_check": {
+        "checked_by": "the product owner, adopting the main session's reading",
+        "checked_on": "2026-10-01",
+        "permits_internal_development_use": false,
+        "notes": "As akshare.cn: Eastmoney service agreement ch. 6 (written permission required; no copying or onward provision of market data); AKShare academic-research-only disclaimer. PD-0031. Re-checked under PD-0032 (personal/academic use): still false. The upstream ban (on copying market data, or on automated acquisition) does not depend on commercial purpose, and the AKShare library cannot grant rights its upstream withholds."
+      }
+    },
+    {
+      "source_id": "akshare.us",
+      "name": "AKShare (US daily history)",
+      "upstream_provider": "Eastmoney (东方财富), via the AKShare open-source library - TO CONFIRM",
+      "independence_group": "eastmoney",
+      "terms_url": "https://about.eastmoney.com/home/protocol (upstream); https://akshare.akfamily.xyz/introduction.html (library disclaimer)",
+      "terms_check": {
+        "checked_by": "the product owner, adopting the main session's reading",
+        "checked_on": "2026-10-01",
+        "permits_internal_development_use": false,
+        "notes": "As akshare.cn: Eastmoney service agreement ch. 6 (written permission required; no copying or onward provision of market data); AKShare academic-research-only disclaimer. PD-0031. Re-checked under PD-0032 (personal/academic use): still false. The upstream ban (on copying market data, or on automated acquisition) does not depend on commercial purpose, and the AKShare library cannot grant rights its upstream withholds."
+      }
+    },
+    {
+      "source_id": "akshare_sina.cn",
+      "name": "AKShare, Sina-backed functions (Mainland China daily history; stock_zh_a_daily)",
+      "upstream_provider": "Sina Finance (新浪财经), via the AKShare open-source library - TO CONFIRM",
+      "independence_group": "sina",
+      "terms_url": "https://finance.sina.cn/app/SFAuser.shtml (upstream; §1.3 covers sina.com.cn and sina.cn); https://akshare.akfamily.xyz/introduction.html (library disclaimer)",
+      "terms_check": {
+        "checked_by": "the product owner, adopting the main session's reading",
+        "checked_on": "2026-10-01",
+        "permits_internal_development_use": false,
+        "notes": "Sina Finance user agreement §10.1/§10.5: Sina owns the data; §6.1 forbids automated or coded acquisition and copying content for uses including commercial ones; §6.2 forbids use beyond written permission. AKShare academic-research-only disclaimer. PD-0031. Re-checked under PD-0032 (personal/academic use): still false. The upstream ban (on copying market data, or on automated acquisition) does not depend on commercial purpose, and the AKShare library cannot grant rights its upstream withholds."
+      }
+    },
+    {
+      "source_id": "akshare_sina.hk",
+      "name": "AKShare, Sina-backed functions (Hong Kong daily history; stock_hk_daily)",
+      "upstream_provider": "Sina Finance (新浪财经), via the AKShare open-source library - TO CONFIRM",
+      "independence_group": "sina",
+      "terms_url": "https://finance.sina.cn/app/SFAuser.shtml (upstream; §1.3 covers sina.com.cn and sina.cn); https://akshare.akfamily.xyz/introduction.html (library disclaimer)",
+      "terms_check": {
+        "checked_by": "the product owner, adopting the main session's reading",
+        "checked_on": "2026-10-01",
+        "permits_internal_development_use": false,
+        "notes": "As akshare_sina.cn: Sina Finance user agreement §6.1/§6.2/§10 (no automated acquisition; no commercial use beyond written permission); AKShare academic-research-only disclaimer. PD-0031. Re-checked under PD-0032 (personal/academic use): still false. The upstream ban (on copying market data, or on automated acquisition) does not depend on commercial purpose, and the AKShare library cannot grant rights its upstream withholds."
+      }
+    },
+    {
+      "source_id": "akshare_sina.us",
+      "name": "AKShare, Sina-backed functions (US daily history; stock_us_daily)",
+      "upstream_provider": "Sina Finance (新浪财经), via the AKShare open-source library - TO CONFIRM",
+      "independence_group": "sina",
+      "terms_url": "https://finance.sina.cn/app/SFAuser.shtml (upstream; §1.3 covers sina.com.cn and sina.cn); https://akshare.akfamily.xyz/introduction.html (library disclaimer)",
+      "terms_check": {
+        "checked_by": "the product owner, adopting the main session's reading",
+        "checked_on": "2026-10-01",
+        "permits_internal_development_use": false,
+        "notes": "As akshare_sina.cn: Sina Finance user agreement §6.1/§6.2/§10 (no automated acquisition; no commercial use beyond written permission); AKShare academic-research-only disclaimer. PD-0031. Re-checked under PD-0032 (personal/academic use): still false. The upstream ban (on copying market data, or on automated acquisition) does not depend on commercial purpose, and the AKShare library cannot grant rights its upstream withholds."
+      }
+    },
+    {
+      "source_id": "baostock.cn",
+      "name": "BaoStock (Mainland China daily history)",
+      "upstream_provider": "BaoStock (baostock.com) - TO CONFIRM",
+      "independence_group": "baostock",
+      "terms_url": "http://baostock.com/ - no written terms of use located (2026-10-01)",
+      "terms_check": null
+    },
+    {
+      "source_id": "alphavantage.us",
+      "name": "Alpha Vantage free tier (US daily history)",
+      "upstream_provider": "Alpha Vantage Inc.",
+      "independence_group": "alphavantage",
+      "terms_url": "https://www.alphavantage.co/terms_of_service/",
+      "terms_check": {
+        "checked_by": "the product owner, adopting the main session's reading",
+        "checked_on": "2026-10-01",
+        "permits_internal_development_use": true,
+        "notes": "Re-checked under PD-0032: personal, non-commercial use, which this is; internal development use permitted. Conditions: no redistribution or display to others; free-key limits apply (25 requests/day; compact output = last 100 sessions). Was false under PD-0031 (commercial premise); any commercial use needs re-attestation. PD-0064: this use includes local storage, archive, the owner's own report export and reproduction; 'others' excludes the owner and the project's agents (PD-0028). A reading of the published terms, not legal advice. Every download needs its own owner approval. PD-0066 decision 5: annual term, renewing unless 30 days' notice; access ends at termination; the terms are silent on data already downloaded; the owner chose the X1 lease, all rights off at termination or lapse. PD-0072: term start 2026-10-01, term_end_not_after 2027-10-01T00:00:00Z, F1 lease valid_until 2027-09-01 (Asia/Shanghai). The full readings are in those PDs."
+      }
+    },
+    {
+      "source_id": "alphavantage.cn",
+      "name": "Alpha Vantage free tier (Shanghai and Shenzhen A-share daily history, .SHH/.SHZ)",
+      "upstream_provider": "Alpha Vantage Inc.",
+      "independence_group": "alphavantage",
+      "terms_url": "https://www.alphavantage.co/terms_of_service/",
+      "terms_check": {
+        "checked_by": "the product owner, adopting the main session's reading",
+        "checked_on": "2026-10-23",
+        "permits_internal_development_use": true,
+        "notes": "PD-0063: the owner adopts the reading that the personal, non-commercial licence attested for alphavantage.us (PD-0032) is the same licence for Shanghai (.SHH) and Shenzhen (.SHZ) symbols, under the same conditions: no redistribution or display to anyone other than the owner and the project's agents (PD-0028); the free key's limits, shared with US (25 requests/day; compact output = last 100 sessions); re-attestation before any commercial use. PD-0064: personal use includes local storage, archive, the owner's own report export and reproduction. A reading of the published terms, not legal advice. This terms check ADMITS NOTHING: the source profile is TO_OBSERVE and the A.5 CN source order is empty (market-data/1.15 Ruling 7A.3), and HG2 condition 4 (checked, registered SSE/SZSE calendars) still binds. Every download needs its own owner approval."
+      }
+    },
+    {
+      "source_id": "frankfurter.ecb",
+      "name": "Frankfurter API (ECB euro foreign-exchange reference rates)",
+      "upstream_provider": "European Central Bank, via the Frankfurter API",
+      "independence_group": "ecb",
+      "terms_url": "https://ecb.europa.eu/home/disclaimer/html/index.en.html (ECB); https://frankfurter.dev/ (service)",
+      "terms_check": {
+        "checked_by": "the product owner, adopting the main session's reading",
+        "checked_on": "2026-10-01",
+        "permits_internal_development_use": true,
+        "notes": "ECB: reproduction permitted provided the source is acknowledged, so credit the ECB wherever rates appear. Frankfurter permits commercial use; rates fall under each provider's terms. The tool calls the v1 endpoint, believed ECB-only; v2 blends providers unless providers=ecb. Confirm the v1 provenance before relying on it. PD-0031."
+      }
+    },
+    {
+      "source_id": "ecb.eurofxref",
+      "name": "ECB euro foreign exchange reference rates (the ECB's own eurofxref-hist file)",
+      "upstream_provider": "European Central Bank",
+      "independence_group": "ecb",
+      "terms_url": "https://www.ecb.europa.eu/home/disclaimer/html/index.en.html",
+      "terms_check": {
+        "checked_by": "the product owner, adopting the main session's reading",
+        "checked_on": "2026-10-01",
+        "permits_internal_development_use": true,
+        "notes": "ECB disclaimer and copyright: free use provided the ECB is cited as the source and the information appears accurately. Any modification must be stated explicitly, so EUR-derived crosses (USD/CNY, USD/HKD) are labelled derived, never ECB-published. The ECB accepts no liability for decisions based on the rates. Same upstream and independence group as frankfurter.ecb: a provenance check (Ruling 1.1a), not a second independent source. PD-0033."
+      }
+    },
+    {
+      "source_id": "calendar.manual",
+      "name": "Hand-made calendar files (exchange session days; ECB/TARGET fixing days)",
+      "upstream_provider": "the project owner, compiled from the publishers' public notices",
+      "independence_group": "calendar",
+      "terms_url": null,
+      "terms_check": {
+        "checked_by": "the product owner, adopting the main session's reading",
+        "checked_on": "2026-10-01",
+        "permits_internal_development_use": true,
+        "notes": "No third-party terms apply: session and holiday dates are public facts, compiled from the publishers' official notices (NYSE, SSE/SZSE, HKEX, ECB/TARGET). This attests the method for every file under this source: (1) made from the publisher's notice, named in the file's evidence field; (2) never derived from a price or rate file (Ruling 5.3); (3) prepared_by states who prepared and who checked the file. No calendar file exists yet. PD-0033."
+      }
+    },
+    {
+      "source_id": "openfigi",
+      "name": "OpenFIGI (identifier resolution)",
+      "upstream_provider": "OpenFIGI (Bloomberg)",
+      "independence_group": "openfigi",
+      "terms_url": "https://www.openfigi.com/about/faq",
+      "terms_check": {
+        "checked_by": "the product owner, adopting the main session's reading",
+        "checked_on": "2026-10-01",
+        "permits_internal_development_use": true,
+        "notes": "FIGI and its metadata are published under the MIT open-source licence, free of charge, with no licensing, reuse or redistribution restrictions. PD-0031."
+      }
+    }
+  ]
+}

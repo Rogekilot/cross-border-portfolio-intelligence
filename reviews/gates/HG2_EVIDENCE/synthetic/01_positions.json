@@ -1,0 +1,749 @@
+{
+ "data": {
+  "events": [
+   {
+    "account": "A1 (US)",
+    "amount": {
+     "amount": "10000",
+     "currency": "USD"
+    },
+    "currency": "USD",
+    "date": "2025-01-02",
+    "event_id": "e0000000-0000-4000-8000-000000000001",
+    "ledger_seq": 1,
+    "listing": "-",
+    "quantity": null,
+    "type": "DEPOSIT"
+   },
+   {
+    "account": "A1 (US)",
+    "amount": {
+     "amount": "7500",
+     "currency": "USD"
+    },
+    "currency": "USD",
+    "date": "2025-01-06",
+    "event_id": "e0000000-0000-4000-8000-000000000002",
+    "ledger_seq": 2,
+    "listing": "AAPL@XNYS",
+    "quantity": "50",
+    "type": "BUY"
+   },
+   {
+    "account": "A2 (HK)",
+    "amount": {
+     "amount": "20000",
+     "currency": "HKD"
+    },
+    "currency": "HKD",
+    "date": "2025-01-06",
+    "event_id": "e0000000-0000-4000-8000-000000000003",
+    "ledger_seq": 3,
+    "listing": "-",
+    "quantity": null,
+    "type": "DEPOSIT"
+   },
+   {
+    "account": "A2 (HK)",
+    "amount": {
+     "amount": "17500",
+     "currency": "HKD"
+    },
+    "currency": "HKD",
+    "date": "2025-01-08",
+    "event_id": "e0000000-0000-4000-8000-000000000004",
+    "ledger_seq": 4,
+    "listing": "0700@XHKG",
+    "quantity": "500",
+    "type": "BUY"
+   },
+   {
+    "account": "A1 (US)",
+    "amount": null,
+    "currency": "USD",
+    "date": "2025-02-03",
+    "event_id": "e0000000-0000-4000-8000-000000000005",
+    "ledger_seq": 5,
+    "listing": "AAPL@XNYS",
+    "quantity": null,
+    "split_ratio": {
+     "new_units": "4",
+     "old_units": "1"
+    },
+    "type": "SPLIT"
+   },
+   {
+    "account": "A1 (US)",
+    "amount": {
+     "amount": "1000",
+     "currency": "USD"
+    },
+    "counterparty_account_id": "a1000000-0000-4000-8000-000000000003",
+    "currency": "USD",
+    "date": "2025-02-10",
+    "event_id": "e0000000-0000-4000-8000-000000000006",
+    "ledger_seq": 6,
+    "listing": "-",
+    "quantity": null,
+    "type": "TRANSFER_OUT"
+   },
+   {
+    "account": "A3 (US)",
+    "amount": {
+     "amount": "1000",
+     "currency": "USD"
+    },
+    "counterparty_account_id": "a1000000-0000-4000-8000-000000000001",
+    "currency": "USD",
+    "date": "2025-02-10",
+    "event_id": "e0000000-0000-4000-8000-000000000007",
+    "ledger_seq": 7,
+    "listing": "-",
+    "quantity": null,
+    "type": "TRANSFER_IN"
+   },
+   {
+    "account": "A1 (US)",
+    "amount": {
+     "amount": "2250",
+     "currency": "USD"
+    },
+    "currency": "USD",
+    "date": "2025-03-03",
+    "event_id": "e0000000-0000-4000-8000-000000000008",
+    "ledger_seq": 8,
+    "listing": "AAPL@XNYS",
+    "quantity": "50",
+    "type": "SELL"
+   },
+   {
+    "account": "A1 (US)",
+    "amount": null,
+    "currency": "USD",
+    "date": "2025-03-10",
+    "event_id": "e0000000-0000-4000-8000-000000000009",
+    "ledger_seq": 9,
+    "listing": "MSFT@XNYS",
+    "quantity": "10",
+    "type": "TRANSFER_IN"
+   },
+   {
+    "account": "A1 (US)",
+    "amount": {
+     "amount": "2",
+     "currency": "USD"
+    },
+    "currency": "USD",
+    "date": "2025-04-02",
+    "event_id": "e0000000-0000-4000-8000-000000000011",
+    "ledger_seq": 11,
+    "listing": "-",
+    "quantity": null,
+    "type": "FEE"
+   },
+   {
+    "account": "A1 (US)",
+    "amount": {
+     "amount": "7000",
+     "currency": "HKD"
+    },
+    "currency": "HKD",
+    "date": "2025-04-02",
+    "event_id": "e0000000-0000-4000-8000-000000000012",
+    "ledger_seq": 12,
+    "listing": "0700@XHKG",
+    "quantity": "200",
+    "type": "BUY"
+   },
+   {
+    "account": "A3 (US)",
+    "amount": {
+     "amount": "2000",
+     "currency": "USD"
+    },
+    "currency": "USD",
+    "date": "2025-05-05",
+    "event_id": "e0000000-0000-4000-8000-000000000013",
+    "ledger_seq": 13,
+    "listing": "MSFT@XNYS",
+    "quantity": "5",
+    "type": "BUY"
+   },
+   {
+    "account": "A3 (US)",
+    "amount": {
+     "amount": "1000",
+     "currency": "USD"
+    },
+    "currency": "USD",
+    "date": "2025-05-08",
+    "event_id": "e0000000-0000-4000-8000-000000000014",
+    "ledger_seq": 14,
+    "listing": "-",
+    "quantity": null,
+    "type": "DEPOSIT"
+   },
+   {
+    "account": "A3 (US)",
+    "amount": {
+     "amount": "3.50",
+     "currency": "USD"
+    },
+    "currency": "USD",
+    "date": "2025-05-31",
+    "event_id": "e0000000-0000-4000-8000-000000000015",
+    "ledger_seq": 15,
+    "listing": "-",
+    "quantity": null,
+    "type": "INTEREST_CHARGED"
+   },
+   {
+    "account": "A1 (US)",
+    "amount": {
+     "amount": "1000",
+     "currency": "USD"
+    },
+    "bought_amount": {
+     "amount": "7750",
+     "currency": "HKD"
+    },
+    "corrects_event_id": "e0000000-0000-4000-8000-000000000010",
+    "currency": "USD",
+    "date": "2025-04-02",
+    "event_id": "e0000000-0000-4000-8000-000000000017",
+    "ledger_seq": 17,
+    "listing": "-",
+    "quantity": null,
+    "settlement_date": "2025-04-04",
+    "type": "CURRENCY_CONVERSION"
+   },
+   {
+    "account": "A3 (US)",
+    "amount": {
+     "amount": "5000",
+     "currency": "USD"
+    },
+    "currency": "USD",
+    "date": "2025-06-02",
+    "event_id": "e0000000-0000-4000-8000-000000000018",
+    "ledger_seq": 18,
+    "listing": "-",
+    "quantity": null,
+    "type": "DEPOSIT"
+   },
+   {
+    "account": "A3 (US)",
+    "amount": {
+     "amount": "2100",
+     "currency": "USD"
+    },
+    "currency": "USD",
+    "date": "2025-06-03",
+    "event_id": "e0000000-0000-4000-8000-000000000019",
+    "ledger_seq": 19,
+    "listing": "MSFT@XNYS",
+    "quantity": "5",
+    "type": "BUY"
+   },
+   {
+    "account": "A3 (US)",
+    "amount": {
+     "amount": "1720",
+     "currency": "USD"
+    },
+    "currency": "USD",
+    "date": "2025-06-10",
+    "event_id": "e0000000-0000-4000-8000-000000000020",
+    "ledger_seq": 20,
+    "listing": "MSFT@XNYS",
+    "quantity": "4",
+    "type": "SELL"
+   },
+   {
+    "account": "A1 (US)",
+    "amount": {
+     "amount": "2000",
+     "currency": "USD"
+    },
+    "currency": "USD",
+    "date": "2025-06-16",
+    "event_id": "e0000000-0000-4000-8000-000000000021",
+    "ledger_seq": 21,
+    "listing": "AAPL@XNYS",
+    "quantity": "40",
+    "type": "SELL"
+   },
+   {
+    "account": "A1 (US)",
+    "amount": null,
+    "counterparty_account_id": "a1000000-0000-4000-8000-000000000003",
+    "currency": "USD",
+    "date": "2025-06-16",
+    "event_id": "e0000000-0000-4000-8000-000000000022",
+    "ledger_seq": 22,
+    "listing": "AAPL@XNYS",
+    "quantity": "110",
+    "type": "TRANSFER_OUT"
+   },
+   {
+    "account": "A3 (US)",
+    "amount": null,
+    "counterparty_account_id": "a1000000-0000-4000-8000-000000000001",
+    "currency": "USD",
+    "date": "2025-06-16",
+    "event_id": "e0000000-0000-4000-8000-000000000023",
+    "ledger_seq": 23,
+    "listing": "AAPL@XNYS",
+    "quantity": "110",
+    "type": "TRANSFER_IN"
+   },
+   {
+    "account": "A4 (CN, CNY)",
+    "amount": {
+     "amount": "30000",
+     "currency": "CNY"
+    },
+    "currency": "CNY",
+    "date": "2025-03-03",
+    "event_id": "e1000000-0000-4000-8000-000000000026",
+    "ledger_seq": 26,
+    "listing": "-",
+    "quantity": null,
+    "type": "DEPOSIT"
+   },
+   {
+    "account": "A4 (CN, CNY)",
+    "amount": {
+     "amount": "20000",
+     "currency": "CNY"
+    },
+    "currency": "CNY",
+    "date": "2025-03-03",
+    "event_id": "e1000000-0000-4000-8000-000000000027",
+    "ledger_seq": 27,
+    "listing": "SYNA@XSHG",
+    "quantity": "2000",
+    "type": "BUY"
+   },
+   {
+    "account": "A2 (HK)",
+    "amount": {
+     "amount": "1000",
+     "currency": "HKD"
+    },
+    "currency": "HKD",
+    "date": "2025-04-24",
+    "event_id": "e1000000-0000-4000-8000-000000000028",
+    "ex_date": "2025-04-10",
+    "ledger_seq": 28,
+    "listing": "0700@XHKG",
+    "quantity": null,
+    "type": "DIVIDEND"
+   },
+   {
+    "account": "A2 (HK)",
+    "amount": {
+     "amount": "100",
+     "currency": "HKD"
+    },
+    "currency": "HKD",
+    "date": "2025-04-24",
+    "event_id": "e1000000-0000-4000-8000-000000000029",
+    "ledger_seq": 29,
+    "listing": "0700@XHKG",
+    "quantity": null,
+    "type": "TAX"
+   },
+   {
+    "account": "A1 (US)",
+    "amount": {
+     "amount": "500",
+     "currency": "USD"
+    },
+    "currency": "USD",
+    "date": "2025-04-15",
+    "event_id": "e1000000-0000-4000-8000-000000000030",
+    "ledger_seq": 30,
+    "listing": "-",
+    "quantity": null,
+    "type": "WITHDRAWAL"
+   }
+  ],
+  "reading": "positions and cash are replayed from the live events at the pinned ledger version; nothing is read from a stored balance",
+  "states": [
+   {
+    "accounts": [
+     {
+      "account": "A1 (US)",
+      "cash": [],
+      "positions": [],
+      "snapshot_date": null,
+      "status": "RECONSTRUCTED"
+     },
+     {
+      "account": "A2 (HK)",
+      "cash": [],
+      "positions": [],
+      "snapshot_date": null,
+      "status": "RECONSTRUCTED"
+     },
+     {
+      "account": "A3 (US)",
+      "cash": [],
+      "positions": [],
+      "snapshot_date": null,
+      "status": "RECONSTRUCTED"
+     },
+     {
+      "account": "A4 (CN, CNY)",
+      "cash": [],
+      "positions": [],
+      "snapshot_date": null,
+      "status": "RECONSTRUCTED"
+     }
+    ],
+    "as_of": "2024-12-31",
+    "ledger_version": 30,
+    "replay_convention_set": "ledger-replay/1.3"
+   },
+   {
+    "accounts": [
+     {
+      "account": "A1 (US)",
+      "cash": [],
+      "positions": [],
+      "snapshot_date": null,
+      "status": "RECONSTRUCTED"
+     },
+     {
+      "account": "A2 (HK)",
+      "cash": [],
+      "positions": [],
+      "snapshot_date": null,
+      "status": "RECONSTRUCTED"
+     },
+     {
+      "account": "A3 (US)",
+      "cash": [],
+      "positions": [],
+      "snapshot_date": null,
+      "status": "RECONSTRUCTED"
+     },
+     {
+      "account": "A4 (CN, CNY)",
+      "cash": [],
+      "positions": [],
+      "snapshot_date": null,
+      "status": "RECONSTRUCTED"
+     }
+    ],
+    "as_of": "2025-01-01",
+    "ledger_version": 30,
+    "replay_convention_set": "ledger-replay/1.3"
+   },
+   {
+    "accounts": [
+     {
+      "account": "A1 (US)",
+      "cash": [
+       {
+        "balance": "3750",
+        "currency": "USD"
+       }
+      ],
+      "positions": [
+       {
+        "basis_detail": [],
+        "cost_basis": [
+         {
+          "currency": "USD",
+          "reason": null,
+          "state": "AVAILABLE",
+          "value": "5625"
+         }
+        ],
+        "listing": "AAPL@XNYS",
+        "quantity": {
+         "detail": [],
+         "reason": null,
+         "state": "AVAILABLE",
+         "value": "150"
+        }
+       },
+       {
+        "basis_detail": [
+         "UNKNOWN_BASIS"
+        ],
+        "cost_basis": [
+         {
+          "currency": null,
+          "reason": "MISSING_COST_BASIS",
+          "state": "INSUFFICIENT_DATA",
+          "value": null
+         }
+        ],
+        "listing": "MSFT@XNYS",
+        "quantity": {
+         "detail": [],
+         "reason": null,
+         "state": "AVAILABLE",
+         "value": "10"
+        }
+       }
+      ],
+      "snapshot_date": null,
+      "status": "RECONSTRUCTED"
+     },
+     {
+      "account": "A2 (HK)",
+      "cash": [
+       {
+        "balance": "2500",
+        "currency": "HKD"
+       }
+      ],
+      "positions": [
+       {
+        "basis_detail": [],
+        "cost_basis": [
+         {
+          "currency": "HKD",
+          "reason": null,
+          "state": "AVAILABLE",
+          "value": "17500"
+         }
+        ],
+        "listing": "0700@XHKG",
+        "quantity": {
+         "detail": [],
+         "reason": null,
+         "state": "AVAILABLE",
+         "value": "500"
+        }
+       }
+      ],
+      "snapshot_date": null,
+      "status": "RECONSTRUCTED"
+     },
+     {
+      "account": "A3 (US)",
+      "cash": [
+       {
+        "balance": "1000",
+        "currency": "USD"
+       }
+      ],
+      "positions": [],
+      "snapshot_date": null,
+      "status": "RECONSTRUCTED"
+     },
+     {
+      "account": "A4 (CN, CNY)",
+      "cash": [
+       {
+        "balance": "10000",
+        "currency": "CNY"
+       }
+      ],
+      "positions": [
+       {
+        "basis_detail": [],
+        "cost_basis": [
+         {
+          "currency": "CNY",
+          "reason": null,
+          "state": "AVAILABLE",
+          "value": "20000"
+         }
+        ],
+        "listing": "SYNA@XSHG",
+        "quantity": {
+         "detail": [],
+         "reason": null,
+         "state": "AVAILABLE",
+         "value": "2000"
+        }
+       }
+      ],
+      "snapshot_date": null,
+      "status": "RECONSTRUCTED"
+     }
+    ],
+    "as_of": "2025-03-31",
+    "ledger_version": 30,
+    "replay_convention_set": "ledger-replay/1.3"
+   },
+   {
+    "accounts": [
+     {
+      "account": "A1 (US)",
+      "cash": [
+       {
+        "balance": "750",
+        "currency": "HKD"
+       },
+       {
+        "balance": "2248",
+        "currency": "USD"
+       }
+      ],
+      "positions": [
+       {
+        "basis_detail": [],
+        "cost_basis": [
+         {
+          "currency": "HKD",
+          "reason": null,
+          "state": "AVAILABLE",
+          "value": "7000"
+         }
+        ],
+        "listing": "0700@XHKG",
+        "quantity": {
+         "detail": [],
+         "reason": null,
+         "state": "AVAILABLE",
+         "value": "200"
+        }
+       },
+       {
+        "basis_detail": [],
+        "cost_basis": [
+         {
+          "currency": "USD",
+          "reason": null,
+          "state": "AVAILABLE",
+          "value": "5625"
+         }
+        ],
+        "listing": "AAPL@XNYS",
+        "quantity": {
+         "detail": [],
+         "reason": null,
+         "state": "AVAILABLE",
+         "value": "150"
+        }
+       },
+       {
+        "basis_detail": [
+         "UNKNOWN_BASIS"
+        ],
+        "cost_basis": [
+         {
+          "currency": null,
+          "reason": "MISSING_COST_BASIS",
+          "state": "INSUFFICIENT_DATA",
+          "value": null
+         }
+        ],
+        "listing": "MSFT@XNYS",
+        "quantity": {
+         "detail": [],
+         "reason": null,
+         "state": "AVAILABLE",
+         "value": "10"
+        }
+       }
+      ],
+      "snapshot_date": null,
+      "status": "RECONSTRUCTED"
+     },
+     {
+      "account": "A2 (HK)",
+      "cash": [
+       {
+        "balance": "3400",
+        "currency": "HKD"
+       }
+      ],
+      "positions": [
+       {
+        "basis_detail": [],
+        "cost_basis": [
+         {
+          "currency": "HKD",
+          "reason": null,
+          "state": "AVAILABLE",
+          "value": "17500"
+         }
+        ],
+        "listing": "0700@XHKG",
+        "quantity": {
+         "detail": [],
+         "reason": null,
+         "state": "AVAILABLE",
+         "value": "500"
+        }
+       }
+      ],
+      "snapshot_date": null,
+      "status": "RECONSTRUCTED"
+     },
+     {
+      "account": "A3 (US)",
+      "cash": [
+       {
+        "balance": "1000",
+        "currency": "USD"
+       }
+      ],
+      "positions": [],
+      "snapshot_date": null,
+      "status": "RECONSTRUCTED"
+     },
+     {
+      "account": "A4 (CN, CNY)",
+      "cash": [
+       {
+        "balance": "10000",
+        "currency": "CNY"
+       }
+      ],
+      "positions": [
+       {
+        "basis_detail": [],
+        "cost_basis": [
+         {
+          "currency": "CNY",
+          "reason": null,
+          "state": "AVAILABLE",
+          "value": "20000"
+         }
+        ],
+        "listing": "SYNA@XSHG",
+        "quantity": {
+         "detail": [],
+         "reason": null,
+         "state": "AVAILABLE",
+         "value": "2000"
+        }
+       }
+      ],
+      "snapshot_date": null,
+      "status": "RECONSTRUCTED"
+     }
+    ],
+    "as_of": "2025-04-30",
+    "ledger_version": 30,
+    "replay_convention_set": "ledger-replay/1.3"
+   }
+  ]
+ },
+ "kind": "SYNTHETIC_DEMONSTRATION_A",
+ "labels": {
+  "all_results_synthetic": true,
+  "any_result_synthetic": true,
+  "demonstration_ledger": "DEMONSTRATION LEDGER: these events are not a user's holdings (P8); they exist to exercise the engine.",
+  "fx_sources_in_m": [
+   {
+    "source_id": "synthetic.ecb_direct",
+    "what_it_is": "synthetic.ecb_direct"
+   }
+  ],
+  "label": "SYNTHETIC: every result below was computed from a market-data version that holds synthetic files; none is a real market fact (market-data Ruling 4.8).",
+  "pd_0035_caveat": "PD-0035 section 3: Mainland China and Hong Kong price behaviour is shown on SYNTHETIC data only. No admissible real CN or HK price source exists (PD-0031, PD-0032); the real slice is US prices (Alpha Vantage, the last 100 sessions) and ECB FX only. A synthetic result is never a real market fact (market-data Ruling 4.8)."
+ },
+ "section": "01_positions",
+ "subject": "DEMO-A: US + HK + CN synthetic cross-border portfolio",
+ "title": "Reconstructed positions from ledger events"
+}

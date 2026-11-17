@@ -1,0 +1,449 @@
+/*
+ * tokens.css — design tokens for the HG1 revision-2 prototype.
+ * Visual foundation: Direction C ("Briefing Room") — warm, editorial, low-density,
+ * premium wealth-management register — with Direction B's ("Analyst Desk") chart-led,
+ * tabular-numeral analytical treatment grafted in for data-dense surfaces.
+ *
+ * Every semantic token a phase-2 surface needs is named here. Do not invent a new color
+ * outside this file — add a token here first if one is genuinely missing.
+ */
+:root {
+  /* ---- base palette (Direction C lineage: warm cream, deep forest green, gold accent) ---- */
+  --color-bg: #f6f5f1;
+  --color-bg-recessed: #efece4;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-ink: #1b2430;
+  --color-ink-soft: #4b5563;
+  --color-ink-faint: #8792a0;
+  --color-line: #e2ded4;
+  --color-line-strong: #cdc7b8;
+  --color-accent: #0f5c52;
+  --color-accent-strong: #0b433c;
+  --color-accent-soft: #e6efed;
+  --color-gold: #9c7a2e;
+  --color-gold-soft: #f2e9d3;
+
+  /* ---- Direction B graft: analytical surfaces (Analytics screen, inspector dock)
+     use a slightly cooler, denser card treatment and tabular numerals, while staying
+     inside the same warm base — NOT a second dark theme. See CONTRACT.md "visual
+     language" for why this is a graft, not a competing theme. ---- */
+  --color-analytical-surface: #fbfaf7;
+  --color-analytical-line: #dcd6c8;
+
+  /* ---- semantic: metric sufficiency states (D3.2) ---- */
+  --color-available: var(--color-ink);
+  --color-limited: #8a5a15;
+  --color-limited-bg: #fbf1df;
+  --color-limited-border: #e7cf9c;
+  --color-insufficient: #57606b;
+  --color-insufficient-bg: #f0efec;
+  --color-insufficient-border: #d8d5cd;
+
+  /* ---- semantic: freshness axes (D5) ----
+     HG1 Condition 2 fix: STALE previously reused the exact same hex as
+     --color-severity-warning/--color-danger (#8a3b1f), so a merely-stale price print
+     rendered in the identical alarm-red used for a policy breach. The owner's own table
+     is explicit that insufficient/stale data should read as "neutral or amber depending
+     on state," never as a breach. STALE is now the deepest shade in the amber family
+     (still visually distinct from DELAYED), not a red. This does not change which axis
+     ranks "least fresh" (rankLeastFresh is categorical, not color-based, per CONTRACT.md
+     §6) — only the color a human reads it in. */
+  --color-fresh-live: #2b6b3f;
+  --color-fresh-live-bg: #eaf5ee;
+  --color-fresh-delayed: #8a6a15;
+  --color-fresh-delayed-bg: #faf3df;
+  --color-fresh-eod: #5c7a86;
+  --color-fresh-eod-bg: #eaf1f3;
+  --color-fresh-stale: #7a5a10;
+  --color-fresh-stale-bg: #f5ecd8;
+
+  /* ---- semantic: genuinely directional financial results (HG1 Condition 2) ----
+     Reserved ONLY for a value whose sign asserts a real gain/loss against a reference
+     point (portfolio return, absolute/percent P&L, benchmark-relative performance, FX
+     attribution, Jensen's alpha, per-holding unrealized gain/loss) — never for a risk
+     characteristic (beta, volatility, Sharpe/Sortino, VaR, drawdown magnitude), a
+     correlation sign, or a benchmark-vs-portfolio SERIES distinction, all of which stay
+     out of this vocabulary on purpose. See js/data.js's `directional` claim field and
+     js/shell.js's renderMetricValue. Positive reuses the same hue already used for
+     LIVE/CONFIRMED/COMMITTED states (this app's one "good" green) under its OWN token,
+     so the three vocabularies can diverge later without being tied together by a shared
+     CSS variable. */
+  --color-positive: #2b6b3f;
+  --color-negative: #8a3b1f;
+
+  /* ---- semantic: correlation heatmap (HG1 Condition 2 fix) ----
+     Correlation sign is NOT "good vs. bad" — negative correlation is often the more
+     desirable diversification outcome. The previous build colored positive cells teal
+     and negative cells the same red used for severity warnings, implying a polarity
+     judgment the statistic does not support. These two tokens are a neutral diverging
+     pair instead (warm gold vs. cool slate-blue — direction of relationship, not
+     financial verdict); do not reuse --color-positive/--color-negative here. */
+  --color-heatmap-pos: var(--color-gold);
+  --color-heatmap-neg: #6a7bc4;
+
+  /* ---- semantic: ACTUAL vs SCENARIO (P8) ---- */
+  --color-actual: var(--color-accent);
+  --color-scenario: #5b3a8a;
+  --color-scenario-bg: #f1ecf8;
+  --color-scenario-border: #cbb8e3;
+
+  /* ---- semantic: STAGED vs COMMITTED (OCR / ingestion, addendum §3) ---- */
+  --color-staged: #8a5a15;
+  --color-staged-bg: #fbf1df;
+  --color-committed: #2b6b3f;
+  --color-committed-bg: #eaf5ee;
+
+  /* ---- semantic: temporal COMPARABILITY (PD-0014 Part 1 §1.2) — a disclosure
+     dimension distinct from both freshness (--color-fresh-*, a single axis's currency
+     state) and metric sufficiency (--color-limited/--color-insufficient, whether a
+     value can be computed at all). A benchmark-relative figure can be fully
+     AVAILABLE, with every leg at a routine freshness state, and still combine legs
+     measured at different effective instants — that is what this token names. A
+     distinct, cooler-toned hue on purpose: not the amber family (freshness/LIMITED
+     already own that register) and not a green/red directional color. ---- */
+  --color-comparability: #3a5a8a;
+  --color-comparability-bg: #e9eff8;
+  --color-comparability-border: #b9c8e0;
+
+  /* ---- semantic: OCR confidence (a SEPARATE vocabulary from metric sufficiency —
+     see CONTRACT.md "two vocabularies") ---- */
+  --color-confidence-high: #2b6b3f;
+  --color-confidence-high-bg: #eaf5ee;
+  --color-confidence-low: #8a6a15;
+  --color-confidence-low-bg: #faf3df;
+  --color-confidence-ambiguous: #8a3b1f;
+  --color-confidence-ambiguous-bg: #f8ece5;
+  --color-confidence-missing: #57606b;
+  --color-confidence-missing-bg: #f0efec;
+  --color-confidence-possible-duplicate: #7a4a1f;
+  --color-confidence-possible-duplicate-bg: #f7ecdd;
+  --color-confidence-corrected: #3a5a8a;
+  --color-confidence-corrected-bg: #e9eff8;
+  --color-confidence-confirmed: #2b6b3f;
+  --color-confidence-confirmed-bg: #eaf5ee;
+
+  /* ---- severity (Insights, §20.1) ---- */
+  --color-severity-warning: #8a3b1f;
+  --color-severity-attention: #8a6a15;
+  --color-severity-observation: #6b7280;
+
+  /* ---- chart colors ---- */
+  --color-chart-portfolio: var(--color-accent);
+  --color-chart-benchmark: #9aa0a6;
+  --color-chart-drawdown: rgba(138, 59, 31, 0.16);
+  --color-chart-fx: var(--color-gold);
+  --color-chart-grid: var(--color-line);
+  --color-chart-sml-line: var(--color-ink-faint);
+
+  /* ---- danger / error ---- */
+  --color-danger: #8a3b1f;
+
+  /* ---- type scale ----
+     HG1 Round 5 (S8 / PD-0016 Part 2 — the binding typography decision). Three changes,
+     each with its own reason; do not conflate them:
+     1. Arial moved to the FRONT of the sans stack (not appended — the owner's Problem 6
+        font remark, PD-0016 Part 2). Arial has uniform lining figures (safe beside the
+        mono/tabular numeral columns this app already uses), is metric-compatible with
+        Helvetica, and — unlike `-apple-system`/`Segoe UI`, which are DIFFERENT faces
+        with different glyph metrics on macOS vs. Windows — is present with the SAME
+        metrics on every target platform. That also makes charts.js's new measured-text
+        layout (S2 — getComputedTextLength/getSubStringLength) machine-independent: a
+        measurement taken against a font that varies by OS is not reproducible (P12).
+        `-apple-system`/`Segoe UI`/Helvetica are KEPT, after Arial, for the one real
+        edge case (a locked-down environment with no Arial) — not as the working default.
+     2. Explicit CJK faces added to ALL THREE stacks (AC-S8.1). Previously NO stack named
+        a Chinese face at all; every CJK glyph resolved through OS fallback, with
+        different metrics and vertical rhythm depending on the machine — the audit's S8
+        finding, distinct from the Arial question. `--font-mono`'s CJK addition is a
+        best-effort, not a claim of true CJK monospacing: no CJK face is fixed-width
+        against Latin digits, and none is universally installed as a "monospace" family;
+        naming PingFang SC/Microsoft YaHei here at least resolves a stray CJK glyph
+        inside a mono-styled numeral cell (e.g. a "CNY" prefix) to a DEFINED face instead
+        of an undefined one, which is the literal AC-S8.1 requirement ("every --font-*
+        token names an explicit CJK fallback").
+     3. Serif stays confined to display headlines (h1-h4, .claim-conclusion is NOT
+        serif — see app.css) — already correct per the audit; only its CJK fallback
+        (Noto Serif SC, Songti SC) is new here. Do NOT move chart labels to
+        --font-mono to "fix" S2's estimator (S8 point 5) — chart category/point labels
+        (.chart-bar-label, .chart-scatter-label, etc.) keep --font-sans via .chart's own
+        rule below; only genuinely numeric chart text (ticks, values) was already mono
+        and stays mono. */
+  --font-serif: Georgia, "Iowan Old Style", "Times New Roman", "Noto Serif SC", "Songti SC", serif;
+  --font-sans: Arial, Helvetica, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", monospace;
+
+  --text-xs: 11.5px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-md: 17px;
+  --text-lg: 22px;
+  --text-xl: 30px;
+  --text-2xl: 40px;
+
+  /* ---- typography ROLES (HG1 Condition 1B) ----
+     These name what a piece of text IS, not just what size it happens to be — every
+     chart label class in app.css and charts.js's structural SVG classes must resolve to
+     one of these, never a literal px value, and never a size the chart library invents
+     independently of this scale. Several intentionally point at the same underlying
+     --text-* rung as an existing use (e.g. --type-table-cell === --text-sm) — the point
+     of a separate role token is that the role can move independently later even where it
+     starts equal today. */
+  --type-page-heading: var(--text-xl);        /* 30px — top-level page/section heading */
+  --type-card-title: 14.5px;                  /* .block-kicker/.claim-label register */
+  --type-metric-number: var(--text-lg);       /* 22px — the numeral in a stat cell/.metric-number */
+  /* HG1 Round 5 (S3 / AC-S3.2) — raised 10px -> 11.5px. AC-S3.2 requires no chart <text>
+     render below 11 CSS px; at a PERFECT scale of 1.0 the previous 10px value was
+     already below that floor on its own, before any viewBox-scaling defect was even
+     considered. 11.5px is not a new size: it equals --text-xs, already used elsewhere
+     on the page (block-kicker, freshness-pill, etc.), so this does not add a ninth
+     distinct rendered font size (AC-S8.4) — it reuses an existing one. Paired with the
+     chart-family min-width floors below (each sized so this token still renders >=11px
+     at the family's WORST-CASE permitted shrink), this is the token-level half of the
+     S3 fix; charts.js/app.css's min-width floors are the other half. */
+  --type-chart-axis: 11.5px;                  /* axis tick labels (chart-tick) */
+  --type-chart-category-label: 11.5px;        /* a chart's row/column category name — bar
+                                                  labels, heatmap row/col labels, scatter
+                                                  point labels */
+  /* HG1 Round 5 (AC-S8.2, second pass — PM live probe) — raised 11px -> 11.5px. The
+     first pass fixed --type-chart-axis (the smallest role) but left this one at 11,
+     which the PM measured rendering at 10.6-10.8px on real bar-value labels
+     ("16.5% · $43,545.50", "54.4% · $115,754.5") — 15 nodes on #/overview (EN), 12
+     (ZH), 3 on #/analytics, all just under the 11px floor. Cause: the "bar" family's
+     own measured worst-case scale (0.961, at its min-width floor) times the old 11px
+     token = 10.57px — a floor MISS, not the earlier illegibility defect (this is a
+     near-miss at ~0.96 scale, not the old 0.469 scale). 11.5px reuses the SAME value
+     as --type-chart-axis/--type-chart-category-label/--text-xs above (not a tenth
+     distinct size — AC-S8.4), and 11.5 * 0.961 = 11.05, clearing 11px with margin at
+     the measured worst case. */
+  --type-chart-value-label: 11.5px;           /* a value annotation drawn inside/beside a
+                                                  chart — bar value, donut center, legend,
+                                                  heatmap cell value */
+  --type-annotation: 12.5px;                  /* explanatory caption/annotation text placed
+                                                  near a chart, not inside its SVG */
+  --type-table-cell: var(--text-sm);          /* 13px — data-table td */
+  --type-secondary-metadata: 11px;            /* faint metadata: table th, freshness pill
+                                                  copy, timestamps */
+
+  /* ---- chart family DIMENSIONS (HG1 Condition 1A) ----
+     "A chart should not become huge merely because it contains five bars" — these are
+     max-widths, not fixed widths: an SVG's own <svg width="100%" viewBox="0 0 W H">
+     scales up to fill whatever container it is dropped into (CONTRACT.md's chart API is
+     unopinionated about the container), and because chart text lives in SVG viewBox user
+     units, scaling the SVG up scales its type with it — this, not any inline font-size,
+     was the actual mechanism behind "chart labels are disproportionately large,
+     especially the major holdings visualization on Overview" (a 320-viewBox-unit bar
+     chart stretched to fill an ~900px-wide Overview card was rendering its 12px labels
+     at roughly 2.5x). Capping max-width at (approximately) the chart's own authored
+     viewBox width stops that stretch while still letting the chart shrink gracefully in
+     a narrower column. charts.js attaches the matching class to every chart family
+     itself (see charts.js), so no surface file has to remember to. */
+  /* HG1 Round 5 (S3) — every max-width below is RETUNED, not just floored. Round 4's
+     comment above said the cap should sit "at (about) the chart's own authored viewBox
+     size" but several caps were never reconciled against what charts.js/its real
+     callers actually author, which is exactly how the audit's measured "0.469 -> 1.778"
+     scale range arose: e.g. the local/FX attribution stackedBar is always called at
+     width:360 (js/surfaces/analytics.js) against a 640px "analytical" cap — scale
+     640/360 = 1.778 in any container >=640px wide, the audit's own worst-case number,
+     reproduced here arithmetically rather than guessed. Every value below is retuned
+     against the REAL width(s) charts.js's own default parameters and its actual call
+     sites use (verified by reading js/surfaces/*.js, read-only, not edited), targeting
+     a wide-container scale inside AC-S3.1's [0.9, 1.1] band. A companion min-width per
+     family (new this round) is the symmetric floor: it stops a NARROW container (a
+     flex/grid cell squeezed by the still-open S1 layout defects) shrinking the same
+     chart's text below --type-chart-axis's 11px legibility floor (AC-S3.2), sized as
+     (11 / 11.5) * the family's authored viewBox width, with a small safety margin —
+     i.e. "the width at which this family's own smallest label is still >=11px," which
+     is the literal AC-S3.2 requirement, not an arbitrary round number. Enforcing this
+     floor means a container too narrow for a chart family now OVERFLOWS or forces its
+     row to reflow, rather than silently shrinking the chart's text to illegibility —
+     a visible, fixable-by-layout-work defect traded for an invisible, unfixable-by-
+     looking one. See this designer's handoff for the specific residual risk this
+     trade introduces at 1024px on Overview's two-chart row, and the @media rule in
+     app.css that mitigates it. */
+  --chart-hero-max-width: 760px;       /* lineCompare default width 720 (no caller overrides it) -> scale 1.056 */
+  --chart-hero-min-width: 692px;
+  --chart-analytical-max-width: 390px; /* stackedBar's ONLY caller passes width:360 -> scale 1.083 (was 640 -> 1.778) */
+  --chart-analytical-min-width: 346px;
+  --chart-compact-max-width: 105px;    /* sparkline default width 96 (currently unused by any caller) -> scale 1.09 */
+  --chart-compact-min-width: 93px;
+  --chart-donut-max-width: 150px;      /* donut() is always called at its default size:140 -> scale 1.071 (was 170 -> 1.214) */
+  --chart-donut-min-width: 135px;
+  /* "bar" now covers TWO widths in real use — most callers take bar()'s own 320px
+     default (Overview's Major Holdings/exposure bars; Analytics' exposure helper's own
+     default), while two Analytics callers pass an explicit wider viewBox (400, 420) for
+     a visibly denser card. One shared cap could not fit both without breaching
+     AC-S3.1 for one side (320 and 420 differ by >1.1/0.9x, so no single number is
+     inside both charts' [0.9,1.1] windows at once) — charts.js now assigns the WIDE
+     family automatically once a caller's own (possibly S2-grown) width crosses
+     BAR_WIDE_THRESHOLD, entirely inside charts.js; no caller was edited to make this
+     split possible. */
+  /* CORRECTED (PM live probe, third pass) — 340/308 were tuned against the family's
+     DEFAULT viewBox (320) only. The family also carries one real caller at
+     viewBox:360 (analytics.js's Currency Exposure chart, via exposureBarChart) that
+     stays under BAR_WIDE_FAMILY_THRESHOLD (380) on purpose (see charts.js) — at the
+     OLD max-width alone, 340/360 = 0.944, and the PM measured that exact scale live,
+     rendering .chart-bar-label/.chart-bar-value (both --type-chart-value-label /
+     --type-chart-category-label = 11.5px) at 10.86px, 0.14px under the 11px floor.
+     Both bounds raised together (not just the floor) so the WHOLE range stays valid
+     for BOTH real viewBox values, not only the one point the PM happened to measure:
+     320 -> [347/320, 350/320] = [1.084, 1.094]; 360 -> [347/360, 350/360] = [0.964,
+     0.972]. Every value in both ranges clears 11px (11.5 * 0.964 = 11.08, the new
+     worst case) and stays inside AC-S3.1's [0.9, 1.1]. Raising only the floor to
+     ~345px, as the PM's own note also allowed, would have pushed min-width above the
+     OLD max-width (340) — a degenerate min>max range that collapses to a single fixed
+     size and forfeits the point of having a range at all; raising both preserves a
+     real, if narrower, range. */
+  --chart-bar-max-width: 350px;
+  --chart-bar-min-width: 347px;
+  --chart-bar-wide-max-width: 440px;   /* covers the 400/420px explicit-width callers -> scale 1.1 / 1.048 */
+  --chart-bar-wide-min-width: 384px;
+  --chart-scatter-max-width: 600px;    /* scatter()'s only caller (SML) never overrides width:560 -> scale 1.071 (was 640 -> 1.143) */
+  --chart-scatter-min-width: 538px;
+  /* HG1 ux_planning revision (review-07, P0 item 2) — charts.js's heatmap() no longer
+     renders at a fixed 336px intrinsic width; labelW/topMargin/rightMargin are now sized
+     from the ACTUAL longest label (measured via the real DOM when available, falling
+     back to a 6.2px/char heuristic otherwise — see heatmap()'s own comment), because the
+     old fixed 336px clipped the English row label ("Benchmark (MSCI ACWI)") and its own
+     rotated column header at the old margins. Using that SAME heuristic to reason about
+     the worst case this dataset's n=5 labels produce (English's longest label, 21
+     characters, is the binding case — zh's equivalent is short enough that it was never
+     the problem): ~130px measured width -> labelW ~140, rightMargin ~90 -> intrinsic
+     width ~450px. Raised alongside it, in proportion, so the DISPLAYED scale stays
+     within the same [0.9, 1.1]-ish envelope AC-S3.1's 11px floor already required for
+     the old, smaller intrinsic width: max 470/450 = 1.044, min 432/450 = 0.96 (font
+     11.5*0.96 = 11.04px, clears the floor). This is a REASONED estimate from the same
+     heuristic charts.js falls back to, not a live browser measurement (this designer
+     held `filesystem` only this round) — the real DOM-measured width a live browser
+     computes may differ from the heuristic; if it does, these two bounds need a live
+     recalibration pass the same way this file's OTHER chart families were tuned
+     (several of this file's own comments record exactly that kind of correction). */
+  --chart-matrix-max-width: 470px;
+  --chart-matrix-min-width: 432px;
+  /* HG1 Condition 3 (round 3) — a dedicated family for the rolling/time-windowed
+     instruments (rolling volatility, underwater drawdown) so their shared grammar
+     (see charts.js's ROLLING_MARGIN block) has its own explicit identity, distinct
+     from "analytical" (still used by the local/FX attribution stacked bar, which is
+     not a rolling time-series read). Kept numerically equal to its own default
+     viewBox width (640) both ways — this is the one family where max == min, i.e.
+     it never renders scaled at all when the surrounding layout allows it. */
+  --chart-rolling-max-width: 640px;
+  --chart-rolling-min-width: 615px;
+
+  /* ---- spacing scale ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ---- radius / elevation ---- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-card: 0 1px 2px rgba(20, 20, 10, 0.04);
+  --shadow-raised: 0 10px 30px rgba(20, 30, 25, 0.14);
+  --shadow-inspector: -4px 0 20px rgba(20, 30, 25, 0.08);
+
+  /* ---- layout ----
+     HG1 Round 5 (S1e) — split into a PROSE measure (governs paragraph-length text —
+     ~68-75ch is the typographic convention for readable line length) and a LAYOUT
+     measure (governs the card/chart/table column — must be allowed to grow with the
+     viewport so cards can tile side by side, per S1's correction). The two were
+     previously one token (--content-max-width, 1040px, unconditionally), which is
+     itself part of the "chrome and content do not share a measure" defect this
+     designer cannot fully close (header.app-header is full-bleed and lives in
+     shell.js/index.html, outside this write scope) — but widening the LAYOUT measure
+     at wide viewports at least gives the S1 primitive below more room to redistribute
+     into, instead of every extra pixel of a wide window landing as one-sided card-
+     internal void. `clamp(1040px, 94vw, 1400px)` FLOORS at exactly today's verified
+     1040px value below ~1106px viewport width (i.e. unchanged at the 1024/1280px
+     conditions Round 4 already verified clean) and grows only above that. */
+  --content-measure-prose: 70ch;
+  --content-measure-layout: clamp(1040px, 94vw, 1400px);
+  --content-max-width: var(--content-measure-layout); /* back-compat alias; only .app-content-inner reads it */
+  --inspector-width: 340px;
+  /* HG1 ux_planning revision (review-06, B5) — the inspector dock's DEFAULT width
+     (340px total, ~284px of usable content once its own padding — app.css's
+     `#app-inspector-inner` — is subtracted) is narrower than the correlation matrix
+     chart's own authored floor (`--chart-matrix-min-width`, 323px, below). Every other
+     caller of `ctx.ui.inspector.focus` (holding detail, a claim's own Evidence/
+     Methodology brief) fits comfortably inside the default width; only the Sleeve
+     Correlation Matrix (js/surfaces/analytics.js) does not. Rather than shrinking the
+     matrix's own min-width to fit (which the owner's brief explicitly rules out —
+     "do not hide the column or reduce analytical content to make it fit"), this is a
+     second, WIDER variant the inspector opts into per-payload (`focus({ wide: true })`,
+     js/shell.js), leaving every other caller's width unchanged. Sized with real margin
+     over the matrix's own max-width (365px AT THE TIME OF THIS COMMENT — see the
+     review-07 comment immediately below for the current 470px value and this token's
+     own corresponding update) plus its padding (56px: `--space-4` on three sides + 40px
+     on the fourth), not an exact-fit measurement this designer cannot verify without a
+     browser this round. */
+  /* HG1 ux_planning revision (review-07, P0 item 2) — widened alongside
+     --chart-matrix-max-width/-min-width above (365px -> 470px), for the same reason:
+     the matrix's own min-width must stay under this variant's usable content width
+     (this width minus #app-inspector-inner's own left(40px)+right(16px) padding, 56px
+     total) or it forces a horizontal overflow inside the dock (app.css's own documented
+     behavior for a chart family whose min-width exceeds its container). 470 + 56 + ~54px
+     margin (matching this token's own prior ~59px margin over the old 365px max-width)
+     rounds to 580. Reasoned from the same unverified heuristic as the matrix tokens
+     above, not a live measurement — flagged for the same live recalibration pass if the
+     real DOM-measured matrix width differs materially from the ~450px estimate. */
+  --inspector-width-wide: 580px;
+  /* HG1 Round 5 (S6) — introduced so the sticky table-header offset and
+     #app-inspector's sticky offset would not hardcode header.app-header's height
+     (53px) independently in two places (app.css:106, 830 pre-fix).
+     CORRECTED, second pass: the table-header offset turned out not to need this
+     token at all — the PM's live probe showed `.table-scroll-wrap` remains its OWN
+     sticky scrollport regardless of which axis triggers it (the `overflow-x:auto` /
+     `overflow-y:clip` pairing this designer tried first still computes `overflow-y`
+     to `hidden`, a real scroll-establishing value, not to `visible`), so the table
+     header's correct offset against ITS scrollport is `0`, not this token — see
+     app.css's `table.sticky-head thead th`. This token's ONLY remaining consumer is
+     `#app-inspector`, which sits OUTSIDE any nested scroll container and genuinely
+     does need to clear header.app-header at the page level. Kept (not inlined back
+     to a literal) because it is still one number with one meaning, used once. */
+  /* HG1 Round 5 micro-pass (Item 1 — the 1024px sticky-header overlap, the
+     PREVIOUS constant's actual defect: `--sticky-header-clearance` was raised to a
+     GUESSED 96px for the <=1024px wrapped-header case (app.css's own now-removed
+     override), measured afterwards at 72-75px short of the real wrapped height
+     (168px EN / 171px ZH). A second guessed constant would only move the same
+     failure mode to a new number — it does not survive a header edit, a browser
+     zoom level, or (as already proven once) a second language's own wrapping
+     metrics.
+     THE FIX: this value is now DERIVED, not guessed. js/shell.js installs a
+     `ResizeObserver` on `header.app-header` (self-correcting for wrapping, language
+     switch, and future header edits alike) that writes the header's OWN measured
+     `getBoundingClientRect().height` back into this custom property on
+     `document.documentElement`. An inline style set via `element.style.setProperty`
+     beats any stylesheet rule for the same property regardless of selector or media
+     query (CSS cascade: inline author-origin declarations outrank selector-matched
+     author-origin declarations of equal importance), so this value applies at every
+     breakpoint without this file needing a separate override per breakpoint the way
+     the old 96px guess did.
+     HG1 Round 5 SECOND micro-pass (Defect 1 — the above mechanism going stale on a
+     bare viewport resize, and reading a pre-settlement layout when it DID run).
+     CORRECTED: the actual read is no longer synchronous and no longer solely
+     ResizeObserver-triggered. Every trigger (boot, a language/explanation-mode
+     render, the ResizeObserver, and a `window` `resize` listener added as a second,
+     independent trigger for the same reason) funnels through one
+     `requestAnimationFrame`-scheduled measurement, so the value is always read
+     AFTER the browser has settled the layout that triggered it, not mid-render or
+     mid-resize. See js/shell.js's own comment on this block (`scheduleHeaderRemeasure`,
+     `installHeaderResizeObserver`) for the full mechanism and diagnosis.
+     53px below is therefore a pre-JS/JS-unavailable fallback only — this is a fully
+     JS-rendered SPA (index.html's #app-content starts empty; `#app-nav` starts
+     empty; nothing meaningful paints without JS running at all), so a session where
+     this fallback is the value actually in effect is a session where the rest of
+     the page is already non-functional for the same reason, not a realistic
+     partially-working state this number needs to defend on its own. It is kept,
+     rather than deleted, only because it was already correct for the ORIGINAL
+     single-row desktop header before this pass, costs nothing to leave in place,
+     and gives `#app-inspector` a defined (if soon-overwritten) value on the very
+     first synchronous layout pass before shell.js's own boot() runs. */
+  --sticky-header-clearance: 53px;
+}

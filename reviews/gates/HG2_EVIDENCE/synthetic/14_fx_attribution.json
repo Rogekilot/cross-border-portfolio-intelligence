@@ -1,0 +1,1583 @@
+{
+ "data": {
+  "rows": [
+   {
+    "carino_residual": "2E-50",
+    "fx_effect_by_currency": {
+     "breakdown": [
+      [
+       "currency:CNY",
+       "-30.65",
+       "-8000/261"
+      ],
+      [
+       "currency:HKD",
+       "-4.11",
+       "-160/39"
+      ]
+     ],
+     "causes": [
+      {
+       "detail": "",
+       "note": "1 session(s) missed",
+       "reason": "STALE_DATA",
+       "ref": "price:c0000000-0000-4000-8000-0000000a0001",
+       "state": "AVAILABLE"
+      },
+      {
+       "detail": "",
+       "note": "2 session(s) missed",
+       "reason": "STALE_DATA",
+       "ref": "price:c0000000-0000-4000-8000-0000000a0001",
+       "state": "LIMITED"
+      },
+      {
+       "detail": "",
+       "note": "3 session(s) missed",
+       "reason": "STALE_DATA",
+       "ref": "price:c0000000-0000-4000-8000-0000000a0001",
+       "state": "LIMITED"
+      }
+     ],
+     "conformant": false,
+     "currency": "USD",
+     "details": [],
+     "exact": "-117920/3393",
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [
+       "END_OF_DAY"
+      ],
+      "entries": [
+       {
+        "date_used": "2025-03-03",
+        "key": "CNY",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-01-06",
+        "key": "HKD",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-03",
+        "key": "SYN_CN_A",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XSHG"
+        ],
+        "missed": 3,
+        "state": "STALE"
+       },
+       {
+        "date_used": "2025-01-08",
+        "key": "SYN_HKEX",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XHKG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-01-06",
+        "key": "SYN_NYSE",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XNYS"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       }
+      ],
+      "summary": "STALE"
+     },
+     "lineage": [
+      [
+       "displayed_total",
+       "-34.76"
+      ],
+      [
+       "fx_note:parity",
+       "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+      ],
+      [
+       "part_order",
+       "performance/1.9#9.6"
+      ]
+     ],
+     "manifest_id": "679691f4f17470521f4e0438d08ced2b33e32b547a9bb567ae4be332d6d8648a",
+     "method_id": "performance.attribution/cp3e",
+     "metric_id": "attribution_breakdown",
+     "numeric_basis": "RATIONAL",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": "STALE_DATA",
+     "rounding_rule_id": "performance/1.10#2.2-2.4",
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "LIMITED",
+     "subject": [
+      [
+       "group_by",
+       "currency"
+      ],
+      [
+       "line",
+       "attr.fx"
+      ]
+     ],
+     "synthetic": true,
+     "unit": "CURRENCY_AMOUNT",
+     "value": "-34.75",
+     "view": "REPORTING",
+     "window": {
+      "days": 119,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": null,
+      "rule": "SINCE_INCEPTION",
+      "since_snapshot": false,
+      "start": "2025-01-01"
+     }
+    },
+    "identities": {
+     "identity:I-2": "PASS",
+     "identity:I-3": "PASS",
+     "identity:I-4": "PASS",
+     "identity:I-9": "PASS"
+    },
+    "money": {
+     "breakdown": [
+      [
+       "attr.price",
+       "1867.48",
+       "1092476/585"
+      ],
+      [
+       "attr.fx",
+       "-34.76",
+       "-117920/3393"
+      ],
+      [
+       "attr.price_fx_interaction",
+       "-0.1",
+       "-4/39"
+      ],
+      [
+       "attr.income",
+       "128",
+       "128"
+      ],
+      [
+       "attr.fees",
+       "-2",
+       "-2"
+      ],
+      [
+       "attr.taxes",
+       "-12.8",
+       "-64/5"
+      ],
+      [
+       "attr.financing",
+       "0",
+       "0"
+      ],
+      [
+       "attr.conversion",
+       "-8",
+       "-8"
+      ]
+     ],
+     "causes": [
+      {
+       "detail": "",
+       "note": "1 session(s) missed",
+       "reason": "STALE_DATA",
+       "ref": "price:c0000000-0000-4000-8000-0000000a0001",
+       "state": "AVAILABLE"
+      },
+      {
+       "detail": "",
+       "note": "2 session(s) missed",
+       "reason": "STALE_DATA",
+       "ref": "price:c0000000-0000-4000-8000-0000000a0001",
+       "state": "LIMITED"
+      },
+      {
+       "detail": "",
+       "note": "3 session(s) missed",
+       "reason": "STALE_DATA",
+       "ref": "price:c0000000-0000-4000-8000-0000000a0001",
+       "state": "LIMITED"
+      }
+     ],
+     "conformant": false,
+     "currency": "USD",
+     "details": [],
+     "exact": "3652798/1885",
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [
+       "END_OF_DAY"
+      ],
+      "entries": [
+       {
+        "date_used": "2025-03-03",
+        "key": "CNY",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-01-06",
+        "key": "HKD",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-03",
+        "key": "SYN_CN_A",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XSHG"
+        ],
+        "missed": 3,
+        "state": "STALE"
+       },
+       {
+        "date_used": "2025-01-08",
+        "key": "SYN_HKEX",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XHKG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-01-06",
+        "key": "SYN_NYSE",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XNYS"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       }
+      ],
+      "summary": "STALE"
+     },
+     "lineage": [
+      [
+       "days",
+       "119"
+      ],
+      [
+       "fx_note:parity",
+       "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+      ],
+      [
+       "identity:I-2",
+       "PASS"
+      ],
+      [
+       "identity:I-3",
+       "PASS"
+      ],
+      [
+       "identity:I-4",
+       "PASS"
+      ],
+      [
+       "identity:I-9",
+       "PASS"
+      ]
+     ],
+     "manifest_id": "679691f4f17470521f4e0438d08ced2b33e32b547a9bb567ae4be332d6d8648a",
+     "method_id": "performance.attribution/cp3e",
+     "metric_id": "attribution_money",
+     "numeric_basis": "RATIONAL",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": "STALE_DATA",
+     "rounding_rule_id": "performance/1.10#2.2-2.4",
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "LIMITED",
+     "subject": [],
+     "synthetic": true,
+     "unit": "CURRENCY_AMOUNT",
+     "value": "1937.82",
+     "view": "REPORTING",
+     "window": {
+      "days": 119,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": null,
+      "rule": "SINCE_INCEPTION",
+      "since_snapshot": false,
+      "start": "2025-01-01"
+     }
+    },
+    "percentage": {
+     "breakdown": [
+      [
+       "attr.price",
+       "0.109352889372",
+       "5467644468580371678454313662517515049432901516117/50000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.fx",
+       "-0.001628368271",
+       "-4070920678608687165135304844579073669494733866151/2500000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.price_fx_interaction",
+       "-0.000004805564",
+       "-6006955546793686963479842630230315624932867136281/1250000000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.income",
+       "0.005972374851",
+       "59723748508121306209740652264661506469579372095949/10000000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.fees",
+       "-0.000093615298",
+       "-46807648976847887576152827374414391968439152963199/500000000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.taxes",
+       "-0.000609151003",
+       "-60915100334031217310750505552204517960892598753611/100000000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.financing",
+       "0",
+       "0"
+      ],
+      [
+       "attr.conversion",
+       "-0.000374461192",
+       "-37446119181478310060922261899531513574751322370559/100000000000000000000000000000000000000000000000000000"
+      ]
+     ],
+     "causes": [
+      {
+       "detail": "",
+       "note": "1 session(s) missed",
+       "reason": "STALE_DATA",
+       "ref": "price:c0000000-0000-4000-8000-0000000a0001",
+       "state": "AVAILABLE"
+      },
+      {
+       "detail": "",
+       "note": "2 session(s) missed",
+       "reason": "STALE_DATA",
+       "ref": "price:c0000000-0000-4000-8000-0000000a0001",
+       "state": "LIMITED"
+      },
+      {
+       "detail": "",
+       "note": "3 session(s) missed",
+       "reason": "STALE_DATA",
+       "ref": "price:c0000000-0000-4000-8000-0000000a0001",
+       "state": "LIMITED"
+      }
+     ],
+     "conformant": false,
+     "currency": null,
+     "details": [],
+     "exact": "9965606862285551/88492820629868750",
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [
+       "END_OF_DAY"
+      ],
+      "entries": [
+       {
+        "date_used": "2025-03-03",
+        "key": "CNY",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-01-06",
+        "key": "HKD",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-03",
+        "key": "SYN_CN_A",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XSHG"
+        ],
+        "missed": 3,
+        "state": "STALE"
+       },
+       {
+        "date_used": "2025-01-08",
+        "key": "SYN_HKEX",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XHKG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-01-06",
+        "key": "SYN_NYSE",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XNYS"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       }
+      ],
+      "summary": "STALE"
+     },
+     "lineage": [
+      [
+       "carino_residual",
+       "2E-50"
+      ],
+      [
+       "components_basis",
+       "DECIMAL_PREC50_HALF_EVEN"
+      ],
+      [
+       "days",
+       "119"
+      ],
+      [
+       "fx_note:parity",
+       "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+      ],
+      [
+       "identity:I-2",
+       "PASS"
+      ],
+      [
+       "identity:I-3",
+       "PASS"
+      ],
+      [
+       "identity:I-4",
+       "PASS"
+      ],
+      [
+       "identity:I-9",
+       "PASS"
+      ],
+      [
+       "zero_capital_days",
+       "0"
+      ]
+     ],
+     "manifest_id": "679691f4f17470521f4e0438d08ced2b33e32b547a9bb567ae4be332d6d8648a",
+     "method_id": "performance.attribution/cp3e",
+     "metric_id": "attribution_return",
+     "numeric_basis": "RATIONAL",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": "STALE_DATA",
+     "rounding_rule_id": "performance/1.10#2.2-2.4",
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "LIMITED",
+     "subject": [],
+     "synthetic": true,
+     "unit": "RATIO",
+     "value": "0.112614862893",
+     "view": "PERIOD",
+     "window": {
+      "days": 119,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": null,
+      "rule": "SINCE_INCEPTION",
+      "since_snapshot": false,
+      "start": "2025-01-01"
+     }
+    },
+    "reading": "the FX effect (attr.fx) is the revaluation of positions, cash and receivables by the moving rate; the price-FX interaction is shown, never folded (Ruling 9.1)",
+    "window": "SINCE_INCEPTION"
+   },
+   {
+    "carino_residual": "4.98E-50",
+    "fx_effect_by_currency": {
+     "breakdown": [
+      [
+       "currency:CNY",
+       "-30.65",
+       "-8000/261"
+      ],
+      [
+       "currency:HKD",
+       "-4.1",
+       "-160/39"
+      ]
+     ],
+     "causes": [],
+     "conformant": false,
+     "currency": "USD",
+     "details": [],
+     "exact": "-117920/3393",
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [
+       "END_OF_DAY"
+      ],
+      "entries": [
+       {
+        "date_used": "2025-03-31",
+        "key": "CNY",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "HKD",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_CN_A",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XSHG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_HKEX",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XHKG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_NYSE",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XNYS"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       }
+      ],
+      "summary": "CURRENT"
+     },
+     "lineage": [
+      [
+       "displayed_total",
+       "-34.75"
+      ],
+      [
+       "fx_note:parity",
+       "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+      ],
+      [
+       "part_order",
+       "performance/1.9#9.6"
+      ]
+     ],
+     "manifest_id": "2c2bc30ffab09ba776164758812aebaf47b54269ef58be74c8c5f938c70e9dba",
+     "method_id": "performance.attribution/cp3e",
+     "metric_id": "attribution_breakdown",
+     "numeric_basis": "RATIONAL",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": null,
+     "rounding_rule_id": "performance/1.10#2.2-2.4",
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "AVAILABLE",
+     "subject": [
+      [
+       "group_by",
+       "currency"
+      ],
+      [
+       "line",
+       "attr.fx"
+      ]
+     ],
+     "synthetic": true,
+     "unit": "CURRENCY_AMOUNT",
+     "value": "-34.75",
+     "view": "REPORTING",
+     "window": {
+      "days": 30,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": null,
+      "rule": "CUSTOM",
+      "since_snapshot": false,
+      "start": "2025-03-31"
+     }
+    },
+    "identities": {
+     "identity:I-2": "PASS",
+     "identity:I-3": "PASS",
+     "identity:I-4": "PASS",
+     "identity:I-9": "PASS"
+    },
+    "money": {
+     "breakdown": [
+      [
+       "attr.price",
+       "89.7",
+       "17492/195"
+      ],
+      [
+       "attr.fx",
+       "-34.75",
+       "-117920/3393"
+      ],
+      [
+       "attr.price_fx_interaction",
+       "-0.1",
+       "-4/39"
+      ],
+      [
+       "attr.income",
+       "128",
+       "128"
+      ],
+      [
+       "attr.fees",
+       "-2",
+       "-2"
+      ],
+      [
+       "attr.taxes",
+       "-12.8",
+       "-64/5"
+      ],
+      [
+       "attr.financing",
+       "0",
+       "0"
+      ],
+      [
+       "attr.conversion",
+       "-8",
+       "-8"
+      ]
+     ],
+     "causes": [],
+     "conformant": false,
+     "currency": "USD",
+     "details": [],
+     "exact": "2715182/16965",
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [
+       "END_OF_DAY"
+      ],
+      "entries": [
+       {
+        "date_used": "2025-03-31",
+        "key": "CNY",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "HKD",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_CN_A",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XSHG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_HKEX",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XHKG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_NYSE",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XNYS"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       }
+      ],
+      "summary": "CURRENT"
+     },
+     "lineage": [
+      [
+       "days",
+       "30"
+      ],
+      [
+       "fx_note:parity",
+       "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+      ],
+      [
+       "identity:I-2",
+       "PASS"
+      ],
+      [
+       "identity:I-3",
+       "PASS"
+      ],
+      [
+       "identity:I-4",
+       "PASS"
+      ],
+      [
+       "identity:I-9",
+       "PASS"
+      ]
+     ],
+     "manifest_id": "2c2bc30ffab09ba776164758812aebaf47b54269ef58be74c8c5f938c70e9dba",
+     "method_id": "performance.attribution/cp3e",
+     "metric_id": "attribution_money",
+     "numeric_basis": "RATIONAL",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": null,
+     "rounding_rule_id": "performance/1.10#2.2-2.4",
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "AVAILABLE",
+     "subject": [],
+     "synthetic": true,
+     "unit": "CURRENCY_AMOUNT",
+     "value": "160.05",
+     "view": "REPORTING",
+     "window": {
+      "days": 30,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": null,
+      "rule": "CUSTOM",
+      "since_snapshot": false,
+      "start": "2025-03-31"
+     }
+    },
+    "percentage": {
+     "breakdown": [
+      [
+       "attr.price",
+       "0.003995662504",
+       "2497289065301541093113962247059657907588044547937/625000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.fx",
+       "-0.001548498719",
+       "-15484987186088152925856214433413487934069488645637/10000000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.price_fx_interaction",
+       "-0.000004569857",
+       "-45698571410775756599372138931715517308821082502387/10000000000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.income",
+       "0.005679436873",
+       "56794368729230853216327942164977100488680715535953/10000000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.fees",
+       "-0.000089023577",
+       "-17804715489202827523774701750988012817805525317187/200000000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.taxes",
+       "-0.000579272861",
+       "-57927286146123551523002705410633618826497513957541/100000000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.financing",
+       "0",
+       "0"
+      ],
+      [
+       "attr.conversion",
+       "-0.00035609431",
+       "-17804715489202827523774701750988012817805525317187/50000000000000000000000000000000000000000000000000000"
+      ]
+     ],
+     "causes": [],
+     "conformant": false,
+     "currency": null,
+     "details": [],
+     "exact": "2179275444241/307042260241250",
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [
+       "END_OF_DAY"
+      ],
+      "entries": [
+       {
+        "date_used": "2025-03-31",
+        "key": "CNY",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "HKD",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_CN_A",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XSHG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_HKEX",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XHKG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_NYSE",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XNYS"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       }
+      ],
+      "summary": "CURRENT"
+     },
+     "lineage": [
+      [
+       "carino_residual",
+       "4.98E-50"
+      ],
+      [
+       "components_basis",
+       "DECIMAL_PREC50_HALF_EVEN"
+      ],
+      [
+       "days",
+       "30"
+      ],
+      [
+       "fx_note:parity",
+       "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+      ],
+      [
+       "identity:I-2",
+       "PASS"
+      ],
+      [
+       "identity:I-3",
+       "PASS"
+      ],
+      [
+       "identity:I-4",
+       "PASS"
+      ],
+      [
+       "identity:I-9",
+       "PASS"
+      ],
+      [
+       "zero_capital_days",
+       "0"
+      ]
+     ],
+     "manifest_id": "2c2bc30ffab09ba776164758812aebaf47b54269ef58be74c8c5f938c70e9dba",
+     "method_id": "performance.attribution/cp3e",
+     "metric_id": "attribution_return",
+     "numeric_basis": "RATIONAL",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": null,
+     "rounding_rule_id": "performance/1.10#2.2-2.4",
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "AVAILABLE",
+     "subject": [],
+     "synthetic": true,
+     "unit": "RATIO",
+     "value": "0.007097640053",
+     "view": "PERIOD",
+     "window": {
+      "days": 30,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": null,
+      "rule": "CUSTOM",
+      "since_snapshot": false,
+      "start": "2025-03-31"
+     }
+    },
+    "reading": "the FX effect (attr.fx) is the revaluation of positions, cash and receivables by the moving rate; the price-FX interaction is shown, never folded (Ruling 9.1)",
+    "window": "CUSTOM_FROM_2025-03-31"
+   },
+   {
+    "carino_residual": "4.98E-50",
+    "fx_effect_by_currency": {
+     "breakdown": [
+      [
+       "currency:CNY",
+       "-30.65",
+       "-8000/261"
+      ],
+      [
+       "currency:HKD",
+       "-4.1",
+       "-160/39"
+      ]
+     ],
+     "causes": [],
+     "conformant": false,
+     "currency": "USD",
+     "details": [],
+     "exact": "-117920/3393",
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [
+       "END_OF_DAY"
+      ],
+      "entries": [
+       {
+        "date_used": "2025-03-31",
+        "key": "CNY",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "HKD",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_CN_A",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XSHG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_HKEX",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XHKG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_NYSE",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XNYS"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       }
+      ],
+      "summary": "CURRENT"
+     },
+     "lineage": [
+      [
+       "displayed_total",
+       "-34.75"
+      ],
+      [
+       "fx_note:parity",
+       "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+      ],
+      [
+       "part_order",
+       "performance/1.9#9.6"
+      ]
+     ],
+     "manifest_id": "465ccf3f4220a51e94d1dd521ca3102f46d51f87ced54f53a5414b3ccdfd646e",
+     "method_id": "performance.attribution/cp3e",
+     "metric_id": "attribution_breakdown",
+     "numeric_basis": "RATIONAL",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": null,
+     "rounding_rule_id": "performance/1.10#2.2-2.4",
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "AVAILABLE",
+     "subject": [
+      [
+       "group_by",
+       "currency"
+      ],
+      [
+       "line",
+       "attr.fx"
+      ]
+     ],
+     "synthetic": true,
+     "unit": "CURRENCY_AMOUNT",
+     "value": "-34.75",
+     "view": "REPORTING",
+     "window": {
+      "days": 30,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": 1,
+      "rule": "TRAILING_MONTHS",
+      "since_snapshot": false,
+      "start": "2025-03-31"
+     }
+    },
+    "identities": {
+     "identity:I-2": "PASS",
+     "identity:I-3": "PASS",
+     "identity:I-4": "PASS",
+     "identity:I-9": "PASS"
+    },
+    "money": {
+     "breakdown": [
+      [
+       "attr.price",
+       "89.7",
+       "17492/195"
+      ],
+      [
+       "attr.fx",
+       "-34.75",
+       "-117920/3393"
+      ],
+      [
+       "attr.price_fx_interaction",
+       "-0.1",
+       "-4/39"
+      ],
+      [
+       "attr.income",
+       "128",
+       "128"
+      ],
+      [
+       "attr.fees",
+       "-2",
+       "-2"
+      ],
+      [
+       "attr.taxes",
+       "-12.8",
+       "-64/5"
+      ],
+      [
+       "attr.financing",
+       "0",
+       "0"
+      ],
+      [
+       "attr.conversion",
+       "-8",
+       "-8"
+      ]
+     ],
+     "causes": [],
+     "conformant": false,
+     "currency": "USD",
+     "details": [],
+     "exact": "2715182/16965",
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [
+       "END_OF_DAY"
+      ],
+      "entries": [
+       {
+        "date_used": "2025-03-31",
+        "key": "CNY",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "HKD",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_CN_A",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XSHG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_HKEX",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XHKG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_NYSE",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XNYS"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       }
+      ],
+      "summary": "CURRENT"
+     },
+     "lineage": [
+      [
+       "days",
+       "30"
+      ],
+      [
+       "fx_note:parity",
+       "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+      ],
+      [
+       "identity:I-2",
+       "PASS"
+      ],
+      [
+       "identity:I-3",
+       "PASS"
+      ],
+      [
+       "identity:I-4",
+       "PASS"
+      ],
+      [
+       "identity:I-9",
+       "PASS"
+      ]
+     ],
+     "manifest_id": "465ccf3f4220a51e94d1dd521ca3102f46d51f87ced54f53a5414b3ccdfd646e",
+     "method_id": "performance.attribution/cp3e",
+     "metric_id": "attribution_money",
+     "numeric_basis": "RATIONAL",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": null,
+     "rounding_rule_id": "performance/1.10#2.2-2.4",
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "AVAILABLE",
+     "subject": [],
+     "synthetic": true,
+     "unit": "CURRENCY_AMOUNT",
+     "value": "160.05",
+     "view": "REPORTING",
+     "window": {
+      "days": 30,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": 1,
+      "rule": "TRAILING_MONTHS",
+      "since_snapshot": false,
+      "start": "2025-03-31"
+     }
+    },
+    "percentage": {
+     "breakdown": [
+      [
+       "attr.price",
+       "0.003995662504",
+       "2497289065301541093113962247059657907588044547937/625000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.fx",
+       "-0.001548498719",
+       "-15484987186088152925856214433413487934069488645637/10000000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.price_fx_interaction",
+       "-0.000004569857",
+       "-45698571410775756599372138931715517308821082502387/10000000000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.income",
+       "0.005679436873",
+       "56794368729230853216327942164977100488680715535953/10000000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.fees",
+       "-0.000089023577",
+       "-17804715489202827523774701750988012817805525317187/200000000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.taxes",
+       "-0.000579272861",
+       "-57927286146123551523002705410633618826497513957541/100000000000000000000000000000000000000000000000000000"
+      ],
+      [
+       "attr.financing",
+       "0",
+       "0"
+      ],
+      [
+       "attr.conversion",
+       "-0.00035609431",
+       "-17804715489202827523774701750988012817805525317187/50000000000000000000000000000000000000000000000000000"
+      ]
+     ],
+     "causes": [],
+     "conformant": false,
+     "currency": null,
+     "details": [],
+     "exact": "2179275444241/307042260241250",
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [
+       "END_OF_DAY"
+      ],
+      "entries": [
+       {
+        "date_used": "2025-03-31",
+        "key": "CNY",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "HKD",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_CN_A",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XSHG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_HKEX",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XHKG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_NYSE",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XNYS"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       }
+      ],
+      "summary": "CURRENT"
+     },
+     "lineage": [
+      [
+       "carino_residual",
+       "4.98E-50"
+      ],
+      [
+       "components_basis",
+       "DECIMAL_PREC50_HALF_EVEN"
+      ],
+      [
+       "days",
+       "30"
+      ],
+      [
+       "fx_note:parity",
+       "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+      ],
+      [
+       "identity:I-2",
+       "PASS"
+      ],
+      [
+       "identity:I-3",
+       "PASS"
+      ],
+      [
+       "identity:I-4",
+       "PASS"
+      ],
+      [
+       "identity:I-9",
+       "PASS"
+      ],
+      [
+       "zero_capital_days",
+       "0"
+      ]
+     ],
+     "manifest_id": "465ccf3f4220a51e94d1dd521ca3102f46d51f87ced54f53a5414b3ccdfd646e",
+     "method_id": "performance.attribution/cp3e",
+     "metric_id": "attribution_return",
+     "numeric_basis": "RATIONAL",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": null,
+     "rounding_rule_id": "performance/1.10#2.2-2.4",
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "AVAILABLE",
+     "subject": [],
+     "synthetic": true,
+     "unit": "RATIO",
+     "value": "0.007097640053",
+     "view": "PERIOD",
+     "window": {
+      "days": 30,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": 1,
+      "rule": "TRAILING_MONTHS",
+      "since_snapshot": false,
+      "start": "2025-03-31"
+     }
+    },
+    "reading": "the FX effect (attr.fx) is the revaluation of positions, cash and receivables by the moving rate; the price-FX interaction is shown, never folded (Ruling 9.1)",
+    "window": "TRAILING_1M"
+   },
+   {
+    "carino_residual": null,
+    "fx_effect_by_currency": null,
+    "identities": {},
+    "money": {
+     "breakdown": [],
+     "causes": [
+      {
+       "detail": "WINDOW_BEFORE_INCEPTION",
+       "note": "WINDOW_BEFORE_INCEPTION: the base 2024-12-31 is before inception 2025-01-01",
+       "reason": null,
+       "ref": "window",
+       "state": "INSUFFICIENT_DATA"
+      }
+     ],
+     "conformant": false,
+     "currency": "USD",
+     "details": [
+      "WINDOW_BEFORE_INCEPTION"
+     ],
+     "exact": null,
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [],
+      "entries": [],
+      "summary": "CURRENT"
+     },
+     "lineage": [],
+     "manifest_id": "d18a8fcd41d1a97b1f1c3c259f04bb9206649774c4fc661bb707040f4b636b9f",
+     "method_id": "performance.attribution/cp3e",
+     "metric_id": "attribution_money",
+     "numeric_basis": "RATIONAL",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": null,
+     "rounding_rule_id": null,
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "INSUFFICIENT_DATA",
+     "subject": [],
+     "synthetic": true,
+     "unit": "CURRENCY_AMOUNT",
+     "value": null,
+     "view": "REPORTING",
+     "window": {
+      "days": 120,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": null,
+      "rule": "YTD",
+      "since_snapshot": false,
+      "start": "2024-12-31"
+     }
+    },
+    "percentage": {
+     "breakdown": [],
+     "causes": [
+      {
+       "detail": "WINDOW_BEFORE_INCEPTION",
+       "note": "WINDOW_BEFORE_INCEPTION: the base 2024-12-31 is before inception 2025-01-01",
+       "reason": null,
+       "ref": "window",
+       "state": "INSUFFICIENT_DATA"
+      }
+     ],
+     "conformant": false,
+     "currency": null,
+     "details": [
+      "WINDOW_BEFORE_INCEPTION"
+     ],
+     "exact": null,
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [],
+      "entries": [],
+      "summary": "CURRENT"
+     },
+     "lineage": [],
+     "manifest_id": "d18a8fcd41d1a97b1f1c3c259f04bb9206649774c4fc661bb707040f4b636b9f",
+     "method_id": "performance.attribution/cp3e",
+     "metric_id": "attribution_return",
+     "numeric_basis": "RATIONAL",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": null,
+     "rounding_rule_id": null,
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "INSUFFICIENT_DATA",
+     "subject": [],
+     "synthetic": true,
+     "unit": "RATIO",
+     "value": null,
+     "view": "PERIOD",
+     "window": {
+      "days": 120,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": null,
+      "rule": "YTD",
+      "since_snapshot": false,
+      "start": "2024-12-31"
+     }
+    },
+    "reading": "the FX effect (attr.fx) is the revaluation of positions, cash and receivables by the moving rate; the price-FX interaction is shown, never folded (Ruling 9.1)",
+    "window": "YTD"
+   }
+  ]
+ },
+ "kind": "SYNTHETIC_DEMONSTRATION_A",
+ "labels": {
+  "all_results_synthetic": true,
+  "any_result_synthetic": true,
+  "demonstration_ledger": "DEMONSTRATION LEDGER: these events are not a user's holdings (P8); they exist to exercise the engine.",
+  "fx_sources_in_m": [
+   {
+    "source_id": "synthetic.ecb_direct",
+    "what_it_is": "synthetic.ecb_direct"
+   }
+  ],
+  "label": "SYNTHETIC: every result below was computed from a market-data version that holds synthetic files; none is a real market fact (market-data Ruling 4.8).",
+  "pd_0035_caveat": "PD-0035 section 3: Mainland China and Hong Kong price behaviour is shown on SYNTHETIC data only. No admissible real CN or HK price source exists (PD-0031, PD-0032); the real slice is US prices (Alpha Vantage, the last 100 sessions) and ECB FX only. A synthetic result is never a real market fact (market-data Ruling 4.8)."
+ },
+ "section": "14_fx_attribution",
+ "subject": "DEMO-A: US + HK + CN synthetic cross-border portfolio",
+ "title": "FX attribution"
+}

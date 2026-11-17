@@ -1,0 +1,31 @@
+{
+  "schema": "finweb.n2a.source_handover/1",
+  "root_executor": "/root",
+  "at_utc": "2026-10-19T22:22:25.328976+00:00",
+  "source_candidate_sha256": "f3a0973312a5ac5b01eaa82a8d93f2a616b61b929e3d3e827a4ef31d86a6315b",
+  "stage": "/private/tmp/finweb-night-20261020/candidate",
+  "files": {
+    "src/marketdata/synthetic_provenance.py": {
+      "sha256": "01949db7cc57c36e08c9dc91e3c4944b2ca220568131bba55a858ae84c742f7c",
+      "bytes": 11866
+    },
+    "src/persistence/synthetic_provenance_store.py": {
+      "sha256": "505b01565000b1cb92f53f72dcffef66aad8f7ef333c9086b6bc91661eb543bd",
+      "bytes": 18280
+    },
+    "src/persistence/synthetic_provenance_v1.sql": {
+      "sha256": "b1d22795ea719bc4300351de7fc26407d0a6d3d3899dd02f90f5d8e2a93cf1b6",
+      "bytes": 31974
+    },
+    "tests/product/test_postgres_synthetic_provenance.py": {
+      "sha256": "9a369b5116dec4c7481c869b86f2c75a0a245e3994324bbb07b572e4299073ec",
+      "bytes": 12956
+    },
+    "tests/product/test_synthetic_provenance.py": {
+      "sha256": "2730d2cc74c5550db608c92a1fbea73326a3b8bb2bed3626cd5374582bbfb502",
+      "bytes": 14548
+    }
+  },
+  "patch_sha256": "c6ba318561adf6174205c64ce7948ae3d64b34601d5370ea45768189a8f0e0e6",
+  "installed_to_original": false
+}

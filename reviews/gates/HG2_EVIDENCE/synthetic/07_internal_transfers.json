@@ -1,0 +1,169 @@
+{
+ "data": {
+  "checks": [
+   {
+    "no_portfolio_level_effect": true,
+    "reading": "removing the paired internal legs changes no portfolio-level gain or TWR (R8, PRD 9.6)",
+    "window": "SINCE_INCEPTION",
+    "with_pairs": {
+     "gain_absolute": [
+      "3652798/1885",
+      "AVAILABLE"
+     ],
+     "return_twr": [
+      "9965606862285551/88492820629868750",
+      "AVAILABLE"
+     ]
+    },
+    "without_pairs": {
+     "gain_absolute": [
+      "3652798/1885",
+      "AVAILABLE"
+     ],
+     "return_twr": [
+      "9965606862285551/88492820629868750",
+      "AVAILABLE"
+     ]
+    }
+   },
+   {
+    "no_portfolio_level_effect": true,
+    "reading": "removing the paired internal legs changes no portfolio-level gain or TWR (R8, PRD 9.6)",
+    "window": "CUSTOM_FROM_2025-03-31",
+    "with_pairs": {
+     "gain_absolute": [
+      "2715182/16965",
+      "AVAILABLE"
+     ],
+     "return_twr": [
+      "2179275444241/307042260241250",
+      "AVAILABLE"
+     ]
+    },
+    "without_pairs": {
+     "gain_absolute": [
+      "2715182/16965",
+      "AVAILABLE"
+     ],
+     "return_twr": [
+      "2179275444241/307042260241250",
+      "AVAILABLE"
+     ]
+    }
+   },
+   {
+    "no_portfolio_level_effect": true,
+    "reading": "removing the paired internal legs changes no portfolio-level gain or TWR (R8, PRD 9.6)",
+    "window": "TRAILING_1M",
+    "with_pairs": {
+     "gain_absolute": [
+      "2715182/16965",
+      "AVAILABLE"
+     ],
+     "return_twr": [
+      "2179275444241/307042260241250",
+      "AVAILABLE"
+     ]
+    },
+    "without_pairs": {
+     "gain_absolute": [
+      "2715182/16965",
+      "AVAILABLE"
+     ],
+     "return_twr": [
+      "2179275444241/307042260241250",
+      "AVAILABLE"
+     ]
+    }
+   },
+   {
+    "no_portfolio_level_effect": true,
+    "reading": "removing the paired internal legs changes no portfolio-level gain or TWR (R8, PRD 9.6)",
+    "window": "YTD",
+    "with_pairs": {
+     "gain_absolute": [
+      null,
+      "INSUFFICIENT_DATA"
+     ],
+     "return_twr": [
+      null,
+      "INSUFFICIENT_DATA"
+     ]
+    },
+    "without_pairs": {
+     "gain_absolute": [
+      null,
+      "INSUFFICIENT_DATA"
+     ],
+     "return_twr": [
+      null,
+      "INSUFFICIENT_DATA"
+     ]
+    }
+   }
+  ],
+  "internal_legs": [
+   {
+    "account": "A1 (US)",
+    "class": "INTERNAL_TRANSFER",
+    "currency": "USD",
+    "date": "2025-02-10",
+    "event_id": "e0000000-0000-4000-8000-000000000006",
+    "listing": "-",
+    "native_amount": "1000",
+    "quantity": null,
+    "type": "TRANSFER_OUT"
+   },
+   {
+    "account": "A3 (US)",
+    "class": "INTERNAL_TRANSFER",
+    "currency": "USD",
+    "date": "2025-02-10",
+    "event_id": "e0000000-0000-4000-8000-000000000007",
+    "listing": "-",
+    "native_amount": "1000",
+    "quantity": null,
+    "type": "TRANSFER_IN"
+   },
+   {
+    "account": "A1 (US)",
+    "class": "INTERNAL_TRANSFER",
+    "currency": "USD",
+    "date": "2025-06-16",
+    "event_id": "e0000000-0000-4000-8000-000000000022",
+    "listing": "AAPL@XNYS",
+    "native_amount": null,
+    "quantity": "110",
+    "type": "TRANSFER_OUT"
+   },
+   {
+    "account": "A3 (US)",
+    "class": "INTERNAL_TRANSFER",
+    "currency": "USD",
+    "date": "2025-06-16",
+    "event_id": "e0000000-0000-4000-8000-000000000023",
+    "listing": "AAPL@XNYS",
+    "native_amount": null,
+    "quantity": "110",
+    "type": "TRANSFER_IN"
+   }
+  ]
+ },
+ "kind": "SYNTHETIC_DEMONSTRATION_A",
+ "labels": {
+  "all_results_synthetic": true,
+  "any_result_synthetic": true,
+  "demonstration_ledger": "DEMONSTRATION LEDGER: these events are not a user's holdings (P8); they exist to exercise the engine.",
+  "fx_sources_in_m": [
+   {
+    "source_id": "synthetic.ecb_direct",
+    "what_it_is": "synthetic.ecb_direct"
+   }
+  ],
+  "label": "SYNTHETIC: every result below was computed from a market-data version that holds synthetic files; none is a real market fact (market-data Ruling 4.8).",
+  "pd_0035_caveat": "PD-0035 section 3: Mainland China and Hong Kong price behaviour is shown on SYNTHETIC data only. No admissible real CN or HK price source exists (PD-0031, PD-0032); the real slice is US prices (Alpha Vantage, the last 100 sessions) and ECB FX only. A synthetic result is never a real market fact (market-data Ruling 4.8)."
+ },
+ "section": "07_internal_transfers",
+ "subject": "DEMO-A: US + HK + CN synthetic cross-border portfolio",
+ "title": "Internal transfers"
+}

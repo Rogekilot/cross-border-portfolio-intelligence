@@ -1,0 +1,1031 @@
+{
+  "registry_id": "diversification/1.0",
+  "issued": "2026-10-18",
+  "authored_by": "quant-analyst (native Codex)",
+  "status": "Candidate full-NAV method pending owner OD-CP5-01; implementation/validation only; not HG3 approval or user policy.",
+  "common": {
+    "notation": "T=sum nonzero complete NAV bucket values; w_i=v_i/T; S_ij=sum_k(r_i,k-mean_i)(r_j,k-mean_j); C_ij=S_ij/(n-1); A=260 DAILY,52 WEEKLY,12 MONTHLY.",
+    "frequency": {
+      "allowed": [
+        "DAILY",
+        "WEEKLY",
+        "MONTHLY"
+      ],
+      "default": "WEEKLY",
+      "grid": "risk/1.9 section 2 full periods, weekday/Friday/month-end; stubs declared"
+    },
+    "lookback": {
+      "default": "TRAILING_MONTHS 36",
+      "allowed": [
+        "TRAILING_MONTHS 12",
+        "TRAILING_MONTHS 36",
+        "TRAILING_MONTHS 60",
+        "SINCE_INCEPTION",
+        "MAX_AVAILABLE",
+        "CUSTOM"
+      ],
+      "rule": "requested grid only; no implicit shortening or missing-period deletion"
+    },
+    "statistical_thresholds": {
+      "DAILY": {
+        "insufficient_below": 259,
+        "available_from": 781
+      },
+      "WEEKLY": {
+        "insufficient_below": 51,
+        "available_from": 155
+      },
+      "MONTHLY": {
+        "insufficient_below": 11,
+        "available_from": 35
+      }
+    },
+    "states_snapshot": [
+      {
+        "condition": "complete nonnegative positive NAV and all valuations AVAILABLE",
+        "state": "AVAILABLE",
+        "reason": null,
+        "detail": null
+      },
+      {
+        "condition": "required valuation LIMITED",
+        "state": "LIMITED",
+        "reason": "inherit same-severity reason",
+        "detail": "inherit"
+      },
+      {
+        "condition": "required component unvalued",
+        "state": "INSUFFICIENT_DATA",
+        "reason": "inherit same-severity reason",
+        "detail": "inherit"
+      },
+      {
+        "condition": "any negative component",
+        "state": "INSUFFICIENT_DATA",
+        "reason": null,
+        "detail": "NEGATIVE_COMPONENT"
+      },
+      {
+        "condition": "T<=0",
+        "state": "INSUFFICIENT_DATA",
+        "reason": null,
+        "detail": "NON_POSITIVE_TOTAL"
+      }
+    ],
+    "states_classification": [
+      {
+        "condition": "positive UNKNOWN share in dimension",
+        "state": "LIMITED",
+        "reason": null,
+        "detail": "UNKNOWN_CLASSIFICATION"
+      }
+    ],
+    "states_history": [
+      {
+        "condition": "n below insufficient_below",
+        "state": "INSUFFICIENT_DATA",
+        "reason": null,
+        "detail": "INSUFFICIENT_OBSERVATIONS"
+      },
+      {
+        "condition": "n below available_from but at least insufficient_below",
+        "state": "LIMITED",
+        "reason": null,
+        "detail": "OBSERVATIONS_BELOW_STANDARD"
+      },
+      {
+        "condition": "any required period unavailable",
+        "state": "INSUFFICIENT_DATA",
+        "reason": "inherit same-severity reason",
+        "detail": "PERIOD_INSUFFICIENT"
+      },
+      {
+        "condition": "price-only security history",
+        "state": "INSUFFICIENT_DATA",
+        "reason": null,
+        "detail": "NOT_TOTAL_RETURN"
+      },
+      {
+        "condition": "unconfirmed action coverage",
+        "state": "INSUFFICIENT_DATA",
+        "reason": null,
+        "detail": "TOTAL_RETURN_COVERAGE_UNCONFIRMED"
+      }
+    ],
+    "states_special": {
+      "largest_security_weight": [
+        [
+          "no positive security bucket",
+          "INSUFFICIENT_DATA",
+          "NO_SECURITY_POSITIONS"
+        ]
+      ],
+      "pairwise_correlation": [
+        [
+          "either variance zero",
+          "INSUFFICIENT_DATA",
+          "ZERO_VARIANCE"
+        ]
+      ],
+      "average_correlation": [
+        [
+          "fewer than two securities",
+          "INSUFFICIENT_DATA",
+          "TOO_FEW_SECURITIES"
+        ],
+        [
+          "any required pair unavailable",
+          "INSUFFICIENT_DATA",
+          "PAIR_UNAVAILABLE"
+        ]
+      ],
+      "correlation_cluster_count": [
+        [
+          "missing threshold",
+          "INSUFFICIENT_DATA",
+          "CLUSTER_THRESHOLD_REQUIRED"
+        ],
+        [
+          "threshold not in (0,1]",
+          "INSUFFICIENT_DATA",
+          "INVALID_CLUSTER_THRESHOLD"
+        ],
+        [
+          "fewer than two securities",
+          "INSUFFICIENT_DATA",
+          "TOO_FEW_SECURITIES"
+        ],
+        [
+          "any required pair unavailable",
+          "INSUFFICIENT_DATA",
+          "PAIR_UNAVAILABLE"
+        ]
+      ],
+      "modeled_volatility": [
+        [
+          "Q<0",
+          "INSUFFICIENT_DATA",
+          "INVALID_COVARIANCE"
+        ],
+        [
+          "Q=0 and otherwise sufficient",
+          "as input/count state; value zero",
+          "ZERO_MODEL_VARIANCE"
+        ]
+      ],
+      "risk_contribution_share": [
+        [
+          "Q<=0",
+          "INSUFFICIENT_DATA",
+          "ZERO_MODEL_VARIANCE or INVALID_COVARIANCE"
+        ]
+      ],
+      "risk_contribution_component": [
+        [
+          "Q<=0",
+          "INSUFFICIENT_DATA",
+          "ZERO_MODEL_VARIANCE or INVALID_COVARIANCE"
+        ]
+      ],
+      "drift_absolute": [
+        [
+          "baseline absent",
+          "INSUFFICIENT_DATA",
+          "NO_BASELINE"
+        ],
+        [
+          "baseline lacks acceptance evidence",
+          "INSUFFICIENT_DATA",
+          "BASELINE_NOT_ACCEPTED"
+        ],
+        [
+          "signature missing/different, future or same-date baseline",
+          "INSUFFICIENT_DATA",
+          "INCOMPATIBLE_BASELINE"
+        ],
+        [
+          "either source unavailable",
+          "INSUFFICIENT_DATA",
+          "inherit source details"
+        ]
+      ],
+      "drift_target_gap": [
+        [
+          "target absent",
+          "INSUFFICIENT_DATA",
+          "NO_USER_TARGET"
+        ],
+        [
+          "provenance not explicit user",
+          "INSUFFICIENT_DATA",
+          "TARGET_NOT_USER_DEFINED"
+        ],
+        [
+          "target signature mismatch/invalid effective date",
+          "INSUFFICIENT_DATA",
+          "INCOMPATIBLE_TARGET"
+        ],
+        [
+          "current unavailable",
+          "INSUFFICIENT_DATA",
+          "inherit source details"
+        ]
+      ]
+    },
+    "reason_rule": "performance/1.12 section 1.5 and risk/1.9 section 7.3: worst cause state, reason only from same-level causes; no new reason codes",
+    "fx_treatment": "Exact reporting-currency values; listing quotation/native cash/receivable currency. Historical total-return leg translated on CP4 grid with exact FX cross term.",
+    "corporate_action_treatment": "CP3 valuation and CP4 total-return action rules; no price/action double count and no unconfirmed total-return coverage.",
+    "presentation": {
+      "quantum": "0.000000000001",
+      "rounding": "ROUND_HALF_UP",
+      "exact_internal": true,
+      "cluster_count": "integer Decimal",
+      "radicals": "CERTIFIED_RATIONAL_INTERVAL; tie width <1e-40 as CP4"
+    },
+    "implementation_version": [
+      "diversification/1.0",
+      "performance/1.12",
+      "risk/1.9",
+      "market-data/1.14",
+      "ledger-replay/1.5",
+      "FIFO/1",
+      "minor-units/1.1"
+    ],
+    "references": [
+      "https://www.justice.gov/atr/herfindahl-hirschman-index",
+      "https://faculty.washington.edu/ezivot/econ424/introductionPortfolioTheory.pdf",
+      "https://arxiv.org/abs/0708.2542",
+      "https://www.federalreserve.gov/pubs/feds/2010/201010/index.html"
+    ],
+    "capital_universe": {
+      "candidate": "FULL_NAV",
+      "owner_decision": "OD-CP5-01",
+      "default": null,
+      "actual": "USER_CONFIRMED plus immutable scoped owner decision evidence; no actual confirmation exists at issue",
+      "synthetic": "explicit SYNTHETIC_CANDIDATE only if all contributing inputs verified synthetic",
+      "independent_metrics": [
+        "pairwise_correlation",
+        "correlation_cluster_count"
+      ],
+      "refusal": {
+        "state": "INSUFFICIENT_DATA",
+        "reason": null,
+        "detail": "CAPITAL_UNIVERSE_UNCONFIRMED",
+        "value": null
+      }
+    }
+  },
+  "entries": [
+    {
+      "metric_id": "largest_position_weight",
+      "metric_name": "Largest capital-bucket weight",
+      "human_definition": "Largest share of complete reporting NAV in one listing, currency cash bucket or currency receivable bucket.",
+      "formula": "max_i(v_i/T)",
+      "annualization_convention": "never; drift preserves source units",
+      "data_inputs": [
+        "explicit immutable capital-universe choice/provenance; common.capital_universe",
+        "complete CP3 reporting-currency valuation and bucket identity",
+        "versioned point-in-time metadata for classifications"
+      ],
+      "minimum_observations": "one complete as-of valuation; no historical minimum",
+      "frequency": "AS_OF",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none; cash leg does not invent an interest rate",
+      "missing_data_handling": "common.reason_rule; common.states_snapshot",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "Includes cash and receivables.",
+        "Multiple listings of an issuer are not combined."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": false,
+      "reference_point": "COMPLETE_PORTFOLIO_NAV",
+      "presentation": "common.presentation",
+      "states": [
+        "common.capital_universe.refusal",
+        "common.states_snapshot"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "denominator/reference, as-of, currency and classification/acceptance limitations"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 2"
+    },
+    {
+      "metric_id": "largest_security_weight",
+      "metric_name": "Largest security listing weight",
+      "human_definition": "Largest security-listing share of complete NAV including cash in the denominator.",
+      "formula": "max_{i in SECURITY}(v_i/T)",
+      "annualization_convention": "never; drift preserves source units",
+      "data_inputs": [
+        "explicit immutable capital-universe choice/provenance; common.capital_universe",
+        "complete CP3 reporting-currency valuation and bucket identity",
+        "versioned point-in-time metadata for classifications"
+      ],
+      "minimum_observations": "one complete as-of valuation; no historical minimum",
+      "frequency": "AS_OF",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none; cash leg does not invent an interest rate",
+      "missing_data_handling": "common.reason_rule; common.states_snapshot",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "Not issuer concentration.",
+        "No securities: unavailable; never silently substitutes cash."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": false,
+      "reference_point": "COMPLETE_PORTFOLIO_NAV",
+      "presentation": "common.presentation",
+      "states": [
+        "common.capital_universe.refusal",
+        "common.states_snapshot",
+        "common.states_special.largest_security_weight"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "denominator/reference, as-of, currency and classification/acceptance limitations"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 2"
+    },
+    {
+      "metric_id": "top5_concentration",
+      "metric_name": "Top-five capital-bucket concentration",
+      "human_definition": "Combined complete-NAV weight of the five largest capital buckets or all buckets if fewer than five.",
+      "formula": "sum_{i in first min(5,N) sorted buckets} w_i",
+      "annualization_convention": "never; drift preserves source units",
+      "data_inputs": [
+        "explicit immutable capital-universe choice/provenance; common.capital_universe",
+        "complete CP3 reporting-currency valuation and bucket identity",
+        "versioned point-in-time metadata for classifications"
+      ],
+      "minimum_observations": "one complete as-of valuation; no historical minimum",
+      "frequency": "AS_OF",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none; cash leg does not invent an interest rate",
+      "missing_data_handling": "common.reason_rule; common.states_snapshot",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "Includes cash and receivables.",
+        "Ties use canonical bucket-key order."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": false,
+      "reference_point": "COMPLETE_PORTFOLIO_NAV",
+      "presentation": "common.presentation",
+      "states": [
+        "common.capital_universe.refusal",
+        "common.states_snapshot"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "denominator/reference, as-of, currency and classification/acceptance limitations"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 2"
+    },
+    {
+      "metric_id": "hhi_concentration",
+      "metric_name": "Capital-bucket HHI",
+      "human_definition": "Sum of squared complete-NAV capital-bucket weights.",
+      "formula": "sum_i w_i^2",
+      "annualization_convention": "never; drift preserves source units",
+      "data_inputs": [
+        "explicit immutable capital-universe choice/provenance; common.capital_universe",
+        "complete CP3 reporting-currency valuation and bucket identity",
+        "versioned point-in-time metadata for classifications"
+      ],
+      "minimum_observations": "one complete as-of valuation; no historical minimum",
+      "frequency": "AS_OF",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none; cash leg does not invent an interest rate",
+      "missing_data_handling": "common.reason_rule; common.states_snapshot",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "Unit fraction scale, not 10000-point scale.",
+        "No investment or antitrust threshold inferred."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": false,
+      "reference_point": "COMPLETE_PORTFOLIO_NAV",
+      "presentation": "common.presentation",
+      "states": [
+        "common.capital_universe.refusal",
+        "common.states_snapshot"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "denominator/reference, as-of, currency and classification/acceptance limitations"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 2"
+    },
+    {
+      "metric_id": "effective_positions",
+      "metric_name": "Effective capital-bucket count",
+      "human_definition": "Number of equal-weight capital buckets having the observed HHI.",
+      "formula": "1/(sum_i w_i^2)",
+      "annualization_convention": "never; drift preserves source units",
+      "data_inputs": [
+        "explicit immutable capital-universe choice/provenance; common.capital_universe",
+        "complete CP3 reporting-currency valuation and bucket identity",
+        "versioned point-in-time metadata for classifications"
+      ],
+      "minimum_observations": "one complete as-of valuation; no historical minimum",
+      "frequency": "AS_OF",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none; cash leg does not invent an interest rate",
+      "missing_data_handling": "common.reason_rule; common.states_snapshot",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "Not a count of independent risks.",
+        "Cash and receivable currency buckets count."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": false,
+      "reference_point": "COMPLETE_PORTFOLIO_NAV",
+      "presentation": "common.presentation",
+      "states": [
+        "common.capital_universe.refusal",
+        "common.states_snapshot"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "denominator/reference, as-of, currency and classification/acceptance limitations"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 2"
+    },
+    {
+      "metric_id": "country_exposure",
+      "metric_name": "Issuer-domicile exposure",
+      "human_definition": "Complete-NAV share in an explicit issuer-domicile category or a structural/unknown category.",
+      "formula": "sum_{i: country(i)=category} w_i",
+      "annualization_convention": "never; drift preserves source units",
+      "data_inputs": [
+        "explicit immutable capital-universe choice/provenance; common.capital_universe",
+        "complete CP3 reporting-currency valuation and bucket identity",
+        "versioned point-in-time metadata for classifications"
+      ],
+      "minimum_observations": "one complete as-of valuation; no historical minimum",
+      "frequency": "AS_OF",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none; cash leg does not invent an interest rate",
+      "missing_data_handling": "common.reason_rule; common.states_snapshot and common.states_classification; UNKNOWN retains valued capital",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "Domicile is not exchange, revenue geography or underlying ETF exposure.",
+        "Cash and receivable are structural categories."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": false,
+      "reference_point": "COMPLETE_PORTFOLIO_NAV",
+      "presentation": "common.presentation",
+      "states": [
+        "common.capital_universe.refusal",
+        "common.states_snapshot",
+        "common.states_classification"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "denominator/reference, as-of, currency and classification/acceptance limitations"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 3"
+    },
+    {
+      "metric_id": "sector_exposure",
+      "metric_name": "Security-classification sector exposure",
+      "human_definition": "Complete-NAV share in a versioned sector category; ETF sectors are UNKNOWN without V1 look-through.",
+      "formula": "sum_{i: sector(i)=category} w_i",
+      "annualization_convention": "never; drift preserves source units",
+      "data_inputs": [
+        "explicit immutable capital-universe choice/provenance; common.capital_universe",
+        "complete CP3 reporting-currency valuation and bucket identity",
+        "versioned point-in-time metadata for classifications"
+      ],
+      "minimum_observations": "one complete as-of valuation; no historical minimum",
+      "frequency": "AS_OF",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none; cash leg does not invent an interest rate",
+      "missing_data_handling": "common.reason_rule; common.states_snapshot and common.states_classification; UNKNOWN retains valued capital",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "No ETF manager-sector substitution or underlying look-through.",
+        "Missing and ambiguous metadata remain UNKNOWN."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": false,
+      "reference_point": "COMPLETE_PORTFOLIO_NAV",
+      "presentation": "common.presentation",
+      "states": [
+        "common.capital_universe.refusal",
+        "common.states_snapshot",
+        "common.states_classification"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "denominator/reference, as-of, currency and classification/acceptance limitations"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 3"
+    },
+    {
+      "metric_id": "currency_exposure",
+      "metric_name": "Denomination-currency exposure",
+      "human_definition": "Complete-NAV share denominated in a currency, from listing quotation currency or native cash/receivable denomination.",
+      "formula": "sum_{i: currency(i)=category} w_i",
+      "annualization_convention": "never; drift preserves source units",
+      "data_inputs": [
+        "explicit immutable capital-universe choice/provenance; common.capital_universe",
+        "complete CP3 reporting-currency valuation and bucket identity",
+        "versioned point-in-time metadata for classifications"
+      ],
+      "minimum_observations": "one complete as-of valuation; no historical minimum",
+      "frequency": "AS_OF",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none; cash leg does not invent an interest rate",
+      "missing_data_handling": "common.reason_rule; common.states_snapshot and common.states_classification; UNKNOWN retains valued capital",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "Trade settlement currency is not a substitute.",
+        "Does not measure issuer business exposure or hedge-adjusted FX risk."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": false,
+      "reference_point": "COMPLETE_PORTFOLIO_NAV",
+      "presentation": "common.presentation",
+      "states": [
+        "common.capital_universe.refusal",
+        "common.states_snapshot",
+        "common.states_classification"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "denominator/reference, as-of, currency and classification/acceptance limitations"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 3"
+    },
+    {
+      "metric_id": "asset_class_exposure",
+      "metric_name": "Instrument-type exposure",
+      "human_definition": "Complete-NAV share in EQUITY, ETF, CASH, RECEIVABLE or UNKNOWN.",
+      "formula": "sum_{i: asset_class(i)=category} w_i",
+      "annualization_convention": "never; drift preserves source units",
+      "data_inputs": [
+        "explicit immutable capital-universe choice/provenance; common.capital_universe",
+        "complete CP3 reporting-currency valuation and bucket identity",
+        "versioned point-in-time metadata for classifications"
+      ],
+      "minimum_observations": "one complete as-of valuation; no historical minimum",
+      "frequency": "AS_OF",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none; cash leg does not invent an interest rate",
+      "missing_data_handling": "common.reason_rule; common.states_snapshot and common.states_classification; UNKNOWN retains valued capital",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "ETF says nothing about its underlying asset allocation."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": false,
+      "reference_point": "COMPLETE_PORTFOLIO_NAV",
+      "presentation": "common.presentation",
+      "states": [
+        "common.capital_universe.refusal",
+        "common.states_snapshot",
+        "common.states_classification"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "denominator/reference, as-of, currency and classification/acceptance limitations"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 3"
+    },
+    {
+      "metric_id": "pairwise_correlation",
+      "metric_name": "Historical pairwise Pearson correlation",
+      "human_definition": "Linear association between two current security listings' reporting-currency total-return histories.",
+      "formula": "S_ij/sqrt(S_ii*S_jj)",
+      "annualization_convention": "never; drift preserves source units",
+      "data_inputs": [
+        "complete current reporting-currency bucket values and exact weights",
+        "complete aligned total-return/FX-only legs and input provenance",
+        "explicit tau for clusters"
+      ],
+      "minimum_observations": "common.statistical_thresholds",
+      "frequency": "common.frequency",
+      "lookback": "common.lookback",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none; cash leg does not invent an interest rate",
+      "missing_data_handling": "common.reason_rule; common.states_history; every required period/leg, no deletion or renormalization",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "Not causality or a forecast.",
+        "Zero variance is undefined, not zero correlation.",
+        "Only the two named legs are required."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": false,
+      "reference_point": "HISTORICAL_CURRENT_CONSTITUENT_RETURNS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states_history",
+        "common.states_special.pairwise_correlation"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "current-weight model, exact window, frequency, n and thresholds, reporting currency, synthetic marker and exclusions"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 5"
+    },
+    {
+      "metric_id": "average_correlation",
+      "metric_name": "Capital-pair-weighted average security correlation",
+      "human_definition": "Average distinct-security correlation weighted by products of their current capital weights.",
+      "formula": "sum_{i<j in SECURITY} w_i*w_j*rho_ij / sum_{i<j in SECURITY} w_i*w_j",
+      "annualization_convention": "never; drift preserves source units",
+      "data_inputs": [
+        "explicit immutable capital-universe choice/provenance; common.capital_universe",
+        "complete current reporting-currency bucket values and exact weights",
+        "complete aligned total-return/FX-only legs and input provenance",
+        "explicit tau for clusters"
+      ],
+      "minimum_observations": "common.statistical_thresholds",
+      "frequency": "common.frequency",
+      "lookback": "common.lookback",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none; cash leg does not invent an interest rate",
+      "missing_data_handling": "common.reason_rule; common.states_history; every required period/leg, no deletion or renormalization",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "Excludes cash and receivables; coverage disclosed.",
+        "Requires every pair; no zero-variance or missing-leg deletion.",
+        "No diagonal and no averaging rounded pair values."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": false,
+      "reference_point": "HISTORICAL_CURRENT_CONSTITUENT_RETURNS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.capital_universe.refusal",
+        "common.states_history",
+        "common.states_special.average_correlation"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "current-weight model, exact window, frequency, n and thresholds, reporting currency, synthetic marker and exclusions"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 5"
+    },
+    {
+      "metric_id": "correlation_cluster_count",
+      "metric_name": "Positive-correlation component count",
+      "human_definition": "Number of connected components of the complete security correlation graph at a supplied threshold.",
+      "formula": "count(connected_components({i in SECURITY},{(i,j): rho_ij>=tau}))",
+      "annualization_convention": "never; drift preserves source units",
+      "data_inputs": [
+        "complete current reporting-currency bucket values and exact weights",
+        "complete aligned total-return/FX-only legs and input provenance",
+        "explicit tau for clusters"
+      ],
+      "minimum_observations": "common.statistical_thresholds",
+      "frequency": "common.frequency",
+      "lookback": "common.lookback",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none; cash leg does not invent an interest rate",
+      "missing_data_handling": "common.reason_rule; common.states_history; every required period/leg, no deletion or renormalization",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "Explicit 0<tau<=1 is an algorithm parameter, not investment policy.",
+        "Components are transitive and need not be cliques.",
+        "No default threshold; singleton vertices retained."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": false,
+      "reference_point": "HISTORICAL_CURRENT_CONSTITUENT_RETURNS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states_history",
+        "common.states_special.correlation_cluster_count"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "current-weight model, exact window, frequency, n and thresholds, reporting currency, synthetic marker and exclusions"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 5"
+    },
+    {
+      "metric_id": "modeled_volatility",
+      "metric_name": "Historical covariance volatility at current weights",
+      "human_definition": "Annualized volatility of the fixed-current-weight combination of historical reporting-currency capital-bucket legs.",
+      "formula": "sqrt(A*w'Cw)",
+      "annualization_convention": "square-root-of-time sqrt(A); A=260/52/12; historical covariance model",
+      "data_inputs": [
+        "explicit immutable capital-universe choice/provenance; common.capital_universe",
+        "complete current reporting-currency bucket values and exact weights",
+        "complete aligned total-return/FX-only legs and input provenance",
+        "explicit tau for clusters"
+      ],
+      "minimum_observations": "common.statistical_thresholds",
+      "frequency": "common.frequency",
+      "lookback": "common.lookback",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none; cash leg does not invent an interest rate",
+      "missing_data_handling": "common.reason_rule; common.states_history; every required period/leg, no deletion or renormalization",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "Not actual held historical portfolio volatility or a forecast.",
+        "Cash/receivables use fixed nominal FX-only returns; no interest or credit-risk claim.",
+        "Singular covariance is allowed."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": true,
+      "reference_point": "HISTORICAL_CURRENT_CONSTITUENT_RETURNS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.capital_universe.refusal",
+        "common.states_history",
+        "common.states_special.modeled_volatility"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "current-weight model, exact window, frequency, n and thresholds, reporting currency, synthetic marker and exclusions"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 6"
+    },
+    {
+      "metric_id": "risk_contribution_share",
+      "metric_name": "Historical modeled risk contribution share",
+      "human_definition": "Bucket's Euler share of historical modeled volatility at current weights.",
+      "formula": "w_i*(Cw)_i/(w'Cw)",
+      "annualization_convention": "never; drift preserves source units",
+      "data_inputs": [
+        "explicit immutable capital-universe choice/provenance; common.capital_universe",
+        "complete current reporting-currency bucket values and exact weights",
+        "complete aligned total-return/FX-only legs and input provenance",
+        "explicit tau for clusters"
+      ],
+      "minimum_observations": "common.statistical_thresholds",
+      "frequency": "common.frequency",
+      "lookback": "common.lookback",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none; cash leg does not invent an interest rate",
+      "missing_data_handling": "common.reason_rule; common.states_history; every required period/leg, no deletion or renormalization",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "May be negative or exceed one; not clipped.",
+        "Zero model variance gives unavailable shares.",
+        "No target allocation is implied."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": true,
+      "reference_point": "HISTORICAL_CURRENT_CONSTITUENT_RETURNS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.capital_universe.refusal",
+        "common.states_history",
+        "common.states_special.risk_contribution_share"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "current-weight model, exact window, frequency, n and thresholds, reporting currency, synthetic marker and exclusions"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 6"
+    },
+    {
+      "metric_id": "risk_contribution_component",
+      "metric_name": "Historical modeled volatility contribution",
+      "human_definition": "Bucket's Euler contribution in annualized volatility points.",
+      "formula": "[w_i*(Cw)_i/(w'Cw)]*sqrt(A*w'Cw)",
+      "annualization_convention": "square-root-of-time sqrt(A); A=260/52/12; historical covariance model",
+      "data_inputs": [
+        "explicit immutable capital-universe choice/provenance; common.capital_universe",
+        "complete current reporting-currency bucket values and exact weights",
+        "complete aligned total-return/FX-only legs and input provenance",
+        "explicit tau for clusters"
+      ],
+      "minimum_observations": "common.statistical_thresholds",
+      "frequency": "common.frequency",
+      "lookback": "common.lookback",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none; cash leg does not invent an interest rate",
+      "missing_data_handling": "common.reason_rule; common.states_history; every required period/leg, no deletion or renormalization",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "Components sum to model volatility before presentation.",
+        "May be negative.",
+        "Not the bucket's standalone volatility."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": true,
+      "reference_point": "HISTORICAL_CURRENT_CONSTITUENT_RETURNS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.capital_universe.refusal",
+        "common.states_history",
+        "common.states_special.risk_contribution_component"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "current-weight model, exact window, frequency, n and thresholds, reporting currency, synthetic marker and exclusions"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 6"
+    },
+    {
+      "metric_id": "drift_absolute",
+      "metric_name": "Change from accepted snapshot",
+      "human_definition": "Signed difference from an explicitly accepted compatible historical snapshot.",
+      "formula": "current_exact-baseline_exact",
+      "annualization_convention": "never; drift preserves source units",
+      "data_inputs": [
+        "immutable current computation",
+        "explicit earlier accepted snapshot and acceptance evidence",
+        "compatibility signature"
+      ],
+      "minimum_observations": "two compatible computable snapshots; source-metric thresholds apply",
+      "frequency": "inherited from compatible source metric",
+      "lookback": "inherited compatible source rule/duration",
+      "benchmark_dependency": "only if underlying source metric depends on benchmark; ids must match",
+      "risk_free_rate_dependency": "only if underlying source metric depends on risk-free series; ids must match",
+      "missing_data_handling": "common.reason_rule; common.states_special.drift_absolute; no numeric result when refused",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "Descriptive difference, not causal attribution.",
+        "No materiality threshold or severity assigned.",
+        "Exposure metadata/taxonomy must match."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": false,
+      "reference_point": "PREVIOUS_ACCEPTED_SNAPSHOT",
+      "presentation": "common.presentation",
+      "states": [
+        "source metric states",
+        "common.states_special.drift_absolute"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "denominator/reference, as-of, currency and classification/acceptance limitations"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 7"
+    },
+    {
+      "metric_id": "drift_target_gap",
+      "metric_name": "Gap from explicit user target",
+      "human_definition": "Signed difference from a compatible target explicitly supplied by the user.",
+      "formula": "current_exact-user_target_exact",
+      "annualization_convention": "never; drift preserves source units",
+      "data_inputs": [
+        "immutable current computation",
+        "explicit user target/provenance/effective date",
+        "compatibility signature"
+      ],
+      "minimum_observations": "one computable snapshot and one explicit compatible user target",
+      "frequency": "inherited from compatible source metric",
+      "lookback": "inherited compatible source rule/duration",
+      "benchmark_dependency": "only if underlying source metric depends on benchmark; ids must match",
+      "risk_free_rate_dependency": "only if underlying source metric depends on risk-free series; ids must match",
+      "missing_data_handling": "common.reason_rule; common.states_special.drift_target_gap; no numeric result when refused",
+      "fx_treatment": "common.fx_treatment",
+      "corporate_action_treatment": "common.corporate_action_treatment",
+      "known_limitations": [
+        "Missing categories are not zero targets.",
+        "No inferred target, tolerance, breach or rebalance.",
+        "Sign alone does not mean better or worse."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "model_based": false,
+      "reference_point": "USER_POLICY",
+      "presentation": "common.presentation",
+      "states": [
+        "source metric states",
+        "common.states_special.drift_target_gap"
+      ],
+      "wording": {
+        "forbidden": [
+          "forecast",
+          "recommended allocation",
+          "automatic rebalance",
+          "causal inference without decomposition"
+        ],
+        "must_keep": "denominator/reference, as-of, currency and classification/acceptance limitations"
+      },
+      "defined_in": "CP5_DIVERSIFICATION_CONVENTIONS.md section 7"
+    }
+  ]
+}

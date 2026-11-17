@@ -1,0 +1,261 @@
+{
+  "fixture_id": "cp1_golden/1.1",
+  "change_notes": [
+    "1.1 (2026-09-30): Loader and observability fixes only. No expected value changed. (1) E6-out and E6-in now carry atomic_group 'transfer-E6', because storage refuses a lone internal-transfer leg at commit. (2) S1: on the three values replay builds without a position (account quantity, account cash, portfolio cash) the detail is now null ('not asserted'). The reason NOT_RECONSTRUCTABLE has exactly one cause, BEFORE_SNAPSHOT, so the detail adds no information there. S1's account_status now also asserts snapshot_date 2025-06-30, which carries the audit information (where history starts). See CP1_GOLDEN_FIXTURE_DERIVATION.md §7.",
+    "1.0 (2026-09-30): first issue, ratified by quant-analyst."
+  ],
+  "convention_set": "ledger-replay/1.3",
+  "authored_by": "quant-analyst (independent derivation; see CP1_GOLDEN_FIXTURE_DERIVATION.md)",
+  "authored_on": "2026-09-30",
+  "format": {
+    "decimals": "Every quantity, amount, cost basis, split component and expected numeric value is a JSON STRING holding a plain decimal literal (no exponent, no thousands separator), to be parsed with decimal.Decimal(str). Never parse as float. Compare expected and actual by Decimal numeric equality (Decimal('7500') == Decimal('7500.00')), not by string equality.",
+    "money": "An object {\"amount\": <decimal string>, \"currency\": <3-letter code>}.",
+    "dates": "ISO 8601 calendar dates (YYYY-MM-DD). No times.",
+    "ids": "UUID strings. They are fixed so that runs are comparable; they carry no meaning.",
+    "events": "Each entry is {\"ledger_seq\": int, \"event\": {...}}. The event object uses exactly the field names of domain.ledger.LedgerEvent. A field that is absent is None. split_ratio is {\"new_units\": str, \"old_units\": str}. ledger_seq is the per-portfolio, storage-assigned order. Events sharing an \"atomic_group\" value must be appended in one transaction, in ledger_seq order. \"atomic_group\" is a loader instruction, not a LedgerEvent field.",
+    "assertions": "Each assertion gives as_of (D, inclusive) and ledger_version (L). Each entry in \"expect\" names one value, its scope and its expected MetricResult envelope: state, value (null iff state is INSUFFICIENT_DATA), reason (a ReasonCode name or null) and detail (the complete, sorted list of ReplayDetail names, or [] when AVAILABLE). detail null means NOT ASSERTED: do not check the detail for that value. It is used only where the reason code fully determines the cause (1.1).",
+    "expect_kinds": {
+      "account_status": "value is RECONSTRUCTED or NOT_RECONSTRUCTABLE (AccountStatus). Carries no state, reason or detail. An optional snapshot_date (ISO date, or null) asserts the account's snapshot date S when present (1.1).",
+      "quantity": "The account-level position quantity for (account, listing). \"0\" AVAILABLE means the reconstructed account holds none.",
+      "basis": "The account-level total cost basis for (account, listing). When AVAILABLE, value is a list of money objects, one per basis currency, sorted by currency code. An empty list with quantity 0 means no position.",
+      "cash": "The account-level cash for (account, currency), signed. \"0\" AVAILABLE means none.",
+      "portfolio_cash": "The sum over the portfolio's accounts for ONE currency. There is no cross-currency total anywhere (T9).",
+      "portfolio_quantity": "The sum over the portfolio's accounts for ONE listing."
+    }
+  },
+  "listings": [
+    {"listing_id": "c0000000-0000-4000-8000-00000000a001", "ticker": "AAPL", "mic": "XNYS", "trading_currency": "USD"},
+    {"listing_id": "c0000000-0000-4000-8000-000000000700", "ticker": "0700", "mic": "XHKG", "trading_currency": "HKD"},
+    {"listing_id": "c0000000-0000-4000-8000-00000000f001", "ticker": "MSFT", "mic": "XNYS", "trading_currency": "USD"}
+  ],
+  "portfolios": [
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000001",
+      "name": "P1",
+      "reporting_currency": "USD",
+      "accounts": [
+        {"account_id": "a1000000-0000-4000-8000-000000000001", "name": "A1 (US)"},
+        {"account_id": "a1000000-0000-4000-8000-000000000002", "name": "A2 (HK)"},
+        {"account_id": "a1000000-0000-4000-8000-000000000003", "name": "A3 (US)"}
+      ],
+      "events": [
+        {"ledger_seq": 1, "label": "E1", "event": {"event_id": "e0000000-0000-4000-8000-000000000001", "account_id": "a1000000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-01-02", "currency": "USD", "amount": {"amount": "10000", "currency": "USD"}, "source_reference": "P1-E1"}},
+        {"ledger_seq": 2, "label": "E2", "event": {"event_id": "e0000000-0000-4000-8000-000000000002", "account_id": "a1000000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-01-06", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-00000000a001", "quantity": "50", "amount": {"amount": "7500", "currency": "USD"}, "source_reference": "P1-E2"}},
+        {"ledger_seq": 3, "label": "E3", "event": {"event_id": "e0000000-0000-4000-8000-000000000003", "account_id": "a1000000-0000-4000-8000-000000000002", "event_type": "DEPOSIT", "event_date": "2025-01-06", "currency": "HKD", "amount": {"amount": "20000", "currency": "HKD"}, "source_reference": "P1-E3"}},
+        {"ledger_seq": 4, "label": "E4", "event": {"event_id": "e0000000-0000-4000-8000-000000000004", "account_id": "a1000000-0000-4000-8000-000000000002", "event_type": "BUY", "event_date": "2025-01-08", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "500", "amount": {"amount": "17500", "currency": "HKD"}, "source_reference": "P1-E4"}},
+        {"ledger_seq": 5, "label": "E5", "event": {"event_id": "e0000000-0000-4000-8000-000000000005", "account_id": "a1000000-0000-4000-8000-000000000001", "event_type": "SPLIT", "event_date": "2025-02-03", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-00000000a001", "split_ratio": {"new_units": "4", "old_units": "1"}, "source_reference": "P1-E5"}},
+        {"ledger_seq": 6, "label": "E6-out", "atomic_group": "transfer-E6", "event": {"event_id": "e0000000-0000-4000-8000-000000000006", "account_id": "a1000000-0000-4000-8000-000000000001", "event_type": "TRANSFER_OUT", "event_date": "2025-02-10", "currency": "USD", "amount": {"amount": "1000", "currency": "USD"}, "counterparty_account_id": "a1000000-0000-4000-8000-000000000003", "source_reference": "P1-E6-OUT"}},
+        {"ledger_seq": 7, "label": "E6-in", "atomic_group": "transfer-E6", "event": {"event_id": "e0000000-0000-4000-8000-000000000007", "account_id": "a1000000-0000-4000-8000-000000000003", "event_type": "TRANSFER_IN", "event_date": "2025-02-10", "currency": "USD", "amount": {"amount": "1000", "currency": "USD"}, "counterparty_account_id": "a1000000-0000-4000-8000-000000000001", "source_reference": "P1-E6-IN"}},
+        {"ledger_seq": 8, "label": "E7", "event": {"event_id": "e0000000-0000-4000-8000-000000000008", "account_id": "a1000000-0000-4000-8000-000000000001", "event_type": "SELL", "event_date": "2025-03-03", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-00000000a001", "quantity": "50", "amount": {"amount": "2250", "currency": "USD"}, "source_reference": "P1-E7"}},
+        {"ledger_seq": 9, "label": "E8", "event": {"event_id": "e0000000-0000-4000-8000-000000000009", "account_id": "a1000000-0000-4000-8000-000000000001", "event_type": "TRANSFER_IN", "event_date": "2025-03-10", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-00000000f001", "quantity": "10", "source_reference": "P1-E8"}},
+        {"ledger_seq": 10, "label": "X1", "event": {"event_id": "e0000000-0000-4000-8000-000000000010", "account_id": "a1000000-0000-4000-8000-000000000001", "event_type": "CURRENCY_CONVERSION", "event_date": "2025-04-02", "currency": "USD", "amount": {"amount": "1000", "currency": "USD"}, "bought_amount": {"amount": "7780", "currency": "HKD"}, "settlement_date": "2025-04-04", "source_reference": "P1-X1"}},
+        {"ledger_seq": 11, "label": "X2", "event": {"event_id": "e0000000-0000-4000-8000-000000000011", "account_id": "a1000000-0000-4000-8000-000000000001", "event_type": "FEE", "event_date": "2025-04-02", "currency": "USD", "amount": {"amount": "2", "currency": "USD"}, "source_reference": "P1-X2"}},
+        {"ledger_seq": 12, "label": "X3", "event": {"event_id": "e0000000-0000-4000-8000-000000000012", "account_id": "a1000000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-04-02", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "200", "amount": {"amount": "7000", "currency": "HKD"}, "source_reference": "P1-X3"}},
+        {"ledger_seq": 13, "label": "X4", "event": {"event_id": "e0000000-0000-4000-8000-000000000013", "account_id": "a1000000-0000-4000-8000-000000000003", "event_type": "BUY", "event_date": "2025-05-05", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-00000000f001", "quantity": "5", "amount": {"amount": "2000", "currency": "USD"}, "source_reference": "P1-X4"}},
+        {"ledger_seq": 14, "label": "X5", "event": {"event_id": "e0000000-0000-4000-8000-000000000014", "account_id": "a1000000-0000-4000-8000-000000000003", "event_type": "DEPOSIT", "event_date": "2025-05-08", "currency": "USD", "amount": {"amount": "1000", "currency": "USD"}, "source_reference": "P1-X5"}},
+        {"ledger_seq": 15, "label": "X6", "event": {"event_id": "e0000000-0000-4000-8000-000000000015", "account_id": "a1000000-0000-4000-8000-000000000003", "event_type": "INTEREST_CHARGED", "event_date": "2025-05-31", "currency": "USD", "amount": {"amount": "3.50", "currency": "USD"}, "source_reference": "P1-X6"}},
+        {"ledger_seq": 16, "label": "X7", "atomic_group": "correction-X1", "event": {"event_id": "e0000000-0000-4000-8000-000000000016", "account_id": "a1000000-0000-4000-8000-000000000001", "event_type": "REVERSAL", "event_date": "2025-04-10", "currency": "USD", "reverses_event_id": "e0000000-0000-4000-8000-000000000010", "source_reference": "P1-X7"}},
+        {"ledger_seq": 17, "label": "X8", "atomic_group": "correction-X1", "event": {"event_id": "e0000000-0000-4000-8000-000000000017", "account_id": "a1000000-0000-4000-8000-000000000001", "event_type": "CURRENCY_CONVERSION", "event_date": "2025-04-02", "currency": "USD", "amount": {"amount": "1000", "currency": "USD"}, "bought_amount": {"amount": "7750", "currency": "HKD"}, "settlement_date": "2025-04-04", "corrects_event_id": "e0000000-0000-4000-8000-000000000010", "source_reference": "P1-X8"}},
+        {"ledger_seq": 18, "label": "X9", "event": {"event_id": "e0000000-0000-4000-8000-000000000018", "account_id": "a1000000-0000-4000-8000-000000000003", "event_type": "DEPOSIT", "event_date": "2025-06-02", "currency": "USD", "amount": {"amount": "5000", "currency": "USD"}, "source_reference": "P1-X9"}},
+        {"ledger_seq": 19, "label": "X10", "event": {"event_id": "e0000000-0000-4000-8000-000000000019", "account_id": "a1000000-0000-4000-8000-000000000003", "event_type": "BUY", "event_date": "2025-06-03", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-00000000f001", "quantity": "5", "amount": {"amount": "2100", "currency": "USD"}, "source_reference": "P1-X10"}},
+        {"ledger_seq": 20, "label": "X11", "event": {"event_id": "e0000000-0000-4000-8000-000000000020", "account_id": "a1000000-0000-4000-8000-000000000003", "event_type": "SELL", "event_date": "2025-06-10", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-00000000f001", "quantity": "4", "amount": {"amount": "1720", "currency": "USD"}, "source_reference": "P1-X11"}},
+        {"ledger_seq": 21, "label": "X12", "event": {"event_id": "e0000000-0000-4000-8000-000000000021", "account_id": "a1000000-0000-4000-8000-000000000001", "event_type": "SELL", "event_date": "2025-06-16", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-00000000a001", "quantity": "40", "amount": {"amount": "2000", "currency": "USD"}, "source_reference": "P1-X12"}},
+        {"ledger_seq": 22, "label": "X13", "atomic_group": "transfer-X13", "event": {"event_id": "e0000000-0000-4000-8000-000000000022", "account_id": "a1000000-0000-4000-8000-000000000001", "event_type": "TRANSFER_OUT", "event_date": "2025-06-16", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-00000000a001", "quantity": "110", "counterparty_account_id": "a1000000-0000-4000-8000-000000000003", "source_reference": "P1-X13"}},
+        {"ledger_seq": 23, "label": "X14", "atomic_group": "transfer-X13", "event": {"event_id": "e0000000-0000-4000-8000-000000000023", "account_id": "a1000000-0000-4000-8000-000000000003", "event_type": "TRANSFER_IN", "event_date": "2025-06-16", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-00000000a001", "quantity": "110", "counterparty_account_id": "a1000000-0000-4000-8000-000000000001", "source_reference": "P1-X14"}},
+        {"ledger_seq": 24, "label": "X15", "event": {"event_id": "e0000000-0000-4000-8000-000000000024", "account_id": "a1000000-0000-4000-8000-000000000002", "event_type": "DEPOSIT", "event_date": "2025-06-20", "currency": "HKD", "amount": {"amount": "500", "currency": "HKD"}, "source_reference": "P1-X15"}},
+        {"ledger_seq": 25, "label": "X16", "event": {"event_id": "e0000000-0000-4000-8000-000000000025", "account_id": "a1000000-0000-4000-8000-000000000002", "event_type": "REVERSAL", "event_date": "2025-06-25", "currency": "HKD", "reverses_event_id": "e0000000-0000-4000-8000-000000000024", "source_reference": "P1-X16"}}
+      ],
+      "assertions": [
+        {"id": "T1", "as_of": "2025-01-05", "ledger_version": 25, "purpose": "A deposit lands; a deposit creates no position; an account whose events all lie after D is empty, not unknown (Ruling 8.1).",
+         "expect": [
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000001", "currency": "USD", "state": "AVAILABLE", "value": "10000", "reason": null, "detail": []},
+          {"kind": "quantity", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000a001", "state": "AVAILABLE", "value": "0", "reason": null, "detail": []},
+          {"kind": "account_status", "account_id": "a1000000-0000-4000-8000-000000000002", "value": "RECONSTRUCTED"},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000002", "currency": "HKD", "state": "AVAILABLE", "value": "0", "reason": null, "detail": []}
+        ]},
+        {"id": "T2", "as_of": "2025-01-07", "ledger_version": 25, "purpose": "A buy reduces cash exactly and creates a single-lot position with basis equal to gross consideration.",
+         "expect": [
+          {"kind": "quantity", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000a001", "state": "AVAILABLE", "value": "50", "reason": null, "detail": []},
+          {"kind": "basis", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000a001", "state": "AVAILABLE", "value": [{"amount": "7500", "currency": "USD"}], "reason": null, "detail": []},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000001", "currency": "USD", "state": "AVAILABLE", "value": "2500", "reason": null, "detail": []}
+        ]},
+        {"id": "T3", "as_of": "2025-01-09", "ledger_version": 25, "purpose": "Multi-currency cash is tracked per (account, currency).",
+         "expect": [
+          {"kind": "quantity", "account_id": "a1000000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "state": "AVAILABLE", "value": "500", "reason": null, "detail": []},
+          {"kind": "basis", "account_id": "a1000000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "state": "AVAILABLE", "value": [{"amount": "17500", "currency": "HKD"}], "reason": null, "detail": []},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000002", "currency": "HKD", "state": "AVAILABLE", "value": "2500", "reason": null, "detail": []},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000001", "currency": "USD", "state": "AVAILABLE", "value": "2500", "reason": null, "detail": []}
+        ]},
+        {"id": "T4", "as_of": "2025-02-02", "ledger_version": 25, "purpose": "The pre-split state.",
+         "expect": [
+          {"kind": "quantity", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000a001", "state": "AVAILABLE", "value": "50", "reason": null, "detail": []},
+          {"kind": "basis", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000a001", "state": "AVAILABLE", "value": [{"amount": "7500", "currency": "USD"}], "reason": null, "detail": []}
+        ]},
+        {"id": "T5", "as_of": "2025-02-03", "ledger_version": 25, "purpose": "A split changes shares and preserves economic value (PRD §12.4). The unit basis 37.5 is a DERIVED check, total/quantity, computed by the test and not a replay field.",
+         "expect": [
+          {"kind": "quantity", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000a001", "state": "AVAILABLE", "value": "200", "reason": null, "detail": []},
+          {"kind": "basis", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000a001", "state": "AVAILABLE", "value": [{"amount": "7500", "currency": "USD"}], "reason": null, "detail": []}
+         ],
+         "derived_checks": [{"name": "unit_basis_AAPL_A1", "formula": "basis.USD / quantity", "value": "37.5"}]},
+        {"id": "T6-before", "as_of": "2025-02-09", "ledger_version": 25, "purpose": "Portfolio USD cash before the internal transfer.",
+         "expect": [
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000001", "currency": "USD", "state": "AVAILABLE", "value": "2500", "reason": null, "detail": []},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000003", "currency": "USD", "state": "AVAILABLE", "value": "0", "reason": null, "detail": []},
+          {"kind": "portfolio_cash", "currency": "USD", "state": "AVAILABLE", "value": "2500", "reason": null, "detail": []}
+        ]},
+        {"id": "T6", "as_of": "2025-02-11", "ledger_version": 25, "purpose": "An internal transfer is neutral at portfolio level and moves cash between accounts (PRD §9.6).",
+         "expect": [
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000001", "currency": "USD", "state": "AVAILABLE", "value": "1500", "reason": null, "detail": []},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000003", "currency": "USD", "state": "AVAILABLE", "value": "1000", "reason": null, "detail": []},
+          {"kind": "portfolio_cash", "currency": "USD", "state": "AVAILABLE", "value": "2500", "reason": null, "detail": []}
+        ]},
+        {"id": "T7", "as_of": "2025-03-04", "ledger_version": 25, "purpose": "A sale reduces quantity. Single-lot remaining basis is determinate (Ruling 0.4.3 case 3).",
+         "expect": [
+          {"kind": "quantity", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000a001", "state": "AVAILABLE", "value": "150", "reason": null, "detail": []},
+          {"kind": "basis", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000a001", "state": "AVAILABLE", "value": [{"amount": "5625", "currency": "USD"}], "reason": null, "detail": []},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000001", "currency": "USD", "state": "AVAILABLE", "value": "3750", "reason": null, "detail": []}
+        ]},
+        {"id": "T8", "as_of": "2025-03-11", "ledger_version": 25, "purpose": "A missing cost basis is representable, never fabricated and never 0 (PRD §9.3).",
+         "expect": [
+          {"kind": "quantity", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000f001", "state": "AVAILABLE", "value": "10", "reason": null, "detail": []},
+          {"kind": "basis", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000f001", "state": "INSUFFICIENT_DATA", "value": null, "reason": "MISSING_COST_BASIS", "detail": ["UNKNOWN_BASIS"]}
+        ]},
+        {"id": "T9", "as_of": "2025-04-02", "ledger_version": 25, "purpose": "Currencies are never implicitly summed. Cash is exposed per (account, currency) and per portfolio currency only; no cross-currency total exists. Also: the conversion case after correction (5A-A plus 5A-B).",
+         "expect": [
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000001", "currency": "USD", "state": "AVAILABLE", "value": "2748", "reason": null, "detail": []},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000001", "currency": "HKD", "state": "AVAILABLE", "value": "750", "reason": null, "detail": []},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000002", "currency": "HKD", "state": "AVAILABLE", "value": "2500", "reason": null, "detail": []},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000003", "currency": "USD", "state": "AVAILABLE", "value": "1000", "reason": null, "detail": []},
+          {"kind": "portfolio_cash", "currency": "USD", "state": "AVAILABLE", "value": "3748", "reason": null, "detail": []},
+          {"kind": "portfolio_cash", "currency": "HKD", "state": "AVAILABLE", "value": "3250", "reason": null, "detail": []},
+          {"kind": "quantity", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "state": "AVAILABLE", "value": "200", "reason": null, "detail": []},
+          {"kind": "basis", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "state": "AVAILABLE", "value": [{"amount": "7000", "currency": "HKD"}], "reason": null, "detail": []},
+          {"kind": "portfolio_quantity", "listing_id": "c0000000-0000-4000-8000-000000000700", "state": "AVAILABLE", "value": "700", "reason": null, "detail": []}
+         ],
+         "structural_checks": [
+          "Account A1's emitted cash entries are exactly {HKD: 750, USD: 2748}, as two separate entries.",
+          "Portfolio cash is obtainable only per currency. The replay API offers no operation that returns one number combining USD and HKD, and no reporting-currency value (no FX in CP1)."
+         ]},
+        {"id": "V1-before", "as_of": "2025-04-02", "ledger_version": 15, "purpose": "Ledger version: the same D before the conversion correction (X1 still live). A conversion, a separate fee and a same-day purchase in the bought currency (Example 5A-A).",
+         "expect": [
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000001", "currency": "USD", "state": "AVAILABLE", "value": "2748", "reason": null, "detail": []},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000001", "currency": "HKD", "state": "AVAILABLE", "value": "780", "reason": null, "detail": []},
+          {"kind": "quantity", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "state": "AVAILABLE", "value": "200", "reason": null, "detail": []},
+          {"kind": "basis", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "state": "AVAILABLE", "value": [{"amount": "7000", "currency": "HKD"}], "reason": null, "detail": []}
+        ]},
+        {"id": "V1-after", "as_of": "2025-04-02", "ledger_version": 17, "purpose": "Ledger version: the same D after the correction (X7 reverses X1 and X8 replaces it). Both legs of X1 disappear together (Example 5A-B).",
+         "expect": [
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000001", "currency": "USD", "state": "AVAILABLE", "value": "2748", "reason": null, "detail": []},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000001", "currency": "HKD", "state": "AVAILABLE", "value": "750", "reason": null, "detail": []}
+        ]},
+        {"id": "V1-day-before", "as_of": "2025-04-01", "ledger_version": 17, "purpose": "The conversion enters on its trade date only (Ruling 5A.3).",
+         "expect": [
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000001", "currency": "USD", "state": "AVAILABLE", "value": "3750", "reason": null, "detail": []},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000001", "currency": "HKD", "state": "AVAILABLE", "value": "0", "reason": null, "detail": []}
+        ]},
+        {"id": "V2-shortfall", "as_of": "2025-05-05", "ledger_version": 25, "purpose": "Negative trade-date cash is a valid recorded state (Ruling 1.3, PD-0024 §3).",
+         "expect": [
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000003", "currency": "USD", "state": "AVAILABLE", "value": "-1000", "reason": null, "detail": []},
+          {"kind": "quantity", "account_id": "a1000000-0000-4000-8000-000000000003", "listing_id": "c0000000-0000-4000-8000-00000000f001", "state": "AVAILABLE", "value": "5", "reason": null, "detail": []},
+          {"kind": "basis", "account_id": "a1000000-0000-4000-8000-000000000003", "listing_id": "c0000000-0000-4000-8000-00000000f001", "state": "AVAILABLE", "value": [{"amount": "2000", "currency": "USD"}], "reason": null, "detail": []}
+        ]},
+        {"id": "V2-funded", "as_of": "2025-05-08", "ledger_version": 25, "purpose": "The shortfall is funded to exactly 0.",
+         "expect": [
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000003", "currency": "USD", "state": "AVAILABLE", "value": "0", "reason": null, "detail": []}
+        ]},
+        {"id": "V2-interest", "as_of": "2025-05-31", "ledger_version": 25, "purpose": "INTEREST_CHARGED debits cash (Ruling 5.3).",
+         "expect": [
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000003", "currency": "USD", "state": "AVAILABLE", "value": "-3.50", "reason": null, "detail": []}
+        ]},
+        {"id": "V3-two-lots", "as_of": "2025-06-05", "ledger_version": 25, "purpose": "Two lots with no depletion yet: the total basis is determinate (Ruling 0.4.3 case 1).",
+         "expect": [
+          {"kind": "quantity", "account_id": "a1000000-0000-4000-8000-000000000003", "listing_id": "c0000000-0000-4000-8000-00000000f001", "state": "AVAILABLE", "value": "10", "reason": null, "detail": []},
+          {"kind": "basis", "account_id": "a1000000-0000-4000-8000-000000000003", "listing_id": "c0000000-0000-4000-8000-00000000f001", "state": "AVAILABLE", "value": [{"amount": "4100", "currency": "USD"}], "reason": null, "detail": []},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000003", "currency": "USD", "state": "AVAILABLE", "value": "2896.50", "reason": null, "detail": []}
+        ]},
+        {"id": "V3-unresolved", "as_of": "2025-06-10", "ledger_version": 25, "purpose": "A depletion from two lots gives unresolved basis. It is SUPPRESSED, not estimated (Ruling 0.4.3 case 4). The quantity stays a number.",
+         "expect": [
+          {"kind": "quantity", "account_id": "a1000000-0000-4000-8000-000000000003", "listing_id": "c0000000-0000-4000-8000-00000000f001", "state": "AVAILABLE", "value": "6", "reason": null, "detail": []},
+          {"kind": "basis", "account_id": "a1000000-0000-4000-8000-000000000003", "listing_id": "c0000000-0000-4000-8000-00000000f001", "state": "INSUFFICIENT_DATA", "value": null, "reason": "UNRESOLVED_CONVENTION", "detail": ["LOT_DEPLETION"]},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000003", "currency": "USD", "state": "AVAILABLE", "value": "4616.50", "reason": null, "detail": []},
+          {"kind": "portfolio_quantity", "listing_id": "c0000000-0000-4000-8000-00000000f001", "state": "AVAILABLE", "value": "16", "reason": null, "detail": []}
+        ]},
+        {"id": "V4-before", "as_of": "2025-06-15", "ledger_version": 25, "purpose": "The state before the same-day sale plus internal move.",
+         "expect": [
+          {"kind": "quantity", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000a001", "state": "AVAILABLE", "value": "150", "reason": null, "detail": []},
+          {"kind": "basis", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000a001", "state": "AVAILABLE", "value": [{"amount": "5625", "currency": "USD"}], "reason": null, "detail": []}
+        ]},
+        {"id": "V4", "as_of": "2025-06-16", "ledger_version": 25, "purpose": "A single lot emptied on one day by a sale and an internal move carries c*q to the receiver (Ruling 0.4.5 (a), review C1C-1).",
+         "expect": [
+          {"kind": "quantity", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000a001", "state": "AVAILABLE", "value": "0", "reason": null, "detail": []},
+          {"kind": "quantity", "account_id": "a1000000-0000-4000-8000-000000000003", "listing_id": "c0000000-0000-4000-8000-00000000a001", "state": "AVAILABLE", "value": "110", "reason": null, "detail": []},
+          {"kind": "basis", "account_id": "a1000000-0000-4000-8000-000000000003", "listing_id": "c0000000-0000-4000-8000-00000000a001", "state": "AVAILABLE", "value": [{"amount": "4125", "currency": "USD"}], "reason": null, "detail": []},
+          {"kind": "portfolio_quantity", "listing_id": "c0000000-0000-4000-8000-00000000a001", "state": "AVAILABLE", "value": "110", "reason": null, "detail": []},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000001", "currency": "USD", "state": "AVAILABLE", "value": "4748", "reason": null, "detail": []},
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000003", "currency": "USD", "state": "AVAILABLE", "value": "4616.50", "reason": null, "detail": []}
+        ]},
+        {"id": "T13-L23", "as_of": "2025-06-30", "ledger_version": 23, "purpose": "Before the erroneous deposit X15.",
+         "expect": [
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000002", "currency": "HKD", "state": "AVAILABLE", "value": "2500", "reason": null, "detail": []}
+        ]},
+        {"id": "T13-L24", "as_of": "2025-06-30", "ledger_version": 24, "purpose": "The erroneous deposit X15 is live.",
+         "expect": [
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000002", "currency": "HKD", "state": "AVAILABLE", "value": "3000", "reason": null, "detail": []}
+        ]},
+        {"id": "T13-L25", "as_of": "2025-06-30", "ledger_version": 25, "purpose": "The reversal nets X15 to zero (Ruling 2.1).",
+         "expect": [
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000002", "currency": "HKD", "state": "AVAILABLE", "value": "2500", "reason": null, "detail": []}
+        ]},
+        {"id": "T13-retro", "as_of": "2025-06-22", "ledger_version": 25, "purpose": "The reversal is retroactive: at a D between X15's date and X16's own date, X15 is still absent.",
+         "expect": [
+          {"kind": "cash", "account_id": "a1000000-0000-4000-8000-000000000002", "currency": "HKD", "state": "AVAILABLE", "value": "2500", "reason": null, "detail": []}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000002",
+      "name": "P2 (snapshot-only)",
+      "reporting_currency": "HKD",
+      "accounts": [
+        {"account_id": "b1000000-0000-4000-8000-000000000001", "name": "B1 (HK, snapshot)"}
+      ],
+      "events": [
+        {"ledger_seq": 1, "label": "S-POS", "event": {"event_id": "e2000000-0000-4000-8000-000000000001", "account_id": "b1000000-0000-4000-8000-000000000001", "event_type": "OPENING_POSITION", "event_date": "2025-06-30", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "500", "source_reference": "P2-S-POS"}},
+        {"ledger_seq": 2, "label": "S-CASH", "event": {"event_id": "e2000000-0000-4000-8000-000000000002", "account_id": "b1000000-0000-4000-8000-000000000001", "event_type": "OPENING_CASH", "event_date": "2025-06-30", "currency": "HKD", "amount": {"amount": "3000", "currency": "HKD"}, "source_reference": "P2-S-CASH"}},
+        {"ledger_seq": 3, "label": "S-SELL", "event": {"event_id": "e2000000-0000-4000-8000-000000000003", "account_id": "b1000000-0000-4000-8000-000000000001", "event_type": "SELL", "event_date": "2025-07-02", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "200", "amount": {"amount": "7400", "currency": "HKD"}, "source_reference": "P2-S-SELL"}}
+      ],
+      "assertions": [
+        {"id": "S1", "as_of": "2025-06-29", "ledger_version": 3, "purpose": "Before the snapshot date the account is NOT_RECONSTRUCTABLE. That is not an empty state (Ruling 8.1).",
+         "expect": [
+          {"kind": "account_status", "account_id": "b1000000-0000-4000-8000-000000000001", "value": "NOT_RECONSTRUCTABLE", "snapshot_date": "2025-06-30"},
+          {"kind": "quantity", "account_id": "b1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "state": "INSUFFICIENT_DATA", "value": null, "reason": "NOT_RECONSTRUCTABLE", "detail": null},
+          {"kind": "cash", "account_id": "b1000000-0000-4000-8000-000000000001", "currency": "HKD", "state": "INSUFFICIENT_DATA", "value": null, "reason": "NOT_RECONSTRUCTABLE", "detail": null},
+          {"kind": "portfolio_cash", "currency": "HKD", "state": "INSUFFICIENT_DATA", "value": null, "reason": "NOT_RECONSTRUCTABLE", "detail": null}
+        ]},
+        {"id": "S2", "as_of": "2025-06-30", "ledger_version": 3, "purpose": "At the snapshot date the holdings are present; the opening basis is unknown and never fabricated.",
+         "expect": [
+          {"kind": "account_status", "account_id": "b1000000-0000-4000-8000-000000000001", "value": "RECONSTRUCTED"},
+          {"kind": "quantity", "account_id": "b1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "state": "AVAILABLE", "value": "500", "reason": null, "detail": []},
+          {"kind": "basis", "account_id": "b1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "state": "INSUFFICIENT_DATA", "value": null, "reason": "MISSING_COST_BASIS", "detail": ["UNKNOWN_BASIS"]},
+          {"kind": "cash", "account_id": "b1000000-0000-4000-8000-000000000001", "currency": "HKD", "state": "AVAILABLE", "value": "3000", "reason": null, "detail": []}
+        ]},
+        {"id": "S3", "as_of": "2025-07-02", "ledger_version": 3, "purpose": "A sale from a single UNKNOWN-basis lot stays unknown (MISSING_COST_BASIS only). It is not a lot-depletion case (Ruling 0.4.4 (b')).",
+         "expect": [
+          {"kind": "quantity", "account_id": "b1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "state": "AVAILABLE", "value": "300", "reason": null, "detail": []},
+          {"kind": "basis", "account_id": "b1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "state": "INSUFFICIENT_DATA", "value": null, "reason": "MISSING_COST_BASIS", "detail": ["UNKNOWN_BASIS"]},
+          {"kind": "cash", "account_id": "b1000000-0000-4000-8000-000000000001", "currency": "HKD", "state": "AVAILABLE", "value": "10400", "reason": null, "detail": []}
+        ]}
+      ]
+    }
+  ],
+  "determinism_assertions": [
+    {"id": "T10", "statement": "For every assertion above, reconstruct(events, as_of, ledger_version) run twice gives byte-identical canonical output. The same holds when the input event list is reversed and when it is shuffled with ledger_seq values unchanged. The canonical output names convention_set 'ledger-replay/1.3'."}
+  ],
+  "storage_assertions": [
+    {"id": "T11", "scenario": "After appending P1 seq 1-25, attempt an UPDATE of P1-E1's amount and a DELETE of P1-E1 through the application database role.", "expected": "Both are refused by the database. The row count and every stored row are unchanged, and replay at (2025-01-05, 25) still gives T1."},
+    {"id": "T12", "scenario": "Re-submit P1 events seq 1-9 with the same (account_id, source_reference) and identical content, as a second import of the same batch.", "expected": "No row is inserted, and the portfolio's max committed ledger_seq stays 25. Replay output for every P1 assertion is unchanged."},
+    {"id": "T12-conflict", "scenario": "Submit an event with account A1 and source_reference 'P1-E1' but amount 10001 USD.", "expected": "Refused as an idempotency-key conflict (same key, different content). No row is inserted."},
+    {"id": "T13", "scenario": "P1 seq 24 (X15, an erroneous deposit) is reversed by seq 25 (X16), with no replacement.", "expected": "The X15 row is still stored and retrievable by event_id after X16. Replay nets it to zero: T13-L24 gives 3000 and T13-L25 gives 2500, equal to T13-L23. The reversal is retroactive: T13-retro gives 2500 at D=2025-06-22."},
+    {"id": "T13-correction", "scenario": "P1 seq 16 (REVERSAL of X1) and seq 17 (replacement X8) are appended as one atomic group.", "expected": "The X1 row is still stored. Pinning replay at L=16 is refused, because 16 was never a committed ledger version: seq 16 and 17 became visible together (Ruling 2.3). Pins 15 and 17 give V1-before and V1-after."}
+  ]
+}

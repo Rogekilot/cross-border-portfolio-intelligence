@@ -1,0 +1,31 @@
+[project]
+name = "cross-border-portfolio-intelligence"
+version = "0.0.0"
+description = "Cross-Border Portfolio Intelligence Platform: deterministic analytics engine."
+requires-python = "==3.12.*"
+dependencies = [
+    "fastapi==0.146.0",
+    # The [binary] extra pulls psycopg-binary, whose wheels bundle libpq, so macOS arm64
+    # works without a Homebrew libpq. 3.2 is the floor for the current typed API on 3.12.
+    "psycopg[binary]>=3.2,<4",
+    "uvicorn==0.54.0",
+]
+
+[dependency-groups]
+# PD-0029. NOT a core dependency and not installed in the product environment: only the
+# human-run download tool (src/marketdata_tools/, never imported by product code) uses it,
+# installed in a separate, git-ignored environment:
+#   UV_PROJECT_ENVIRONMENT=.venv-download uv sync --group marketdata-download
+# Bounds: akshare is a fast-moving 1.x library whose function names change between minors,
+# so the floor is a 1.x release and the cap is the next major; baostock has had one stable
+# 0.8.x line for years, so it is capped at the next minor. Exact versions are pinned by
+# uv.lock and recorded in every file manifest.
+marketdata-download = [
+    "akshare>=1.14,<2",
+    "baostock>=0.8.9,<0.9",
+]
+
+[tool.uv]
+# Not a distributable package: `uv sync` installs dependencies only and never builds the
+# project. Code is imported as `src.…` from the repository root (cwd on sys.path).
+package = false

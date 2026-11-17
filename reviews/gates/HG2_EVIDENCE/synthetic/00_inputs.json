@@ -1,0 +1,710 @@
+{
+ "as_of": "2025-04-30",
+ "data_files": [
+  {
+   "admitted": true,
+   "data_kind": "CALENDAR",
+   "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d",
+   "payload_filename": "SYN_NYSE.json",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "calendar.manual",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "CALENDAR",
+   "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738",
+   "payload_filename": "SYN_HKEX.json",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "calendar.manual",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "CALENDAR",
+   "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c",
+   "payload_filename": "SYN_CN_A.json",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "calendar.manual",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "CALENDAR",
+   "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e",
+   "payload_filename": "SYN_ECB.json",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "calendar.manual",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "FX",
+   "file_sha256": "73559db60807a482355dab868d1dce26b8b2e049525c16a727d2de3b1da26e59",
+   "payload_filename": "fx.csv",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.ecb_direct",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "QUOTE",
+   "file_sha256": "a0f0179c0829fe79593a0c211658d86993023ec23b9903f02b25826adbc1e97f",
+   "payload_filename": "AAPL.csv",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.alphavantage_us",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "QUOTE",
+   "file_sha256": "7eb5006f93105014776ab9295a574276b21ec9af35fa5c01cef6e54f760f9cdb",
+   "payload_filename": "00700.csv",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.sina_hk",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "QUOTE",
+   "file_sha256": "206c36c2f24f4da36b43d7ac4aa3bc589537adf9a1710fbe202884e6a89484e5",
+   "payload_filename": "MSFT.csv",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.alphavantage_us",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "QUOTE",
+   "file_sha256": "f44cf4b8829f3c098c5c68207cdbac92ad1ab741ca3abf692aef93e8a505a62e",
+   "payload_filename": "SYNA.csv",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.eastmoney_cn",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "QUOTE",
+   "file_sha256": "76ede853f0355e07dbc1abe28b193177c28d01ef247a7bd608429594ebb20790",
+   "payload_filename": "SYNU.csv",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.alphavantage_us",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "QUOTE",
+   "file_sha256": "f9081ddfc08a61ae81d6ae77a1e0a6d04b10f6ee8319f446cabe62ef4b31dfa2",
+   "payload_filename": "SYNH.csv",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.sina_hk",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "QUOTE",
+   "file_sha256": "78d72f99ab2f18e8d6ca5ad87440fce2a598b1574487c2eafb513bcf0d3acbf5",
+   "payload_filename": "SYNP.csv",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.sina_hk",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "QUOTE",
+   "file_sha256": "41e80c986cbf5324d64b570e884dc8503c4252ef53bd911d7b64fecf03564934",
+   "payload_filename": "SYNM.csv",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.alphavantage_us",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "QUOTE",
+   "file_sha256": "5320b679ce96ffa5d82cb787459133e91e07521cc8012c1b1c5e5794150f925d",
+   "payload_filename": "SYNK.csv",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.alphavantage_us",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "QUOTE",
+   "file_sha256": "778c40f43df7fc0c99c5f396089f01b088026c611f63f00fec817a1f2a9d00d0",
+   "payload_filename": "SYNS.csv",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.alphavantage_us",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "QUOTE",
+   "file_sha256": "658d6ffff08b6e7ceebbbcb018d51e9c21fa232b507f0e17474c22c741b537ec",
+   "payload_filename": "SYNF.csv",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.alphavantage_us",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "QUOTE",
+   "file_sha256": "780f15c58538ee8bf3caa298527e5cf41fab51590f3deb825034fb14205f85ff",
+   "payload_filename": "SYNT.csv",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.alphavantage_us",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "QUOTE",
+   "file_sha256": "e14129a32c8a16baed0b2efa23f631b98ebd2b93d41b7aaac11512d8cfb3b4ef",
+   "payload_filename": "SYNG.csv",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.alphavantage_us",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "CORPORATE_ACTION",
+   "file_sha256": "ecd78bfa72a911f977cf1a7ba5d58ef44b3bd59a5efa02007a9c425a77d762cd",
+   "payload_filename": "SYNS_feed.json",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.ca_feed",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "CORPORATE_ACTION",
+   "file_sha256": "ec79e0116ded65b5766eed8328e6ef9aa7d69418debd3d8b77afeb474fee7cf9",
+   "payload_filename": "SYNS_filing.json",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.ca_filing",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "CORPORATE_ACTION",
+   "file_sha256": "1f4863645cf3838c5b6f09b0bbebe63754b3a6a01396ecfc46a5eda56691e94b",
+   "payload_filename": "SYNT_feed.json",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.ca_feed",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  },
+  {
+   "admitted": true,
+   "data_kind": "CORPORATE_ACTION",
+   "file_sha256": "18fcb30cae47bbb2eea3354e5ea57521af1a6481d51f2130b57dc77a022d2fed",
+   "payload_filename": "SYNT_filing.json",
+   "retrieval_time": "2026-02-02T09:00:00+00:00",
+   "source_id": "synthetic.ca_filing",
+   "synthetic": true,
+   "usage_scope": "SYNTHETIC_TEST"
+  }
+ ],
+ "detection": "F8B_DRY_RUN",
+ "detection_note": "split detection ran read-only over the pinned ledger and the whole release",
+ "events": [
+  {
+   "account": "A1 (US)",
+   "amount": {
+    "amount": "10000",
+    "currency": "USD"
+   },
+   "currency": "USD",
+   "date": "2025-01-02",
+   "event_id": "e0000000-0000-4000-8000-000000000001",
+   "ledger_seq": 1,
+   "listing": "-",
+   "quantity": null,
+   "type": "DEPOSIT"
+  },
+  {
+   "account": "A1 (US)",
+   "amount": {
+    "amount": "7500",
+    "currency": "USD"
+   },
+   "currency": "USD",
+   "date": "2025-01-06",
+   "event_id": "e0000000-0000-4000-8000-000000000002",
+   "ledger_seq": 2,
+   "listing": "AAPL@XNYS",
+   "quantity": "50",
+   "type": "BUY"
+  },
+  {
+   "account": "A2 (HK)",
+   "amount": {
+    "amount": "20000",
+    "currency": "HKD"
+   },
+   "currency": "HKD",
+   "date": "2025-01-06",
+   "event_id": "e0000000-0000-4000-8000-000000000003",
+   "ledger_seq": 3,
+   "listing": "-",
+   "quantity": null,
+   "type": "DEPOSIT"
+  },
+  {
+   "account": "A2 (HK)",
+   "amount": {
+    "amount": "17500",
+    "currency": "HKD"
+   },
+   "currency": "HKD",
+   "date": "2025-01-08",
+   "event_id": "e0000000-0000-4000-8000-000000000004",
+   "ledger_seq": 4,
+   "listing": "0700@XHKG",
+   "quantity": "500",
+   "type": "BUY"
+  },
+  {
+   "account": "A1 (US)",
+   "amount": null,
+   "currency": "USD",
+   "date": "2025-02-03",
+   "event_id": "e0000000-0000-4000-8000-000000000005",
+   "ledger_seq": 5,
+   "listing": "AAPL@XNYS",
+   "quantity": null,
+   "split_ratio": {
+    "new_units": "4",
+    "old_units": "1"
+   },
+   "type": "SPLIT"
+  },
+  {
+   "account": "A1 (US)",
+   "amount": {
+    "amount": "1000",
+    "currency": "USD"
+   },
+   "counterparty_account_id": "a1000000-0000-4000-8000-000000000003",
+   "currency": "USD",
+   "date": "2025-02-10",
+   "event_id": "e0000000-0000-4000-8000-000000000006",
+   "ledger_seq": 6,
+   "listing": "-",
+   "quantity": null,
+   "type": "TRANSFER_OUT"
+  },
+  {
+   "account": "A3 (US)",
+   "amount": {
+    "amount": "1000",
+    "currency": "USD"
+   },
+   "counterparty_account_id": "a1000000-0000-4000-8000-000000000001",
+   "currency": "USD",
+   "date": "2025-02-10",
+   "event_id": "e0000000-0000-4000-8000-000000000007",
+   "ledger_seq": 7,
+   "listing": "-",
+   "quantity": null,
+   "type": "TRANSFER_IN"
+  },
+  {
+   "account": "A1 (US)",
+   "amount": {
+    "amount": "2250",
+    "currency": "USD"
+   },
+   "currency": "USD",
+   "date": "2025-03-03",
+   "event_id": "e0000000-0000-4000-8000-000000000008",
+   "ledger_seq": 8,
+   "listing": "AAPL@XNYS",
+   "quantity": "50",
+   "type": "SELL"
+  },
+  {
+   "account": "A1 (US)",
+   "amount": null,
+   "currency": "USD",
+   "date": "2025-03-10",
+   "event_id": "e0000000-0000-4000-8000-000000000009",
+   "ledger_seq": 9,
+   "listing": "MSFT@XNYS",
+   "quantity": "10",
+   "type": "TRANSFER_IN"
+  },
+  {
+   "account": "A1 (US)",
+   "amount": {
+    "amount": "1000",
+    "currency": "USD"
+   },
+   "bought_amount": {
+    "amount": "7780",
+    "currency": "HKD"
+   },
+   "currency": "USD",
+   "date": "2025-04-02",
+   "event_id": "e0000000-0000-4000-8000-000000000010",
+   "ledger_seq": 10,
+   "listing": "-",
+   "quantity": null,
+   "settlement_date": "2025-04-04",
+   "type": "CURRENCY_CONVERSION"
+  },
+  {
+   "account": "A1 (US)",
+   "amount": {
+    "amount": "2",
+    "currency": "USD"
+   },
+   "currency": "USD",
+   "date": "2025-04-02",
+   "event_id": "e0000000-0000-4000-8000-000000000011",
+   "ledger_seq": 11,
+   "listing": "-",
+   "quantity": null,
+   "type": "FEE"
+  },
+  {
+   "account": "A1 (US)",
+   "amount": {
+    "amount": "7000",
+    "currency": "HKD"
+   },
+   "currency": "HKD",
+   "date": "2025-04-02",
+   "event_id": "e0000000-0000-4000-8000-000000000012",
+   "ledger_seq": 12,
+   "listing": "0700@XHKG",
+   "quantity": "200",
+   "type": "BUY"
+  },
+  {
+   "account": "A3 (US)",
+   "amount": {
+    "amount": "2000",
+    "currency": "USD"
+   },
+   "currency": "USD",
+   "date": "2025-05-05",
+   "event_id": "e0000000-0000-4000-8000-000000000013",
+   "ledger_seq": 13,
+   "listing": "MSFT@XNYS",
+   "quantity": "5",
+   "type": "BUY"
+  },
+  {
+   "account": "A3 (US)",
+   "amount": {
+    "amount": "1000",
+    "currency": "USD"
+   },
+   "currency": "USD",
+   "date": "2025-05-08",
+   "event_id": "e0000000-0000-4000-8000-000000000014",
+   "ledger_seq": 14,
+   "listing": "-",
+   "quantity": null,
+   "type": "DEPOSIT"
+  },
+  {
+   "account": "A3 (US)",
+   "amount": {
+    "amount": "3.50",
+    "currency": "USD"
+   },
+   "currency": "USD",
+   "date": "2025-05-31",
+   "event_id": "e0000000-0000-4000-8000-000000000015",
+   "ledger_seq": 15,
+   "listing": "-",
+   "quantity": null,
+   "type": "INTEREST_CHARGED"
+  },
+  {
+   "account": "A1 (US)",
+   "amount": null,
+   "currency": "USD",
+   "date": "2025-04-10",
+   "event_id": "e0000000-0000-4000-8000-000000000016",
+   "ledger_seq": 16,
+   "listing": "-",
+   "quantity": null,
+   "reverses_event_id": "e0000000-0000-4000-8000-000000000010",
+   "type": "REVERSAL"
+  },
+  {
+   "account": "A1 (US)",
+   "amount": {
+    "amount": "1000",
+    "currency": "USD"
+   },
+   "bought_amount": {
+    "amount": "7750",
+    "currency": "HKD"
+   },
+   "corrects_event_id": "e0000000-0000-4000-8000-000000000010",
+   "currency": "USD",
+   "date": "2025-04-02",
+   "event_id": "e0000000-0000-4000-8000-000000000017",
+   "ledger_seq": 17,
+   "listing": "-",
+   "quantity": null,
+   "settlement_date": "2025-04-04",
+   "type": "CURRENCY_CONVERSION"
+  },
+  {
+   "account": "A3 (US)",
+   "amount": {
+    "amount": "5000",
+    "currency": "USD"
+   },
+   "currency": "USD",
+   "date": "2025-06-02",
+   "event_id": "e0000000-0000-4000-8000-000000000018",
+   "ledger_seq": 18,
+   "listing": "-",
+   "quantity": null,
+   "type": "DEPOSIT"
+  },
+  {
+   "account": "A3 (US)",
+   "amount": {
+    "amount": "2100",
+    "currency": "USD"
+   },
+   "currency": "USD",
+   "date": "2025-06-03",
+   "event_id": "e0000000-0000-4000-8000-000000000019",
+   "ledger_seq": 19,
+   "listing": "MSFT@XNYS",
+   "quantity": "5",
+   "type": "BUY"
+  },
+  {
+   "account": "A3 (US)",
+   "amount": {
+    "amount": "1720",
+    "currency": "USD"
+   },
+   "currency": "USD",
+   "date": "2025-06-10",
+   "event_id": "e0000000-0000-4000-8000-000000000020",
+   "ledger_seq": 20,
+   "listing": "MSFT@XNYS",
+   "quantity": "4",
+   "type": "SELL"
+  },
+  {
+   "account": "A1 (US)",
+   "amount": {
+    "amount": "2000",
+    "currency": "USD"
+   },
+   "currency": "USD",
+   "date": "2025-06-16",
+   "event_id": "e0000000-0000-4000-8000-000000000021",
+   "ledger_seq": 21,
+   "listing": "AAPL@XNYS",
+   "quantity": "40",
+   "type": "SELL"
+  },
+  {
+   "account": "A1 (US)",
+   "amount": null,
+   "counterparty_account_id": "a1000000-0000-4000-8000-000000000003",
+   "currency": "USD",
+   "date": "2025-06-16",
+   "event_id": "e0000000-0000-4000-8000-000000000022",
+   "ledger_seq": 22,
+   "listing": "AAPL@XNYS",
+   "quantity": "110",
+   "type": "TRANSFER_OUT"
+  },
+  {
+   "account": "A3 (US)",
+   "amount": null,
+   "counterparty_account_id": "a1000000-0000-4000-8000-000000000001",
+   "currency": "USD",
+   "date": "2025-06-16",
+   "event_id": "e0000000-0000-4000-8000-000000000023",
+   "ledger_seq": 23,
+   "listing": "AAPL@XNYS",
+   "quantity": "110",
+   "type": "TRANSFER_IN"
+  },
+  {
+   "account": "A2 (HK)",
+   "amount": {
+    "amount": "500",
+    "currency": "HKD"
+   },
+   "currency": "HKD",
+   "date": "2025-06-20",
+   "event_id": "e0000000-0000-4000-8000-000000000024",
+   "ledger_seq": 24,
+   "listing": "-",
+   "quantity": null,
+   "type": "DEPOSIT"
+  },
+  {
+   "account": "A2 (HK)",
+   "amount": null,
+   "currency": "HKD",
+   "date": "2025-06-25",
+   "event_id": "e0000000-0000-4000-8000-000000000025",
+   "ledger_seq": 25,
+   "listing": "-",
+   "quantity": null,
+   "reverses_event_id": "e0000000-0000-4000-8000-000000000024",
+   "type": "REVERSAL"
+  },
+  {
+   "account": "A4 (CN, CNY)",
+   "amount": {
+    "amount": "30000",
+    "currency": "CNY"
+   },
+   "currency": "CNY",
+   "date": "2025-03-03",
+   "event_id": "e1000000-0000-4000-8000-000000000026",
+   "ledger_seq": 26,
+   "listing": "-",
+   "quantity": null,
+   "type": "DEPOSIT"
+  },
+  {
+   "account": "A4 (CN, CNY)",
+   "amount": {
+    "amount": "20000",
+    "currency": "CNY"
+   },
+   "currency": "CNY",
+   "date": "2025-03-03",
+   "event_id": "e1000000-0000-4000-8000-000000000027",
+   "ledger_seq": 27,
+   "listing": "SYNA@XSHG",
+   "quantity": "2000",
+   "type": "BUY"
+  },
+  {
+   "account": "A2 (HK)",
+   "amount": {
+    "amount": "1000",
+    "currency": "HKD"
+   },
+   "currency": "HKD",
+   "date": "2025-04-24",
+   "event_id": "e1000000-0000-4000-8000-000000000028",
+   "ex_date": "2025-04-10",
+   "ledger_seq": 28,
+   "listing": "0700@XHKG",
+   "quantity": null,
+   "type": "DIVIDEND"
+  },
+  {
+   "account": "A2 (HK)",
+   "amount": {
+    "amount": "100",
+    "currency": "HKD"
+   },
+   "currency": "HKD",
+   "date": "2025-04-24",
+   "event_id": "e1000000-0000-4000-8000-000000000029",
+   "ledger_seq": 29,
+   "listing": "0700@XHKG",
+   "quantity": null,
+   "type": "TAX"
+  },
+  {
+   "account": "A1 (US)",
+   "amount": {
+    "amount": "500",
+    "currency": "USD"
+   },
+   "currency": "USD",
+   "date": "2025-04-15",
+   "event_id": "e1000000-0000-4000-8000-000000000030",
+   "ledger_seq": 30,
+   "listing": "-",
+   "quantity": null,
+   "type": "WITHDRAWAL"
+  }
+ ],
+ "file_set_chosen_by_operator": {},
+ "kind": "SYNTHETIC_DEMONSTRATION_A",
+ "labels": {
+  "all_results_synthetic": true,
+  "any_result_synthetic": true,
+  "demonstration_ledger": "DEMONSTRATION LEDGER: these events are not a user's holdings (P8); they exist to exercise the engine.",
+  "fx_sources_in_m": [
+   {
+    "source_id": "synthetic.ecb_direct",
+    "what_it_is": "synthetic.ecb_direct"
+   }
+  ],
+  "label": "SYNTHETIC: every result below was computed from a market-data version that holds synthetic files; none is a real market fact (market-data Ruling 4.8).",
+  "pd_0035_caveat": "PD-0035 section 3: Mainland China and Hong Kong price behaviour is shown on SYNTHETIC data only. No admissible real CN or HK price source exists (PD-0031, PD-0032); the real slice is US prices (Alpha Vantage, the last 100 sessions) and ECB FX only. A synthetic result is never a real market fact (market-data Ruling 4.8)."
+ },
+ "ledger_version": 30,
+ "limitations": [
+  "Synthetic data throughout: this proves the engine and the pack, not a market fact.",
+  "Gains follow FIFO/1; a broker's lot method may differ.",
+  "`is_conformant` is False while the convention set's open items are listed (section 16)."
+ ],
+ "notes": [
+  "The as-of date 2025-04-30 is the last session of the synthetic CN series (SYNA); P1's later events (May and June) are in the ledger and not yet in force at that date.",
+  "YTD starts before the portfolio's first event, so it is an explicit INSUFFICIENT_DATA (WINDOW_BEFORE_INCEPTION), not a number.",
+  "SYNA has stale sessions 2025-03-17 to 03-19 (the golden P3 case): returns that need every day (attribution) are LIMITED + STALE_DATA there."
+ ],
+ "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+ "reporting_currency": "USD",
+ "requirements": [],
+ "subject": "DEMO-A: US + HK + CN synthetic cross-border portfolio",
+ "vintage_conflicts": [],
+ "windows": [
+  {
+   "base": null,
+   "label": "SINCE_INCEPTION",
+   "months": null,
+   "rule": "SINCE_INCEPTION"
+  },
+  {
+   "base": "2025-03-31",
+   "label": "CUSTOM_FROM_2025-03-31",
+   "months": null,
+   "rule": "CUSTOM"
+  },
+  {
+   "base": null,
+   "label": "TRAILING_1M",
+   "months": 1,
+   "rule": "TRAILING_MONTHS"
+  },
+  {
+   "base": null,
+   "label": "YTD",
+   "months": null,
+   "rule": "YTD"
+  }
+ ]
+}

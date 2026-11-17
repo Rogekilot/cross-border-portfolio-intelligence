@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cross-Border Portfolio Intelligence — HG1 Prototype (SYNTHETIC, design/prototype artifact)</title>
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/app.css" />
+</head>
+<body>
+<!-- Post-HG1 Checkpoint A — S1 (designer-33, 2026-09-15). This banner previously
+     read "... — NOT AN APPROVAL — HG1 remains REVISION_REQUIRED", both false
+     since HG1 was approved (decisions/product/PD-0017-hg1-approved.md). Fixed
+     by removing the mutable gate-state claim entirely and keeping only durable
+     artifact-status language (synthetic data; design-review prototype; not a
+     production implementation) — this banner stays canonical/untranslated by
+     design (see js/shell.js's CANONICAL_CONTENT_ALLOWLIST.brandAndBanner and
+     its own comment), so it must never again encode a gate decision that can
+     go stale. -->
+<div class="synthetic-banner">
+  SYNTHETIC DATA — HG1 DESIGN-REVIEW PROTOTYPE — NOT AN IMPLEMENTATION
+</div>
+
+<header class="app-header">
+  <div>
+    <span class="app-brand">Meridian Cross-Border</span>
+    <span class="app-brand-sub">Portfolio Intelligence</span>
+  </div>
+  <nav id="app-nav" aria-label="Primary"></nav>
+  <div class="app-header-right">
+    <div id="app-freshness-global" aria-label="Data freshness summary"></div>
+    <button type="button" id="app-ai-ask" class="ai-ask-btn">Ask your portfolio</button>
+    <!-- title/aria-label localized in js/shell.js's renderGlobalHeader() (HG1 Round 5,
+         Phase 2 correction pass — Blocker 3: persistent overlay chrome). The English
+         text below is the pre-boot/no-JS fallback only. -->
+    <button type="button" id="app-settings-btn" class="icon-btn" title="Portfolio Settings / Policy" aria-label="Portfolio Settings / Policy">&#9881;</button>
+  </div>
+</header>
+
+<nav id="app-subnav" aria-label="Secondary" hidden></nav>
+
+<div class="app-workspace">
+  <main id="app-content-wrap">
+    <div id="app-content" class="app-content-inner" role="main"></div>
+  </main>
+
+  <aside id="app-inspector" aria-label="Inspector">
+    <button type="button" id="app-inspector-toggle" title="Toggle inspector">&#8942;</button>
+    <div id="app-inspector-inner">
+      <div id="app-inspector-title"></div>
+      <div id="app-inspector-body"></div>
+    </div>
+  </aside>
+</div>
+
+<footer class="app-footer">
+  <!-- HG1 Round 5 SECOND micro-pass (Defect 3) — this lowercase footer sentence is a
+       DIFFERENT string from the uppercase `.synthetic-banner` div above (which is
+       deliberately kept canonical/untranslated — see js/shell.js's
+       CANONICAL_CONTENT_ALLOWLIST.brandAndBanner and its own comment on why). This one
+       is ordinary UI prose and was a genuine, unaddressed localization gap on all five
+       routes (the footer is outside any registered surface). English below is the
+       pre-boot/no-JS fallback only; js/shell.js's localizeStaticChrome() (called at
+       boot and on every language switch) overwrites it from I18N, same pattern as the
+       three overlay titles/aria-labels and the methodology link text immediately below. -->
+  <!-- Post-HG1 Checkpoint A — S1 (designer-33, 2026-09-15): "Not an approval."
+       removed (false since PD-0017; HG1 = APPROVED). Durable artifact-status
+       language only, kept in sync with js/shell.js's runtime
+       common.syntheticFooterNote (both locales), which overwrites this
+       pre-boot fallback at boot. -->
+  <span id="app-footer-synthetic-note">Synthetic data. HG1 design-review prototype. Not an implementation.</span> ·
+  <a href="#" id="app-footer-methodology-link">Methodology &amp; Evidence Registry</a>
+</footer>
+
+<!-- ==================== Evidence / Methodology overlay (D4, P9) ==================== -->
+<div class="app-overlay" id="app-evidence-overlay" hidden aria-label="Evidence and Methodology">
+  <div class="app-overlay-head">
+    <strong id="app-evidence-overlay-title">Evidence &amp; Methodology</strong>
+    <button type="button" class="app-overlay-close" id="app-evidence-overlay-close" aria-label="Close">&times;</button>
+  </div>
+  <div class="app-overlay-body" id="app-evidence-overlay-body"></div>
+</div>
+
+<!-- ==================== AI Analyst overlay (§22) ==================== -->
+<div class="app-overlay" id="app-ai-overlay" hidden aria-label="AI Analyst">
+  <div class="app-overlay-head">
+    <strong id="app-ai-overlay-title">AI Analyst</strong>
+    <button type="button" class="app-overlay-close" id="app-ai-overlay-close" aria-label="Close">&times;</button>
+  </div>
+  <div class="app-overlay-body" id="app-ai-overlay-body"></div>
+</div>
+
+<!-- ==================== Settings / Policy overlay (D1 surface 10) ==================== -->
+<div class="app-overlay" id="app-settings-overlay" hidden aria-label="Portfolio Settings and Policy">
+  <div class="app-overlay-head">
+    <strong id="app-settings-overlay-title">Settings / Policy</strong>
+    <button type="button" class="app-overlay-close" id="app-settings-overlay-close" aria-label="Close">&times;</button>
+  </div>
+  <div class="app-overlay-body" id="app-settings-overlay-body"></div>
+</div>
+<!-- HG1 Round 5, Phase 2 correction pass — Blocker 3. The three `aria-label`s above,
+     the two `<strong>` titles' textContent, the gear button's title/aria-label, and
+     the footer link's textContent are all static English fallbacks (pre-boot / no-JS)
+     — js/shell.js's renderGlobalHeader() (called at boot and on every language
+     switch) overwrites all of them from I18N, so a `lang=zh` session never sees this
+     English text once the app has booted. See js/shell.js's localizeStaticChrome(). -->
+
+<!--
+  Script load order is the contract (see CONTRACT.md "Load order"):
+  1. shell.js     — defines window.APP, registration API, router, shared UI primitives.
+  2. data.js      — attaches window.APP.data (pure data + accessors).
+  2a. selfcheck.js — HG1 round-4 (PD-0014 §2.2): 21 self-check assertions against
+      window.APP.data, each with a paired injectDefect negative test. Static tag added
+      here (this designer's write path includes index.html) so designer-19 — whose own
+      write path is js/data.js/js/selfcheck.js/CONTRACT.md only, and does NOT include
+      index.html — no longer needs data.js to inject this script tag itself at runtime
+      as a workaround for that write-path split; designer-19 removes that injection
+      block from data.js once this static tag is confirmed present.
+  3. charts.js    — attaches window.APP.charts (pure SVG chart functions).
+  4. surfaces/*   — phase-2 modules; each calls APP.registerSurface(...).
+  5. ai.js, evidence.js — phase-2 modules; call APP.registerAI(...) / APP.registerEvidence(...).
+  Any file below that does not yet exist will simply fail its network request; shell.js
+  is written to render a clearly-marked "not yet built" panel for any surface, AI, or
+  Evidence module that has not registered by the time a route needs it.
+-->
+<script src="js/shell.js"></script>
+<script src="js/data.js"></script>
+<script src="js/selfcheck.js"></script>
+<!-- HG1 Round 5 micro-pass (Item 2) — a SIBLING to selfcheck.js (which reads only
+     window.APP.data, by design), not an addition to it: this file's assertions are
+     about the i18n/classifier layer (window.APP.i18n / window.APP.ui), a different
+     boundary. Loaded after both shell.js and data.js, which it depends on. -->
+<script src="js/i18n-selfcheck.js"></script>
+<script src="js/charts.js"></script>
+
+<!-- Phase 2 — designer-10 -->
+<script src="js/surfaces/overview.js"></script>
+<!-- Phase 2 — designer-11 -->
+<script src="js/surfaces/portfolio.js"></script>
+<script src="js/surfaces/ingest.js"></script>
+<!-- Phase 2 — designer-12 -->
+<script src="js/surfaces/analytics.js"></script>
+<!-- Phase 2 — designer-13 -->
+<script src="js/surfaces/scenario.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/evidence.js"></script>
+</body>
+</html>

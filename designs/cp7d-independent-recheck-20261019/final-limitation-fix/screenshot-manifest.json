@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/designer_cp7d",
+  "candidate_inventory_path": "reviews/CP7_D_EVIDENCE/validation/candidate-final-known-reason-code-hashes.json",
+  "candidate_inventory_sha256": "5a57190d41bdf8df7c6286e765bb1f3865a2934ed995aa35443169d3ce411ca8",
+  "same_identity_reused": true,
+  "new_registrations": 0,
+  "latest_revision": "02c6603d-a6e6-5f62-b7d0-c0fb8f0b1b96",
+  "own_tab": "1460642544",
+  "count": 4,
+  "cleanup": "Viewport reset; logout actual Guest and private fact clearing; own tab closed; credentials cleared; runtime explicitly released.",
+  "files": {
+    "14-incomplete-valuation-local-label-both-en.jpg": {
+      "sha256": "f7cc8f3cb282d2e5cafe815a776851587dec750e90cc2e002c1af46f312d97ca",
+      "bytes": 63583,
+      "mime_type": "image/jpeg",
+      "width": 1512,
+      "height": 736,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    },
+    "15-incomplete-valuation-local-label-both-zh.jpg": {
+      "sha256": "f971350318a0c154c9bc32be42193118d3a8b01cf64b818a639a24d938259e1c",
+      "bytes": 55155,
+      "mime_type": "image/jpeg",
+      "width": 1512,
+      "height": 736,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    },
+    "16-incomplete-valuation-local-label-390-zh.jpg": {
+      "sha256": "6d35e0dbdcb02ba94cda8128ce4d64b1d4f43d55093f3f8967d90c10dfe2b814",
+      "bytes": 32080,
+      "mime_type": "image/jpeg",
+      "width": 390,
+      "height": 844,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    },
+    "17-final-signed-out-cleared-zh.jpg": {
+      "sha256": "a28800a0d4ef239e07b7a282e5ed7de77ec29de6f9e7fc5e5e0fdaadaecfe1d7",
+      "bytes": 53126,
+      "mime_type": "image/jpeg",
+      "width": 1512,
+      "height": 736,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    }
+  }
+}

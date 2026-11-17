@@ -1,0 +1,619 @@
+{
+ "data": {
+  "gain_metrics_that_stay_available_or_limited": [],
+  "metrics_returning_MISSING_COST_BASIS": [
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "remaining_basis",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "value": null,
+    "view": "NATIVE",
+    "window": "SINCE_INCEPTION"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "remaining_basis",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "value": null,
+    "view": "REPORTING",
+    "window": "SINCE_INCEPTION"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "since_acquisition",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ],
+     [
+      "lot",
+      "e0000000-0000-4000-8000-000000000009"
+     ]
+    ],
+    "value": null,
+    "view": "REPORTING",
+    "window": "SINCE_INCEPTION"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "unrealized_gain",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "value": null,
+    "view": "NATIVE",
+    "window": "SINCE_INCEPTION"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "unrealized_gain",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "value": null,
+    "view": "REPORTING",
+    "window": "SINCE_INCEPTION"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "unrealized_gain_total",
+    "reason": "MISSING_COST_BASIS",
+    "state": "LIMITED",
+    "subject": [],
+    "value": "1467.72",
+    "view": "REPORTING",
+    "window": "SINCE_INCEPTION"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "remaining_basis",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "value": null,
+    "view": "NATIVE",
+    "window": "CUSTOM_FROM_2025-03-31"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "remaining_basis",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "value": null,
+    "view": "REPORTING",
+    "window": "CUSTOM_FROM_2025-03-31"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "since_acquisition",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ],
+     [
+      "lot",
+      "e0000000-0000-4000-8000-000000000009"
+     ]
+    ],
+    "value": null,
+    "view": "REPORTING",
+    "window": "CUSTOM_FROM_2025-03-31"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "unrealized_gain",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "value": null,
+    "view": "NATIVE",
+    "window": "CUSTOM_FROM_2025-03-31"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "unrealized_gain",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "value": null,
+    "view": "REPORTING",
+    "window": "CUSTOM_FROM_2025-03-31"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "unrealized_gain_total",
+    "reason": "MISSING_COST_BASIS",
+    "state": "LIMITED",
+    "subject": [],
+    "value": "1467.72",
+    "view": "REPORTING",
+    "window": "CUSTOM_FROM_2025-03-31"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "remaining_basis",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "value": null,
+    "view": "NATIVE",
+    "window": "TRAILING_1M"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "remaining_basis",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "value": null,
+    "view": "REPORTING",
+    "window": "TRAILING_1M"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "since_acquisition",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ],
+     [
+      "lot",
+      "e0000000-0000-4000-8000-000000000009"
+     ]
+    ],
+    "value": null,
+    "view": "REPORTING",
+    "window": "TRAILING_1M"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "unrealized_gain",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "value": null,
+    "view": "NATIVE",
+    "window": "TRAILING_1M"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "unrealized_gain",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "value": null,
+    "view": "REPORTING",
+    "window": "TRAILING_1M"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "unrealized_gain_total",
+    "reason": "MISSING_COST_BASIS",
+    "state": "LIMITED",
+    "subject": [],
+    "value": "1467.72",
+    "view": "REPORTING",
+    "window": "TRAILING_1M"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "remaining_basis",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "value": null,
+    "view": "NATIVE",
+    "window": "YTD"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "remaining_basis",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "value": null,
+    "view": "REPORTING",
+    "window": "YTD"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "since_acquisition",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ],
+     [
+      "lot",
+      "e0000000-0000-4000-8000-000000000009"
+     ]
+    ],
+    "value": null,
+    "view": "REPORTING",
+    "window": "YTD"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "unrealized_gain",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "value": null,
+    "view": "NATIVE",
+    "window": "YTD"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "unrealized_gain",
+    "reason": "MISSING_COST_BASIS",
+    "state": "INSUFFICIENT_DATA",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "value": null,
+    "view": "REPORTING",
+    "window": "YTD"
+   },
+   {
+    "details": [
+     "UNKNOWN_BASIS"
+    ],
+    "metric_id": "unrealized_gain_total",
+    "reason": "MISSING_COST_BASIS",
+    "state": "LIMITED",
+    "subject": [],
+    "value": "1467.72",
+    "view": "REPORTING",
+    "window": "YTD"
+   }
+  ],
+  "reading": "a missing basis withholds the realized and unrealized gain (never 0, never market value); the value, G, TWR and MWR do not need a basis and stay available",
+  "valuation_and_returns_unaffected": [
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "3652798/1885",
+    "manifest_id": "752261ae07538eb4e53211c253d1f2a126750a1f1fc7b2e2fb826857e818026b",
+    "metric_id": "gain_absolute",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "1937.82",
+    "view": "PERIOD"
+   },
+   {
+    "currency": null,
+    "details": [],
+    "exact": "9965606862285551/88492820629868750",
+    "manifest_id": "752261ae07538eb4e53211c253d1f2a126750a1f1fc7b2e2fb826857e818026b",
+    "metric_id": "return_twr",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "0.112614862893",
+    "view": "PERIOD"
+   },
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "2715182/16965",
+    "manifest_id": "d1331a0c49db3e81780fc0f3ccaa2ca4942f6197fec33eb7b69518cc998565ba",
+    "metric_id": "gain_absolute",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "160.05",
+    "view": "PERIOD"
+   },
+   {
+    "currency": null,
+    "details": [],
+    "exact": "2179275444241/307042260241250",
+    "manifest_id": "d1331a0c49db3e81780fc0f3ccaa2ca4942f6197fec33eb7b69518cc998565ba",
+    "metric_id": "return_twr",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "0.007097640053",
+    "view": "PERIOD"
+   },
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "2715182/16965",
+    "manifest_id": "9f7c6faa449e7e9feac6dcbb84270741f154dfb01344c6ccf2b316abf3342663",
+    "metric_id": "gain_absolute",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "160.05",
+    "view": "PERIOD"
+   },
+   {
+    "currency": null,
+    "details": [],
+    "exact": "2179275444241/307042260241250",
+    "manifest_id": "9f7c6faa449e7e9feac6dcbb84270741f154dfb01344c6ccf2b316abf3342663",
+    "metric_id": "return_twr",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "0.007097640053",
+    "view": "PERIOD"
+   },
+   {
+    "currency": "USD",
+    "details": [
+     "WINDOW_BEFORE_INCEPTION"
+    ],
+    "exact": null,
+    "manifest_id": "a2f7dbf6ced8eebfeda9309aca08165a993b0a32f6eb7c531d0ea9f8ab011fda",
+    "metric_id": "gain_absolute",
+    "reason": null,
+    "state": "INSUFFICIENT_DATA",
+    "subject": [],
+    "synthetic": true,
+    "value": null,
+    "view": "PERIOD"
+   },
+   {
+    "currency": null,
+    "details": [
+     "WINDOW_BEFORE_INCEPTION"
+    ],
+    "exact": null,
+    "manifest_id": "a2f7dbf6ced8eebfeda9309aca08165a993b0a32f6eb7c531d0ea9f8ab011fda",
+    "metric_id": "return_twr",
+    "reason": null,
+    "state": "INSUFFICIENT_DATA",
+    "subject": [],
+    "synthetic": true,
+    "value": null,
+    "view": "PERIOD"
+   }
+  ]
+ },
+ "kind": "SYNTHETIC_DEMONSTRATION_A",
+ "labels": {
+  "all_results_synthetic": true,
+  "any_result_synthetic": true,
+  "demonstration_ledger": "DEMONSTRATION LEDGER: these events are not a user's holdings (P8); they exist to exercise the engine.",
+  "fx_sources_in_m": [
+   {
+    "source_id": "synthetic.ecb_direct",
+    "what_it_is": "synthetic.ecb_direct"
+   }
+  ],
+  "label": "SYNTHETIC: every result below was computed from a market-data version that holds synthetic files; none is a real market fact (market-data Ruling 4.8).",
+  "pd_0035_caveat": "PD-0035 section 3: Mainland China and Hong Kong price behaviour is shown on SYNTHETIC data only. No admissible real CN or HK price source exists (PD-0031, PD-0032); the real slice is US prices (Alpha Vantage, the last 100 sessions) and ECB FX only. A synthetic result is never a real market fact (market-data Ruling 4.8)."
+ },
+ "section": "10_missing_cost_basis",
+ "subject": "DEMO-A: US + HK + CN synthetic cross-border portfolio",
+ "title": "Missing cost basis behaviour"
+}

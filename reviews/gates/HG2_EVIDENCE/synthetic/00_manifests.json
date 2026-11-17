@@ -1,0 +1,4408 @@
+{
+ "computations": [
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "b7a3a8cffa3464d50cbc7afff6147d4e91432d4ef52cae6dce8bb08b622f2167",
+   "identities_run": [
+    "I-1"
+   ],
+   "key": "valuation@2025-04-30",
+   "kind": "valuation",
+   "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  },
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "83d4fa7b2c7b7093cfcf1accdd43ae606905bc4bde907ed6e769ba1236274ca6",
+   "identities_run": [
+    "I-1"
+   ],
+   "key": "valuation@2025-04-23",
+   "kind": "valuation",
+   "manifest_id": "4ee7019bacbddc3c1a1cb2569ea40e42a32494f060904e6d5c357516110b1e0f",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  },
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "43d34d1bafdc379b9ee8fb79b635989013454d18387365d0c6fe53d3445f09e2",
+   "identities_run": [
+    "I-2",
+    "I-3",
+    "I-6"
+   ],
+   "key": "window:SINCE_INCEPTION",
+   "kind": "window",
+   "manifest_id": "752261ae07538eb4e53211c253d1f2a126750a1f1fc7b2e2fb826857e818026b",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  },
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "77151e8a086947a8d8c93fa8104a4b5c36014e06178611474eeba73cf48d8c4e",
+   "identities_run": [
+    "I-5",
+    "I-8"
+   ],
+   "key": "gains:SINCE_INCEPTION",
+   "kind": "gains",
+   "manifest_id": "ebf57afcc0af965c0ea3e973447cd9cb1d87545a5726431851e5dbaa3edacbc4",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  },
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "800120c232566519949947bce3a557aa0b1fa6b6d62e0eccd4cb1a20d2242dcd",
+   "identities_run": [
+    "I-2",
+    "I-3",
+    "I-4",
+    "I-9"
+   ],
+   "key": "attribution:SINCE_INCEPTION",
+   "kind": "attribution",
+   "manifest_id": "679691f4f17470521f4e0438d08ced2b33e32b547a9bb567ae4be332d6d8648a",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  },
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "718b5c8543ce76b0d4b8c5ecb31167a2bbcb95268bfeed27200c8936a68e9a74",
+   "identities_run": [
+    "I-1"
+   ],
+   "key": "valuation@2025-01-01",
+   "kind": "valuation",
+   "manifest_id": "12174ebc0e817bf427872683c16903d86217b51b9d6436be1fcdf8112bb2f5c3",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  },
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "fc4aeb7228a9b93458ab0f7d5b8e083a0a7859b194754e6cf6a86c2f29972ead",
+   "identities_run": [
+    "I-2",
+    "I-3",
+    "I-6"
+   ],
+   "key": "window:CUSTOM_FROM_2025-03-31",
+   "kind": "window",
+   "manifest_id": "d1331a0c49db3e81780fc0f3ccaa2ca4942f6197fec33eb7b69518cc998565ba",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  },
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "7cc87e18e7f643ce9ee1ed9ba750ce891cb72ae074d4bc0bf2d3e888fbd51818",
+   "identities_run": [
+    "I-5",
+    "I-8"
+   ],
+   "key": "gains:CUSTOM_FROM_2025-03-31",
+   "kind": "gains",
+   "manifest_id": "8b4065464ba7c6a726662ca572cfa5e63b0eb9cc99d795f2af1873767b854aa0",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  },
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "48b6e9f6a3b0eb3f301a37075fc17f6234193e0d6b95f5f7ac73fe34a479d25d",
+   "identities_run": [
+    "I-2",
+    "I-3",
+    "I-4",
+    "I-9"
+   ],
+   "key": "attribution:CUSTOM_FROM_2025-03-31",
+   "kind": "attribution",
+   "manifest_id": "2c2bc30ffab09ba776164758812aebaf47b54269ef58be74c8c5f938c70e9dba",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  },
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "91113ba5bd7fc13005e96f4edad10c82d99fc0686f6608249dbd27315e29c07f",
+   "identities_run": [
+    "I-1"
+   ],
+   "key": "valuation@2025-03-31",
+   "kind": "valuation",
+   "manifest_id": "6612c14e5d6a0515684480ecbe7d24bb3bbea1e9a5db1e1a3ba5b1d339181d7d",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  },
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "9652b1107fa7555316ae829412c3e770b8252a32a74ed2ee431639d628b385ea",
+   "identities_run": [
+    "I-2",
+    "I-3",
+    "I-6"
+   ],
+   "key": "window:TRAILING_1M",
+   "kind": "window",
+   "manifest_id": "9f7c6faa449e7e9feac6dcbb84270741f154dfb01344c6ccf2b316abf3342663",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  },
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "c2020ae891259424bcd770707e2eef91e480f8a228feec05cb163507c2d908e2",
+   "identities_run": [
+    "I-5",
+    "I-8"
+   ],
+   "key": "gains:TRAILING_1M",
+   "kind": "gains",
+   "manifest_id": "5814e842257629e36476f9f61d00e8ecd674ffaf0ebf0aff034aaad567c3c292",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  },
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "dfed5cfa200e31b19339fbf9641a83e17f07b02642f3002617a869f2ff889886",
+   "identities_run": [
+    "I-2",
+    "I-3",
+    "I-4",
+    "I-9"
+   ],
+   "key": "attribution:TRAILING_1M",
+   "kind": "attribution",
+   "manifest_id": "465ccf3f4220a51e94d1dd521ca3102f46d51f87ced54f53a5414b3ccdfd646e",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  },
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "2a8590c097172d3bc0c6edcbb66a86c9f65bcf5c4b1e5f92976af97a823b63f6",
+   "identities_run": [],
+   "key": "window:YTD",
+   "kind": "window",
+   "manifest_id": "a2f7dbf6ced8eebfeda9309aca08165a993b0a32f6eb7c531d0ea9f8ab011fda",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  },
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "f9cf96d6dbaa00cb2d3f49729ceca8a56787c6759a2c189e302941f803059833",
+   "identities_run": [
+    "I-5",
+    "I-8"
+   ],
+   "key": "gains:YTD",
+   "kind": "gains",
+   "manifest_id": "4875b0249fedcfa0acca21a14d9bcc0414fae9a400f51de2600a1fa57a0965a3",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  },
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "cc4d3ffbbf0fb025ced82706d41dba5e87cb1708ecdbc57974a8273e423c5d51",
+   "identities_run": [
+    "I-2",
+    "I-3",
+    "I-4",
+    "I-9"
+   ],
+   "key": "attribution:YTD",
+   "kind": "attribution",
+   "manifest_id": "d18a8fcd41d1a97b1f1c3c259f04bb9206649774c4fc661bb707040f4b636b9f",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  },
+  {
+   "detail": "",
+   "engine_id": "performance/cp3f-0.10",
+   "expected_result_digest": "ef3e6d745d278a956f08adfb4a43b9c5ed07f786fe167ded0d71a6407d61585a",
+   "identities_run": [
+    "I-1"
+   ],
+   "key": "valuation@2024-12-31",
+   "kind": "valuation",
+   "manifest_id": "64ef6c0e84fd635418a5d501dc57feb7b9c3b9fe4b007090f4b94639c630e6bc",
+   "reproduced": true,
+   "reproduction": "REPRODUCED",
+   "synthetic": true
+  }
+ ],
+ "labels": {
+  "all_results_synthetic": true,
+  "any_result_synthetic": true,
+  "demonstration_ledger": "DEMONSTRATION LEDGER: these events are not a user's holdings (P8); they exist to exercise the engine.",
+  "fx_sources_in_m": [
+   {
+    "source_id": "synthetic.ecb_direct",
+    "what_it_is": "synthetic.ecb_direct"
+   }
+  ],
+  "label": "SYNTHETIC: every result below was computed from a market-data version that holds synthetic files; none is a real market fact (market-data Ruling 4.8).",
+  "pd_0035_caveat": "PD-0035 section 3: Mainland China and Hong Kong price behaviour is shown on SYNTHETIC data only. No admissible real CN or HK price source exists (PD-0031, PD-0032); the real slice is US prices (Alpha Vantage, the last 100 sessions) and ECB FX only. A synthetic result is never a real market fact (market-data Ruling 4.8)."
+ },
+ "manifests": {
+  "attribution:CUSTOM_FROM_2025-03-31": {
+   "as_of": "2025-04-30",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+    }
+   ],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "206c36c2f24f4da36b43d7ac4aa3bc589537adf9a1710fbe202884e6a89484e5"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+      },
+      {
+       "adapter_id": "synthetic.sina_hk.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "7eb5006f93105014776ab9295a574276b21ec9af35fa5c01cef6e54f760f9cdb"
+      },
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "a0f0179c0829fe79593a0c211658d86993023ec23b9903f02b25826adbc1e97f"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+      },
+      {
+       "adapter_id": "synthetic.eastmoney_cn.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "f44cf4b8829f3c098c5c68207cdbac92ad1ab741ca3abf692aef93e8a505a62e"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "QUOTE",
+     "range_end": "2025-04-30",
+     "range_start": "2025-03-31",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    },
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.ecb_direct.fx",
+       "adapter_version": "0.1.0",
+       "file_sha256": "73559db60807a482355dab868d1dce26b8b2e049525c16a727d2de3b1da26e59"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "FX",
+     "range_end": "2025-04-30",
+     "range_start": "2025-03-31",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    }
+   ],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [
+    "I-2",
+    "I-3",
+    "I-4",
+    "I-9"
+   ],
+   "identity_digest": "9283b24733acdb1e29f75fb3d22f31bb9d2a728e763fee245211f90fdb71a431",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214",
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2025-04-30",
+    "frequency": null,
+    "months": null,
+    "rule": "CUSTOM",
+    "since_snapshot": false,
+    "start": "2025-03-31"
+   }
+  },
+  "attribution:SINCE_INCEPTION": {
+   "as_of": "2025-04-30",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+    }
+   ],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "206c36c2f24f4da36b43d7ac4aa3bc589537adf9a1710fbe202884e6a89484e5"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+      },
+      {
+       "adapter_id": "synthetic.sina_hk.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "7eb5006f93105014776ab9295a574276b21ec9af35fa5c01cef6e54f760f9cdb"
+      },
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "a0f0179c0829fe79593a0c211658d86993023ec23b9903f02b25826adbc1e97f"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+      },
+      {
+       "adapter_id": "synthetic.eastmoney_cn.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "f44cf4b8829f3c098c5c68207cdbac92ad1ab741ca3abf692aef93e8a505a62e"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "QUOTE",
+     "range_end": "2025-04-30",
+     "range_start": "2025-01-01",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    },
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.ecb_direct.fx",
+       "adapter_version": "0.1.0",
+       "file_sha256": "73559db60807a482355dab868d1dce26b8b2e049525c16a727d2de3b1da26e59"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "FX",
+     "range_end": "2025-04-30",
+     "range_start": "2025-01-01",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    }
+   ],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [
+    "I-2",
+    "I-3",
+    "I-4",
+    "I-9"
+   ],
+   "identity_digest": "9283b24733acdb1e29f75fb3d22f31bb9d2a728e763fee245211f90fdb71a431",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214",
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2025-04-30",
+    "frequency": null,
+    "months": null,
+    "rule": "SINCE_INCEPTION",
+    "since_snapshot": false,
+    "start": "2025-01-01"
+   }
+  },
+  "attribution:TRAILING_1M": {
+   "as_of": "2025-04-30",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+    }
+   ],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "206c36c2f24f4da36b43d7ac4aa3bc589537adf9a1710fbe202884e6a89484e5"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+      },
+      {
+       "adapter_id": "synthetic.sina_hk.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "7eb5006f93105014776ab9295a574276b21ec9af35fa5c01cef6e54f760f9cdb"
+      },
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "a0f0179c0829fe79593a0c211658d86993023ec23b9903f02b25826adbc1e97f"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+      },
+      {
+       "adapter_id": "synthetic.eastmoney_cn.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "f44cf4b8829f3c098c5c68207cdbac92ad1ab741ca3abf692aef93e8a505a62e"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "QUOTE",
+     "range_end": "2025-04-30",
+     "range_start": "2025-03-31",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    },
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.ecb_direct.fx",
+       "adapter_version": "0.1.0",
+       "file_sha256": "73559db60807a482355dab868d1dce26b8b2e049525c16a727d2de3b1da26e59"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "FX",
+     "range_end": "2025-04-30",
+     "range_start": "2025-03-31",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    }
+   ],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [
+    "I-2",
+    "I-3",
+    "I-4",
+    "I-9"
+   ],
+   "identity_digest": "9283b24733acdb1e29f75fb3d22f31bb9d2a728e763fee245211f90fdb71a431",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214",
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2025-04-30",
+    "frequency": null,
+    "months": 1,
+    "rule": "TRAILING_MONTHS",
+    "since_snapshot": false,
+    "start": "2025-03-31"
+   }
+  },
+  "attribution:YTD": {
+   "as_of": "2025-04-30",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [
+    "I-2",
+    "I-3",
+    "I-4",
+    "I-9"
+   ],
+   "identity_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": null,
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2025-04-30",
+    "frequency": null,
+    "months": null,
+    "rule": "YTD",
+    "since_snapshot": false,
+    "start": "2024-12-31"
+   }
+  },
+  "gains:CUSTOM_FROM_2025-03-31": {
+   "as_of": "2025-04-30",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+    }
+   ],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "206c36c2f24f4da36b43d7ac4aa3bc589537adf9a1710fbe202884e6a89484e5"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+      },
+      {
+       "adapter_id": "synthetic.sina_hk.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "7eb5006f93105014776ab9295a574276b21ec9af35fa5c01cef6e54f760f9cdb"
+      },
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "a0f0179c0829fe79593a0c211658d86993023ec23b9903f02b25826adbc1e97f"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+      },
+      {
+       "adapter_id": "synthetic.eastmoney_cn.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "f44cf4b8829f3c098c5c68207cdbac92ad1ab741ca3abf692aef93e8a505a62e"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "QUOTE",
+     "range_end": "2025-04-30",
+     "range_start": "2025-04-30",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    },
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.ecb_direct.fx",
+       "adapter_version": "0.1.0",
+       "file_sha256": "73559db60807a482355dab868d1dce26b8b2e049525c16a727d2de3b1da26e59"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "FX",
+     "range_end": "2025-04-30",
+     "range_start": "2025-01-08",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    }
+   ],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [
+    "I-5",
+    "I-8"
+   ],
+   "identity_digest": "9283b24733acdb1e29f75fb3d22f31bb9d2a728e763fee245211f90fdb71a431",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214",
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2025-04-30",
+    "frequency": null,
+    "months": null,
+    "rule": "CUSTOM",
+    "since_snapshot": false,
+    "start": "2025-03-31"
+   }
+  },
+  "gains:SINCE_INCEPTION": {
+   "as_of": "2025-04-30",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+    }
+   ],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "206c36c2f24f4da36b43d7ac4aa3bc589537adf9a1710fbe202884e6a89484e5"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+      },
+      {
+       "adapter_id": "synthetic.sina_hk.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "7eb5006f93105014776ab9295a574276b21ec9af35fa5c01cef6e54f760f9cdb"
+      },
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "a0f0179c0829fe79593a0c211658d86993023ec23b9903f02b25826adbc1e97f"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+      },
+      {
+       "adapter_id": "synthetic.eastmoney_cn.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "f44cf4b8829f3c098c5c68207cdbac92ad1ab741ca3abf692aef93e8a505a62e"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "QUOTE",
+     "range_end": "2025-04-30",
+     "range_start": "2025-04-30",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    },
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.ecb_direct.fx",
+       "adapter_version": "0.1.0",
+       "file_sha256": "73559db60807a482355dab868d1dce26b8b2e049525c16a727d2de3b1da26e59"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "FX",
+     "range_end": "2025-04-30",
+     "range_start": "2025-01-08",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    }
+   ],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [
+    "I-5",
+    "I-8"
+   ],
+   "identity_digest": "9283b24733acdb1e29f75fb3d22f31bb9d2a728e763fee245211f90fdb71a431",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214",
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2025-04-30",
+    "frequency": null,
+    "months": null,
+    "rule": "SINCE_INCEPTION",
+    "since_snapshot": false,
+    "start": "2025-01-01"
+   }
+  },
+  "gains:TRAILING_1M": {
+   "as_of": "2025-04-30",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+    }
+   ],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "206c36c2f24f4da36b43d7ac4aa3bc589537adf9a1710fbe202884e6a89484e5"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+      },
+      {
+       "adapter_id": "synthetic.sina_hk.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "7eb5006f93105014776ab9295a574276b21ec9af35fa5c01cef6e54f760f9cdb"
+      },
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "a0f0179c0829fe79593a0c211658d86993023ec23b9903f02b25826adbc1e97f"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+      },
+      {
+       "adapter_id": "synthetic.eastmoney_cn.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "f44cf4b8829f3c098c5c68207cdbac92ad1ab741ca3abf692aef93e8a505a62e"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "QUOTE",
+     "range_end": "2025-04-30",
+     "range_start": "2025-04-30",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    },
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.ecb_direct.fx",
+       "adapter_version": "0.1.0",
+       "file_sha256": "73559db60807a482355dab868d1dce26b8b2e049525c16a727d2de3b1da26e59"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "FX",
+     "range_end": "2025-04-30",
+     "range_start": "2025-01-08",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    }
+   ],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [
+    "I-5",
+    "I-8"
+   ],
+   "identity_digest": "9283b24733acdb1e29f75fb3d22f31bb9d2a728e763fee245211f90fdb71a431",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214",
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2025-04-30",
+    "frequency": null,
+    "months": 1,
+    "rule": "TRAILING_MONTHS",
+    "since_snapshot": false,
+    "start": "2025-03-31"
+   }
+  },
+  "gains:YTD": {
+   "as_of": "2025-04-30",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+    }
+   ],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "206c36c2f24f4da36b43d7ac4aa3bc589537adf9a1710fbe202884e6a89484e5"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+      },
+      {
+       "adapter_id": "synthetic.sina_hk.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "7eb5006f93105014776ab9295a574276b21ec9af35fa5c01cef6e54f760f9cdb"
+      },
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "a0f0179c0829fe79593a0c211658d86993023ec23b9903f02b25826adbc1e97f"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+      },
+      {
+       "adapter_id": "synthetic.eastmoney_cn.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "f44cf4b8829f3c098c5c68207cdbac92ad1ab741ca3abf692aef93e8a505a62e"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "QUOTE",
+     "range_end": "2025-04-30",
+     "range_start": "2025-04-30",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    },
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.ecb_direct.fx",
+       "adapter_version": "0.1.0",
+       "file_sha256": "73559db60807a482355dab868d1dce26b8b2e049525c16a727d2de3b1da26e59"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "FX",
+     "range_end": "2025-04-30",
+     "range_start": "2025-01-08",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    }
+   ],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [
+    "I-5",
+    "I-8"
+   ],
+   "identity_digest": "9283b24733acdb1e29f75fb3d22f31bb9d2a728e763fee245211f90fdb71a431",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214",
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2025-04-30",
+    "frequency": null,
+    "months": null,
+    "rule": "YTD",
+    "since_snapshot": false,
+    "start": "2024-12-31"
+   }
+  },
+  "valuation@2024-12-31": {
+   "as_of": "2024-12-31",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [
+    {
+     "consumed": [],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "QUOTE",
+     "range_end": "2024-12-31",
+     "range_start": "2024-12-31",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    },
+    {
+     "consumed": [],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "FX",
+     "range_end": "2024-12-31",
+     "range_start": "2024-12-31",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    }
+   ],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [
+    "I-1"
+   ],
+   "identity_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214",
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2024-12-31",
+    "frequency": null,
+    "months": null,
+    "rule": "AS_OF",
+    "since_snapshot": false,
+    "start": "2024-12-31"
+   }
+  },
+  "valuation@2025-01-01": {
+   "as_of": "2025-01-01",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [
+    {
+     "consumed": [],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "QUOTE",
+     "range_end": "2025-01-01",
+     "range_start": "2025-01-01",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    },
+    {
+     "consumed": [],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "FX",
+     "range_end": "2025-01-01",
+     "range_start": "2025-01-01",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    }
+   ],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [
+    "I-1"
+   ],
+   "identity_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214",
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2025-01-01",
+    "frequency": null,
+    "months": null,
+    "rule": "AS_OF",
+    "since_snapshot": false,
+    "start": "2025-01-01"
+   }
+  },
+  "valuation@2025-03-31": {
+   "as_of": "2025-03-31",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+    }
+   ],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "206c36c2f24f4da36b43d7ac4aa3bc589537adf9a1710fbe202884e6a89484e5"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+      },
+      {
+       "adapter_id": "synthetic.sina_hk.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "7eb5006f93105014776ab9295a574276b21ec9af35fa5c01cef6e54f760f9cdb"
+      },
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "a0f0179c0829fe79593a0c211658d86993023ec23b9903f02b25826adbc1e97f"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+      },
+      {
+       "adapter_id": "synthetic.eastmoney_cn.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "f44cf4b8829f3c098c5c68207cdbac92ad1ab741ca3abf692aef93e8a505a62e"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "QUOTE",
+     "range_end": "2025-03-31",
+     "range_start": "2025-03-31",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    },
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.ecb_direct.fx",
+       "adapter_version": "0.1.0",
+       "file_sha256": "73559db60807a482355dab868d1dce26b8b2e049525c16a727d2de3b1da26e59"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "FX",
+     "range_end": "2025-03-31",
+     "range_start": "2025-03-31",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    }
+   ],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [
+    "I-1"
+   ],
+   "identity_digest": "9283b24733acdb1e29f75fb3d22f31bb9d2a728e763fee245211f90fdb71a431",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214",
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2025-03-31",
+    "frequency": null,
+    "months": null,
+    "rule": "AS_OF",
+    "since_snapshot": false,
+    "start": "2025-03-31"
+   }
+  },
+  "valuation@2025-04-23": {
+   "as_of": "2025-04-23",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+    }
+   ],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "206c36c2f24f4da36b43d7ac4aa3bc589537adf9a1710fbe202884e6a89484e5"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+      },
+      {
+       "adapter_id": "synthetic.sina_hk.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "7eb5006f93105014776ab9295a574276b21ec9af35fa5c01cef6e54f760f9cdb"
+      },
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "a0f0179c0829fe79593a0c211658d86993023ec23b9903f02b25826adbc1e97f"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+      },
+      {
+       "adapter_id": "synthetic.eastmoney_cn.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "f44cf4b8829f3c098c5c68207cdbac92ad1ab741ca3abf692aef93e8a505a62e"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "QUOTE",
+     "range_end": "2025-04-23",
+     "range_start": "2025-04-23",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    },
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.ecb_direct.fx",
+       "adapter_version": "0.1.0",
+       "file_sha256": "73559db60807a482355dab868d1dce26b8b2e049525c16a727d2de3b1da26e59"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "FX",
+     "range_end": "2025-04-23",
+     "range_start": "2025-04-23",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    }
+   ],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [
+    "I-1"
+   ],
+   "identity_digest": "9283b24733acdb1e29f75fb3d22f31bb9d2a728e763fee245211f90fdb71a431",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214",
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2025-04-23",
+    "frequency": null,
+    "months": null,
+    "rule": "AS_OF",
+    "since_snapshot": false,
+    "start": "2025-04-23"
+   }
+  },
+  "valuation@2025-04-30": {
+   "as_of": "2025-04-30",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+    }
+   ],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "206c36c2f24f4da36b43d7ac4aa3bc589537adf9a1710fbe202884e6a89484e5"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+      },
+      {
+       "adapter_id": "synthetic.sina_hk.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "7eb5006f93105014776ab9295a574276b21ec9af35fa5c01cef6e54f760f9cdb"
+      },
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "a0f0179c0829fe79593a0c211658d86993023ec23b9903f02b25826adbc1e97f"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+      },
+      {
+       "adapter_id": "synthetic.eastmoney_cn.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "f44cf4b8829f3c098c5c68207cdbac92ad1ab741ca3abf692aef93e8a505a62e"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "QUOTE",
+     "range_end": "2025-04-30",
+     "range_start": "2025-04-30",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    },
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.ecb_direct.fx",
+       "adapter_version": "0.1.0",
+       "file_sha256": "73559db60807a482355dab868d1dce26b8b2e049525c16a727d2de3b1da26e59"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "FX",
+     "range_end": "2025-04-30",
+     "range_start": "2025-04-30",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    }
+   ],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [
+    "I-1"
+   ],
+   "identity_digest": "9283b24733acdb1e29f75fb3d22f31bb9d2a728e763fee245211f90fdb71a431",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214",
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2025-04-30",
+    "frequency": null,
+    "months": null,
+    "rule": "AS_OF",
+    "since_snapshot": false,
+    "start": "2025-04-30"
+   }
+  },
+  "window:CUSTOM_FROM_2025-03-31": {
+   "as_of": "2025-04-30",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+    }
+   ],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "206c36c2f24f4da36b43d7ac4aa3bc589537adf9a1710fbe202884e6a89484e5"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+      },
+      {
+       "adapter_id": "synthetic.sina_hk.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "7eb5006f93105014776ab9295a574276b21ec9af35fa5c01cef6e54f760f9cdb"
+      },
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "a0f0179c0829fe79593a0c211658d86993023ec23b9903f02b25826adbc1e97f"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+      },
+      {
+       "adapter_id": "synthetic.eastmoney_cn.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "f44cf4b8829f3c098c5c68207cdbac92ad1ab741ca3abf692aef93e8a505a62e"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "QUOTE",
+     "range_end": "2025-04-30",
+     "range_start": "2025-03-31",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    },
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.ecb_direct.fx",
+       "adapter_version": "0.1.0",
+       "file_sha256": "73559db60807a482355dab868d1dce26b8b2e049525c16a727d2de3b1da26e59"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "FX",
+     "range_end": "2025-04-30",
+     "range_start": "2025-03-31",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    }
+   ],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [
+    "I-2",
+    "I-3",
+    "I-6"
+   ],
+   "identity_digest": "9283b24733acdb1e29f75fb3d22f31bb9d2a728e763fee245211f90fdb71a431",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214",
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2025-04-30",
+    "frequency": null,
+    "months": null,
+    "rule": "CUSTOM",
+    "since_snapshot": false,
+    "start": "2025-03-31"
+   }
+  },
+  "window:SINCE_INCEPTION": {
+   "as_of": "2025-04-30",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+    }
+   ],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "206c36c2f24f4da36b43d7ac4aa3bc589537adf9a1710fbe202884e6a89484e5"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+      },
+      {
+       "adapter_id": "synthetic.sina_hk.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "7eb5006f93105014776ab9295a574276b21ec9af35fa5c01cef6e54f760f9cdb"
+      },
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "a0f0179c0829fe79593a0c211658d86993023ec23b9903f02b25826adbc1e97f"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+      },
+      {
+       "adapter_id": "synthetic.eastmoney_cn.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "f44cf4b8829f3c098c5c68207cdbac92ad1ab741ca3abf692aef93e8a505a62e"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "QUOTE",
+     "range_end": "2025-04-30",
+     "range_start": "2025-01-01",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    },
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.ecb_direct.fx",
+       "adapter_version": "0.1.0",
+       "file_sha256": "73559db60807a482355dab868d1dce26b8b2e049525c16a727d2de3b1da26e59"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "FX",
+     "range_end": "2025-04-30",
+     "range_start": "2025-01-01",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    }
+   ],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [
+    "I-2",
+    "I-3",
+    "I-6"
+   ],
+   "identity_digest": "9283b24733acdb1e29f75fb3d22f31bb9d2a728e763fee245211f90fdb71a431",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214",
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2025-04-30",
+    "frequency": null,
+    "months": null,
+    "rule": "SINCE_INCEPTION",
+    "since_snapshot": false,
+    "start": "2025-01-01"
+   }
+  },
+  "window:TRAILING_1M": {
+   "as_of": "2025-04-30",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+    },
+    {
+     "adapter_id": "calendar.manual.calendar",
+     "adapter_version": "0.1.0",
+     "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+    }
+   ],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "206c36c2f24f4da36b43d7ac4aa3bc589537adf9a1710fbe202884e6a89484e5"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+      },
+      {
+       "adapter_id": "synthetic.sina_hk.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "7eb5006f93105014776ab9295a574276b21ec9af35fa5c01cef6e54f760f9cdb"
+      },
+      {
+       "adapter_id": "synthetic.alphavantage_us.quotes",
+       "adapter_version": "0.1.0",
+       "file_sha256": "a0f0179c0829fe79593a0c211658d86993023ec23b9903f02b25826adbc1e97f"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+      },
+      {
+       "adapter_id": "synthetic.eastmoney_cn.quotes",
+       "adapter_version": "0.2.0",
+       "file_sha256": "f44cf4b8829f3c098c5c68207cdbac92ad1ab741ca3abf692aef93e8a505a62e"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "QUOTE",
+     "range_end": "2025-04-30",
+     "range_start": "2025-03-31",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    },
+    {
+     "consumed": [
+      {
+       "adapter_id": "synthetic.ecb_direct.fx",
+       "adapter_version": "0.1.0",
+       "file_sha256": "73559db60807a482355dab868d1dce26b8b2e049525c16a727d2de3b1da26e59"
+      },
+      {
+       "adapter_id": "calendar.manual.calendar",
+       "adapter_version": "0.1.0",
+       "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+      }
+     ],
+     "convention_ids": [
+      [
+       "convention_set",
+       "market-data/1.10"
+      ],
+      [
+       "freshness",
+       "market-data/1.10#5.2"
+      ],
+      [
+       "fx",
+       "market-data/1.10#1.1-1.6"
+      ],
+      [
+       "price_of_date",
+       "market-data/1.10#2.1-2.4a"
+      ],
+      [
+       "reconciliation",
+       "market-data/1.10#4.1-4.8"
+      ]
+     ],
+     "convention_set_id": "market-data/1.10",
+     "kind": "FX",
+     "range_end": "2025-04-30",
+     "range_start": "2025-03-31",
+     "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+    }
+   ],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [
+    "I-2",
+    "I-3",
+    "I-6"
+   ],
+   "identity_digest": "9283b24733acdb1e29f75fb3d22f31bb9d2a728e763fee245211f90fdb71a431",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214",
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2025-04-30",
+    "frequency": null,
+    "months": 1,
+    "rule": "TRAILING_MONTHS",
+    "since_snapshot": false,
+    "start": "2025-03-31"
+   }
+  },
+  "window:YTD": {
+   "as_of": "2025-04-30",
+   "as_of_causes": [],
+   "as_of_rule": "CALLER",
+   "calendar_file_refs": [],
+   "conformant": false,
+   "conventions": [
+    [
+     "ledger_replay",
+     "ledger-replay/1.5"
+    ],
+    [
+     "market_data.convention_set",
+     "market-data/1.10"
+    ],
+    [
+     "market_data.freshness",
+     "market-data/1.10#5.2"
+    ],
+    [
+     "market_data.fx",
+     "market-data/1.10#1.1-1.6"
+    ],
+    [
+     "market_data.price_of_date",
+     "market-data/1.10#2.1-2.4a"
+    ],
+    [
+     "market_data.reconciliation",
+     "market-data/1.10#4.1-4.8"
+    ],
+    [
+     "performance.aggregation",
+     "performance/1.10#1.4-1.5"
+    ],
+    [
+     "performance.annualization",
+     "performance/1.10#7.1-7.2"
+    ],
+    [
+     "performance.convention_set",
+     "performance/1.10"
+    ],
+    [
+     "performance.flow_table",
+     "performance/1.10#4.1-4.2"
+    ],
+    [
+     "performance.lot_method",
+     "FIFO/1"
+    ],
+    [
+     "performance.minor_unit_table",
+     "minor-units/1"
+    ],
+    [
+     "performance.rounding",
+     "performance/1.10#2.2-2.4"
+    ],
+    [
+     "performance.twr",
+     "performance/1.10#5.1-5.6"
+    ],
+    [
+     "performance.valuation",
+     "performance/1.10#1.1-1.3,1.7"
+    ],
+    [
+     "performance.windows",
+     "performance/1.10#5.4"
+    ]
+   ],
+   "data_set_refs": [],
+   "detection_policy": [
+    [
+     "digest",
+     "8f21078785b81d54fc690e1d8ce856d86418336662b25f4b1e70e255886d6a06"
+    ],
+    [
+     "feed",
+     "synthetic.ca_feed"
+    ],
+    [
+     "filing",
+     "synthetic.ca_filing"
+    ]
+   ],
+   "engine_id": "performance/cp3f-0.10",
+   "excluded_files": [],
+   "identities_run": [],
+   "identity_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "instant": null,
+   "ledger_digest": "2f2afec90f2378c5157eade3e9834b24f03c7c61e5c997913f202f1637d38c8b",
+   "ledger_version": 30,
+   "methodology": [],
+   "numerics": [
+    [
+     "rounding",
+     "performance/1.10#2.2-2.4"
+    ]
+   ],
+   "open_items": [
+    "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+    "market_data: not built: Current mode (instant t) for prices and FX (Rulings 1.6, 2.2 item 6, 5.2): historical mode only",
+    "market_data: not built: Test V1 (split-day jump) and Test V3 (cross-source factor): they need corroborated corporate actions",
+    "market_data: not built: a central-parity series, so the CNY band check is UNVERIFIABLE (no source is admitted)",
+    "market_data: not built: a real corporate-action FEED adapter and an issuer-FILING adapter (no input exists for F8-B in production)",
+    "market_data: not built: human resolution records (RESOLVED_BY_EVIDENCE) as inputs of M",
+    "market_data: profile MEMORY: ecb.eurofxref (real data not admitted until its first real file is profiled, A.4)",
+    "market_data: profile TO_OBSERVE: akshare.hk (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare.us (REFUSED (PD-0031/0032), never profiled)",
+    "market_data: profile TO_OBSERVE: akshare_sina.cn (REFUSED (PD-0031/0032), never profiled)",
+    "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+   ],
+   "parent_release_id": null,
+   "portfolio_id": "d0000000-0000-4000-8000-0000000000d1",
+   "release_id": null,
+   "reporting_currency": "USD",
+   "schema": "finweb.computation_manifest/1",
+   "scope": "PORTFOLIO",
+   "split_detection": "F8B_DRY_RUN",
+   "split_suppressions_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "state_kind": "ACTUAL",
+   "synthetic": true,
+   "valuation_mode": "HISTORICAL_AS_OF",
+   "window": {
+    "end": "2025-04-30",
+    "frequency": null,
+    "months": null,
+    "rule": "YTD",
+    "since_snapshot": false,
+    "start": "2024-12-31"
+   }
+  }
+ }
+}

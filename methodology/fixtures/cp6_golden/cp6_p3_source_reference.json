@@ -1,0 +1,98 @@
+{
+  "reference_id": "cp6-p3-source-reference/1.0",
+  "authored_on": "2026-10-19",
+  "authored_by": "quant_cp6_p3; independent source derivation, no product imports or CP6 result access",
+  "synthetic": true,
+  "purpose": "Independent financial-source expectations for twelve named P3 dependencies; not a product-result comparison or checkpoint acceptance.",
+  "source": {
+    "path": "methodology/fixtures/cp4_golden/cp4_golden_part1.json",
+    "sha256": "e78385b3a6c9ae1ac1fe5ecd527ec6a2d253666a1ee28b92aad8bf6321f3cd3a",
+    "fixture_id": "cp4_golden/1.0-part1",
+    "portfolio_id": "d4000000-0000-4000-8000-000000000003",
+    "account_id": "a4030000-0000-4000-8000-000000000001",
+    "listing_id": "c4000000-0000-4000-8000-000000000003",
+    "assertion_id": "P3-A1",
+    "ledger_version": 2,
+    "as_of": "2026-01-02",
+    "reporting_currency": "USD"
+  },
+  "method": {
+    "convention_id": "diversification/1.0",
+    "path": "methodology/CP5_DIVERSIFICATION_CONVENTIONS.md",
+    "sha256": "76520201893cb0397967fc73c17b95f3dff0dbb58d5fd128bdcbf20b91a89c21",
+    "rulings": ["section 2 capital universe and concentration", "section 3 exposure classification", "section 4 historical legs and alignment", "section 5 sample covariance", "section 6 Euler contribution"],
+    "capital_universe": "FULL_NAV",
+    "owner_authority": "PD-0041; GLOBAL_PRODUCT FULL_NAV, not a personal preference",
+    "comparison_tolerance": "0"
+  },
+  "metadata_premise": {
+    "origin": "Explicit task-supplied synthetic test configuration; not present in the raw CP4 listing classification fields",
+    "scope": "All original fixture listings",
+    "effective_as_of": "2022-01-01",
+    "country": "EXPLICIT_SYNTHETIC_COUNTRY",
+    "sector": "EXPLICIT_SYNTHETIC_SECTOR",
+    "taxonomy_id": "synthetic-sector/1",
+    "synthetic": true
+  },
+  "capital": {
+    "price_cycle_index": 157,
+    "close": "104",
+    "quantity": "100",
+    "security_value_usd": "10400",
+    "cash_usd": "0",
+    "receivable_usd": "0",
+    "nav_usd": "10400",
+    "nonzero_buckets": [{"key": "SECURITY:c4000000-0000-4000-8000-000000000003", "value_usd": "10400", "weight_exact": "1"}],
+    "zero_value_exclusions": ["CASH:USD"],
+    "receivable_note": "No receivable-producing event exists; no positive receivable bucket is invented."
+  },
+  "risk_witness": {
+    "frequency": "WEEKLY",
+    "request": {"rule": "TRAILING_MONTHS", "months": 36},
+    "requested_base": "2023-01-02",
+    "base_date": "2023-01-06",
+    "last_period_end": "2026-01-02",
+    "observation_count": 156,
+    "stub_start_days": 4,
+    "stub_end_days": 0,
+    "insufficient_below": 51,
+    "available_from": 155,
+    "annualization": "52",
+    "return_counts": [{"return_exact": "1/25", "count": 78}, {"return_exact": "-1/26", "count": 78}],
+    "mean_exact": "1/1300",
+    "centered_sum_of_squares_exact": "7803/32500",
+    "security_sample_variance_exact": "7803/5037500",
+    "model_periodic_variance_Q_exact": "7803/5037500",
+    "security_b_i_exact": "7803/5037500",
+    "annualized_variance_exact": "7803/96875",
+    "sign": 1,
+    "independent_original_cp4_volatility": "0.283808204205",
+    "independent_original_cp4_exact_square": "7803/96875"
+  },
+  "dependencies": [
+    {"metric_id": "largest_position_weight", "subject": null, "state": "AVAILABLE", "reason": null, "unit": "FRACTION", "value": "1.000000000000", "exact": "1"},
+    {"metric_id": "largest_security_weight", "subject": null, "state": "AVAILABLE", "reason": null, "unit": "FRACTION", "value": "1.000000000000", "exact": "1"},
+    {"metric_id": "top5_concentration", "subject": null, "state": "AVAILABLE", "reason": null, "unit": "FRACTION", "value": "1.000000000000", "exact": "1"},
+    {"metric_id": "hhi_concentration", "subject": null, "state": "AVAILABLE", "reason": null, "unit": "FRACTION", "value": "1.000000000000", "exact": "1"},
+    {"metric_id": "effective_positions", "subject": null, "state": "AVAILABLE", "reason": null, "unit": "COUNT", "value": "1.000000000000", "exact": "1"},
+    {"metric_id": "country_exposure", "subject": "EXPLICIT_SYNTHETIC_COUNTRY", "state": "AVAILABLE", "reason": null, "unit": "FRACTION", "value": "1.000000000000", "exact": "1", "condition": "metadata_premise"},
+    {"metric_id": "sector_exposure", "subject": "EXPLICIT_SYNTHETIC_SECTOR", "state": "AVAILABLE", "reason": null, "unit": "FRACTION", "value": "1.000000000000", "exact": "1", "condition": "metadata_premise"},
+    {"metric_id": "currency_exposure", "subject": "USD", "state": "AVAILABLE", "reason": null, "unit": "FRACTION", "value": "1.000000000000", "exact": "1"},
+    {"metric_id": "asset_class_exposure", "subject": "EQUITY", "state": "AVAILABLE", "reason": null, "unit": "FRACTION", "value": "1.000000000000", "exact": "1"},
+    {"metric_id": "modeled_volatility", "subject": null, "state": "AVAILABLE", "reason": null, "unit": "FRACTION", "value": "0.283808204205", "exact": null, "exact_square": "7803/96875", "sign": 1},
+    {"metric_id": "risk_contribution_component", "subject": "SECURITY:c4000000-0000-4000-8000-000000000003", "state": "AVAILABLE", "reason": null, "unit": "FRACTION", "value": "0.283808204205", "exact": null, "exact_square": "7803/96875", "sign": 1},
+    {"metric_id": "risk_contribution_share", "subject": "SECURITY:c4000000-0000-4000-8000-000000000003", "state": "AVAILABLE", "reason": null, "unit": "FRACTION", "value": "1.000000000000", "exact": "1"}
+  ],
+  "raw_only_classification": {
+    "country": {"complete_map_exact": {"UNKNOWN": "1"}, "state": "LIMITED", "reason": null, "details": ["UNKNOWN_CLASSIFICATION"], "classified_share_exact": "0", "unknown_share_exact": "1"},
+    "sector": {"complete_map_exact": {"UNKNOWN": "1"}, "state": "LIMITED", "reason": null, "details": ["UNKNOWN_CLASSIFICATION"], "classified_share_exact": "0", "unknown_share_exact": "1"}
+  },
+  "limits": [
+    "No CP6 saved/demo output or product implementation was read to derive these expectations.",
+    "Country and sector named categories require the explicit metadata premise; exchange and currency do not infer them.",
+    "Risk numerics reuse the independently authored raw CP4 P3 volatility under the issued complete-history model; a runtime total-return/coverage or lineage failure still requires refusal.",
+    "Historical covariance at current fixed weights is not a forecast or personalized recommendation.",
+    "The parent comparison must verify actual saved subjects, values, states, units, as-of, provenance and synthetic metadata separately.",
+    "This bounded reference does not close every historical supporting-output gap or authorize source admission, CP7, publication or release."
+  ]
+}

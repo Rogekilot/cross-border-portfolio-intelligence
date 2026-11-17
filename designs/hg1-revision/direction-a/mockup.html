@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Direction A — Command Deck (SYNTHETIC, HG1 revision cycle, not an implementation)</title>
+<style>
+
+  /* ============================================================
+     Direction A — "Command Deck"
+     Zero dependencies. Zero network requests. Inline CSS + inline
+     SVG only. Zero JavaScript, by deliberate design (see DIRECTION.md
+     "What I did and did not verify") — all interactivity below is
+     native <details>/<summary> or CSS radio/checkbox + sibling
+     selectors. Synthetic data only.
+     ============================================================ */
+
+  :root{
+    --bg:#0a0e17;
+    --bg-elev:#0f1524;
+    --card:#141b2c;
+    --card-2:#1a2338;
+    --card-border:#232f47;
+    --text:#e8edf7;
+    --text-dim:#9aa4bd;
+    --text-faint:#5b6478;
+    --accent:#4fd1c5;
+    --accent-2:#c9a24b;
+    --pos:#3ecf8e;
+    --neg:#f2596b;
+    --limited:#e0a02c;
+    --insufficient:#9d8bd6;
+    --stale:#e0a02c;
+    --live:#3ecf8e;
+    --eod:#6f8ab0;
+    --delayed:#e0a02c;
+    --geo-us:#4fd1c5;
+    --geo-hk:#6f8ab0;
+    --geo-cn:#c9a24b;
+    --geo-cash:#3a4460;
+    --radius:10px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:14px;
+    line-height:1.5;
+  }
+  a{color:var(--accent);}
+
+  .proto-banner{
+    background:repeating-linear-gradient(45deg,#3a2f10,#3a2f10 10px,#241c08 10px,#241c08 20px);
+    color:#f0d38a;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.04em;
+    text-align:center;
+    padding:6px 10px;
+    text-transform:uppercase;
+  }
+
+  .meta-note{
+    max-width:1400px;
+    margin:14px auto 0;
+    padding:0 24px;
+    font-size:12px;
+    color:var(--text-faint);
+  }
+  .meta-note code{color:var(--text-dim);}
+
+  .jumpbar{
+    max-width:1400px;
+    margin:10px auto 20px;
+    padding:0 24px;
+    display:flex;
+    gap:16px;
+    font-size:12.5px;
+  }
+  .jumpbar a{
+    color:var(--accent);
+    text-decoration:none;
+    border:1px solid var(--card-border);
+    padding:6px 12px;
+    border-radius:20px;
+    background:var(--card);
+  }
+
+  .screen{
+    max-width:1400px;
+    margin:0 auto 56px;
+    border:1px solid var(--card-border);
+    border-radius:14px;
+    overflow:hidden;
+    background:var(--bg);
+  }
+  .screen-label{
+    padding:8px 24px;
+    background:var(--card-2);
+    color:var(--text-faint);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    border-bottom:1px solid var(--card-border);
+  }
+
+  /* ---------------- Top bar / nav / freshness strip ---------------- */
+
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 24px;
+    background:var(--bg-elev);
+    border-bottom:1px solid var(--card-border);
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .topbar-left{display:flex;align-items:center;gap:26px;flex-wrap:wrap;}
+  .brand{font-weight:700;font-size:14.5px;letter-spacing:.01em;color:var(--text);}
+  .brand span{color:var(--accent);}
+  .nav-tabs{display:flex;gap:4px;}
+  .nav-tabs a{
+    padding:7px 13px;
+    border-radius:8px;
+    font-size:12.5px;
+    color:var(--text-dim);
+    text-decoration:none;
+    border:1px solid transparent;
+  }
+  .nav-tabs a.active{
+    background:var(--card);
+    color:var(--text);
+    border-color:var(--card-border);
+    font-weight:600;
+  }
+  .nav-tabs a.inert{color:var(--text-faint);cursor:default;}
+
+  .topbar-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .freshness-strip{display:flex;gap:8px;flex-wrap:wrap;}
+  .freshness-chip{
+    display:flex;align-items:center;gap:5px;
+    font-size:10.5px;color:var(--text-dim);
+    padding:4px 9px;border-radius:20px;
+    background:var(--card);border:1px solid var(--card-border);
+  }
+  .dot{width:6px;height:6px;border-radius:50%;display:inline-block;flex:none;}
+  .dot.live{background:var(--live);}
+  .dot.eod{background:var(--eod);}
+  .dot.delayed{background:var(--delayed);}
+
+  .least-fresh-note{
+    font-size:10.5px;color:var(--stale);
+    display:flex;align-items:center;gap:5px;
+  }
+
+  .icon-btn{
+    width:30px;height:30px;border-radius:8px;
+    background:var(--card);border:1px solid var(--card-border);
+    color:var(--text-dim);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;cursor:pointer;
+  }
+
+  /* ---------------- Deck layout ---------------- */
+
+  .deck-layout{
+    display:grid;
+    grid-template-columns:1fr 340px;
+    align-items:start;
+  }
+  .deck-grid{
+    display:grid;
+    grid-template-columns:repeat(12,1fr);
+    gap:16px;
+    padding:20px 24px 28px;
+  }
+  .span-3{grid-column:span 3;}
+  .span-4{grid-column:span 4;}
+  .span-5{grid-column:span 5;}
+  .span-6{grid-column:span 6;}
+  .span-7{grid-column:span 7;}
+  .span-8{grid-column:span 8;}
+  .span-12{grid-column:span 12;}
+
+  .tile{
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:var(--radius);
+    padding:16px 18px;
+  }
+  .tile-hero{background:linear-gradient(160deg,var(--card) 0%, #16203a 100%);}
+  .tile-title{
+    font-size:11px;text-transform:uppercase;letter-spacing:.07em;
+    color:var(--text-faint);margin-bottom:12px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .tile-title small{
+    font-size:10px;text-transform:none;letter-spacing:0;color:var(--text-faint);
+  }
+
+  .hero-value{
+    font-size:32px;font-weight:700;color:var(--text);
+    font-variant-numeric:tabular-nums;
+    display:flex;align-items:baseline;gap:4px;
+  }
+  .hero-sub{font-size:13px;color:var(--pos);margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .hero-period{color:var(--text-faint);font-size:11.5px;margin-top:2px;}
+
+  /* ---------------- Evidence popovers (D4) ---------------- */
+
+  .evid{position:relative;display:inline-block;margin-left:6px;vertical-align:middle;}
+  .evid > summary{
+    list-style:none;cursor:pointer;
+    color:var(--text-faint);font-size:10.5px;
+    border:1px solid var(--card-border);border-radius:50%;
+    width:15px;height:15px;
+    display:inline-flex;align-items:center;justify-content:center;
+    background:var(--bg);
+  }
+  .evid > summary::-webkit-details-marker{display:none;}
+  .evid[open] > summary{color:var(--accent);border-color:var(--accent);}
+  .evid-pop{
+    display:none;position:absolute;top:20px;left:0;z-index:60;
+    width:270px;background:#1a2338;border:1px solid var(--card-border);
+    border-radius:8px;padding:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,.55);
+    font-size:11.5px;line-height:1.55;color:var(--text-dim);
+  }
+  .evid[open] > .evid-pop{display:block;}
+  .evid-pop-title{color:var(--text);font-weight:600;margin-bottom:6px;font-size:12px;}
+  .evid-pop-row{margin-bottom:4px;}
+  .evid-pop-row b{color:var(--text-dim);font-weight:600;}
+  .evid-link{
+    display:inline-block;margin-top:6px;color:var(--accent);
+    font-size:11px;cursor:pointer;text-decoration:underline;
+  }
+
+  /* ---------------- State pills (D3 / D5) ---------------- */
+
+  .pill{
+    display:inline-flex;align-items:center;gap:4px;
+    font-size:10px;padding:2px 8px;border-radius:20px;
+    font-weight:700;letter-spacing:.02em;white-space:nowrap;
+  }
+  .pill-stale{background:rgba(224,160,44,.15);color:var(--stale);border:1px solid rgba(224,160,44,.4);}
+  .pill-limited{background:rgba(224,160,44,.18);color:var(--limited);border:1px solid rgba(224,160,44,.5);}
+  .pill-live{background:rgba(62,207,142,.15);color:var(--live);border:1px solid rgba(62,207,142,.4);}
+  .pill-eod{background:rgba(111,138,176,.15);color:var(--eod);border:1px solid rgba(111,138,176,.4);}
+  .pill-warn{background:rgba(242,89,107,.15);color:var(--neg);border:1px solid rgba(242,89,107,.4);}
+  .pill-attn{background:rgba(224,160,44,.15);color:var(--limited);border:1px solid rgba(224,160,44,.4);}
+  .pill-obs{background:rgba(111,138,176,.15);color:var(--eod);border:1px solid rgba(111,138,176,.4);}
+
+  .insufficient-render{
+    font-style:italic;color:var(--insufficient);font-size:12.5px;
+    display:block;
+  }
+  .insufficient-render .reason{
+    font-style:normal;font-size:10px;color:var(--text-faint);
+    display:block;margin-top:2px;
+  }
+
+  /* ---------------- Holdings tile / expand-in-place ---------------- */
+
+  .holdings-preview-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:7px 0;border-bottom:1px solid rgba(35,47,71,.5);
+    font-size:12.5px;
+  }
+  .holdings-preview-row:last-of-type{border-bottom:none;}
+  .hp-name{color:var(--text);font-weight:600;}
+  .hp-sub{color:var(--text-faint);font-size:10.5px;}
+  .hp-val{text-align:right;font-variant-numeric:tabular-nums;color:var(--text);}
+  .hp-pct{color:var(--text-faint);font-size:10.5px;}
+
+  details.expand-inplace{margin-top:8px;}
+  details.expand-inplace > summary{
+    list-style:none;cursor:pointer;color:var(--accent);
+    font-size:11.5px;padding-top:6px;border-top:1px solid var(--card-border);
+  }
+  details.expand-inplace > summary::-webkit-details-marker{display:none;}
+  details.expand-inplace[open] > summary{color:var(--text-dim);}
+
+  table.holdings-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px;}
+  table.holdings-table th{
+    text-align:left;color:var(--text-faint);font-weight:500;font-size:10px;
+    text-transform:uppercase;letter-spacing:.03em;
+    padding:6px 8px;border-bottom:1px solid var(--card-border);
+  }
+  table.holdings-table td{
+    padding:8px;border-bottom:1px solid rgba(35,47,71,.5);color:var(--text-dim);
+  }
+  table.holdings-table td.num{
+    text-align:right;font-variant-numeric:tabular-nums;color:var(--text);
+  }
+
+  /* ---------------- Allocation donut + geography bar ---------------- */
+
+  .alloc-row{display:flex;gap:16px;align-items:center;}
+  .legend{display:flex;flex-direction:column;gap:6px;font-size:11.5px;color:var(--text-dim);}
+  .legend-item{display:flex;align-items:center;gap:6px;}
+  .legend-dot{width:9px;height:9px;border-radius:2px;flex:none;}
+
+  .stack-bar{display:flex;width:100%;height:20px;border-radius:5px;overflow:hidden;margin:10px 0 10px;}
+  .stack-seg{height:100%;}
+
+  /* ---------------- Metric cards (Risk Snapshot / Analytics) ---------------- */
+
+  .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .metric-card{
+    background:var(--bg);border:1px solid var(--card-border);border-radius:8px;
+    padding:11px 12px;
+  }
+  .metric-label{font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;}
+  .metric-value{font-size:19px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;}
+  .metric-note{font-size:10.5px;color:var(--text-faint);margin-top:4px;}
+
+  /* ---------------- Insights list ---------------- */
+
+  .insight-row{
+    display:flex;gap:10px;align-items:flex-start;
+    padding:9px 0;border-bottom:1px solid rgba(35,47,71,.5);
+  }
+  .insight-row:last-child{border-bottom:none;}
+  .insight-text{font-size:12.5px;color:var(--text-dim);flex:1;}
+  .insight-text b{color:var(--text);font-weight:600;}
+
+  /* ---------------- AI rail ---------------- */
+
+  .ai-rail{
+    background:var(--bg-elev);
+    border-left:1px solid var(--card-border);
+    padding:18px;
+    display:flex;flex-direction:column;gap:14px;
+    min-height:640px;
+  }
+  .ai-rail-header{
+    font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--text-faint);display:flex;align-items:center;gap:6px;
+  }
+  .ai-msg{
+    background:var(--card);border:1px solid var(--card-border);border-radius:10px;
+    padding:12px 13px;font-size:12.5px;line-height:1.65;color:var(--text-dim);
+  }
+  .ai-msg-label{
+    font-size:10px;text-transform:uppercase;letter-spacing:.05em;
+    color:var(--text-faint);margin-bottom:6px;
+  }
+
+  .chip{position:relative;display:inline-block;}
+  .chip > summary{
+    list-style:none;cursor:pointer;
+    background:rgba(79,209,197,.13);color:var(--accent);
+    border:1px solid rgba(79,209,197,.4);border-radius:6px;
+    padding:1px 6px;font-weight:700;font-variant-numeric:tabular-nums;
+    font-size:12px;
+  }
+  .chip > summary::-webkit-details-marker{display:none;}
+  .chip.limited > summary{
+    background:rgba(224,160,44,.16);color:var(--limited);border-color:rgba(224,160,44,.45);
+  }
+  .chip .evid-pop{left:0;top:22px;width:240px;}
+
+  .quick-prompts{display:flex;flex-wrap:wrap;gap:6px;}
+  .qp{
+    font-size:11px;padding:5px 10px;border:1px solid var(--card-border);
+    border-radius:20px;color:var(--text-dim);background:var(--card);
+  }
+
+  .scenario-msg{
+    border:1px solid rgba(157,139,214,.5);
+    background:rgba(157,139,214,.08);
+  }
+  .scenario-badge{
+    display:inline-block;background:var(--insufficient);color:#160f2b;
+    font-size:9.5px;font-weight:800;letter-spacing:.05em;
+    padding:2px 8px;border-radius:4px;margin-bottom:8px;text-transform:uppercase;
+  }
+
+  /* ---------------- Depth ladder (CSS radio tabs, no JS) ---------------- */
+
+  .depth-toggle{margin-top:12px;}
+  input.depth-radio{
+    position:absolute;opacity:0;pointer-events:none;
+  }
+  .depth-labels{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap;}
+  .depth-labels label{
+    font-size:10.5px;padding:5px 10px;border-radius:6px;
+    border:1px solid var(--card-border);color:var(--text-faint);
+    cursor:pointer;
+  }
+  .depth-panel{display:none;font-size:12px;color:var(--text-dim);line-height:1.65;}
+
+  #an-beta-q:checked ~ .depth-labels label[for="an-beta-q"],
+  #an-beta-s:checked ~ .depth-labels label[for="an-beta-s"],
+  #an-beta-i:checked ~ .depth-labels label[for="an-beta-i"],
+  #an-beta-p:checked ~ .depth-labels label[for="an-beta-p"]{
+    background:var(--card-2);color:var(--text);border-color:var(--accent);
+  }
+  #an-beta-q:checked ~ .panel-q{display:block;}
+  #an-beta-s:checked ~ .panel-s{display:block;}
+  #an-beta-i:checked ~ .panel-i{display:block;}
+  #an-beta-p:checked ~ .panel-p{display:block;}
+
+  /* ---------------- Exposure listing/economic toggle ---------------- */
+
+  input.exp-radio{position:absolute;opacity:0;pointer-events:none;}
+  .exp-labels{display:flex;gap:4px;margin-bottom:6px;}
+  .exp-labels label{
+    font-size:10.5px;padding:5px 10px;border-radius:6px;
+    border:1px solid var(--card-border);color:var(--text-faint);cursor:pointer;
+  }
+  #an-exp-listing:checked ~ .exp-labels label[for="an-exp-listing"],
+  #an-exp-economic:checked ~ .exp-labels label[for="an-exp-economic"]{
+    background:var(--card-2);color:var(--text);border-color:var(--accent);
+  }
+  .exp-view{display:none;}
+  #an-exp-listing:checked ~ .exp-view-listing{display:block;}
+  #an-exp-economic:checked ~ .exp-view-economic{display:block;}
+
+  /* ---------------- Correlation heatmap ---------------- */
+
+  .heatmap{display:grid;grid-template-columns:56px repeat(5,1fr);gap:3px;font-size:9.5px;margin-top:8px;}
+  .heatmap-corner{}
+  .heatmap-colhead{
+    color:var(--text-faint);display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:2px 0;
+  }
+  .heatmap-rowhead{
+    color:var(--text-faint);display:flex;align-items:center;font-size:9.5px;padding-right:4px;
+  }
+  .heatmap-cell{
+    aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;
+    border-radius:4px;color:#0a0e17;font-weight:700;position:relative;
+  }
+  .heatmap-cell .evid{position:absolute;top:-5px;right:-5px;}
+
+  /* ---------------- Contribution to risk ---------------- */
+
+  .contrib-row{display:flex;align-items:center;gap:8px;margin-bottom:9px;font-size:11.5px;}
+  .contrib-label{width:76px;color:var(--text-dim);flex:none;}
+  .contrib-bar-track{flex:1;background:var(--bg);border-radius:4px;height:10px;overflow:hidden;}
+  .contrib-bar-fill{height:100%;background:var(--accent);}
+  .contrib-val{width:36px;text-align:right;color:var(--text-faint);font-size:11px;flex:none;}
+
+  /* ---------------- Slide-over drawers (checkbox hack, no JS) ---------------- */
+
+  input.drawer-toggle{position:absolute;opacity:0;pointer-events:none;}
+  .drawer-backdrop{
+    display:none;position:fixed;inset:0;background:rgba(5,8,14,.6);z-index:90;
+  }
+  .drawer{
+    position:fixed;top:0;right:0;bottom:0;width:380px;
+    background:var(--bg-elev);border-left:1px solid var(--card-border);
+    z-index:95;padding:20px;overflow-y:auto;
+    transform:translateX(100%);transition:transform .25s ease;
+  }
+  .drawer-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+  .drawer-sub{font-size:11.5px;color:var(--text-faint);margin-bottom:16px;}
+  .drawer-close{
+    float:right;cursor:pointer;color:var(--text-faint);
+    border:1px solid var(--card-border);border-radius:6px;
+    padding:3px 9px;font-size:11px;
+  }
+  .drawer-field{margin-bottom:12px;font-size:12px;color:var(--text-dim);}
+  .drawer-field b{display:block;color:var(--text-faint);font-size:10px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px;}
+  .drawer-empty{
+    border:1px dashed var(--card-border);border-radius:8px;padding:14px;
+    color:var(--text-faint);font-size:12px;font-style:italic;
+  }
+
+  #ov-settings-toggle:checked ~ .drawer-backdrop.ov-settings-bd,
+  #ov-settings-toggle:checked ~ .drawer.ov-settings-drawer{display:block;}
+  #ov-settings-toggle:checked ~ .drawer.ov-settings-drawer{transform:translateX(0);}
+
+  #ov-method-toggle:checked ~ .drawer-backdrop.ov-method-bd,
+  #ov-method-toggle:checked ~ .drawer.ov-method-drawer{display:block;}
+  #ov-method-toggle:checked ~ .drawer.ov-method-drawer{transform:translateX(0);}
+
+  #an-method-toggle:checked ~ .drawer-backdrop.an-method-bd,
+  #an-method-toggle:checked ~ .drawer.an-method-drawer{display:block;}
+  #an-method-toggle:checked ~ .drawer.an-method-drawer{transform:translateX(0);}
+
+  footer.doc-footer{
+    max-width:1400px;margin:0 auto 60px;padding:0 24px;
+    font-size:11px;color:var(--text-faint);
+  }
+
+</style>
+</head>
+<body>
+
+  <div class="proto-banner">
+    SYNTHETIC DATA &nbsp;·&nbsp; DIRECTION A — "COMMAND DECK" &nbsp;·&nbsp; HG1 REVISION CYCLE 01 &nbsp;·&nbsp;
+    NOT AN IMPLEMENTATION &nbsp;·&nbsp; HG1 REMAINS UNDECIDED
+  </div>
+
+  <div class="meta-note">
+    This is one of three independent, materially-different UX/IA directions produced for human selection at the
+    HG1 revision cycle (<code>reviews/gates/HG1_REVISION_CYCLE_01.md</code>). It renders two representative
+    screens only — Overview and Analytics — per the instruction not to fully implement all three directions.
+    Every number below is hand-authored synthetic data; nothing is computed, fetched, or verified. All
+    financial contracts, metric-state rules, the P1 deterministic/AI boundary, the Proof Packet architecture,
+    scenario isolation, and the freshness contract are the accepted CP0 baseline and are represented, not
+    redecided, here. See <code>designs/hg1-revision/direction-a/DIRECTION.md</code> for the full write-up,
+    including what was and was not verified.
+  </div>
+
+  <div class="jumpbar">
+    <a href="#screen-overview">Jump to Overview mockup</a>
+    <a href="#screen-analytics">Jump to Analytics mockup</a>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SCREEN 1 — OVERVIEW                                           -->
+  <!-- ============================================================ -->
+
+  <section id="screen-overview" class="screen">
+    <div class="screen-label">Representative screen 1 of 2 — Overview (the command deck, default landing tab)</div>
+
+    <input type="checkbox" id="ov-settings-toggle" class="drawer-toggle">
+    <input type="checkbox" id="ov-method-toggle" class="drawer-toggle">
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="brand">Cross-Border <span>Portfolio Intelligence</span></div>
+        <nav class="nav-tabs">
+          <a href="#screen-overview" class="active">Overview</a>
+          <a href="#" class="inert">Portfolio</a>
+          <a href="#screen-analytics">Analytics</a>
+          <a href="#" class="inert">Scenario Lab</a>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <div class="freshness-strip">
+          <span class="freshness-chip"><span class="dot live"></span>US equities · LIVE</span>
+          <span class="freshness-chip"><span class="dot eod"></span>HK equities · EOD Sep 3, 16:08 HKT</span>
+          <span class="freshness-chip"><span class="dot eod"></span>CN A-shares · EOD Sep 3, 15:00 CST</span>
+          <span class="freshness-chip"><span class="dot delayed"></span>USD/HKD · DELAYED ~15m</span>
+          <span class="freshness-chip"><span class="dot delayed"></span>USD/CNY · DELAYED ~20m</span>
+        </div>
+        <label class="icon-btn" for="ov-settings-toggle" title="Portfolio Settings / Policy" aria-label="Settings">&#9881;</label>
+        <div class="icon-btn" title="Insights (bell — opens full severity-grouped list; not wired in this mockup)">&#128276;</div>
+      </div>
+    </div>
+    <div class="least-fresh-note" style="padding:6px 24px 0;">Least-fresh axis in use right now: Hong Kong equities (EOD) — the portfolio summary below is scoped to that weakest link, not a blended "live" label.</div>
+
+    <div class="deck-layout">
+
+      <div class="deck-grid">
+
+        <!-- Tile 1: Total Value (hero) -->
+        <div class="tile tile-hero span-4">
+          <div class="tile-title">Total Portfolio Value</div>
+          <div class="hero-value">
+            $1,842,650
+            <span class="pill pill-stale">STALE_DATA · EOD (HK)</span>
+            <details class="evid">
+              <summary aria-label="Evidence">i</summary>
+              <div class="evid-pop">
+                <div class="evid-pop-title">Total Portfolio Value</div>
+                <div class="evid-pop-row"><b>State:</b> AVAILABLE + STALE_DATA — number is exactly as computable and trustworthy as plain AVAILABLE; only its HK-axis input timing differs.</div>
+                <div class="evid-pop-row"><b>Reference:</b> vs. Jan 1, 2026 opening value (reporting currency)</div>
+                <div class="evid-pop-row"><b>Method:</b> Reporting-currency consolidation across all accounts; each position priced at its market's latest available close/quote, FX applied per axis.</div>
+                <label class="evid-link" for="ov-method-toggle">Open full methodology &rarr;</label>
+              </div>
+            </details>
+          </div>
+          <div class="hero-sub">
+            &#9650; +$142,880 (+8.4%)
+            <details class="evid">
+              <summary aria-label="Evidence">i</summary>
+              <div class="evid-pop">
+                <div class="evid-pop-title">Portfolio Gain/Loss</div>
+                <div class="evid-pop-row"><b>Period:</b> Jan 1, 2026 &ndash; Sep 3, 2026 (year to date)</div>
+                <div class="evid-pop-row"><b>Reference:</b> MSCI ACWI, same period: +6.1%</div>
+                <div class="evid-pop-row"><b>State:</b> AVAILABLE + STALE_DATA (HK axis)</div>
+                <label class="evid-link" for="ov-method-toggle">Open full methodology &rarr;</label>
+              </div>
+            </details>
+          </div>
+          <div class="hero-period">Year to date · reporting currency USD</div>
+        </div>
+
+        <!-- Tile 2: Performance vs Benchmark -->
+        <div class="tile span-8">
+          <div class="tile-title">Performance vs Benchmark <small>YTD, cumulative, indexed to 100</small></div>
+          <svg viewBox="0 0 400 150" width="100%" height="150" preserveAspectRatio="none">
+            <line x1="20" y1="140" x2="390" y2="140" style="stroke:#232f47;stroke-width:1" />
+            <polyline points="20,115 65,110 110,122 155,100 200,88 245,95 290,76 335,70 380,73"
+                      style="fill:none;stroke:var(--accent);stroke-width:2.5" />
+            <polyline points="20,115 65,112 110,120 155,108 200,101 245,105 290,94 335,89 380,86"
+                      style="fill:none;stroke:var(--text-faint);stroke-width:2;stroke-dasharray:4,3" />
+            <circle cx="380" cy="73" r="3.5" style="fill:var(--accent)" />
+            <circle cx="380" cy="86" r="3.5" style="fill:var(--text-faint)" />
+          </svg>
+          <div class="legend" style="flex-direction:row;gap:16px;margin-top:4px;">
+            <div class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>Portfolio +8.4%</div>
+            <div class="legend-item"><span class="legend-dot" style="background:var(--text-faint)"></span>MSCI ACWI +6.1%</div>
+          </div>
+        </div>
+
+        <!-- Tile 3: Key Holdings, expandable in place -->
+        <div class="tile span-7">
+          <div class="tile-title">Key Holdings <small>by weight, top positions</small></div>
+
+          <div class="holdings-preview-row">
+            <div><span class="hp-name">AAPL</span> <span class="hp-sub">US Broker (US) · 1,200 sh</span></div>
+            <div><div class="hp-val">$420,360</div><div class="hp-pct">22.8%</div></div>
+          </div>
+          <div class="holdings-preview-row">
+            <div><span class="hp-name">NVDA</span> <span class="hp-sub">US Broker (US) · 260 sh</span></div>
+            <div><div class="hp-val">$310,180</div><div class="hp-pct">16.8%</div></div>
+          </div>
+          <div class="holdings-preview-row">
+            <div><span class="hp-name">VTI</span> <span class="hp-sub">US Broker (US) · 620 sh</span></div>
+            <div><div class="hp-val">$300,020</div><div class="hp-pct">16.3%</div></div>
+          </div>
+
+          <details class="expand-inplace">
+            <summary>Show all 7 positions &darr;</summary>
+            <table class="holdings-table">
+              <thead>
+                <tr><th>Position</th><th>Account</th><th>Freshness</th><th class="num">Mkt Value</th><th class="num">% Port.</th><th class="num">Unrealized G/L</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>AAPL</td><td>US Broker (US)</td>
+                  <td><span class="pill pill-live">LIVE</span></td>
+                  <td class="num">$420,360</td><td class="num">22.8%</td>
+                  <td class="num" style="color:var(--pos)">+$68,200 (+19.4%)</td>
+                </tr>
+                <tr>
+                  <td>NVDA</td><td>US Broker (US)</td>
+                  <td><span class="pill pill-live">LIVE</span></td>
+                  <td class="num">$310,180</td><td class="num">16.8%</td>
+                  <td class="num" style="color:var(--pos)">+$142,900 (+85.5%)</td>
+                </tr>
+                <tr>
+                  <td>VTI</td><td>US Broker (US)</td>
+                  <td><span class="pill pill-live">LIVE</span></td>
+                  <td class="num">$300,020</td><td class="num">16.3%</td>
+                  <td class="num" style="color:var(--pos)">+$41,100 (+15.9%)</td>
+                </tr>
+                <tr>
+                  <td>0700.HK Tencent Holdings</td><td>Futu HK</td>
+                  <td><span class="pill pill-eod">EOD</span></td>
+                  <td class="num">$273,900</td><td class="num">14.9%</td>
+                  <td class="num" style="color:var(--pos)">+$35,600 (+15.0%)</td>
+                </tr>
+                <tr>
+                  <td>9988.HK Alibaba Group</td><td>Futu HK</td>
+                  <td><span class="pill pill-eod">EOD</span></td>
+                  <td class="num">$115,700</td><td class="num">6.3%</td>
+                  <td class="num" style="color:var(--neg)">-$4,200 (-3.5%)</td>
+                </tr>
+                <tr>
+                  <td>600519.SS Kweichow Moutai</td><td>China A-Share Brokerage</td>
+                  <td><span class="pill pill-eod">EOD</span></td>
+                  <td class="num">$43,900</td><td class="num">2.4%</td>
+                  <td class="num">
+                    <div class="insufficient-render">
+                      insufficient data
+                      <details class="evid" style="display:inline-block;">
+                        <summary aria-label="Evidence">i</summary>
+                        <div class="evid-pop">
+                          <div class="evid-pop-title">Cost Basis / Unrealized Gain-Loss</div>
+                          <div class="evid-pop-row"><b>State:</b> INSUFFICIENT_DATA</div>
+                          <div class="evid-pop-row"><b>Reason:</b> MISSING_COST_BASIS — original lot records for this position were not migrated from the legacy broker at account transfer.</div>
+                          <div class="evid-pop-row">Market value above is a fact (quantity &times; current price); it is not withheld. Only the cost-basis-derived gain/loss is suppressed.</div>
+                          <label class="evid-link" for="ov-method-toggle">Open full methodology &rarr;</label>
+                        </div>
+                      </details>
+                      <span class="reason">MISSING_COST_BASIS</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Cash (USD + HKD + CNY, blended)</td><td>All accounts</td>
+                  <td><span class="pill pill-live">n/a</span></td>
+                  <td class="num">$378,000</td><td class="num">20.5%</td>
+                  <td class="num">n/a</td>
+                </tr>
+              </tbody>
+            </table>
+          </details>
+        </div>
+
+        <!-- Tile 4: Allocation & Exposure (top-level only) -->
+        <div class="tile span-5">
+          <div class="tile-title">Allocation &amp; Exposure <small>top-level — full breakdown on Analytics</small></div>
+          <div class="alloc-row">
+            <svg viewBox="0 0 120 120" width="100" height="100">
+              <circle cx="60" cy="60" r="45" style="fill:none;stroke:#0a0e17;stroke-width:14" />
+              <circle cx="60" cy="60" r="45" style="fill:none;stroke:var(--accent);stroke-width:14;stroke-dasharray:224.7 282.7;stroke-dashoffset:0" transform="rotate(-90 60 60)" />
+              <circle cx="60" cy="60" r="45" style="fill:none;stroke:var(--geo-cash);stroke-width:14;stroke-dasharray:58 282.7;stroke-dashoffset:-224.7" transform="rotate(-90 60 60)" />
+            </svg>
+            <div class="legend">
+              <div class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>Equities 79.5%</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--geo-cash)"></span>Cash 20.5%</div>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:10.5px;color:var(--text-faint);">By listing market</div>
+          <div class="stack-bar">
+            <div class="stack-seg" style="width:55.9%;background:var(--geo-us)"></div>
+            <div class="stack-seg" style="width:21.2%;background:var(--geo-hk)"></div>
+            <div class="stack-seg" style="width:2.4%;background:var(--geo-cn)"></div>
+            <div class="stack-seg" style="width:20.5%;background:var(--geo-cash)"></div>
+          </div>
+          <div class="legend" style="flex-direction:row;flex-wrap:wrap;gap:10px;">
+            <div class="legend-item"><span class="legend-dot" style="background:var(--geo-us)"></span>US 55.9%</div>
+            <div class="legend-item"><span class="legend-dot" style="background:var(--geo-hk)"></span>HK 21.2%</div>
+            <div class="legend-item"><span class="legend-dot" style="background:var(--geo-cn)"></span>China 2.4%</div>
+          </div>
+        </div>
+
+        <!-- Tile 5: Risk Snapshot -->
+        <div class="tile span-7">
+          <div class="tile-title">Risk Snapshot <small>full detail on Analytics</small></div>
+          <div class="metric-grid">
+            <div class="metric-card">
+              <div class="metric-label">Beta (vs MSCI ACWI)</div>
+              <div class="metric-value">1.18 <span class="pill pill-limited">LIMITED</span></div>
+              <div class="metric-note">Short sample window — see Analytics for full disclosure</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Volatility (ann.)</div>
+              <div class="metric-value">14.6%</div>
+              <div class="metric-note">12-month, weekly returns</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Sharpe Ratio</div>
+              <div class="metric-value">1.05</div>
+              <div class="metric-note">Trailing 12 months</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Max Drawdown</div>
+              <div class="metric-value">-9.8% <span class="pill pill-stale">STALE</span></div>
+              <div class="metric-note">Trailing 12 months, as of last EOD close</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tile 6: Top Insights -->
+        <div class="tile span-5">
+          <div class="tile-title">Top Insights <small>severity-ordered</small></div>
+          <div class="insight-row">
+            <span class="pill pill-warn">WARNING</span>
+            <div class="insight-text"><b>Concentration in NVDA</b> has increased 4.2 points since your last quarterly review.
+              <details class="evid" style="display:inline-block;"><summary>i</summary>
+                <div class="evid-pop"><div class="evid-pop-title">Concentration drift</div>
+                <div class="evid-pop-row">Drift-type insight (compares two points in time, not one snapshot to a benchmark).</div>
+                <label class="evid-link" for="ov-method-toggle">Open Proof Packet &rarr;</label></div>
+              </details>
+            </div>
+          </div>
+          <div class="insight-row">
+            <span class="pill pill-attn">ATTENTION</span>
+            <div class="insight-text">Hong Kong equity pricing is end-of-day while your US positions are live during market hours — a mixed-freshness view.</div>
+          </div>
+          <div class="insight-row">
+            <span class="pill pill-obs">OBSERVATION</span>
+            <div class="insight-text">Your portfolio's YTD return of <b>+8.4%</b> is running ahead of MSCI ACWI's +6.1% over the same period.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- AI rail -->
+      <aside class="ai-rail">
+        <div class="ai-rail-header">&#9679; AI Analyst — always in context</div>
+
+        <div class="ai-msg">
+          <div class="ai-msg-label">Portfolio Brief</div>
+          You're up
+          <details class="chip"><summary>+8.4%</summary><div class="evid-pop"><div class="evid-pop-title">YTD Return</div><div class="evid-pop-row">Tool call: <code>get_performance(period=YTD)</code></div><div class="evid-pop-row">Snapshot: 2026-09-03</div></div></details>
+          year-to-date, ahead of the
+          <details class="chip"><summary>MSCI ACWI +6.1%</summary><div class="evid-pop"><div class="evid-pop-title">Benchmark Return</div><div class="evid-pop-row">Tool call: <code>get_benchmark(id=ACWI, period=YTD)</code></div></div></details>.
+          Your largest position,
+          <details class="chip"><summary>NVDA (16.8%)</summary><div class="evid-pop"><div class="evid-pop-title">Position Weight</div><div class="evid-pop-row">Tool call: <code>get_holdings()</code></div></div></details>,
+          is a top contributor to recent gains. Your beta of
+          <details class="chip limited"><summary>1.18 · LIMITED</summary><div class="evid-pop"><div class="evid-pop-title">Beta</div><div class="evid-pop-row"><b>State:</b> LIMITED — short sample window</div><div class="evid-pop-row">Tool call: <code>get_risk_metric(beta)</code></div></div></details>
+          suggests historically amplified market moves — see Analytics for the full disclosure.
+        </div>
+
+        <div class="quick-prompts">
+          <span class="qp">Why is HK equity data end-of-day?</span>
+          <span class="qp">What's driving my concentration?</span>
+          <span class="qp">Explain my beta</span>
+        </div>
+
+        <div class="ai-msg scenario-msg">
+          <div class="scenario-badge">SCENARIO PREVIEW — not your actual portfolio</div>
+          <div class="ai-msg-label">You asked: "What if I sold half my Tencent position?"</div>
+          This is a hypothetical preview, not a holding. Selling half of
+          <details class="chip"><summary>0700.HK (14.9% &rarr; ~7.5%)</summary><div class="evid-pop"><div class="evid-pop-title">Scenario Input</div><div class="evid-pop-row">Hypothetical action — not applied to your ledger.</div></div></details>
+          would reduce Mainland-China economic exposure. Build this out fully, with side-by-side comparison, in
+          <a href="#">Scenario Lab &rarr;</a>
+        </div>
+
+        <div class="ai-rail-header" style="margin-top:auto;">Ask Your Portfolio &darr;</div>
+      </aside>
+
+    </div>
+
+    <!-- Settings / Policy slide-over -->
+    <label class="drawer-backdrop ov-settings-bd" for="ov-settings-toggle"></label>
+    <div class="drawer ov-settings-drawer">
+      <label class="drawer-close" for="ov-settings-toggle">Close &times;</label>
+      <div class="drawer-title">Portfolio Settings / Policy</div>
+      <div class="drawer-sub">Reached via the gear icon — deliberately outside primary navigation. No claim in D2.2's sense lives here; this surface records your own choices and inputs, not a product conclusion.</div>
+      <div class="drawer-field"><b>Reporting Currency</b>USD</div>
+      <div class="drawer-field"><b>Account Containers</b>US Broker (US) · Futu HK · China A-Share Brokerage</div>
+      <div class="drawer-field"><b>Portfolio Policy</b>
+        No single-position weight cap set. No sector cap set.
+        <div class="drawer-empty">Leaving a policy field unset means the product uses comparative/educational language rather than a fabricated personal threshold (P7) — set a policy here to change that.</div>
+      </div>
+    </div>
+
+    <!-- Methodology / Evidence deep slide-over (Overview) -->
+    <label class="drawer-backdrop ov-method-bd" for="ov-method-toggle"></label>
+    <div class="drawer ov-method-drawer">
+      <label class="drawer-close" for="ov-method-toggle">Close &times;</label>
+      <div class="drawer-title">Methodology &amp; Evidence</div>
+      <div class="drawer-sub">This is the destination every evidence popover on the deck points to — reached only contextually, never from primary navigation.</div>
+      <div class="drawer-empty">
+        No methodology-registry entries exist yet in this increment (schema and validator ship with zero entries per <code>specs/FEATURE_PRD.md</code> &sect;3.3). This renders the required "not yet published" state — not a blank, not a broken link.
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SCREEN 2 — ANALYTICS                                          -->
+  <!-- ============================================================ -->
+
+  <section id="screen-analytics" class="screen">
+    <div class="screen-label">Representative screen 2 of 2 — Analytics (Exposure + Risk &amp; Analytics)</div>
+
+    <input type="checkbox" id="an-method-toggle" class="drawer-toggle">
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="brand">Cross-Border <span>Portfolio Intelligence</span></div>
+        <nav class="nav-tabs">
+          <a href="#screen-overview">Overview</a>
+          <a href="#" class="inert">Portfolio</a>
+          <a href="#screen-analytics" class="active">Analytics</a>
+          <a href="#" class="inert">Scenario Lab</a>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <div class="freshness-strip">
+          <span class="freshness-chip"><span class="dot live"></span>US equities · LIVE</span>
+          <span class="freshness-chip"><span class="dot eod"></span>HK equities · EOD Sep 3, 16:08 HKT</span>
+          <span class="freshness-chip"><span class="dot eod"></span>CN A-shares · EOD Sep 3, 15:00 CST</span>
+        </div>
+        <div class="icon-btn" title="Settings (see Overview screen for the built-out drawer)">&#9881;</div>
+        <div class="icon-btn" title="Insights">&#128276;</div>
+      </div>
+    </div>
+
+    <div class="deck-layout">
+
+      <div class="deck-grid">
+
+        <!-- Tile: Exposure with listing/economic toggle -->
+        <div class="tile span-7">
+          <div class="tile-title">Exposure <small>listing market vs. economic geography — never merged into one number</small></div>
+
+          <input type="radio" name="an-exp" id="an-exp-listing" class="exp-radio" checked>
+          <input type="radio" name="an-exp" id="an-exp-economic" class="exp-radio">
+          <div class="exp-labels">
+            <label for="an-exp-listing">Listing market</label>
+            <label for="an-exp-economic">Economic geography</label>
+          </div>
+
+          <div class="exp-view exp-view-listing">
+            <div class="stack-bar">
+              <div class="stack-seg" style="width:55.9%;background:var(--geo-us)"></div>
+              <div class="stack-seg" style="width:21.2%;background:var(--geo-hk)"></div>
+              <div class="stack-seg" style="width:2.4%;background:var(--geo-cn)"></div>
+              <div class="stack-seg" style="width:20.5%;background:var(--geo-cash)"></div>
+            </div>
+            <div class="legend" style="flex-direction:row;flex-wrap:wrap;gap:10px;">
+              <div class="legend-item"><span class="legend-dot" style="background:var(--geo-us)"></span>US 55.9%</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--geo-hk)"></span>Hong Kong 21.2%</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--geo-cn)"></span>Mainland China 2.4%</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--geo-cash)"></span>Cash 20.5%</div>
+            </div>
+          </div>
+
+          <div class="exp-view exp-view-economic">
+            <div class="stack-bar">
+              <div class="stack-seg" style="width:55.9%;background:var(--geo-us)"></div>
+              <div class="stack-seg" style="width:0.2%;background:var(--geo-hk)"></div>
+              <div class="stack-seg" style="width:23.6%;background:var(--geo-cn)"></div>
+              <div class="stack-seg" style="width:20.5%;background:var(--geo-cash)"></div>
+            </div>
+            <div class="legend" style="flex-direction:row;flex-wrap:wrap;gap:10px;">
+              <div class="legend-item"><span class="legend-dot" style="background:var(--geo-us)"></span>US 55.9%</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--geo-hk)"></span>Hong Kong ~0%</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--geo-cn)"></span>Mainland China 23.6%</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--geo-cash)"></span>Cash 20.5%</div>
+            </div>
+            <div class="metric-note" style="margin-top:6px;">
+              Tencent and Alibaba are Hong-Kong-<i>listed</i> but Mainland-China-<i>domiciled</i> — reclassifying them by economic geography moves ~21 points from the "Hong Kong" bucket to "Mainland China." This is the concrete case &sect;10.4 exists to prevent conflating.
+              <details class="evid"><summary>i</summary><div class="evid-pop"><div class="evid-pop-title">Economic Geography Methodology</div><div class="evid-pop-row">Classification basis: issuer domicile / primary revenue geography, per &sect;10.4 — distinct from listing venue.</div><label class="evid-link" for="an-method-toggle">Open full methodology &rarr;</label></div></details>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tile: Concentration -->
+        <div class="tile span-5">
+          <div class="tile-title">Concentration</div>
+          <div class="metric-grid">
+            <div class="metric-card"><div class="metric-label">Top Position</div><div class="metric-value">22.8%</div><div class="metric-note">AAPL</div></div>
+            <div class="metric-card"><div class="metric-label">Top 5</div><div class="metric-value">77.1%</div><div class="metric-note">of portfolio</div></div>
+            <div class="metric-card"><div class="metric-label">HHI</div><div class="metric-value">1,450</div><div class="metric-note">moderate concentration</div></div>
+            <div class="metric-card"><div class="metric-label">Effective N</div><div class="metric-value">~6.9</div><div class="metric-note">of 7 positions</div></div>
+          </div>
+        </div>
+
+        <!-- Tile: Core risk metrics -->
+        <div class="tile span-5">
+          <div class="tile-title">Core Risk Metrics</div>
+          <div class="metric-grid">
+            <div class="metric-card">
+              <div class="metric-label">Volatility (ann.)</div>
+              <div class="metric-value">14.6%</div>
+              <div class="metric-note">12-month, weekly returns</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Sharpe</div>
+              <div class="metric-value">1.05</div>
+              <div class="metric-note">Rf: 3M T-bill proxy</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Sortino</div>
+              <div class="metric-value">1.42</div>
+              <div class="metric-note">Downside deviation basis</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Max Drawdown</div>
+              <div class="metric-value">-9.8% <span class="pill pill-stale">STALE</span></div>
+              <div class="metric-note">Trailing 12 months</div>
+            </div>
+            <div class="metric-card" style="grid-column:span 2;">
+              <div class="metric-label">Tracking Error (vs MSCI ACWI)</div>
+              <div class="insufficient-render" style="font-size:15px;">
+                &mdash; insufficient data
+                <span class="reason">MISSING_BENCHMARK — daily HK-calendar-aligned benchmark series unavailable</span>
+              </div>
+              <details class="evid"><summary>i</summary><div class="evid-pop"><div class="evid-pop-title">Tracking Error</div><div class="evid-pop-row"><b>State:</b> INSUFFICIENT_DATA</div><div class="evid-pop-row"><b>Reason:</b> MISSING_BENCHMARK</div><label class="evid-link" for="an-method-toggle">Open full methodology &rarr;</label></div></details>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tile: Beta with full depth ladder -->
+        <div class="tile span-7">
+          <div class="tile-title">Beta (vs MSCI ACWI) <small>full Quick &rarr; Simple &rarr; Investor &rarr; Professional path</small></div>
+          <div class="metric-value" style="margin-bottom:2px;">1.18 <span class="pill pill-limited">LIMITED</span>
+            <details class="evid"><summary>i</summary><div class="evid-pop"><div class="evid-pop-title">Beta</div><div class="evid-pop-row"><b>State:</b> LIMITED — short sample window</div><label class="evid-link" for="an-method-toggle">Open full methodology &rarr;</label></div></details>
+          </div>
+
+          <div class="depth-toggle">
+            <input type="radio" name="an-beta-depth" id="an-beta-q" class="depth-radio" checked>
+            <input type="radio" name="an-beta-depth" id="an-beta-s" class="depth-radio">
+            <input type="radio" name="an-beta-depth" id="an-beta-i" class="depth-radio">
+            <input type="radio" name="an-beta-depth" id="an-beta-p" class="depth-radio">
+            <div class="depth-labels">
+              <label for="an-beta-q">Quick</label>
+              <label for="an-beta-s">Simple</label>
+              <label for="an-beta-i">Investor</label>
+              <label for="an-beta-p">Professional</label>
+            </div>
+            <div class="depth-panel panel-q">
+              Your portfolio has historically moved more than the market. <span class="pill pill-limited" style="margin-left:4px;">LIMITED</span>
+            </div>
+            <div class="depth-panel panel-s">
+              Beta describes how much your portfolio has tended to amplify benchmark moves, in the same direction, over the period observed below — not a percentage risk increase. <span class="pill pill-limited" style="margin-left:4px;">LIMITED — short window</span>
+            </div>
+            <div class="depth-panel panel-i">
+              Beta: <b style="color:var(--text)">1.18</b> vs. MSCI ACWI, 8-month weekly window (Jan&ndash;Aug 2026).
+              <span class="pill pill-limited" style="margin-left:4px;">LIMITED</span> — sample window is below the 36-month preferred minimum; interpret directionally, not precisely.
+            </div>
+            <div class="depth-panel panel-p">
+              <b style="color:var(--text)">Method:</b> OLS regression, weekly portfolio excess returns on benchmark excess returns.<br>
+              <b style="color:var(--text)">R&sup2;:</b> 0.61 &nbsp; <b style="color:var(--text)">Observations:</b> 35 weekly (8 months) &nbsp; <b style="color:var(--text)">Risk-free proxy:</b> 3M T-bill<br>
+              <b style="color:var(--text)">FX treatment:</b> portfolio returns converted to USD at each period's fixing.<br>
+              <b style="color:var(--text)">Known limitation:</b> window is below the preferred 36-month minimum; estimate may be unstable.<br>
+              <span class="pill pill-limited" style="margin-top:6px;display:inline-flex;">LIMITED — carried at every depth level, not just here</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tile: SML/CAPM -->
+        <div class="tile span-6">
+          <div class="tile-title">SML / CAPM Positioning</div>
+          <svg viewBox="0 0 300 200" width="100%" height="180">
+            <line x1="40" y1="180" x2="280" y2="180" style="stroke:#232f47;stroke-width:1" />
+            <line x1="40" y1="180" x2="40" y2="10" style="stroke:#232f47;stroke-width:1" />
+            <line x1="40" y1="117" x2="256" y2="85" style="stroke:var(--text-faint);stroke-width:1.5;stroke-dasharray:3,3" />
+            <circle cx="160" cy="99" r="4" style="fill:var(--text-faint)" />
+            <text x="166" y="97" style="fill:var(--text-dim);font-size:9px;">Benchmark (&beta;=1.00)</text>
+            <circle cx="181.6" cy="76" r="5" style="fill:var(--accent)" />
+            <text x="188" y="74" style="fill:var(--accent);font-size:9px;">Portfolio (&beta;=1.18, +8.4%)</text>
+            <text x="4" y="184" style="fill:var(--text-faint);font-size:8px;">-2%</text>
+            <text x="4" y="14" style="fill:var(--text-faint);font-size:8px;">14%</text>
+            <text x="36" y="195" style="fill:var(--text-faint);font-size:8px;">&beta;=0</text>
+            <text x="252" y="195" style="fill:var(--text-faint);font-size:8px;">&beta;=1.8</text>
+          </svg>
+          <div class="metric-note">Portfolio sits above the security market line over this period — historically, return exceeded what the benchmark relationship and beta alone would predict. Historical, not a forecast (P6).</div>
+        </div>
+
+        <!-- Tile: Correlation heatmap -->
+        <div class="tile span-6">
+          <div class="tile-title">Correlation <small>core holdings, 8-month weekly window</small></div>
+          <div class="heatmap">
+            <div class="heatmap-corner"></div>
+            <div class="heatmap-colhead">AAPL</div>
+            <div class="heatmap-colhead">NVDA</div>
+            <div class="heatmap-colhead">VTI</div>
+            <div class="heatmap-colhead">0700.HK</div>
+            <div class="heatmap-colhead">600519.SS</div>
+
+            <div class="heatmap-rowhead">AAPL</div>
+            <div class="heatmap-cell" style="background:#4fd1c5">1.00</div>
+            <div class="heatmap-cell" style="background:#6fd9c9">0.72</div>
+            <div class="heatmap-cell" style="background:#5cd4c7">0.88</div>
+            <div class="heatmap-cell" style="background:#9be0d1">0.41</div>
+            <div class="heatmap-cell" style="background:#c7ebe0;color:#0a0e17">0.22
+              <details class="evid"><summary>i</summary><div class="evid-pop"><div class="evid-pop-title">AAPL &times; Moutai</div><div class="evid-pop-row"><b>State:</b> LIMITED</div><div class="evid-pop-row">Moutai's short price history (post-migration) limits window depth for this pair.</div></div></details>
+            </div>
+
+            <div class="heatmap-rowhead">NVDA</div>
+            <div class="heatmap-cell" style="background:#6fd9c9">0.72</div>
+            <div class="heatmap-cell" style="background:#4fd1c5">1.00</div>
+            <div class="heatmap-cell" style="background:#7fdccc">0.65</div>
+            <div class="heatmap-cell" style="background:#a6e3d4">0.38</div>
+            <div class="heatmap-cell" style="background:#d3efe6;color:#0a0e17">0.18</div>
+
+            <div class="heatmap-rowhead">VTI</div>
+            <div class="heatmap-cell" style="background:#5cd4c7">0.88</div>
+            <div class="heatmap-cell" style="background:#7fdccc">0.65</div>
+            <div class="heatmap-cell" style="background:#4fd1c5">1.00</div>
+            <div class="heatmap-cell" style="background:#93dfcf">0.45</div>
+            <div class="heatmap-cell" style="background:#c7ebe0;color:#0a0e17">0.20</div>
+
+            <div class="heatmap-rowhead">0700.HK</div>
+            <div class="heatmap-cell" style="background:#9be0d1">0.41</div>
+            <div class="heatmap-cell" style="background:#a6e3d4">0.38</div>
+            <div class="heatmap-cell" style="background:#93dfcf">0.45</div>
+            <div class="heatmap-cell" style="background:#4fd1c5">1.00</div>
+            <div class="heatmap-cell" style="background:#b4e6d8;color:#0a0e17">0.31
+              <details class="evid"><summary>i</summary><div class="evid-pop"><div class="evid-pop-title">Tencent &times; Moutai</div><div class="evid-pop-row"><b>State:</b> LIMITED — see AAPL &times; Moutai note.</div></div></details>
+            </div>
+
+            <div class="heatmap-rowhead">600519.SS</div>
+            <div class="heatmap-cell" style="background:#e0a02c;color:#0a0e17">0.22</div>
+            <div class="heatmap-cell" style="background:#e0a02c;color:#0a0e17">0.18</div>
+            <div class="heatmap-cell" style="background:#e0a02c;color:#0a0e17">0.20</div>
+            <div class="heatmap-cell" style="background:#e0a02c;color:#0a0e17">0.31</div>
+            <div class="heatmap-cell" style="background:#4fd1c5">1.00</div>
+          </div>
+          <div class="metric-note" style="margin-top:8px;">Moutai's row/column (amber) is <span class="pill pill-limited">LIMITED</span> throughout — a short post-migration price history, not a data error.</div>
+        </div>
+
+        <!-- Tile: Contribution to risk -->
+        <div class="tile span-12">
+          <div class="tile-title">Contribution to Risk <small>share of total portfolio variance, by position</small></div>
+          <div class="contrib-row"><div class="contrib-label">NVDA</div><div class="contrib-bar-track"><div class="contrib-bar-fill" style="width:34%"></div></div><div class="contrib-val">34%</div></div>
+          <div class="contrib-row"><div class="contrib-label">AAPL</div><div class="contrib-bar-track"><div class="contrib-bar-fill" style="width:22%"></div></div><div class="contrib-val">22%</div></div>
+          <div class="contrib-row"><div class="contrib-label">0700.HK</div><div class="contrib-bar-track"><div class="contrib-bar-fill" style="width:18%"></div></div><div class="contrib-val">18%</div></div>
+          <div class="contrib-row"><div class="contrib-label">VTI</div><div class="contrib-bar-track"><div class="contrib-bar-fill" style="width:12%"></div></div><div class="contrib-val">12%</div></div>
+          <div class="contrib-row"><div class="contrib-label">9988.HK</div><div class="contrib-bar-track"><div class="contrib-bar-fill" style="width:9%"></div></div><div class="contrib-val">9%</div></div>
+          <div class="contrib-row"><div class="contrib-label">600519.SS</div><div class="contrib-bar-track"><div class="contrib-bar-fill" style="width:5%"></div></div><div class="contrib-val">5%</div></div>
+        </div>
+
+      </div>
+
+      <!-- AI rail, contextual to Analytics -->
+      <aside class="ai-rail">
+        <div class="ai-rail-header">&#9679; AI Analyst — always in context</div>
+        <div class="ai-msg">
+          <div class="ai-msg-label">Contextual to this screen</div>
+          You're looking at Analytics. Your
+          <details class="chip limited"><summary>beta of 1.18 · LIMITED</summary><div class="evid-pop"><div class="evid-pop-title">Beta</div><div class="evid-pop-row">Tool call: <code>get_risk_metric(beta)</code></div></div></details>
+          carries a short-window caveat — expand the Beta card's Professional level for the full disclosure. Your
+          <details class="chip"><summary>Tencent × Moutai correlation (0.31)</summary><div class="evid-pop"><div class="evid-pop-title">Correlation</div><div class="evid-pop-row">Tool call: <code>get_correlation(pair)</code></div></div></details>
+          is the weakest pairwise relationship among your core holdings, and is also LIMITED for the same reason as the Moutai row generally.
+        </div>
+        <div class="quick-prompts">
+          <span class="qp">Why is Tracking Error unavailable?</span>
+          <span class="qp">Explain contribution to risk</span>
+          <span class="qp">What does the SML chart show?</span>
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- Methodology / Evidence deep slide-over (Analytics) -->
+    <label class="drawer-backdrop an-method-bd" for="an-method-toggle"></label>
+    <div class="drawer an-method-drawer">
+      <label class="drawer-close" for="an-method-toggle">Close &times;</label>
+      <div class="drawer-title">Methodology &amp; Evidence</div>
+      <div class="drawer-sub">Opened from an evidence popover's "Open full methodology" link — the terminus of the D4 path, not a page a user navigates to directly.</div>
+      <div class="drawer-field"><b>Metric</b>Beta (vs. MSCI ACWI)</div>
+      <div class="drawer-empty">
+        No methodology-registry entry is published yet for this metric in this increment (registry schema ships with zero entries per <code>specs/FEATURE_PRD.md</code> &sect;3.3, I3). This is the required "not yet published" state, distinct from a broken or empty page.
+      </div>
+      <div class="drawer-field" style="margin-top:14px;"><b>What would populate here</b>Definition, formula, annualization convention, data inputs, minimum observations, frequency, lookback, benchmark dependency, risk-free-rate dependency, missing-data handling, FX treatment, corporate-action treatment, known limitations, implementation version (&sect;33's fifteen fields).</div>
+    </div>
+
+  </section>
+
+  <footer class="doc-footer">
+    Direction A — Command Deck. Static, zero-dependency, zero-JavaScript, no network calls.
+    Source: <code>designs/hg1-revision/direction-a/</code>. Not an approval; HG1 remains undecided
+    (<code>reviews/gates/HG1_REVISION_CYCLE_01.md</code>). This file was not rendered in a browser by its author —
+    see <code>DIRECTION.md</code>, "What I did and did not verify."
+  </footer>
+
+</body>
+</html>

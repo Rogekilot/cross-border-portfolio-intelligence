@@ -1,0 +1,86 @@
+{
+  "scope": "CP7-E1 gate-only independent design review; no real-data UAT, E completion, E2 approval or HG4 decision",
+  "reviewer": "distinct designer subagent",
+  "date_local": "2026-10-19 Asia/Shanghai",
+  "capture_interval_utc": ["2026-10-19T06:29:19Z", "2026-10-19T06:35:24Z"],
+  "browser": "own Chrome tab through documented Cua API only",
+  "entry": "http://127.0.0.1:5173/portfolio",
+  "root_runtime_attribution": {
+    "api_port": 8000,
+    "api_pid": 11769,
+    "api_session": 95255,
+    "vite_port": 5173,
+    "vite_session": 45070,
+    "schema": "finweb_cp7e_review19",
+    "verification_limit": "Provided by root; designer did not query PG, inspect processes, or run direct API calls"
+  },
+  "source_verification": {
+    "inventory": "reviews/CP7_E_EVIDENCE/validation/web-freeze-e1-phase1.json",
+    "sha256": "fcbf39c47f1403246d137c96a7c4cbd2c7c2fd13478a3b4738817dd1dd959efb",
+    "paths": 49,
+    "initial_review_checkpoint_mismatches": [],
+    "after_ui_mismatches": [],
+    "initial_checkpoint_timing": "After initial English Quick/retry observations, before remaining depth/locale/mobile compatibility checks; root supplied the frozen version before the slot",
+    "scope_limit": "Only the authorized web49 paths were rehashed; no full candidate or market-data payload rehash"
+  },
+  "registrations_performed": 1,
+  "synthetic_portfolios_saved_and_analyzed": 1,
+  "ui_matrix": {
+    "EN": ["Quick", "Simple", "Professional"],
+    "zh": ["Quick", "Simple", "Professional"],
+    "mobile_390_by_844": ["zh upper and lower", "EN upper and lower", "keyboard return focus"]
+  },
+  "rendered_professional_response": {
+    "schema_version": "finweb.cp7.real_source/1",
+    "milestone": "E1_GATE_ONLY",
+    "mode": "LOCAL_REAL_SOURCE_TEST_ACCOUNT",
+    "state": "BLOCKED",
+    "readiness_stage": "METADATA_ONLY",
+    "approved_context_count": 0,
+    "contexts": [],
+    "capabilities": {
+      "source_metadata": true,
+      "payload_verification": false,
+      "source_qualification": false,
+      "create": false,
+      "saved": false,
+      "workspace": false,
+      "analytics": false,
+      "imports": false,
+      "exports": false,
+      "evidence": false
+    },
+    "personal_holdings": false,
+    "download_or_admission": false,
+    "real_uat_verified": false,
+    "hg4_approved": false,
+    "evidence_limit": "Read from the actual rendered Professional disclosure, not a direct API capture"
+  },
+  "disabled_dom_controls": [
+    {"label": "Create real-source test portfolio", "disabled": true},
+    {"label": "Save real-source portfolio", "disabled": true},
+    {"label": "Analyze real-source portfolio", "disabled": true}
+  ],
+  "retry_actions_performed": 2,
+  "keyboard_observation": {
+    "entry_activation": "Tab from saved-synthetic entry to readiness, then Return; readiness heading receives focus",
+    "heading_next_tab": "Check readiness again; all three disabled financial controls skipped",
+    "retry_result_active_element": {"tag": "BODY", "id": ""},
+    "next_tab_after_retry": "Use the fictional saved-portfolio flow",
+    "severity": "LOW; focus continuity polish, no observed navigation reset or trap"
+  },
+  "own_fault_injection": "NOT_EXECUTED: documented Cua surface has no route.abort; no invented network control",
+  "own_network_request_trace": "NOT_EXECUTED: no HTTP interception/direct API calls; zero-financial-request proof belongs to separately attributed technical evidence",
+  "own_error_recovery": "Normal readiness retry observed twice; network/response-error recovery not independently induced",
+  "console_warn_error_observation": [],
+  "logout_and_reload": "OBSERVED guest access, sign-in explanation, cleared readiness and saved-account panel",
+  "viewport_override": "RESET successfully before final logout",
+  "tab_cleanup": {
+    "own_tab": "1460642656",
+    "close": "ATTEMPTED; native pipe is closed",
+    "list_confirmation": "FAILED with same bridge error",
+    "final_disappearance": "UNKNOWN; root informed and runtime released"
+  },
+  "capture_format_correction": "getScreenshot returned original JPEG bytes; initial .png names were renamed to .jpg after file identification; bytes and SHA unchanged",
+  "verdict": "PASS_WITH_LIMITS for E1 design review only"
+}

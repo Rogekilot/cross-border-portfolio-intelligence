@@ -1,0 +1,68 @@
+{
+  "registry_id": "insights/1.0",
+  "issued": "2026-10-19",
+  "authored_by": "quant-methodology specialist (native Codex; independent of implementation)",
+  "authority": ["PRD P1/P3/P4/P5/P7/P8/P9/P12", "PRD 20-21 and CP6 38.3", "PD-0014", "PD-0041"],
+  "conventions": "methodology/CP6_INSIGHT_CONVENTIONS.md",
+  "scope": "Bounded CP6 deterministic rules; ACTUAL only; no new financial computation or human approval",
+  "shared": {
+    "comparisons": "Exact upstream Fraction or signed square-root witness; never rounded metric.value. Unsupported exact ordering is refused.",
+    "insufficient_data": "No surfaced numeric claim; typed diagnostic only.",
+    "limited": "Value retained with complete caveats; no WARNING. UNKNOWN/LIMITED freshness or temporal comparability caps personal-policy breach at ATTENTION.",
+    "scenario": "scenario_id null; mismatched/HYPOTHETICAL source refused",
+    "integrity": "Upstream reproduction and canonical complete result equality; refs and immutable Proof Packet bind dependencies and claim.",
+    "reference_points": ["BENCHMARK", "USER_POLICY", "PORTFOLIO_HISTORY"],
+    "no_generic_severity": "No generic Attention/Warning or invented personal threshold; denominator policy is not a risk preference."
+  },
+  "entries": [
+    {
+      "rule_id": "metric_snapshot",
+      "method_key": "insights/1.0#metric_snapshot",
+      "judgment_class": "FACT",
+      "comparison_basis": null,
+      "predicate": "Verified scalar CP4/CP5 value exists; state AVAILABLE or LIMITED.",
+      "severity": "OBSERVATION",
+      "minimum_dependencies": "One verified supported metric and its exact upstream snapshot context.",
+      "limitations": "No good/bad, overall diversification, largest-sector or risk-tolerance conclusion. LIMITED caveats retained; count is only a fact."
+    },
+    {
+      "rule_id": "benchmark_underperformance",
+      "method_key": "insights/1.0#benchmark_underperformance",
+      "judgment_class": "FACT",
+      "comparison_basis": "BENCHMARK",
+      "metric_selector": {"source": "CP4", "metric_id": "risk_active_return", "subject": []},
+      "predicate": "Verified supported exact active_return < 0 with an explicit dated primary-benchmark reference.",
+      "severity": "OBSERVATION",
+      "minimum_dependencies": "One supported relative-return metric plus verified benchmark selection/identity and declared historical window.",
+      "boundary": "Exact zero/positive do not trigger; rounded zero with negative exact witness does trigger with rounding caveat.",
+      "limitations": "LIMITED sufficiency/comparability remain explicit; no severity escalation or automatic SPY default."
+    },
+    {
+      "rule_id": "history_change",
+      "method_key": "insights/1.0#history_change",
+      "judgment_class": "INTERPRETATION",
+      "comparison_basis": "PORTFOLIO_HISTORY",
+      "predicate": "Two verified supported compatible metrics; baseline.as_of < current.as_of; exact values differ.",
+      "severity": "OBSERVATION",
+      "minimum_dependencies": "Two same-portfolio/scope/metric/subject semantic matches preserving each window/state/count/limitations.",
+      "boundary": "Exact equality does not trigger; exact difference behind equal display triggers only with rounding caveat.",
+      "limitations": "Direction only; no invented delta value, significance threshold, forecast, model-to-actual substitution or desirability claim."
+    },
+    {
+      "rule_id": "user_limit",
+      "method_key": "insights/1.0#user_limit",
+      "judgment_class": "PREFERENCE_DEPENDENT",
+      "comparison_basis": "USER_POLICY",
+      "metric_selectors": {
+        "CP4": ["risk_volatility", "risk_max_drawdown"],
+        "CP5": ["largest_position_weight", "largest_security_weight", "top5_concentration", "hhi_concentration", "country_exposure", "sector_exposure", "currency_exposure", "asset_class_exposure"]
+      },
+      "predicate": "One valid effective USER_CONFIRMED exact-scope selector policy; MAXIMUM x>L or MINIMUM x<L using exact witness.",
+      "severity": {"AVAILABLE_and_FULL_freshness_and_comparability": "WARNING", "LIMITED_or_LIMITED_UNKNOWN_freshness_comparability": "ATTENTION", "INSUFFICIENT_DATA": null},
+      "minimum_dependencies": "One verified supported metric and exactly one applicable immutable explicit personal policy.",
+      "boundary": "Equality is not a breach; effective dates inclusive; signed maximum drawdown compared literally.",
+      "policy_precedence": "Matching explicit policy determines judgment; no generic heuristic or global-product denominator substitutes. Exact scope only; no account/portfolio inheritance. Distinct overlapping selectors conflict.",
+      "limitations": "No trigger is not a safety/suitability conclusion. No thresholds supplied by this registry."
+    }
+  ]
+}

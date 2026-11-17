@@ -1,0 +1,97 @@
+# Repository tracking policy. The previous, annotated version of this file is in git
+# history and its reasoning in _archive/harness-3.2.0/decisions/accepted/ADR-0022.md.
+
+# --- OS and editor droppings -------------------------------------------------
+.DS_Store
+._*
+.AppleDouble
+Thumbs.db
+*.swp
+*~
+
+# --- Commit-message scratch files --------------------------------------------
+COMMIT_MSG_*.txt
+
+# --- Python ------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+# Separate environment for the human-run market-data download tool (tech plan §15.4).
+.venv-download/
+
+# CP7 React SPA: reproducible sources and lockfiles are tracked; installed/build
+# outputs and browser-test scratch artifacts stay local.
+web/node_modules/
+web/dist/
+web/test-results/
+web/playwright-report/
+web/*.tsbuildinfo
+
+# Local CP7 PostgreSQL development cluster, sockets and logs; never source artifacts.
+.local/
+
+# --- Market-data payloads (PD-0027 / PD-0028: internal use only) --------------
+# Downloaded payload files and quarantine reports stay local and are never committed:
+# committing vendor data to history risks redistribution (PRD §4.3). The source registry,
+# release files and verification records under data/marketdata/ ARE committed (tech plan §15.3).
+data/marketdata/files/
+data/marketdata/quarantine/
+# Payloads kept as evidence outside the store (e.g. the byte-identical OpenFIGI duplicate moved out
+# 2026-10-24) are vendor data too.
+data/marketdata/observations/
+# The HG2 real-slice evidence pack is computed from those payloads (real closes and rates), so it
+# stays local too. The synthetic pack beside it holds no market data and is committed.
+reviews/gates/HG2_EVIDENCE/real_slice/
+# CP7 raw vendor responses captured as evidence (SEC, OpenFIGI): payloads, so local only.
+reviews/CP7_E2_SEC_EVIDENCE/actual/attempt-01.success.body
+reviews/CP7_E2_SEC_EVIDENCE/actual/attempt-02.success.body
+reviews/CP7_E2_SEC_EVIDENCE/actual/attempt-03.success.body
+reviews/CP7_E_EVIDENCE/source-qualification/identity-attempt-1-response.bin
+
+# --- Large runtime evidence kept local ------------------------------------------
+# Database snapshots, screenshots and archive dumps over 1 MB from the CP7 evidence packages.
+# Listed with sizes and SHA-256 in reviews/LOCAL_ONLY_EVIDENCE.md (PD-0061).
+reviews/CP7_C_EVIDENCE/restart-retry1/after-api-restart.json
+reviews/CP7_C_EVIDENCE/restart-retry1/after-private-pg-restart.json
+reviews/CP7_C_EVIDENCE/restart-retry1/before-service-restarts.json
+reviews/CP7_C_EVIDENCE/restart/after-api-restart.json
+reviews/CP7_C_EVIDENCE/restart/before-service-restarts.json
+reviews/CP7_D_EVIDENCE/author/browser-artifacts/analytics/d-risk-xy-desktop.png
+reviews/CP7_D_EVIDENCE/author/post-design/pm-executed-focused/browser-artifacts/analytics/d-risk-xy-desktop.png
+reviews/CP7_D_EVIDENCE/independent-post-design/reviewer-affected-oracle-v1-results.json
+reviews/CP7_D_EVIDENCE/independent-post-design/reviewer-post-ux-full8-artifacts/analytics/d-risk-xy-desktop.png
+reviews/CP7_D_EVIDENCE/independent/reviewer-full8-artifacts/analytics/d-risk-xy-desktop.png
+reviews/CP7_D_EVIDENCE/independent/reviewer-http-v1-objects.json
+reviews/CP7_D_EVIDENCE/preliminary/d-targeted-attempt1/analytics/d-risk-xy-desktop.png
+reviews/CP7_D_EVIDENCE/preliminary/d-targeted-attempt2/analytics/d-risk-xy-desktop.png
+reviews/CP7_D_EVIDENCE/restart/after-api-restart.json
+reviews/CP7_D_EVIDENCE/restart/after-private-pg-restart.json
+reviews/CP7_D_EVIDENCE/restart/before-service-restarts.json
+reviews/CP7_D_EVIDENCE/restart/created-initial-snapshot.json
+reviews/CP7_D_EVIDENCE/restart/setup-correction-and-later-head.json
+reviews/CP7_E_EVIDENCE/author-browser/d/d-risk-xy-desktop.png
+reviews/CP7_E_EVIDENCE/independent-runtime/initial_snapshot.json
+reviews/CP7_F3_EVIDENCE/browser-author/f3-fictional-archive.json
+reviews/CP7_F3_EVIDENCE/runtime/browser-author-a3.json
+reviews/CP7_F3_EVIDENCE/specialists/reviewer/browser-v1/exact-archive.json
+reviews/FULL_F1_REQUIRED_2026-10-20/runtime-control/actual/link-expectations.json
+reviews/FULL_F1_REQUIRED_2026-10-20/runtime-control/actual/runtime-expectations.json
+reviews/OVERNIGHT_EXECUTION_2026-10-20/n3-runtime/DURABILITY_EXPECTATION.json
+
+# --- Live runtime state -------------------------------------------------------
+# Written by scripts/serve_prototype.py while the review server runs; read by
+# .claude/hooks/guard_browser.py. Describes a running process, so never committed.
+runtime/review-server.json
+
+# --- Archived harness live state ----------------------------------------------
+# These were gitignored live state under the retired harness and stay untracked in the
+# archive (kept on disk for reference; see _archive/README.md).
+_archive/harness-3.2.0/runtime/agent-registry.json
+_archive/harness-3.2.0/runtime/agent-registry.history.jsonl
+_archive/harness-3.2.0/runtime/chrome-tabs.json
+_archive/harness-3.2.0/runtime/chrome-preflight.json
+
+# Local Claude Code permissions: per machine, never committed (PD-0083).
+.claude/settings.local.json

@@ -1,0 +1,1434 @@
+{
+  "fixture_id": "cp5_golden/1.1-part1",
+  "methodology_id": "diversification/1.0",
+  "as_of": "2025-12-26",
+  "authored_by": "quant-analyst (independent from product implementation)",
+  "derivation": "CP5_GOLDEN_PART1_DERIVATION.md",
+  "calculator": "derivation/cp5_part1_calculator.py",
+  "tolerance": {
+    "rational": "0",
+    "radical_presented": "0.0000000000005",
+    "state": "exact",
+    "clusters": "exact"
+  },
+  "cases": [
+    {
+      "id": "C5-S1",
+      "kind": "snapshot",
+      "input": {
+        "portfolio_id": "SYN5",
+        "reporting_currency": "USD",
+        "as_of": "2025-12-26",
+        "synthetic": true,
+        "metadata_id": "SYN5-metadata/1",
+        "metadata_as_of": "2025-12-26",
+        "taxonomy_id": "SYN5-sector/1",
+        "provenance": "Independent synthetic quant fixture; no source admission",
+        "components": [
+          {
+            "key": "SECURITY:A",
+            "account": "one",
+            "native_currency": "USD",
+            "native_value": "100",
+            "fx": "1",
+            "country": "US",
+            "sector": "TECH",
+            "asset_class": "EQUITY"
+          },
+          {
+            "key": "SECURITY:A",
+            "account": "two",
+            "native_currency": "USD",
+            "native_value": "300",
+            "fx": "1",
+            "country": "US",
+            "sector": "TECH",
+            "asset_class": "EQUITY"
+          },
+          {
+            "key": "SECURITY:B",
+            "account": "one",
+            "native_currency": "HKD",
+            "native_value": "1560",
+            "fx": "5/39",
+            "trade_event_currency": "USD",
+            "country": "KY",
+            "sector": "FIN",
+            "asset_class": "EQUITY"
+          },
+          {
+            "key": "SECURITY:C",
+            "account": "one",
+            "native_currency": "CNY",
+            "native_value": "1400",
+            "fx": "1/7",
+            "country": "IE",
+            "sector": "UNKNOWN",
+            "asset_class": "ETF"
+          },
+          {
+            "key": "CASH:USD",
+            "native_currency": "USD",
+            "native_value": "100",
+            "fx": "1",
+            "country": "CASH",
+            "sector": "CASH",
+            "asset_class": "CASH"
+          },
+          {
+            "key": "CASH:EUR",
+            "native_currency": "EUR",
+            "native_value": "45",
+            "fx": "10/9",
+            "country": "CASH",
+            "sector": "CASH",
+            "asset_class": "CASH"
+          },
+          {
+            "key": "RECEIVABLE:EUR",
+            "native_currency": "EUR",
+            "native_value": "45",
+            "fx": "10/9",
+            "country": "RECEIVABLE",
+            "sector": "RECEIVABLE",
+            "asset_class": "RECEIVABLE"
+          }
+        ],
+        "capital_universe": {
+          "choice": "FULL_NAV",
+          "origin": "SYNTHETIC_CANDIDATE",
+          "evidence": "Independent synthetic fixture candidate; pending OD-CP5-01; not actual user confirmation"
+        }
+      },
+      "expected": {
+        "total": "1000",
+        "weights": {
+          "SECURITY:A": "2/5",
+          "SECURITY:B": "1/5",
+          "SECURITY:C": "1/5",
+          "CASH:USD": "1/10",
+          "CASH:EUR": "1/20",
+          "RECEIVABLE:EUR": "1/20"
+        },
+        "metrics": {
+          "largest_position_weight": {
+            "state": "AVAILABLE",
+            "exact": "2/5",
+            "detail": null
+          },
+          "largest_security_weight": {
+            "state": "AVAILABLE",
+            "exact": "2/5",
+            "detail": null
+          },
+          "top5_concentration": {
+            "state": "AVAILABLE",
+            "exact": "19/20",
+            "detail": null
+          },
+          "hhi_concentration": {
+            "state": "AVAILABLE",
+            "exact": "51/200",
+            "detail": null
+          },
+          "effective_positions": {
+            "state": "AVAILABLE",
+            "exact": "200/51",
+            "detail": null
+          }
+        },
+        "exposures": {
+          "country": {
+            "state": "AVAILABLE",
+            "categories": {
+              "US": "2/5",
+              "KY": "1/5",
+              "IE": "1/5",
+              "CASH": "3/20",
+              "RECEIVABLE": "1/20"
+            }
+          },
+          "sector": {
+            "state": "LIMITED",
+            "detail": "UNKNOWN_CLASSIFICATION",
+            "categories": {
+              "TECH": "2/5",
+              "FIN": "1/5",
+              "UNKNOWN": "1/5",
+              "CASH": "3/20",
+              "RECEIVABLE": "1/20"
+            }
+          },
+          "currency": {
+            "state": "AVAILABLE",
+            "categories": {
+              "USD": "1/2",
+              "HKD": "1/5",
+              "CNY": "1/5",
+              "EUR": "1/10"
+            }
+          },
+          "asset_class": {
+            "state": "AVAILABLE",
+            "categories": {
+              "EQUITY": "3/5",
+              "ETF": "1/5",
+              "CASH": "3/20",
+              "RECEIVABLE": "1/20"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "C5-S2",
+      "kind": "snapshot",
+      "input": {
+        "portfolio_id": "SYN5",
+        "reporting_currency": "USD",
+        "as_of": "2025-12-26",
+        "synthetic": true,
+        "metadata_id": "SYN5-metadata/1",
+        "metadata_as_of": "2025-12-26",
+        "taxonomy_id": "SYN5-sector/1",
+        "provenance": "Independent synthetic quant fixture; no source admission",
+        "components": [
+          {
+            "key": "CASH:USD",
+            "native_currency": "USD",
+            "native_value": "100",
+            "fx": "1",
+            "country": "CASH",
+            "sector": "CASH",
+            "asset_class": "CASH"
+          }
+        ],
+        "capital_universe": {
+          "choice": "FULL_NAV",
+          "origin": "SYNTHETIC_CANDIDATE",
+          "evidence": "Independent synthetic fixture candidate; pending OD-CP5-01; not actual user confirmation"
+        }
+      },
+      "expected": {
+        "total": "100",
+        "weights": {
+          "CASH:USD": "1"
+        },
+        "metrics": {
+          "largest_position_weight": {
+            "state": "AVAILABLE",
+            "exact": "1",
+            "detail": null
+          },
+          "largest_security_weight": {
+            "state": "INSUFFICIENT_DATA",
+            "exact": null,
+            "detail": "NO_SECURITY_POSITIONS"
+          },
+          "top5_concentration": {
+            "state": "AVAILABLE",
+            "exact": "1",
+            "detail": null
+          },
+          "hhi_concentration": {
+            "state": "AVAILABLE",
+            "exact": "1",
+            "detail": null
+          },
+          "effective_positions": {
+            "state": "AVAILABLE",
+            "exact": "1",
+            "detail": null
+          }
+        }
+      }
+    },
+    {
+      "id": "C5-S3",
+      "kind": "snapshot_refusal",
+      "input": {
+        "base_case": "C5-S1",
+        "overrides": [
+          {
+            "key": "SECURITY:B",
+            "state": "INSUFFICIENT_DATA",
+            "reason": "MISSING_FX_HISTORY",
+            "exact": null
+          }
+        ]
+      },
+      "expected": {
+        "all_concentration_and_exposure": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "reason": "MISSING_FX_HISTORY"
+        },
+        "partial_nav_must_not_be_denominator": true
+      }
+    },
+    {
+      "id": "C5-S4",
+      "kind": "snapshot_refusal",
+      "input": {
+        "components": [
+          {
+            "key": "SECURITY:A",
+            "value": "110"
+          },
+          {
+            "key": "CASH:USD",
+            "value": "-10"
+          }
+        ]
+      },
+      "expected": {
+        "all_concentration_and_exposure": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "NEGATIVE_COMPONENT"
+        }
+      }
+    },
+    {
+      "id": "C5-S5",
+      "kind": "snapshot_refusal",
+      "input": {
+        "components": []
+      },
+      "expected": {
+        "all_concentration_and_exposure": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "NON_POSITIVE_TOTAL"
+        }
+      }
+    },
+    {
+      "id": "C5-S6",
+      "kind": "snapshot_identity",
+      "input": {
+        "base_case": "C5-S1",
+        "cost_basis_available": false,
+        "shared_issuer_for": [
+          "SECURITY:A",
+          "SECURITY:B"
+        ]
+      },
+      "expected": {
+        "same_metrics_as": "C5-S1",
+        "security_A_weight": "2/5",
+        "security_B_weight": "1/5",
+        "issuer_aggregation_forbidden": true
+      }
+    },
+    {
+      "id": "C5-H1",
+      "kind": "history",
+      "input": {
+        "frequency": "WEEKLY",
+        "grid_start": "2023-01-06",
+        "grid_rule": "g_k = grid_start + 7*k calendar days, k=0..n; full periods only",
+        "total_return_coverage": "COMPLETE_SYNTHETIC",
+        "weights": {
+          "SECURITY:A": "1/2",
+          "SECURITY:B": "1/4",
+          "SECURITY:C": "1/4"
+        },
+        "vectors": {
+          "SECURITY:A": {
+            "pattern": [
+              "-1/10",
+              "1/10"
+            ],
+            "repeat": 25,
+            "tail": [
+              "0"
+            ]
+          },
+          "SECURITY:B": {
+            "multiple_of": "SECURITY:A",
+            "multiplier": "2"
+          },
+          "SECURITY:C": {
+            "multiple_of": "SECURITY:A",
+            "multiplier": "-1"
+          }
+        },
+        "n": 51,
+        "tau": "4/5",
+        "capital_universe": {
+          "choice": "FULL_NAV",
+          "origin": "SYNTHETIC_CANDIDATE",
+          "evidence": "Independent synthetic fixture candidate; pending OD-CP5-01; not actual user confirmation"
+        },
+        "synthetic": true
+      },
+      "expected": {
+        "state": "LIMITED",
+        "detail": "OBSERVATIONS_BELOW_STANDARD",
+        "pairwise": {
+          "SECURITY:A|SECURITY:B": "1",
+          "SECURITY:A|SECURITY:C": "-1",
+          "SECURITY:B|SECURITY:C": "-1"
+        },
+        "average_correlation": "-1/5",
+        "security_coverage": "1",
+        "cluster_count": "2",
+        "clusters": [
+          [
+            "SECURITY:A",
+            "SECURITY:B"
+          ],
+          [
+            "SECURITY:C"
+          ]
+        ],
+        "periodic_variance": "9/1600",
+        "annual_variance": "117/400",
+        "modeled_volatility": {
+          "signed_sqrt": "117/400",
+          "sign": 1
+        },
+        "risk_shares": {
+          "SECURITY:A": "2/3",
+          "SECURITY:B": "2/3",
+          "SECURITY:C": "-1/3"
+        }
+      }
+    },
+    {
+      "id": "C5-H2",
+      "kind": "history",
+      "input": {
+        "frequency": "WEEKLY",
+        "grid_start": "2023-01-06",
+        "grid_rule": "g_k = grid_start + 7*k calendar days, k=0..n; full periods only",
+        "total_return_coverage": "COMPLETE_SYNTHETIC",
+        "weights": {
+          "SECURITY:A": "1/2",
+          "SECURITY:B": "1/4",
+          "SECURITY:C": "1/4"
+        },
+        "vectors": {
+          "SECURITY:A": {
+            "pattern": [
+              "-1/10",
+              "1/10"
+            ],
+            "repeat": 77,
+            "tail": [
+              "0"
+            ]
+          },
+          "SECURITY:B": {
+            "multiple_of": "SECURITY:A",
+            "multiplier": "2"
+          },
+          "SECURITY:C": {
+            "multiple_of": "SECURITY:A",
+            "multiplier": "-1"
+          }
+        },
+        "n": 155,
+        "tau": "4/5",
+        "capital_universe": {
+          "choice": "FULL_NAV",
+          "origin": "SYNTHETIC_CANDIDATE",
+          "evidence": "Independent synthetic fixture candidate; pending OD-CP5-01; not actual user confirmation"
+        },
+        "synthetic": true
+      },
+      "expected": {
+        "state": "AVAILABLE",
+        "detail": null,
+        "pairwise": {
+          "SECURITY:A|SECURITY:B": "1",
+          "SECURITY:A|SECURITY:C": "-1",
+          "SECURITY:B|SECURITY:C": "-1"
+        },
+        "average_correlation": "-1/5",
+        "security_coverage": "1",
+        "cluster_count": "2",
+        "clusters": [
+          [
+            "SECURITY:A",
+            "SECURITY:B"
+          ],
+          [
+            "SECURITY:C"
+          ]
+        ],
+        "periodic_variance": "9/1600",
+        "annual_variance": "117/400",
+        "modeled_volatility": {
+          "signed_sqrt": "117/400",
+          "sign": 1
+        },
+        "risk_shares": {
+          "SECURITY:A": "2/3",
+          "SECURITY:B": "2/3",
+          "SECURITY:C": "-1/3"
+        }
+      }
+    },
+    {
+      "id": "C5-H3",
+      "kind": "history_refusal",
+      "input": {
+        "base_case": "C5-H1",
+        "n": 50,
+        "remove_tail": true
+      },
+      "expected": {
+        "statistical_metrics": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "INSUFFICIENT_OBSERVATIONS"
+        }
+      }
+    },
+    {
+      "id": "C5-H4",
+      "kind": "history",
+      "input": {
+        "frequency": "WEEKLY",
+        "grid_start": "2023-01-06",
+        "grid_rule": "g_k = grid_start + 7*k calendar days, k=0..n; full periods only",
+        "total_return_coverage": "COMPLETE_SYNTHETIC",
+        "weights": {
+          "SECURITY:A": "2/5",
+          "SECURITY:B": "1/5",
+          "SECURITY:C": "1/5",
+          "CASH:USD": "1/10",
+          "CASH:EUR": "1/20",
+          "RECEIVABLE:EUR": "1/20"
+        },
+        "vectors": {
+          "SECURITY:A": {
+            "pattern": [
+              "-1/10",
+              "1/10"
+            ],
+            "repeat": 25,
+            "tail": [
+              "0"
+            ]
+          },
+          "SECURITY:B": {
+            "multiple_of": "SECURITY:A",
+            "multiplier": "2"
+          },
+          "SECURITY:C": {
+            "multiple_of": "SECURITY:A",
+            "multiplier": "-1"
+          },
+          "CASH:USD": {
+            "constant": "0"
+          },
+          "CASH:EUR": {
+            "multiple_of": "SECURITY:A",
+            "multiplier": "-1/2"
+          },
+          "RECEIVABLE:EUR": {
+            "multiple_of": "SECURITY:A",
+            "multiplier": "-1/2"
+          }
+        },
+        "n": 51,
+        "tau": "4/5",
+        "capital_universe": {
+          "choice": "FULL_NAV",
+          "origin": "SYNTHETIC_CANDIDATE",
+          "evidence": "Independent synthetic fixture candidate; pending OD-CP5-01; not actual user confirmation"
+        },
+        "synthetic": true
+      },
+      "expected": {
+        "state": "LIMITED",
+        "detail": "OBSERVATIONS_BELOW_STANDARD",
+        "pairwise": {
+          "SECURITY:A|SECURITY:B": "1",
+          "SECURITY:A|SECURITY:C": "-1",
+          "SECURITY:B|SECURITY:C": "-1"
+        },
+        "average_correlation": "-1/5",
+        "security_coverage": "4/5",
+        "cluster_count": "2",
+        "clusters": [
+          [
+            "SECURITY:A",
+            "SECURITY:B"
+          ],
+          [
+            "SECURITY:C"
+          ]
+        ],
+        "periodic_variance": "121/40000",
+        "annual_variance": "1573/10000",
+        "modeled_volatility": {
+          "signed_sqrt": "1573/10000",
+          "sign": 1
+        },
+        "risk_shares": {
+          "SECURITY:A": "8/11",
+          "SECURITY:B": "8/11",
+          "SECURITY:C": "-4/11",
+          "CASH:USD": "0",
+          "CASH:EUR": "-1/22",
+          "RECEIVABLE:EUR": "-1/22"
+        }
+      }
+    },
+    {
+      "id": "C5-H5",
+      "kind": "history",
+      "input": {
+        "frequency": "WEEKLY",
+        "grid_start": "2023-01-06",
+        "grid_rule": "g_k = grid_start + 7*k calendar days, k=0..n; full periods only",
+        "total_return_coverage": "COMPLETE_SYNTHETIC",
+        "weights": {
+          "SECURITY:A": "1/3",
+          "SECURITY:B": "1/3",
+          "SECURITY:C": "1/3"
+        },
+        "vectors": {
+          "SECURITY:A": {
+            "pattern": [
+              "1/10",
+              "-1/10",
+              "1/10",
+              "-1/10"
+            ],
+            "repeat": 13
+          },
+          "SECURITY:C": {
+            "pattern": [
+              "1/10",
+              "1/10",
+              "-1/10",
+              "-1/10"
+            ],
+            "repeat": 13
+          },
+          "SECURITY:B": {
+            "linear_combination": {
+              "SECURITY:A": "3",
+              "SECURITY:C": "4"
+            }
+          }
+        },
+        "n": 52,
+        "tau": "3/5",
+        "capital_universe": {
+          "choice": "FULL_NAV",
+          "origin": "SYNTHETIC_CANDIDATE",
+          "evidence": "Independent synthetic fixture candidate; pending OD-CP5-01; not actual user confirmation"
+        },
+        "synthetic": true
+      },
+      "expected": {
+        "state": "LIMITED",
+        "detail": "OBSERVATIONS_BELOW_STANDARD",
+        "pairwise": {
+          "SECURITY:A|SECURITY:B": "3/5",
+          "SECURITY:A|SECURITY:C": "0",
+          "SECURITY:B|SECURITY:C": "4/5"
+        },
+        "average_correlation": "7/15",
+        "security_coverage": "1",
+        "clusters": [
+          [
+            "SECURITY:A",
+            "SECURITY:B",
+            "SECURITY:C"
+          ]
+        ],
+        "cluster_count": "1",
+        "periodic_variance": "533/11475",
+        "annual_variance": "27716/11475",
+        "modeled_volatility": {
+          "signed_sqrt": "27716/11475",
+          "sign": 1
+        },
+        "risk_shares": {
+          "SECURITY:A": "4/41",
+          "SECURITY:B": "32/41",
+          "SECURITY:C": "5/41"
+        }
+      }
+    },
+    {
+      "id": "C5-H6",
+      "kind": "history_refusal",
+      "input": {
+        "base_case": "C5-H1",
+        "missing_period": {
+          "key": "SECURITY:C",
+          "index": 7
+        }
+      },
+      "expected": {
+        "unaffected_pair": {
+          "SECURITY:A|SECURITY:B": {
+            "state": "LIMITED",
+            "exact": "1",
+            "detail": "OBSERVATIONS_BELOW_STANDARD"
+          }
+        },
+        "average_correlation": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "PAIR_UNAVAILABLE"
+        },
+        "correlation_cluster_count": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "PAIR_UNAVAILABLE"
+        },
+        "risk_contribution_share": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "PERIOD_INSUFFICIENT"
+        },
+        "modeled_volatility": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "PERIOD_INSUFFICIENT"
+        }
+      }
+    },
+    {
+      "id": "C5-H7",
+      "kind": "history",
+      "input": {
+        "frequency": "WEEKLY",
+        "grid_start": "2023-01-06",
+        "grid_rule": "g_k = grid_start + 7*k calendar days, k=0..n; full periods only",
+        "total_return_coverage": "COMPLETE_SYNTHETIC",
+        "weights": {
+          "CASH:USD": "1"
+        },
+        "vectors": {
+          "CASH:USD": {
+            "constant": "0"
+          }
+        },
+        "n": 51,
+        "tau": "4/5",
+        "capital_universe": {
+          "choice": "FULL_NAV",
+          "origin": "SYNTHETIC_CANDIDATE",
+          "evidence": "Independent synthetic fixture candidate; pending OD-CP5-01; not actual user confirmation"
+        },
+        "synthetic": true
+      },
+      "expected": {
+        "state": "LIMITED",
+        "modeled_volatility": {
+          "state": "LIMITED",
+          "exact": "0",
+          "detail": "OBSERVATIONS_BELOW_STANDARD"
+        },
+        "average_correlation": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "TOO_FEW_SECURITIES"
+        },
+        "correlation_cluster_count": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "TOO_FEW_SECURITIES"
+        },
+        "risk_contribution_share": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "ZERO_MODEL_VARIANCE"
+        },
+        "risk_contribution_component": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "ZERO_MODEL_VARIANCE"
+        }
+      }
+    },
+    {
+      "id": "C5-H8",
+      "kind": "history_refusal",
+      "input": {
+        "base_case": "C5-H1",
+        "constant_security": "SECURITY:C"
+      },
+      "expected": {
+        "pair_A_B": {
+          "state": "LIMITED",
+          "exact": "1",
+          "detail": "OBSERVATIONS_BELOW_STANDARD"
+        },
+        "pair_A_C": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "ZERO_VARIANCE"
+        },
+        "pair_B_C": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "ZERO_VARIANCE"
+        },
+        "average_correlation": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "PAIR_UNAVAILABLE"
+        },
+        "correlation_cluster_count": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "PAIR_UNAVAILABLE"
+        },
+        "modeled_periodic_variance": "1/100",
+        "risk_shares": {
+          "SECURITY:A": "1/2",
+          "SECURITY:B": "1/2",
+          "SECURITY:C": "0"
+        }
+      }
+    },
+    {
+      "id": "C5-H9",
+      "kind": "history_refusal",
+      "input": {
+        "base_case": "C5-H1",
+        "tau": null
+      },
+      "expected": {
+        "correlation_cluster_count": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "CLUSTER_THRESHOLD_REQUIRED"
+        },
+        "other_metrics_same_as": "C5-H1"
+      }
+    },
+    {
+      "id": "C5-H10",
+      "kind": "history_refusal",
+      "input": {
+        "base_case": "C5-H1",
+        "tau": "1000000000001/1000000000000"
+      },
+      "expected": {
+        "correlation_cluster_count": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "INVALID_CLUSTER_THRESHOLD"
+        }
+      }
+    },
+    {
+      "id": "C5-H11",
+      "kind": "history_refusal",
+      "input": {
+        "base_case": "C5-H1",
+        "total_return_coverage": "PRICE_ONLY"
+      },
+      "expected": {
+        "statistical_metrics": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "NOT_TOTAL_RETURN"
+        }
+      }
+    },
+    {
+      "id": "C5-H12",
+      "kind": "history_refusal",
+      "input": {
+        "base_case": "C5-H1",
+        "total_return_coverage": "UNKNOWN"
+      },
+      "expected": {
+        "statistical_metrics": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "TOTAL_RETURN_COVERAGE_UNCONFIRMED"
+        }
+      }
+    },
+    {
+      "id": "C5-FX1",
+      "kind": "return_translation",
+      "input": {
+        "native_return": "1/10",
+        "fx_return": "-1/5"
+      },
+      "expected": {
+        "reporting_return": "-3/25",
+        "cross_term": "-1/50",
+        "native_and_reporting_opposite_sign": true
+      }
+    },
+    {
+      "id": "C5-D1",
+      "kind": "drift",
+      "input": {
+        "metric": "largest_position_weight",
+        "baseline_exact": "1/4",
+        "current_exact": "2/5",
+        "baseline_as_of": "2025-11-28",
+        "current_as_of": "2025-12-26",
+        "accepted": true,
+        "acceptance_reference": "SYNTHETIC-HUMAN-REFERENCE",
+        "compatible": true
+      },
+      "expected": {
+        "drift_absolute": {
+          "state": "AVAILABLE",
+          "exact": "3/20",
+          "detail": null
+        }
+      }
+    },
+    {
+      "id": "C5-D2",
+      "kind": "drift",
+      "input": {
+        "metric": "country_exposure",
+        "baseline_complete_map": {
+          "US": "1/2",
+          "KY": "1/2"
+        },
+        "current_complete_map": {
+          "US": "2/5",
+          "IE": "3/5"
+        },
+        "accepted": true,
+        "acceptance_reference": "SYNTHETIC-HUMAN-REFERENCE",
+        "same_metadata_digest": true,
+        "compatible": true
+      },
+      "expected": {
+        "category_deltas": {
+          "US": "-1/10",
+          "KY": "-1/2",
+          "IE": "3/5"
+        },
+        "sum_deltas": "0"
+      }
+    },
+    {
+      "id": "C5-D3",
+      "kind": "target",
+      "input": {
+        "metric": "largest_security_weight",
+        "current_exact": "2/5",
+        "target_exact": "3/10",
+        "origin": "EXPLICIT_USER",
+        "target_id": "SYN5-USER-TARGET",
+        "effective_date": "2025-11-01",
+        "as_of": "2025-12-26",
+        "compatible": true
+      },
+      "expected": {
+        "drift_target_gap": {
+          "state": "AVAILABLE",
+          "exact": "1/10",
+          "detail": null
+        }
+      }
+    },
+    {
+      "id": "C5-D4",
+      "kind": "target",
+      "input": {
+        "metric": "largest_security_weight",
+        "current_exact": "2/5",
+        "target": null
+      },
+      "expected": {
+        "drift_target_gap": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "NO_USER_TARGET"
+        }
+      }
+    },
+    {
+      "id": "C5-D5",
+      "kind": "target",
+      "input": {
+        "metric": "largest_security_weight",
+        "current_exact": "2/5",
+        "target_exact": "3/10",
+        "origin": "MODEL_RECOMMENDATION"
+      },
+      "expected": {
+        "drift_target_gap": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "TARGET_NOT_USER_DEFINED"
+        }
+      }
+    },
+    {
+      "id": "C5-D6",
+      "kind": "drift",
+      "input": {
+        "baseline_exact": "1/4",
+        "current_exact": "2/5",
+        "accepted": false
+      },
+      "expected": {
+        "drift_absolute": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "BASELINE_NOT_ACCEPTED"
+        }
+      }
+    },
+    {
+      "id": "C5-D7",
+      "kind": "drift",
+      "input": {
+        "baseline_exact": "1/4",
+        "current_exact": "2/5",
+        "accepted": true,
+        "compatibility_mismatch": "reporting_currency"
+      },
+      "expected": {
+        "drift_absolute": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "INCOMPATIBLE_BASELINE"
+        }
+      }
+    },
+    {
+      "id": "C5-D8",
+      "kind": "drift",
+      "input": {
+        "baseline_exact": "1000000000004/10000000000000",
+        "current_exact": "1000000000006/10000000000000",
+        "accepted": true,
+        "compatible": true
+      },
+      "expected": {
+        "drift_absolute": {
+          "state": "AVAILABLE",
+          "exact": "1/5000000000000",
+          "detail": null
+        },
+        "presented": "0.000000000000",
+        "wrong_subtract_presented": "0.000000000001"
+      }
+    },
+    {
+      "id": "C5-D9",
+      "kind": "drift",
+      "input": {
+        "metric": "risk_beta",
+        "baseline_state": "INSUFFICIENT_DATA",
+        "baseline_reason": "MISSING_BENCHMARK",
+        "current_exact": "6/5"
+      },
+      "expected": {
+        "drift_absolute": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "reason": "MISSING_BENCHMARK"
+        }
+      }
+    },
+    {
+      "id": "C5-H13",
+      "kind": "single_security_history",
+      "input": {
+        "frequency": "WEEKLY",
+        "grid_start": "2023-01-06",
+        "grid_rule": "g_k = grid_start + 7*k calendar days, k=0..n; full periods only",
+        "total_return_coverage": "COMPLETE_SYNTHETIC",
+        "weights": {
+          "SECURITY:A": "1"
+        },
+        "vectors": {
+          "SECURITY:A": {
+            "pattern": [
+              "-1/10",
+              "1/10"
+            ],
+            "repeat": 25,
+            "tail": [
+              "0"
+            ]
+          }
+        },
+        "n": 51,
+        "tau": "4/5",
+        "capital_universe": {
+          "choice": "FULL_NAV",
+          "origin": "SYNTHETIC_CANDIDATE",
+          "evidence": "Independent synthetic fixture candidate; pending OD-CP5-01; not actual user confirmation"
+        },
+        "synthetic": true
+      },
+      "expected": {
+        "state": "LIMITED",
+        "periodic_variance": "1/100",
+        "annual_variance": "13/25",
+        "risk_shares": {
+          "SECURITY:A": "1"
+        },
+        "average_correlation": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "TOO_FEW_SECURITIES"
+        },
+        "correlation_cluster_count": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "TOO_FEW_SECURITIES"
+        }
+      }
+    },
+    {
+      "id": "C5-H14",
+      "kind": "zero_model_history",
+      "input": {
+        "frequency": "WEEKLY",
+        "grid_start": "2023-01-06",
+        "grid_rule": "g_k = grid_start + 7*k calendar days, k=0..n; full periods only",
+        "total_return_coverage": "COMPLETE_SYNTHETIC",
+        "weights": {
+          "SECURITY:A": "1/2",
+          "SECURITY:C": "1/2"
+        },
+        "vectors": {
+          "SECURITY:A": {
+            "pattern": [
+              "-1/10",
+              "1/10"
+            ],
+            "repeat": 25,
+            "tail": [
+              "0"
+            ]
+          },
+          "SECURITY:C": {
+            "multiple_of": "SECURITY:A",
+            "multiplier": "-1"
+          }
+        },
+        "n": 51,
+        "tau": "4/5",
+        "capital_universe": {
+          "choice": "FULL_NAV",
+          "origin": "SYNTHETIC_CANDIDATE",
+          "evidence": "Independent synthetic fixture candidate; pending OD-CP5-01; not actual user confirmation"
+        },
+        "synthetic": true
+      },
+      "expected": {
+        "state": "LIMITED",
+        "periodic_variance": "0",
+        "pairwise": {
+          "SECURITY:A|SECURITY:C": "-1"
+        },
+        "average_correlation": "-1",
+        "clusters": [
+          [
+            "SECURITY:A"
+          ],
+          [
+            "SECURITY:C"
+          ]
+        ],
+        "risk_contribution_share": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "ZERO_MODEL_VARIANCE"
+        }
+      }
+    },
+    {
+      "id": "C5-H15",
+      "kind": "history_radical",
+      "input": {
+        "frequency": "WEEKLY",
+        "grid_start": "2023-01-06",
+        "grid_rule": "g_k = grid_start + 7*k calendar days, k=0..n; full periods only",
+        "total_return_coverage": "COMPLETE_SYNTHETIC",
+        "weights": {
+          "SECURITY:A": "1/3",
+          "SECURITY:B": "1/3",
+          "SECURITY:C": "1/3"
+        },
+        "vectors": {
+          "SECURITY:A": {
+            "pattern": [
+              "1/10",
+              "-1/10",
+              "1/10",
+              "-1/10"
+            ],
+            "repeat": 13
+          },
+          "SECURITY:C": {
+            "pattern": [
+              "1/10",
+              "1/10",
+              "-1/10",
+              "-1/10"
+            ],
+            "repeat": 13
+          },
+          "SECURITY:B": {
+            "linear_combination": {
+              "SECURITY:A": "1",
+              "SECURITY:C": "1"
+            }
+          }
+        },
+        "n": 52,
+        "tau": "7/10",
+        "capital_universe": {
+          "choice": "FULL_NAV",
+          "origin": "SYNTHETIC_CANDIDATE",
+          "evidence": "Independent synthetic fixture candidate; pending OD-CP5-01; not actual user confirmation"
+        },
+        "synthetic": true
+      },
+      "expected": {
+        "state": "LIMITED",
+        "pairwise": {
+          "SECURITY:A|SECURITY:B": {
+            "sign": 1,
+            "squared": "1/2"
+          },
+          "SECURITY:A|SECURITY:C": {
+            "sign": 0,
+            "squared": "0"
+          },
+          "SECURITY:B|SECURITY:C": {
+            "sign": 1,
+            "squared": "1/2"
+          }
+        },
+        "average_correlation": {
+          "coefficient": "1/3",
+          "radicand": "2"
+        },
+        "periodic_variance": "104/11475",
+        "annual_variance": "5408/11475",
+        "risk_shares": {
+          "SECURITY:A": "1/4",
+          "SECURITY:B": "1/2",
+          "SECURITY:C": "1/4"
+        },
+        "clusters": [
+          [
+            "SECURITY:A",
+            "SECURITY:B",
+            "SECURITY:C"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "C5-P1",
+      "kind": "universe_refusal",
+      "input": {
+        "base_case": "C5-S1",
+        "capital_universe": null
+      },
+      "expected": {
+        "capital_dependent_metrics": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "CAPITAL_UNIVERSE_UNCONFIRMED"
+        },
+        "pairwise_and_clusters": "unaffected"
+      }
+    },
+    {
+      "id": "C5-P2",
+      "kind": "universe_refusal",
+      "input": {
+        "base_case": "C5-S1",
+        "synthetic": false,
+        "capital_universe": {
+          "choice": "FULL_NAV",
+          "origin": "SYNTHETIC_CANDIDATE",
+          "evidence": "Independent synthetic fixture candidate; pending OD-CP5-01; not actual user confirmation"
+        }
+      },
+      "expected": {
+        "capital_dependent_metrics": {
+          "state": "INSUFFICIENT_DATA",
+          "exact": null,
+          "detail": "CAPITAL_UNIVERSE_UNCONFIRMED"
+        },
+        "pairwise_and_clusters": "unaffected"
+      }
+    },
+    {
+      "id": "C5-H16",
+      "kind": "history_radical",
+      "input": {
+        "frequency": "WEEKLY",
+        "grid_start": "2023-01-06",
+        "grid_rule": "g_k = grid_start + 7*k calendar days, k=0..n; full periods only",
+        "total_return_coverage": "COMPLETE_SYNTHETIC",
+        "weights": {
+          "SECURITY:A": "1/4",
+          "SECURITY:B": "1/2",
+          "SECURITY:C": "1/4"
+        },
+        "vectors": {
+          "SECURITY:A": {
+            "pattern": [
+              "1/10",
+              "-1/10",
+              "1/10",
+              "-1/10"
+            ],
+            "repeat": 13
+          },
+          "SECURITY:C": {
+            "pattern": [
+              "1/10",
+              "1/10",
+              "-1/10",
+              "-1/10"
+            ],
+            "repeat": 13
+          },
+          "SECURITY:B": {
+            "linear_combination": {
+              "SECURITY:A": "1",
+              "SECURITY:C": "1"
+            }
+          }
+        },
+        "n": 52,
+        "tau": "7/10",
+        "capital_universe": {
+          "choice": "FULL_NAV",
+          "origin": "SYNTHETIC_CANDIDATE",
+          "evidence": "Independent synthetic fixture candidate; pending OD-CP5-01; not actual user confirmation"
+        },
+        "synthetic": true
+      },
+      "expected": {
+        "state": "LIMITED",
+        "pairwise": {
+          "SECURITY:A|SECURITY:B": {
+            "sign": 1,
+            "squared": "1/2"
+          },
+          "SECURITY:A|SECURITY:C": {
+            "sign": 0,
+            "squared": "0"
+          },
+          "SECURITY:B|SECURITY:C": {
+            "sign": 1,
+            "squared": "1/2"
+          }
+        },
+        "average_correlation": {
+          "coefficient": "2/5",
+          "radicand": "2"
+        },
+        "periodic_variance": "39/3400",
+        "annual_variance": "507/850",
+        "risk_shares": {
+          "SECURITY:A": "1/6",
+          "SECURITY:B": "2/3",
+          "SECURITY:C": "1/6"
+        },
+        "clusters": [
+          [
+            "SECURITY:A",
+            "SECURITY:B",
+            "SECURITY:C"
+          ]
+        ],
+        "average_correlation_presented": "0.565685424949",
+        "rounded_pairs_mutant": {
+          "pair_presented": "0.707106781187",
+          "weighted_average_exact": "707106781187/1250000000000",
+          "weighted_average_presented": "0.565685424950",
+          "must_differ_from_correct": true
+        }
+      }
+    }
+  ],
+  "threshold_boundary_assertions": [
+    {
+      "frequency": "DAILY",
+      "n": 258,
+      "state": "INSUFFICIENT_DATA"
+    },
+    {
+      "frequency": "DAILY",
+      "n": 259,
+      "state": "LIMITED"
+    },
+    {
+      "frequency": "DAILY",
+      "n": 780,
+      "state": "LIMITED"
+    },
+    {
+      "frequency": "DAILY",
+      "n": 781,
+      "state": "AVAILABLE"
+    },
+    {
+      "frequency": "WEEKLY",
+      "n": 50,
+      "state": "INSUFFICIENT_DATA"
+    },
+    {
+      "frequency": "WEEKLY",
+      "n": 51,
+      "state": "LIMITED"
+    },
+    {
+      "frequency": "WEEKLY",
+      "n": 154,
+      "state": "LIMITED"
+    },
+    {
+      "frequency": "WEEKLY",
+      "n": 155,
+      "state": "AVAILABLE"
+    },
+    {
+      "frequency": "MONTHLY",
+      "n": 10,
+      "state": "INSUFFICIENT_DATA"
+    },
+    {
+      "frequency": "MONTHLY",
+      "n": 11,
+      "state": "LIMITED"
+    },
+    {
+      "frequency": "MONTHLY",
+      "n": 34,
+      "state": "LIMITED"
+    },
+    {
+      "frequency": "MONTHLY",
+      "n": 35,
+      "state": "AVAILABLE"
+    }
+  ],
+  "status": "Synthetic candidate fixtures; full-NAV choice pending owner OD-CP5-01",
+  "supersedes": {
+    "fixture_id": "cp5_golden/1.0-part1",
+    "path": "cp5_golden_part1_v1_0.json",
+    "sha256": "00eca074d6a5ebf1d252486719087165f10d0befbf55170fdd194a48867a6e05",
+    "preserved_case_count": 33
+  },
+  "change_note": "1.1 adds C5-H16 for CP5M-1: unequal weights make forbidden pre-rounded-pair averaging differ by one display quantum. All 33 prior cases and threshold assertions are unchanged; diversification/1.0 is unchanged."
+}

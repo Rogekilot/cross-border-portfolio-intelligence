@@ -1,0 +1,337 @@
+{
+  "fixture_id": "cp3_golden/1.2-part4",
+  "part": 4,
+  "scope": "Attribution (performance Rulings 9.1-9.6): the eight exact daily money lines over a window (summing exactly to the absolute gain G, presented with largest-remainder apportionment, Ruling 2.4), the Carino-linked percentage lines (reconciling to the TWR), per-listing and per-component breakdowns (Ruling 9.6), the conversion result (8.5), FX on a dividend receivable (8.1), the Southbound trade result in the price line, an all-reporting-currency portfolio (metamorphic check 11.3 #4), an interior five-session price gap (TWR AVAILABLE, attribution INSUFFICIENT_DATA), stale inputs (LIMITED), and a suppressed split position (SOURCE_CONFLICT). The since-acquisition view (9.7) is asserted in part 3 and not repeated.",
+  "change_notes": [
+    "1.2-part4 (2026-10-01): performance/1.9, answering the CP3e build. (1) Finding P22-V1: 'price_date_used' is the session of the close that VALUES a holding (part 1 format), and a holding withheld at 5 missed sessions is valued by none, so the engine was right and 1.1-part4 was wrong; P22-V1 now asserts price_date_used null (absent) and the new lineage field last_print_date 2025-03-07 (Ruling 1.1b). (2) Breakdowns are decomposition objects (Ruling 9.6 (1.9)): their parts are now 'apportioned' to the line's apportioned display value in the 9.6 order (P6: 5.63, -5.75, 6.87 = 6.75; previously independent 5.63 + 6.88 - 5.75 = 6.76); P3 and P21 display values are unchanged; part order follows 9.6 (1.9) item 3. No money line, Cariño component, total, state or reason changed; 28 items; pin the content hash. convention_sets are now stated as MINIMUM versions (Ruling 11.6).",
+    "1.1-part4 (2026-10-01): convention_sets.performance is performance/1.7, which fixes the attribution line identifiers (Ruling 9.2 (1.7)). Every line entry now carries 'id' (attr.price, attr.fx, attr.price_fx_interaction, attr.income, attr.fees, attr.taxes, attr.financing, attr.conversion); 'line' (the registry position) and 'name' are kept; the line is matched by 'id', and 'line' must agree with it. NO EXPECTED VALUE, STATE, REASON OR DETAIL CHANGED; 28 items; pin the content hash.",
+    "1.0-part4 (2026-10-01): first issue, authored and ratified by quant-analyst. Every expected value is hand-derived (CP3_GOLDEN_PART4_DERIVATION.md) and re-checked by derivation/cp3_part4_calculator.py, which implements Ruling 9.1 day by day from the events, asserts I-4 on every calendar day, I-3 per window and I-2 against the TWRs already asserted in parts 1-3, and links with Carino in Decimal prec 50. It imports nothing from src/. No value comes from the engine."
+  ],
+  "convention_sets": {
+    "note": "MINIMUM versions under which this fixture was derived and ratified; a checker accepts the same family at this version or later (performance Ruling 11.6).",
+    "performance": "performance/1.9",
+    "ledger_replay": "ledger-replay/1.5 (FIFO/1 mode)",
+    "market_data": "market-data/1.10",
+    "lot_relief": "FIFO/1 (no assertion in part 4 depends on it: attribution reads values and flows only, Ruling 3.1)"
+  },
+  "authored_by": "quant-analyst (independent derivation; see CP3_GOLDEN_PART4_DERIVATION.md)",
+  "authored_on": "2026-10-01",
+  "extends": {
+    "fixture_ids": ["cp3_golden/1.4-part1", "cp3_golden/1.2-part2", "cp3_golden/1.2-part3"],
+    "rule": "Everything in the 'format' of parts 1-3 applies. P1 is cp1_golden/1.1's P1; P3 and P6 are part 1's (P3 at ledger_version 7, i.e. without part 3's seq 8-13, all dated after the windows used here); P12 and P13 are part 2's; P14 is part 3's. P21 and P22 are new and fully defined here. The market-data version M is ONE release: part 1's market_data + the market_data_additions of parts 2 and 3 + the market_data_additions below. No earlier series, rate, calendar or corporate action changes, so every earlier value still holds in this M."
+  },
+  "format": {
+    "inherits": "parts 1-3 'format': presented 'value' (money ROUND_HALF_UP to the minor unit; ratios to 1e-12), 'exact' as a reduced fraction or integer string, 'window' {request, base, end, days}, 'detail' null = NOT ASSERTED, 'tolerance', value null iff INSUFFICIENT_DATA. Numbers are JSON strings, never float.",
+    "lines": "Attribution lines are identified by 'id', the fixed identifier of performance Ruling 9.2 (1.7): attr.price, attr.fx, attr.price_fx_interaction, attr.income, attr.fees, attr.taxes, attr.financing, attr.conversion. 'line' is the registry position 1-8 (it must agree with 'id'; it orders the list and breaks apportionment ties); 'name' is an informative label only. Lines are listed in order and every one of the 8 is present. attribution_breakdown's 'line' is the position and its 'line_id' the identifier.",
+    "kinds_added": {
+      "attribution_money": "Ruling 9.3 over the window, in the reporting currency. 'total' {value, exact} is G; 'lines' gives each line's exact window sum M_k and its 'apportioned' display value (Ruling 2.4 item 3: floors toward minus infinity, shortfall to the largest remainders, ties in line order); the apportioned values sum exactly to total.value. INSUFFICIENT_DATA: total and lines null.",
+      "attribution_return": "Ruling 9.4 (Carino) over the window: 'twr' {value, exact} and, per line, the presented C_k. A line that is 0 on every day is asserted as value '0' with exact '0' (Carino scales each day, so it stays exactly 0); every other C_k has 'tolerance' 1e-10 (Ruling 11.2, transcendental outputs). The presented C_k need not sum to the presented TWR (Ruling 2.4 item 2: within (8+1)/2 x 1e-12). INSUFFICIENT_DATA: twr and lines null.",
+      "attribution_breakdown": "Ruling 9.6 (with 1.9): one line split into parts that sum to it exactly, published as a decomposition object. 'group_by' is 'listing' (the line's contribution per listing, summed over accounts, trade results included) or 'component' (per position {component: 'position', listing_id}, cash balance {component: 'cash', currency} or receivable {component: 'receivable', event_id} of the DIVIDEND). Each part has 'exact' and 'apportioned': the Ruling 2.4 item 3 display value apportioned to the line's apportioned display value in the attribution_money of the same window, so the apportioned parts sum exactly to it. Parts are listed in the 9.6 (1.9) item 3 order (which breaks ties); a part exactly 0 is omitted; components without the grouping key form one part keyed 'none'.",
+      "holding_value (1.2-part4)": "As part 1, plus the lineage field 'last_print_date' (Ruling 1.1b): the session of the last admissible print at or before D, reported also when the value is withheld. 'price_date_used': null asserts that NO close valued the holding (the field is absent); an absent key means not asserted, as before."
+    },
+    "detail_names": "As parts 1-3. SOURCE_CONFLICT and STALE_DATA items leave detail null (CP2 lineage causes).",
+    "engine_metric_ids": "As in parts 1-3: the loader maps kinds to the engine's metric ids; a rename is a mapping change, not a fixture change."
+  },
+  "market_data_additions": {
+    "synthetic": true,
+    "upstream": "synthetic",
+    "how_to_load": "As parts 1-3: expanded mechanically into real CP2 layouts under synthetic source ids, then ONE release M.",
+    "prices": {
+      "layout": "as part 1 (RAW closes, volume '1000' on every row)",
+      "rows_rule": "as part 1",
+      "series": [
+        {"listing_id": "c0000000-0000-4000-8000-0000002c0001", "ticker": "SYNG", "calendar": "SYN_NYSE", "currency": "USD", "first": "2025-03-03", "last": "2025-03-31",
+         "steps": [{"from": "2025-03-03", "close": "10.00"}, {"from": "2025-03-17", "close": "11.00"}],
+         "gaps": ["2025-03-10", "2025-03-11", "2025-03-12", "2025-03-13", "2025-03-14"],
+         "note": "Five consecutive SYN_NYSE sessions without a print: the last print on 2025-03-10..14 is 2025-03-07 (10.00), so 1, 2, 3, 4 and 5 missed sessions; 5 on 2025-03-14 (and still 5 on the weekend 03-15/16). Used by P22."}
+      ]
+    },
+    "corporate_actions": []
+  },
+  "listings_added": [
+    {"listing_id": "c0000000-0000-4000-8000-0000002c0001", "ticker": "SYNG", "mic": "XNYS", "trading_currency": "USD", "security_type": "COMMON_STOCK", "note": "synthetic US listing with an interior five-session gap"}
+  ],
+  "portfolios": [
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-00000000000c", "name": "P12 (Example W re-dated to the fixture's FX: W')", "reporting_currency": "USD", "events_from": "cp3_golden part 2 P12 (seq 1-7)", "inception_base": "2025-03-30",
+      "assertions": [
+        {"id": "P12-A1", "as_of": "2025-04-02", "ledger_version": 7, "purpose": "Example W's eight lines on the fixture's FX. Day 03-31 (beta 10,000): BUY trade result (100 x 390 - 38,000) x 5/39 = 5,000/39; fee -50/39; conversion -5,000 + 38,800 x 5/39 = -1,000/39. Day 04-01 (5/39 -> 16/125, SYNH 390 -> 400): price 100 x 10 x 5/39 = 5,000/39; FX on SYNH 39,000 x (-1/4,875) = -8 and on HKD cash 790 x (-1/4,875) = -158/975; interaction -8/39. Day 04-02: income 200 x 16/125 = 128/5, taxes -64/25. Sum = 6,104/25 = G (part 2). Carino over the three days reconciles to the TWR 2,776,451/112,562,500.",
+         "expect": [
+          {"kind": "attribution_money", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-30", "end": "2025-04-02", "days": 3}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "total": {"value": "244.16", "exact": "6104/25"},
+           "lines": [{"line": 1, "id": "attr.price", "name": "local price effect", "exact": "10000/39", "apportioned": "256.41"},
+                     {"line": 2, "id": "attr.fx", "name": "FX effect", "exact": "-7958/975", "apportioned": "-8.16"},
+                     {"line": 3, "id": "attr.price_fx_interaction", "name": "price-FX interaction", "exact": "-8/39", "apportioned": "-0.21"},
+                     {"line": 4, "id": "attr.income", "name": "income", "exact": "128/5", "apportioned": "25.60"},
+                     {"line": 5, "id": "attr.fees", "name": "fees", "exact": "-50/39", "apportioned": "-1.28"},
+                     {"line": 6, "id": "attr.taxes", "name": "known taxes", "exact": "-64/25", "apportioned": "-2.56"},
+                     {"line": 7, "id": "attr.financing", "name": "financing costs", "exact": "0", "apportioned": "0.00"},
+                     {"line": 8, "id": "attr.conversion", "name": "currency conversion result", "exact": "-1000/39", "apportioned": "-25.64"}]},
+          {"kind": "attribution_return", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-30", "end": "2025-04-02", "days": 3}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "twr": {"value": "0.024665861188", "exact": "2776451/112562500"},
+           "lines": [{"line": 1, "id": "attr.price", "name": "local price effect", "value": "0.025684949497", "tolerance": "1e-10"},
+                     {"line": 2, "id": "attr.fx", "name": "FX effect", "value": "-0.000813132252", "tolerance": "1e-10"},
+                     {"line": 3, "id": "attr.price_fx_interaction", "name": "price-FX interaction", "value": "-0.000020435593", "tolerance": "1e-10"},
+                     {"line": 4, "id": "attr.income", "name": "income", "value": "0.002806830365", "tolerance": "1e-10"},
+                     {"line": 5, "id": "attr.fees", "name": "fees", "value": "-0.000129127038", "tolerance": "1e-10"},
+                     {"line": 6, "id": "attr.taxes", "name": "known taxes", "value": "-0.000280683037", "tolerance": "1e-10"},
+                     {"line": 7, "id": "attr.financing", "name": "financing costs", "value": "0", "exact": "0"},
+                     {"line": 8, "id": "attr.conversion", "name": "currency conversion result", "value": "-0.002582540755", "tolerance": "1e-10"}]}
+        ]},
+        {"id": "P12-A2", "as_of": "2025-04-01", "ledger_version": 7, "purpose": "The FX day alone, (03-31, 04-01]: only price, FX and interaction are non-zero; with one day, C_k = m_k / beta exactly (5,000/393,950 = 100/7,879; -3,979/4,924,375; -4/196,975), and the TWR is r_D = 58,421/4,924,375. The two FX components (-8 on the holding, -158/975 on cash) are the 'FX effect' line; the interaction is shown, never folded (Ruling 9.1).",
+         "expect": [
+          {"kind": "attribution_money", "view": "REPORTING", "window": {"request": {"rule": "CUSTOM", "base": "2025-03-31"}, "base": "2025-03-31", "end": "2025-04-01", "days": 1}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "total": {"value": "119.84", "exact": "116842/975"},
+           "lines": [{"line": 1, "id": "attr.price", "name": "local price effect", "exact": "5000/39", "apportioned": "128.21"},
+                     {"line": 2, "id": "attr.fx", "name": "FX effect", "exact": "-7958/975", "apportioned": "-8.16"},
+                     {"line": 3, "id": "attr.price_fx_interaction", "name": "price-FX interaction", "exact": "-8/39", "apportioned": "-0.21"},
+                     {"line": 4, "id": "attr.income", "name": "income", "exact": "0", "apportioned": "0.00"},
+                     {"line": 5, "id": "attr.fees", "name": "fees", "exact": "0", "apportioned": "0.00"},
+                     {"line": 6, "id": "attr.taxes", "name": "known taxes", "exact": "0", "apportioned": "0.00"},
+                     {"line": 7, "id": "attr.financing", "name": "financing costs", "exact": "0", "apportioned": "0.00"},
+                     {"line": 8, "id": "attr.conversion", "name": "currency conversion result", "exact": "0", "apportioned": "0.00"}]},
+          {"kind": "attribution_return", "window": {"request": {"rule": "CUSTOM", "base": "2025-03-31"}, "base": "2025-03-31", "end": "2025-04-01", "days": 1}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "twr": {"value": "0.011863637517", "exact": "58421/4924375"},
+           "lines": [{"line": 1, "id": "attr.price", "name": "local price effect", "value": "0.012691965986", "tolerance": "1e-10"},
+                     {"line": 2, "id": "attr.fx", "name": "FX effect", "value": "-0.000808021323", "tolerance": "1e-10"},
+                     {"line": 3, "id": "attr.price_fx_interaction", "name": "price-FX interaction", "value": "-0.000020307146", "tolerance": "1e-10"},
+                     {"line": 4, "id": "attr.income", "name": "income", "value": "0", "exact": "0"},
+                     {"line": 5, "id": "attr.fees", "name": "fees", "value": "0", "exact": "0"},
+                     {"line": 6, "id": "attr.taxes", "name": "known taxes", "value": "0", "exact": "0"},
+                     {"line": 7, "id": "attr.financing", "name": "financing costs", "value": "0", "exact": "0"},
+                     {"line": 8, "id": "attr.conversion", "name": "currency conversion result", "value": "0", "exact": "0"}]}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000001", "name": "P1", "reporting_currency": "USD", "events_from": "cp1_golden/1.1 P1 (seq 1-25)", "inception_base": "2025-01-01",
+      "assertions": [
+        {"id": "P1-A1", "as_of": "2025-06-30", "ledger_version": 25, "purpose": "Since inception. Piecewise-constant data: only seven days have non-zero lines (03-03, 04-01, 04-02, 05-31, 06-02, 06-10, 06-16); every trade is at its close except X3 (200 x 36 HKD closing value against 7,000 paid: trade result 128/5), the split day is neutral (sigma = 4), the in-kind MSFT inflow and all deposits and internal transfers contribute 0. FX acts only on 04-01 (5/39 -> 16/125) on A2's 0700 (17,500 HKD) and HKD cash (2,500). Sum = G = 1,135,523/390 (part 1); the daily product equals part 1's segment TWR (I-2).",
+         "expect": [
+          {"kind": "attribution_money", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-01", "end": "2025-06-30", "days": 180}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "total": {"value": "2911.60", "exact": "1135523/390"},
+           "lines": [{"line": 1, "id": "attr.price", "name": "local price effect", "exact": "571214/195", "apportioned": "2929.30"},
+                     {"line": 2, "id": "attr.fx", "name": "FX effect", "exact": "-160/39", "apportioned": "-4.10"},
+                     {"line": 3, "id": "attr.price_fx_interaction", "name": "price-FX interaction", "exact": "-4/39", "apportioned": "-0.10"},
+                     {"line": 4, "id": "attr.income", "name": "income", "exact": "0", "apportioned": "0.00"},
+                     {"line": 5, "id": "attr.fees", "name": "fees", "exact": "-2", "apportioned": "-2.00"},
+                     {"line": 6, "id": "attr.taxes", "name": "known taxes", "exact": "0", "apportioned": "0.00"},
+                     {"line": 7, "id": "attr.financing", "name": "financing costs", "exact": "-7/2", "apportioned": "-3.50"},
+                     {"line": 8, "id": "attr.conversion", "name": "currency conversion result", "exact": "-8", "apportioned": "-8.00"}]},
+          {"kind": "attribution_return", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-01", "end": "2025-06-30", "days": 180}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "twr": {"value": "0.186237015548", "exact": "14849541313483073959/79734639592304900000"},
+           "lines": [{"line": 1, "id": "attr.price", "name": "local price effect", "value": "0.187291286697", "tolerance": "1e-10"},
+                     {"line": 2, "id": "attr.fx", "name": "FX effect", "value": "-0.000247248334", "tolerance": "1e-10"},
+                     {"line": 3, "id": "attr.price_fx_interaction", "name": "price-FX interaction", "value": "-0.000006181208", "tolerance": "1e-10"},
+                     {"line": 4, "id": "attr.income", "name": "income", "value": "0", "exact": "0"},
+                     {"line": 5, "id": "attr.fees", "name": "fees", "value": "-0.000120282521", "tolerance": "1e-10"},
+                     {"line": 6, "id": "attr.taxes", "name": "known taxes", "value": "0", "exact": "0"},
+                     {"line": 7, "id": "attr.financing", "name": "financing costs", "value": "-0.000199429003", "tolerance": "1e-10"},
+                     {"line": 8, "id": "attr.conversion", "name": "currency conversion result", "value": "-0.000481130083", "tolerance": "1e-10"}]}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000006", "name": "P6 (HKD reporting; USD and CNY components)", "reporting_currency": "HKD", "events_from": "cp3_golden part 1 P6 (seq 1-3)", "inception_base": "2025-03-02",
+      "assertions": [
+        {"id": "P6-A1", "as_of": "2025-04-30", "ledger_version": 3, "purpose": "FX only: AAPL stays at 45.00, so the only non-zero day is 04-01 (HKD per USD 39/5 -> 125/16, +1/80; HKD per CNY 13/12 -> 125/116, -1/174): FX on the AAPL position 450 x 1/80 = 45/8, on USD cash 550 x 1/80 = 55/8, on CNY cash 1,000 x (-1/174) = -500/87; total 1,175/174 = G. One non-zero day, so C_2 = TWR = 47/61,828 and every other line is exactly 0.",
+         "expect": [
+          {"kind": "attribution_money", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-04-30", "days": 59}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "total": {"value": "6.75", "exact": "1175/174"},
+           "lines": [{"line": 1, "id": "attr.price", "name": "local price effect", "exact": "0", "apportioned": "0.00"},
+                     {"line": 2, "id": "attr.fx", "name": "FX effect", "exact": "1175/174", "apportioned": "6.75"},
+                     {"line": 3, "id": "attr.price_fx_interaction", "name": "price-FX interaction", "exact": "0", "apportioned": "0.00"},
+                     {"line": 4, "id": "attr.income", "name": "income", "exact": "0", "apportioned": "0.00"},
+                     {"line": 5, "id": "attr.fees", "name": "fees", "exact": "0", "apportioned": "0.00"},
+                     {"line": 6, "id": "attr.taxes", "name": "known taxes", "exact": "0", "apportioned": "0.00"},
+                     {"line": 7, "id": "attr.financing", "name": "financing costs", "exact": "0", "apportioned": "0.00"},
+                     {"line": 8, "id": "attr.conversion", "name": "currency conversion result", "exact": "0", "apportioned": "0.00"}]},
+          {"kind": "attribution_return", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-04-30", "days": 59}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "twr": {"value": "0.000760173384", "exact": "47/61828"},
+           "lines": [{"line": 1, "id": "attr.price", "name": "local price effect", "value": "0", "exact": "0"},
+                     {"line": 2, "id": "attr.fx", "name": "FX effect", "value": "0.000760173384", "tolerance": "1e-10"},
+                     {"line": 3, "id": "attr.price_fx_interaction", "name": "price-FX interaction", "value": "0", "exact": "0"},
+                     {"line": 4, "id": "attr.income", "name": "income", "value": "0", "exact": "0"},
+                     {"line": 5, "id": "attr.fees", "name": "fees", "value": "0", "exact": "0"},
+                     {"line": 6, "id": "attr.taxes", "name": "known taxes", "value": "0", "exact": "0"},
+                     {"line": 7, "id": "attr.financing", "name": "financing costs", "value": "0", "exact": "0"},
+                     {"line": 8, "id": "attr.conversion", "name": "currency conversion result", "value": "0", "exact": "0"}]},
+          {"kind": "attribution_breakdown", "line": 2, "line_id": "attr.fx", "group_by": "component", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-04-30", "days": 59}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "parts": [{"component": "position", "listing_id": "c0000000-0000-4000-8000-00000000a001", "exact": "45/8", "apportioned": "5.63"},
+                     {"component": "cash", "currency": "CNY", "exact": "-500/87", "apportioned": "-5.75"},
+                     {"component": "cash", "currency": "USD", "exact": "55/8", "apportioned": "6.87"}]}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000003", "name": "P3 (CNY reporting; Southbound)", "reporting_currency": "CNY", "events_from": "cp3_golden part 1 P3 (seq 1-7) and part 3 (seq 8-13); asserted at ledger_version 7", "inception_base": "2025-03-02",
+      "assertions": [
+        {"id": "P3-A1", "as_of": "2025-03-16", "ledger_version": 7, "purpose": "The Southbound purchase (1,000 x 0700 paid 32,400 CNY; close 35 HKD at 12/13) has trade result 420,000/13 - 32,400 = -1,200/13 in the PRICE line (Ruling 9.1: the gap between the settlement rate and the ECB cross lands in the trade result); SYNA 10.00 -> 10.50 on 2,000 gives +1,000. Both on 03-04, the only non-zero day, so C_1 = TWR = 59/6,500.",
+         "expect": [
+          {"kind": "attribution_money", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-03-16", "days": 14}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "total": {"value": "907.69", "exact": "11800/13"},
+           "lines": [{"line": 1, "id": "attr.price", "name": "local price effect", "exact": "11800/13", "apportioned": "907.69"},
+                     {"line": 2, "id": "attr.fx", "name": "FX effect", "exact": "0", "apportioned": "0.00"},
+                     {"line": 3, "id": "attr.price_fx_interaction", "name": "price-FX interaction", "exact": "0", "apportioned": "0.00"},
+                     {"line": 4, "id": "attr.income", "name": "income", "exact": "0", "apportioned": "0.00"},
+                     {"line": 5, "id": "attr.fees", "name": "fees", "exact": "0", "apportioned": "0.00"},
+                     {"line": 6, "id": "attr.taxes", "name": "known taxes", "exact": "0", "apportioned": "0.00"},
+                     {"line": 7, "id": "attr.financing", "name": "financing costs", "exact": "0", "apportioned": "0.00"},
+                     {"line": 8, "id": "attr.conversion", "name": "currency conversion result", "exact": "0", "apportioned": "0.00"}]},
+          {"kind": "attribution_return", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-03-16", "days": 14}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "twr": {"value": "0.009076923077", "exact": "59/6500"},
+           "lines": [{"line": 1, "id": "attr.price", "name": "local price effect", "value": "0.009076923077", "tolerance": "1e-10"},
+                     {"line": 2, "id": "attr.fx", "name": "FX effect", "value": "0", "exact": "0"},
+                     {"line": 3, "id": "attr.price_fx_interaction", "name": "price-FX interaction", "value": "0", "exact": "0"},
+                     {"line": 4, "id": "attr.income", "name": "income", "value": "0", "exact": "0"},
+                     {"line": 5, "id": "attr.fees", "name": "fees", "value": "0", "exact": "0"},
+                     {"line": 6, "id": "attr.taxes", "name": "known taxes", "value": "0", "exact": "0"},
+                     {"line": 7, "id": "attr.financing", "name": "financing costs", "value": "0", "exact": "0"},
+                     {"line": 8, "id": "attr.conversion", "name": "currency conversion result", "value": "0", "exact": "0"}]},
+          {"kind": "attribution_breakdown", "line": 1, "line_id": "attr.price", "group_by": "listing", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-03-16", "days": 14}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "parts": [{"listing_id": "c0000000-0000-4000-8000-000000000700", "exact": "-1200/13", "apportioned": "-92.31"},
+                     {"listing_id": "c0000000-0000-4000-8000-0000000a0001", "exact": "1000", "apportioned": "1000.00"}]}
+        ]},
+        {"id": "P3-A2", "as_of": "2025-03-20", "ledger_version": 7, "purpose": "Extending to 03-20 brings in SYNA's stale days (03-17 one missed session; 03-18 and 03-19 two and three: LIMITED, part 1). The attribution needs every day, so it is LIMITED + STALE_DATA (Ruling 9.5), while the TWR over the same window is AVAILABLE (part 1 P3-R1). Lines: price 24,800/13 (adds SYNA 10.50 -> 11.00 on 03-20, valued against the carried 10.50); C_1 = TWR.",
+         "expect": [
+          {"kind": "attribution_money", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-03-20", "days": 18}, "state": "LIMITED", "reason": "STALE_DATA", "detail": null,
+           "total": {"value": "1907.69", "exact": "24800/13"},
+           "lines": [{"line": 1, "id": "attr.price", "name": "local price effect", "exact": "24800/13", "apportioned": "1907.69"},
+                     {"line": 2, "id": "attr.fx", "name": "FX effect", "exact": "0", "apportioned": "0.00"},
+                     {"line": 3, "id": "attr.price_fx_interaction", "name": "price-FX interaction", "exact": "0", "apportioned": "0.00"},
+                     {"line": 4, "id": "attr.income", "name": "income", "exact": "0", "apportioned": "0.00"},
+                     {"line": 5, "id": "attr.fees", "name": "fees", "exact": "0", "apportioned": "0.00"},
+                     {"line": 6, "id": "attr.taxes", "name": "known taxes", "exact": "0", "apportioned": "0.00"},
+                     {"line": 7, "id": "attr.financing", "name": "financing costs", "exact": "0", "apportioned": "0.00"},
+                     {"line": 8, "id": "attr.conversion", "name": "currency conversion result", "exact": "0", "apportioned": "0.00"}]},
+          {"kind": "attribution_return", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-03-20", "days": 18}, "state": "LIMITED", "reason": "STALE_DATA", "detail": null,
+           "twr": {"value": "0.015981860439", "exact": "35242/2205125"},
+           "lines": [{"line": 1, "id": "attr.price", "name": "local price effect", "value": "0.015981860439", "tolerance": "1e-10"},
+                     {"line": 2, "id": "attr.fx", "name": "FX effect", "value": "0", "exact": "0"},
+                     {"line": 3, "id": "attr.price_fx_interaction", "name": "price-FX interaction", "value": "0", "exact": "0"},
+                     {"line": 4, "id": "attr.income", "name": "income", "value": "0", "exact": "0"},
+                     {"line": 5, "id": "attr.fees", "name": "fees", "value": "0", "exact": "0"},
+                     {"line": 6, "id": "attr.taxes", "name": "known taxes", "value": "0", "exact": "0"},
+                     {"line": 7, "id": "attr.financing", "name": "financing costs", "value": "0", "exact": "0"},
+                     {"line": 8, "id": "attr.conversion", "name": "currency conversion result", "value": "0", "exact": "0"}]}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000015", "name": "P21 (USD reporting; FX on an accrued dividend receivable)", "reporting_currency": "USD",
+      "accounts": [{"account_id": "a2b00000-0000-4000-8000-000000000001", "name": "W1 (HK broker)"}], "inception_base": "2025-03-25",
+      "events": [
+        {"ledger_seq": 1, "event": {"event_id": "e2b00000-0000-4000-8000-000000000001", "account_id": "a2b00000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-03-26", "currency": "HKD", "amount": {"amount": "40000", "currency": "HKD"}, "source_reference": "P21-E1"}},
+        {"ledger_seq": 2, "event": {"event_id": "e2b00000-0000-4000-8000-000000000002", "account_id": "a2b00000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-26", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "1000", "amount": {"amount": "35000", "currency": "HKD"}, "source_reference": "P21-E2"}},
+        {"ledger_seq": 3, "event": {"event_id": "e2b00000-0000-4000-8000-000000000003", "account_id": "a2b00000-0000-4000-8000-000000000001", "event_type": "DIVIDEND", "event_date": "2025-04-03", "ex_date": "2025-03-28", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "amount": {"amount": "2000", "currency": "HKD"}, "source_reference": "P21-E3 gross 2.00/share; ex-date before the 04-01 FX step, pay date after"}},
+        {"ledger_seq": 4, "event": {"event_id": "e2b00000-0000-4000-8000-000000000004", "account_id": "a2b00000-0000-4000-8000-000000000001", "event_type": "TAX", "event_date": "2025-04-03", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "amount": {"amount": "200", "currency": "HKD"}, "source_reference": "P21-E4 withholding"}}
+      ],
+      "assertions": [
+        {"id": "P21-A1", "as_of": "2025-04-03", "ledger_version": 4, "purpose": "Income accrues on the ex-date 03-28 at 5/39 (10,000/39); the receivable of 2,000 HKD is then revalued on 04-01 (5/39 -> 16/125): FX -16/39 on it, beside -280/39 on the 0700 position and -40/39 on the 5,000 HKD cash; the 04-03 settlement moves receivable to cash at equal value (0); the withholding is -128/5. One inflow at the base, so TWR = G / I^C = 1,067/15,625.",
+         "expect": [
+          {"kind": "twr", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-25", "end": "2025-04-03", "days": 9}, "state": "AVAILABLE", "value": "0.068288000000", "exact": "1067/15625", "reason": null, "detail": null},
+          {"kind": "gain_absolute", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-25", "end": "2025-04-03", "days": 9}, "state": "AVAILABLE", "value": "350.19", "exact": "68288/195", "reason": null, "detail": null},
+          {"kind": "attribution_money", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-25", "end": "2025-04-03", "days": 9}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "total": {"value": "350.19", "exact": "68288/195"},
+           "lines": [{"line": 1, "id": "attr.price", "name": "local price effect", "exact": "5000/39", "apportioned": "128.21"},
+                     {"line": 2, "id": "attr.fx", "name": "FX effect", "exact": "-112/13", "apportioned": "-8.62"},
+                     {"line": 3, "id": "attr.price_fx_interaction", "name": "price-FX interaction", "exact": "-8/39", "apportioned": "-0.21"},
+                     {"line": 4, "id": "attr.income", "name": "income", "exact": "10000/39", "apportioned": "256.41"},
+                     {"line": 5, "id": "attr.fees", "name": "fees", "exact": "0", "apportioned": "0.00"},
+                     {"line": 6, "id": "attr.taxes", "name": "known taxes", "exact": "-128/5", "apportioned": "-25.60"},
+                     {"line": 7, "id": "attr.financing", "name": "financing costs", "exact": "0", "apportioned": "0.00"},
+                     {"line": 8, "id": "attr.conversion", "name": "currency conversion result", "exact": "0", "apportioned": "0.00"}]},
+          {"kind": "attribution_return", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-25", "end": "2025-04-03", "days": 9}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "twr": {"value": "0.068288000000", "exact": "1067/15625"},
+           "lines": [{"line": 1, "id": "attr.price", "name": "local price effect", "value": "0.024344635281", "tolerance": "1e-10"},
+                     {"line": 2, "id": "attr.fx", "name": "FX effect", "value": "-0.001635959491", "tolerance": "1e-10"},
+                     {"line": 3, "id": "attr.price_fx_interaction", "name": "price-FX interaction", "value": "-0.000038951416", "tolerance": "1e-10"},
+                     {"line": 4, "id": "attr.income", "name": "income", "value": "0.050437716136", "tolerance": "1e-10"},
+                     {"line": 5, "id": "attr.fees", "name": "fees", "value": "0", "exact": "0"},
+                     {"line": 6, "id": "attr.taxes", "name": "known taxes", "value": "-0.004819440509", "tolerance": "1e-10"},
+                     {"line": 7, "id": "attr.financing", "name": "financing costs", "value": "0", "exact": "0"},
+                     {"line": 8, "id": "attr.conversion", "name": "currency conversion result", "value": "0", "exact": "0"}]},
+          {"kind": "attribution_breakdown", "line": 2, "line_id": "attr.fx", "group_by": "component", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-25", "end": "2025-04-03", "days": 9}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "parts": [{"component": "position", "listing_id": "c0000000-0000-4000-8000-000000000700", "exact": "-280/39", "apportioned": "-7.18"},
+                     {"component": "cash", "currency": "HKD", "exact": "-40/39", "apportioned": "-1.03"},
+                     {"component": "receivable", "event_id": "e2b00000-0000-4000-8000-000000000003", "exact": "-16/39", "apportioned": "-0.41"}]}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000016", "name": "P22 (USD; an interior five-session price gap, no flow inside)", "reporting_currency": "USD",
+      "accounts": [{"account_id": "a2c00000-0000-4000-8000-000000000001", "name": "G1"}], "inception_base": "2025-03-02",
+      "events": [
+        {"ledger_seq": 1, "event": {"event_id": "e2c00000-0000-4000-8000-000000000001", "account_id": "a2c00000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-03-03", "currency": "USD", "amount": {"amount": "1000", "currency": "USD"}, "source_reference": "P22-E1"}},
+        {"ledger_seq": 2, "event": {"event_id": "e2c00000-0000-4000-8000-000000000002", "account_id": "a2c00000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-03", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002c0001", "quantity": "100", "amount": {"amount": "1000", "currency": "USD"}, "source_reference": "P22-E2"}}
+      ],
+      "assertions": [
+        {"id": "P22-V1", "as_of": "2025-03-14", "ledger_version": 2, "purpose": "Five missed sessions (03-10..14; last print 03-07): the holding is INSUFFICIENT_DATA + STALE_DATA (market-data 5.2), so V(03-14) does not exist. No close values it (price_date_used absent); its lineage still says when it was last priced (last_print_date 2025-03-07, Ruling 1.1b).",
+         "expect": [
+          {"kind": "holding_value", "view": "REPORTING", "account_id": "a2c00000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002c0001", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "STALE_DATA", "detail": null, "price_date_used": null, "last_print_date": "2025-03-07", "missed_sessions": 5}
+        ]},
+        {"id": "P22-A1", "as_of": "2025-03-31", "ledger_version": 2, "purpose": "The only flow day is 03-03, so the TWR needs V(03-02), V(03-03) and V(03-31) only (Ruling 5.2): 1,100/1,000 - 1 = 1/10, AVAILABLE, and G = 100. The attribution needs every day's value (Ruling 9.5); V(03-14..16) is missing, so it is INSUFFICIENT_DATA + STALE_DATA (the holding's own reason, Ruling 1.5).",
+         "expect": [
+          {"kind": "twr", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-03-31", "days": 29}, "state": "AVAILABLE", "value": "0.100000000000", "exact": "1/10", "reason": null, "detail": null},
+          {"kind": "gain_absolute", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-03-31", "days": 29}, "state": "AVAILABLE", "value": "100.00", "exact": "100", "reason": null, "detail": null},
+          {"kind": "attribution_money", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-03-31", "days": 29}, "state": "INSUFFICIENT_DATA", "reason": "STALE_DATA", "detail": null, "total": null, "lines": null},
+          {"kind": "attribution_return", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-03-31", "days": 29}, "state": "INSUFFICIENT_DATA", "reason": "STALE_DATA", "detail": null, "twr": null, "lines": null}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-00000000000e", "name": "P14 (USD; every component in the reporting currency)", "reporting_currency": "USD", "events_from": "cp3_golden part 3 P14 (seq 1-6)", "inception_base": "2025-03-02",
+      "assertions": [
+        {"id": "P14-A1", "as_of": "2025-03-31", "ledger_version": 6, "purpose": "Metamorphic check 11.3 #4: everything is in USD = R, so lines 2, 3 and 8 are exactly 0 (and income, fees, taxes and financing are 0 here). The price line holds the holding moves (03-05: 30 x 2 = 60; 03-10: 100 x 1 = 100; 03-12: 60 x 1 = 60) and the trade results of the 03-05 buys against the 11.00 close (+60 and -30); G = 250 = the I-7 total of part 3. C_1 = TWR = 1/40.",
+         "expect": [
+          {"kind": "attribution_money", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-03-31", "days": 29}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "total": {"value": "250.00", "exact": "250"},
+           "lines": [{"line": 1, "id": "attr.price", "name": "local price effect", "exact": "250", "apportioned": "250.00"},
+                     {"line": 2, "id": "attr.fx", "name": "FX effect", "exact": "0", "apportioned": "0.00"},
+                     {"line": 3, "id": "attr.price_fx_interaction", "name": "price-FX interaction", "exact": "0", "apportioned": "0.00"},
+                     {"line": 4, "id": "attr.income", "name": "income", "exact": "0", "apportioned": "0.00"},
+                     {"line": 5, "id": "attr.fees", "name": "fees", "exact": "0", "apportioned": "0.00"},
+                     {"line": 6, "id": "attr.taxes", "name": "known taxes", "exact": "0", "apportioned": "0.00"},
+                     {"line": 7, "id": "attr.financing", "name": "financing costs", "exact": "0", "apportioned": "0.00"},
+                     {"line": 8, "id": "attr.conversion", "name": "currency conversion result", "exact": "0", "apportioned": "0.00"}]},
+          {"kind": "attribution_return", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-03-31", "days": 29}, "state": "AVAILABLE", "reason": null, "detail": null,
+           "twr": {"value": "0.025000000000", "exact": "1/40"},
+           "lines": [{"line": 1, "id": "attr.price", "name": "local price effect", "value": "0.025000000000", "tolerance": "1e-10"},
+                     {"line": 2, "id": "attr.fx", "name": "FX effect", "value": "0", "exact": "0"},
+                     {"line": 3, "id": "attr.price_fx_interaction", "name": "price-FX interaction", "value": "0", "exact": "0"},
+                     {"line": 4, "id": "attr.income", "name": "income", "value": "0", "exact": "0"},
+                     {"line": 5, "id": "attr.fees", "name": "fees", "value": "0", "exact": "0"},
+                     {"line": 6, "id": "attr.taxes", "name": "known taxes", "value": "0", "exact": "0"},
+                     {"line": 7, "id": "attr.financing", "name": "financing costs", "value": "0", "exact": "0"},
+                     {"line": 8, "id": "attr.conversion", "name": "currency conversion result", "value": "0", "exact": "0"}]}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-00000000000d", "name": "P13 (synthetic corroborated split missing from the ledger)", "reporting_currency": "USD", "events_from": "cp3_golden part 2 P13 (seq 1-2)", "inception_base": "2025-02-02",
+      "assertions": [
+        {"id": "P13-A1", "as_of": "2025-03-04", "ledger_version": 2, "purpose": "From the ex-date 03-03 the SYNS position is suppressed (SOURCE_CONFLICT, part 2 P13-V2), so V(03-03) and V(03-04) do not exist and neither do P0/P1 for the position: the attribution is INSUFFICIENT_DATA + SOURCE_CONFLICT, like the TWR and G over the same window (part 2 P13-R1).",
+         "expect": [
+          {"kind": "attribution_money", "view": "REPORTING", "window": {"request": {"rule": "CUSTOM", "base": "2025-02-28"}, "base": "2025-02-28", "end": "2025-03-04", "days": 4}, "state": "INSUFFICIENT_DATA", "reason": "SOURCE_CONFLICT", "detail": null, "total": null, "lines": null},
+          {"kind": "attribution_return", "window": {"request": {"rule": "CUSTOM", "base": "2025-02-28"}, "base": "2025-02-28", "end": "2025-03-04", "days": 4}, "state": "INSUFFICIENT_DATA", "reason": "SOURCE_CONFLICT", "detail": null, "twr": null, "lines": null}
+        ]}
+      ]
+    }
+  ],
+  "structural_assertions": [
+    {"id": "S4-1", "statement": "Every result is marked synthetic (market-data Ruling 4.8) and every manifest cites the ids in 'convention_sets'."},
+    {"id": "S4-2", "statement": "Identity I-4, exactly: for every AVAILABLE or LIMITED attribution_money in this file, the eight lines sum to g_D on every calendar day of the window, and the window lines sum to total.exact = G (the gain_absolute already asserted for that window in parts 1-3, or here for P21 and P22)."},
+    {"id": "S4-3", "statement": "Identities I-2 and I-3 in every attribution call (Ruling 11.1 (1.2)): the product of the daily factors over every calendar day equals the segment TWR exactly (P12-A1 = part 2 P12-R1; P1-A1 = part 1 P1-R1; P6-A1 = part 1 P6-R1; P3-A2 = part 1 P3-R1; P14-A1 = 1/40; P21-A1 = 1,067/15,625), and the sum of g_D equals G."},
+    {"id": "S4-4", "statement": "Ruling 2.4 item 3: for every attribution_money, the apportioned line values sum exactly to total.value, and each is within one cent of its exact value."},
+    {"id": "S4-5", "statement": "Ruling 9.4: for every AVAILABLE or LIMITED attribution_return, the internal Decimal sum of the C_k differs from the exact TWR by at most 1e-40 (Ruling 11.2), and the presented C_k sum to the presented TWR within 4.5e-12."},
+    {"id": "S4-6", "statement": "Ruling 9.6 (with 1.9): every attribution_breakdown's exact parts sum exactly to the corresponding line of the attribution_money for the same window, and its apportioned parts sum exactly to that line's apportioned display value."},
+    {"id": "S4-7", "statement": "Metamorphic check 11.3 #4 (P14-A1): with every holding, cash balance and flow in R, lines 2, 3 and 8 are exactly 0 in money and in C_k. Metamorphic check 11.3 #6 (P22-A1): an interior valuation-only gap leaves the TWR AVAILABLE and makes the attribution INSUFFICIENT_DATA."},
+    {"id": "S4-8", "statement": "Determinism: byte-identical attribution results across runs, processes and PYTHONHASHSEED values, and with events shuffled within a day (ledger_seq unchanged)."}
+  ],
+  "item_counts": {
+    "note": "For FIXTURE_PINS: number of 'expect' items per assertion id.",
+    "P12-A1": 2, "P12-A2": 2, "P1-A1": 2, "P6-A1": 3, "P3-A1": 3, "P3-A2": 2,
+    "P21-A1": 5, "P22-V1": 1, "P22-A1": 4, "P14-A1": 2, "P13-A1": 2,
+    "total": 28
+  }
+}

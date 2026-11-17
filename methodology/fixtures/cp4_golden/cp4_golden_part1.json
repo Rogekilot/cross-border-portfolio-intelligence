@@ -1,0 +1,2191 @@
+{
+ "fixture_id": "cp4_golden/1.0-part1",
+ "part": 1,
+ "scope": "risk/1.0, part 1: the series spine (grids, windows, stubs, MAX_AVAILABLE, flows inside a period, holidays, states), the risk-free conversion, volatility, downside deviation, maximum drawdown (including the M1-F6 case where the window conventions disagree), Sharpe and Sortino, the sufficiency thresholds and their frequency invariance; HG3 edge cases: insufficient history, missing FX, missing cost basis, cash-only, single security, multi-currency (an FX-return series), recently listed (alone and inside an established portfolio). Benchmark-relative metrics and the unavailable-benchmark case are part 2.",
+ "change_notes": [
+  "1.0-part1 (2026-10-02): first issue, authored and ratified by quant-analyst. Every expected value is hand-derived (CP4_GOLDEN_PART1_DERIVATION.md: closed forms for P3 and P5, period-by-period arithmetic for P1, P2, P8 and P10, and every state case) and re-derived from this file's inputs by the independent calculator derivation/cp4_part1_calculator.py, which imports nothing from src/. No value comes from the engine. convention_sets are MINIMUM versions (performance Ruling 11.6, adopted as risk/1.0 Ruling 11.4)."
+ ],
+ "convention_sets": {
+  "risk": "risk/1.0",
+  "performance": "performance/1.12",
+  "market_data": "market-data/1.11",
+  "ledger_replay": "ledger-replay/1.5 (FIFO/1 mode)",
+  "minor_units": "minor-units/1.1",
+  "lot_relief": "FIFO/1 (no assertion in part 1 depends on it)"
+ },
+ "authored_by": "quant-analyst (independent derivation; see CP4_GOLDEN_PART1_DERIVATION.md)",
+ "authored_on": "2026-10-02",
+ "format": {
+  "inherits": "Every rule of cp3_golden 'format' applies: numbers are JSON strings parsed with decimal.Decimal(str) and never as float; money objects are {amount, currency}; dates are ISO dates; ids are fixed UUIDs; events use domain.ledger.LedgerEvent field names; 'value' is null iff state is INSUFFICIENT_DATA.",
+  "request": "What the caller asks, with the assertion's as_of as the window end E: {rule: TRAILING_MONTHS, months}, {rule: CUSTOM, base}, {rule: SINCE_INCEPTION} or {rule: MAX_AVAILABLE} (risk/1.0 Ruling 2.3). 'frequency' is DAILY (every weekday), WEEKLY (every Friday) or MONTHLY (last calendar day of the month), Ruling 2.2.",
+  "requested_base": "B as computed from the request (asserted for refusals too).",
+  "effective_window": "{base_date: g_0, last_period_end: g_n, observation_count: n, stub_start_days: g_0 - B, stub_end_days: E - g_n, max_available_start (MAX_AVAILABLE only): INCEPTION | AFTER_INSUFFICIENT_PERIOD}; null when the request is refused (Ruling 2.3).",
+  "value": "The presented value: ROUND_HALF_UP to 1e-12, written with 12 decimals (risk/1.0 Ruling 3.4). Compare by Decimal numeric equality.",
+  "exact": "Rational outputs (max_drawdown): the exact value as a reduced fraction 'p/q' or an integer string. null for square-root outputs and for INSUFFICIENT_DATA.",
+  "exact_square": "Square-root outputs (volatility, downside_deviation, sharpe, sortino): the exact rational Q with value = sign * sqrt(Q) (Ruling 3.4 item 2). Compare with Fraction equality against the engine's Q. 'sign' is 1, -1, or 0 when Q = 0.",
+  "thresholds": "{insufficient_below: N1, available_from: N3} for the frequency (Ruling 7.1), in observations; null for max_drawdown (no statistical minimum).",
+  "details_include": "EXACTLY the risk/1.0 detail names (Ruling 7.4) the result's lineage must carry, compared as a set restricted to those names. Nothing is asserted about performance or market-data lineage names.",
+  "reason": "The single reason code (performance Ruling 1.5, unchanged) or null.",
+  "drawdown_dates": "max_drawdown only: peak_date, trough_date, recovery_date (Ruling 1.1), null when there is no drawdown or no recovery.",
+  "returns": "return_series only: one entry per period (g_{k-1}, g_k]: {period_end, exact (r_k as 'p/q'), state}.",
+  "rates": "risk_free_rates only: one entry per period: {period_start, period_end, quote_date (f_k), missed_publications (m_k), exact (rf_k)} (Rulings 4.3, 4.4).",
+  "stale_period_count": "Present when some period returns are LIMITED (Ruling 2.5): their number.",
+  "tolerance": "'0' on every item: exact equality of the presented value, and of 'exact' or 'exact_square'. The calculator's --check certifies every square-root value is more than 1e-18 quanta from a rounding boundary, so a correct Decimal (prec 50) route presents the same value (Ruling 3.4 item 5).",
+  "counter_conventions": "Informational, on P2 only: the value the REJECTED conventions would give. Not an engine assertion; it is what mutations M-DD1 and M-DD2 must produce (Ruling 1.5).",
+  "kinds": {
+   "return_series": "the periodic TWR series of Ruling 2.1 (the CP4b spine)",
+   "risk_free_rates": "the per-period risk-free returns of Ruling 4.3",
+   "volatility": "risk_volatility (Ruling 6.2)",
+   "downside_deviation": "risk_downside_deviation (Ruling 6.3)",
+   "max_drawdown": "risk_max_drawdown (Rulings 1.1, 6.4)",
+   "sharpe": "risk_sharpe (Ruling 6.5)",
+   "sortino": "risk_sortino (Ruling 6.6)"
+  },
+  "new_input_kinds": "calendar kind RATE_PUBLICATIONS (Ruling 4.5); the 'risk_free' block (Ruling 4.3: quote_type SIMPLE_YIELD | BANK_DISCOUNT, day_count_basis, tenor_days, unit); 'cycle' on price series and 'cycles' on FX (see rows_rule); 'gaps_by_currency' on FX.",
+  "synthetic": "Every result computed for this fixture is synthetic (market-data Ruling 4.8)."
+ },
+ "market_data": {
+  "synthetic": true,
+  "upstream": "synthetic",
+  "how_to_load": "As cp3_golden: the loader EXPANDS these compact definitions into synthetic files in the real CP2 layouts (calendar files with explicit date lists, an ECB-layout EUR quote file, one RAW price file per listing) plus the two new kinds of risk/1.0 (a RATE_PUBLICATIONS calendar and a risk-free quote file, Rulings 4.3 and 4.5), registers them with upstream 'synthetic' and synthetic: true, ingests them through the real parsers into one release M, and binds the port to M. The expansion is mechanical and introduces no number that is not in this block. Prices, rates and quotes are decimal strings exactly as given.",
+  "calendars": [
+   {
+    "calendar_id": "SYN4_NYSE",
+    "kind": "EXCHANGE_SESSIONS",
+    "applies_to": ["XNYS", "XNAS"],
+    "timezone": "America/New_York",
+    "coverage": {"from": "2022-12-01", "to": "2026-03-31"},
+    "actual_through": "2026-03-31",
+    "sessions_rule": "every Monday to Friday in coverage except closed_weekdays",
+    "closed_weekdays": [],
+    "close": {"default": "16:00", "overrides": []},
+    "evidence": "synthetic; deliberately holiday-free so that the long cyclic series of P3 have closed forms. Holiday handling is exercised on SYN4_SSE (P10)."
+   },
+   {
+    "calendar_id": "SYN4_SSE",
+    "kind": "EXCHANGE_SESSIONS",
+    "applies_to": ["XSHG", "XSHE"],
+    "timezone": "Asia/Shanghai",
+    "coverage": {"from": "2025-01-01", "to": "2026-03-31"},
+    "actual_through": "2026-03-31",
+    "sessions_rule": "every Monday to Friday in coverage except closed_weekdays",
+    "closed_weekdays": ["2025-09-29", "2025-09-30", "2025-10-01", "2025-10-02", "2025-10-03", "2025-10-17"],
+    "close": {"default": "15:00", "overrides": []},
+    "evidence": "synthetic; a whole closed Monday-to-Friday week (2025-09-29 to 10-03) and a closed Friday (2025-10-17), chosen to exercise risk/1.0 Ruling 2.2. Not the real SSE calendar."
+   },
+   {
+    "calendar_id": "SYN4_ECB",
+    "kind": "ECB_FIXINGS",
+    "applies_to": ["ECB"],
+    "timezone": "Europe/Berlin",
+    "coverage": {"from": "2022-12-01", "to": "2026-03-31"},
+    "actual_through": "2026-03-31",
+    "sessions_rule": "every Monday to Friday in coverage except closed_weekdays",
+    "closed_weekdays": [],
+    "fixing": {"time": "14:10", "publication": "16:00"},
+    "evidence": "synthetic; no TARGET closing days."
+   },
+   {
+    "calendar_id": "SYN4_RF_USD",
+    "kind": "RATE_PUBLICATIONS",
+    "applies_to": ["SYN4_UST13_USD"],
+    "timezone": "America/New_York",
+    "coverage": {"from": "2022-12-01", "to": "2026-03-31"},
+    "actual_through": "2026-03-31",
+    "sessions_rule": "every Monday to Friday in coverage except closed_weekdays",
+    "closed_weekdays": [],
+    "publication": {"time": "18:00"},
+    "evidence": "synthetic publication calendar for the synthetic USD risk-free series (risk/1.0 Ruling 4.5)."
+   }
+  ],
+  "fx": {
+   "layout": "ECB eurofxref-hist (EUR-based quotes, units of currency per 1 EUR)",
+   "rows_rule": "one row per SYN4_ECB fixing date in [first, last]; each currency's rate is the step in force on that date, where the steps are 'steps' plus the expansion of 'cycles'; a date listed in gaps_by_currency[c] has NO quote for c in its row (an ECB 'N/A', market-data Ruling 1.6: not an observation)",
+   "first": "2022-12-01",
+   "last": "2026-03-31",
+   "steps": {
+    "USD": [{"from": "2022-12-01", "rate": "1.0800"}],
+    "HKD": [{"from": "2022-12-01", "rate": "8.4000"}],
+    "CNY": [{"from": "2022-12-01", "rate": "7.8000"}]
+   },
+   "cycles": {"HKD": {"from": "2024-12-27", "every_days": 7, "until": "2026-03-31", "rates": ["8.4000", "8.4420"]}},
+   "gaps_by_currency": {"CNY": ["2025-06-09", "2025-06-10", "2025-06-11", "2025-06-12", "2025-06-13", "2025-09-11", "2025-09-12"]},
+   "note": "USD per EUR is 1.0800 throughout. HKD alternates 8.4000 / 8.4420 from Friday 2024-12-27 (cycle index 0 = 8.4000), so X(HKD->USD) alternates 9/70 and 60/469, a ratio of 200/201; HKD per USD is 7.7778 or 7.8167, inside 7.75-7.85. CNY is 7.8000 throughout, so X(CNY->USD) = 18/130 = 9/65 whenever a quote exists."
+  },
+  "prices": {
+   "layout": "RAW official closes in the listing's trading currency; every row has volume '1000' (a print, market-data Ruling 2.1)",
+   "rows_rule": "one row per session of the listing's calendar in [first, last], except the dates in gaps; the close is the step in force on that date, the steps being 'steps' plus the expansion of 'cycle' (if any)",
+   "cycle_rule": "cycle {from, every_days, until, closes}: a step at from + every_days*j with close closes[j mod len(closes)], for j = 0, 1, ... while the date is <= until",
+   "series": [
+    {
+     "listing_id": "c4000000-0000-4000-8000-000000000001",
+     "ticker": "SYN1",
+     "calendar": "SYN4_NYSE",
+     "currency": "USD",
+     "first": "2024-12-02",
+     "last": "2026-03-31",
+     "steps": [
+      {"from": "2024-12-02", "close": "100.00"},
+      {"from": "2025-01-01", "close": "106.00"},
+      {"from": "2025-02-01", "close": "103.88"},
+      {"from": "2025-03-01", "close": "98.00"},
+      {"from": "2025-04-01", "close": "92.12"},
+      {"from": "2025-05-01", "close": "96.00"},
+      {"from": "2025-06-01", "close": "100.80"},
+      {"from": "2025-07-01", "close": "105.84"},
+      {"from": "2025-08-01", "close": "103.00"},
+      {"from": "2025-09-01", "close": "108.15"},
+      {"from": "2025-10-01", "close": "105.00"},
+      {"from": "2025-11-01", "close": "110.25"},
+      {"from": "2025-12-01", "close": "112.00"}
+     ],
+     "cycle": null,
+     "gaps": []
+    },
+    {
+     "listing_id": "c4000000-0000-4000-8000-000000000002",
+     "ticker": "SYN2",
+     "calendar": "SYN4_NYSE",
+     "currency": "USD",
+     "first": "2025-12-01",
+     "last": "2026-01-30",
+     "steps": [
+      {"from": "2025-12-01", "close": "100.00"},
+      {"from": "2025-12-05", "close": "120.00"},
+      {"from": "2025-12-12", "close": "100.00"},
+      {"from": "2025-12-19", "close": "110.00"},
+      {"from": "2025-12-26", "close": "99.00"},
+      {"from": "2026-01-02", "close": "105.00"}
+     ],
+     "cycle": null,
+     "gaps": []
+    },
+    {
+     "listing_id": "c4000000-0000-4000-8000-000000000003",
+     "ticker": "SYN3",
+     "calendar": "SYN4_NYSE",
+     "currency": "USD",
+     "first": "2022-12-30",
+     "last": "2026-03-31",
+     "steps": [],
+     "cycle": {"from": "2022-12-30", "every_days": 7, "until": "2026-03-31", "closes": ["100.00", "104.00"]},
+     "gaps": []
+    },
+    {
+     "listing_id": "c4000000-0000-4000-8000-000000000008",
+     "ticker": "SYN8",
+     "calendar": "SYN4_NYSE",
+     "currency": "USD",
+     "first": "2025-10-06",
+     "last": "2026-01-30",
+     "steps": [
+      {"from": "2025-10-06", "close": "100.00"},
+      {"from": "2025-10-10", "close": "103.00"},
+      {"from": "2025-10-17", "close": "101.00"},
+      {"from": "2025-10-24", "close": "98.00"},
+      {"from": "2025-10-31", "close": "105.00"},
+      {"from": "2025-11-07", "close": "104.00"},
+      {"from": "2025-11-14", "close": "99.00"},
+      {"from": "2025-11-21", "close": "95.00"},
+      {"from": "2025-11-28", "close": "100.00"},
+      {"from": "2025-12-05", "close": "102.00"},
+      {"from": "2025-12-12", "close": "97.00"},
+      {"from": "2025-12-19", "close": "101.00"},
+      {"from": "2025-12-26", "close": "106.00"},
+      {"from": "2026-01-02", "close": "108.00"}
+     ],
+     "cycle": null,
+     "gaps": []
+    },
+    {
+     "listing_id": "c4000000-0000-4000-8000-000000000010",
+     "ticker": "SYN10",
+     "calendar": "SYN4_SSE",
+     "currency": "CNY",
+     "first": "2025-09-01",
+     "last": "2025-10-31",
+     "steps": [
+      {"from": "2025-09-01", "close": "10.00"},
+      {"from": "2025-09-26", "close": "10.50"},
+      {"from": "2025-10-06", "close": "11.55"},
+      {"from": "2025-10-16", "close": "11.00"}
+     ],
+     "cycle": null,
+     "gaps": []
+    }
+   ]
+  },
+  "risk_free": {
+   "layout": "one quote per publication date of the series' RATE_PUBLICATIONS calendar in [first, last], except the dates in gaps; the quote is the step in force on that date; unit PERCENT",
+   "series": [
+    {
+     "series_id": "SYN4_UST13_USD",
+     "currency": "USD",
+     "instrument": "synthetic 13-week sovereign bill",
+     "quote_type": "SIMPLE_YIELD",
+     "day_count_basis": 365,
+     "tenor_days": 91,
+     "unit": "PERCENT",
+     "calendar": "SYN4_RF_USD",
+     "first": "2022-12-01",
+     "last": "2026-03-31",
+     "steps": [{"from": "2022-12-01", "rate": "3.65"}, {"from": "2025-07-01", "rate": "7.30"}],
+     "gaps": ["2026-02-05", "2026-02-06", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06"]
+    }
+   ],
+   "note": "SIMPLE_YIELD on ACT/365: 3.65 % is exactly 1/10000 per calendar day, 7.30 % is 2/10000. So a 7-day period earns 7/10000 or 14/10000, and a calendar month 28 to 31 ten-thousandths (or twice that)."
+  },
+  "benchmarks": [],
+  "corporate_actions": []
+ },
+ "listings": [
+  {"listing_id": "c4000000-0000-4000-8000-000000000001", "ticker": "SYN1", "mic": "XNYS", "trading_currency": "USD", "security_type": "COMMON_STOCK"},
+  {"listing_id": "c4000000-0000-4000-8000-000000000002", "ticker": "SYN2", "mic": "XNYS", "trading_currency": "USD", "security_type": "COMMON_STOCK"},
+  {"listing_id": "c4000000-0000-4000-8000-000000000003", "ticker": "SYN3", "mic": "XNYS", "trading_currency": "USD", "security_type": "COMMON_STOCK"},
+  {"listing_id": "c4000000-0000-4000-8000-000000000008", "ticker": "SYN8", "mic": "XNYS", "trading_currency": "USD", "security_type": "COMMON_STOCK"},
+  {"listing_id": "c4000000-0000-4000-8000-000000000010", "ticker": "SYN10", "mic": "XSHG", "trading_currency": "CNY", "security_type": "COMMON_STOCK"}
+ ],
+ "portfolios": [
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000001",
+   "name": "P1 (USD; one US listing; monthly; 12 observations, LIMITED; rf start-of-period rule)",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4010000-0000-4000-8000-000000000001", "name": "A1"}],
+   "inception_base": "2024-12-30",
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "P1-E1",
+     "event": {
+      "event_id": "e4010000-0000-4000-8000-000000000001",
+      "account_id": "a4010000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2024-12-31",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "P1-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "P1-E2",
+     "event": {
+      "event_id": "e4010000-0000-4000-8000-000000000002",
+      "account_id": "a4010000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2024-12-31",
+      "currency": "USD",
+      "listing_id": "c4000000-0000-4000-8000-000000000001",
+      "quantity": "100",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "P1-E2 at 100.00"
+     }
+    }
+   ],
+   "assertions": [
+    {
+     "id": "P1-S1",
+     "as_of": "2025-12-31",
+     "ledger_version": 2,
+     "purpose": "Monthly 1Y window ending on a month-end: 12 observations (LIMITED, N1=11 <= 12 < N3=35). Exact single-series statistics on hand-checkable returns; risk-free accrual by calendar days at the rate quoted at each period's START (July uses the 3.65% quoted on 06-30, not the 7.30% in force from 07-01).",
+     "expect": [
+      {
+       "kind": "return_series",
+       "frequency": "MONTHLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2024-12-31",
+       "effective_window": {"base_date": "2024-12-31", "last_period_end": "2025-12-31", "observation_count": 12, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "returns": [
+        {"period_end": "2025-01-31", "exact": "3/50", "state": "AVAILABLE"},
+        {"period_end": "2025-02-28", "exact": "-1/50", "state": "AVAILABLE"},
+        {"period_end": "2025-03-31", "exact": "-3/53", "state": "AVAILABLE"},
+        {"period_end": "2025-04-30", "exact": "-3/50", "state": "AVAILABLE"},
+        {"period_end": "2025-05-31", "exact": "97/2303", "state": "AVAILABLE"},
+        {"period_end": "2025-06-30", "exact": "1/20", "state": "AVAILABLE"},
+        {"period_end": "2025-07-31", "exact": "1/20", "state": "AVAILABLE"},
+        {"period_end": "2025-08-31", "exact": "-71/2646", "state": "AVAILABLE"},
+        {"period_end": "2025-09-30", "exact": "1/20", "state": "AVAILABLE"},
+        {"period_end": "2025-10-31", "exact": "-3/103", "state": "AVAILABLE"},
+        {"period_end": "2025-11-30", "exact": "1/20", "state": "AVAILABLE"},
+        {"period_end": "2025-12-31", "exact": "1/63", "state": "AVAILABLE"}
+       ],
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "risk_free_rates",
+       "frequency": "MONTHLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2024-12-31",
+       "effective_window": {"base_date": "2024-12-31", "last_period_end": "2025-12-31", "observation_count": 12, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "rates": [
+        {"period_start": "2024-12-31", "period_end": "2025-01-31", "quote_date": "2024-12-31", "missed_publications": 0, "exact": "31/10000"},
+        {"period_start": "2025-01-31", "period_end": "2025-02-28", "quote_date": "2025-01-31", "missed_publications": 0, "exact": "7/2500"},
+        {"period_start": "2025-02-28", "period_end": "2025-03-31", "quote_date": "2025-02-28", "missed_publications": 0, "exact": "31/10000"},
+        {"period_start": "2025-03-31", "period_end": "2025-04-30", "quote_date": "2025-03-31", "missed_publications": 0, "exact": "3/1000"},
+        {"period_start": "2025-04-30", "period_end": "2025-05-31", "quote_date": "2025-04-30", "missed_publications": 0, "exact": "31/10000"},
+        {"period_start": "2025-05-31", "period_end": "2025-06-30", "quote_date": "2025-05-30", "missed_publications": 0, "exact": "3/1000"},
+        {"period_start": "2025-06-30", "period_end": "2025-07-31", "quote_date": "2025-06-30", "missed_publications": 0, "exact": "31/10000"},
+        {"period_start": "2025-07-31", "period_end": "2025-08-31", "quote_date": "2025-07-31", "missed_publications": 0, "exact": "31/5000"},
+        {"period_start": "2025-08-31", "period_end": "2025-09-30", "quote_date": "2025-08-29", "missed_publications": 0, "exact": "3/500"},
+        {"period_start": "2025-09-30", "period_end": "2025-10-31", "quote_date": "2025-09-30", "missed_publications": 0, "exact": "31/5000"},
+        {"period_start": "2025-10-31", "period_end": "2025-11-30", "quote_date": "2025-10-31", "missed_publications": 0, "exact": "3/500"},
+        {"period_start": "2025-11-30", "period_end": "2025-12-31", "quote_date": "2025-11-28", "missed_publications": 0, "exact": "31/5000"}
+       ],
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "MONTHLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2024-12-31",
+       "effective_window": {"base_date": "2024-12-31", "last_period_end": "2025-12-31", "observation_count": 12, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.158701278641",
+       "exact": null,
+       "exact_square": "19951481372347595663/792162528770760406875",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 11, "available_from": 35},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "downside_deviation",
+       "frequency": "MONTHLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2024-12-31",
+       "effective_window": {"base_date": "2024-12-31", "last_period_end": "2025-12-31", "observation_count": 12, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.101943602496",
+       "exact": null,
+       "exact_square": "54208305310033561117/5216099617404900000000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 11, "available_from": 35},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "MONTHLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2024-12-31",
+       "effective_window": {"base_date": "2024-12-31", "last_period_end": "2025-12-31", "observation_count": 12, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.130943396226",
+       "exact": "-347/2650",
+       "thresholds": null,
+       "peak_date": "2025-01-31",
+       "trough_date": "2025-04-30",
+       "recovery_date": "2025-09-30",
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sharpe",
+       "frequency": "MONTHLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2024-12-31",
+       "effective_window": {"base_date": "2024-12-31", "last_period_end": "2025-12-31", "observation_count": 12, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.463947418518",
+       "exact": null,
+       "exact_square": "171780025756031864834531/798059254893903826520000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 11, "available_from": 35},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sortino",
+       "frequency": "MONTHLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2024-12-31",
+       "effective_window": {"base_date": "2024-12-31", "last_period_end": "2025-12-31", "observation_count": 12, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.722252762691",
+       "exact": null,
+       "exact_square": "62465463911284314485284/119746146429864136507453",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 11, "available_from": 35},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "P1-S2",
+     "as_of": "2025-12-30",
+     "ledger_version": 2,
+     "purpose": "The same request one day earlier: the 2025-12 month-end is not yet in the window, so 11 observations (stub of 30 days at the end). 11 = N1, so still LIMITED, never INSUFFICIENT: a full 1Y window always meets the floor (Ruling 7.1).",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "MONTHLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2024-12-30",
+       "effective_window": {"base_date": "2024-12-31", "last_period_end": "2025-11-30", "observation_count": 11, "stub_start_days": 1, "stub_end_days": 30},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.166331718570",
+       "exact": null,
+       "exact_square": "6641260338511986293/240049251142654668750",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 11, "available_from": 35},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "MONTHLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2024-12-30",
+       "effective_window": {"base_date": "2024-12-31", "last_period_end": "2025-11-30", "observation_count": 11, "stub_start_days": 1, "stub_end_days": 30},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.130943396226",
+       "exact": "-347/2650",
+       "thresholds": null,
+       "peak_date": "2025-01-31",
+       "trough_date": "2025-04-30",
+       "recovery_date": "2025-09-30",
+       "details_include": [],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000002",
+   "name": "P2 (USD; max-drawdown window convention, M1-F6)",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4020000-0000-4000-8000-000000000001", "name": "A1"}],
+   "inception_base": "2025-11-30",
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "P2-E1",
+     "event": {
+      "event_id": "e4020000-0000-4000-8000-000000000001",
+      "account_id": "a4020000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2025-12-01",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "P2-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "P2-E2",
+     "event": {
+      "event_id": "e4020000-0000-4000-8000-000000000002",
+      "account_id": "a4020000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2025-12-01",
+      "currency": "USD",
+      "listing_id": "c4000000-0000-4000-8000-000000000002",
+      "quantity": "100",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "P2-E2 at 100.00"
+     }
+    }
+   ],
+   "assertions": [
+    {
+     "id": "P2-D1",
+     "as_of": "2026-01-02",
+     "ledger_version": 2,
+     "purpose": "Window base 2025-12-12 (level 100) after an all-time high of 120 on 2025-12-05. Canonical (peak search within the window, from the base): -0.1. The all-history running maximum would give 99/120-1 = -0.175. The conventions DISAGREE here (Ruling 1.1, debt item 5).",
+     "counter_conventions": {"ALL_HISTORY_RUNNING_MAX": "-0.175", "BASE_EXCLUDED_FROM_PEAK_SEARCH": "-0.1"},
+     "expect": [
+      {
+       "kind": "return_series",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-12-12"},
+       "requested_base": "2025-12-12",
+       "effective_window": {"base_date": "2025-12-12", "last_period_end": "2026-01-02", "observation_count": 3, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "returns": [
+        {"period_end": "2025-12-19", "exact": "1/10", "state": "AVAILABLE"},
+        {"period_end": "2025-12-26", "exact": "-1/10", "state": "AVAILABLE"},
+        {"period_end": "2026-01-02", "exact": "2/33", "state": "AVAILABLE"}
+       ],
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-12-12"},
+       "requested_base": "2025-12-12",
+       "effective_window": {"base_date": "2025-12-12", "last_period_end": "2026-01-02", "observation_count": 3, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.100000000000",
+       "exact": "-1/10",
+       "thresholds": null,
+       "peak_date": "2025-12-19",
+       "trough_date": "2025-12-26",
+       "recovery_date": null,
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "DAILY",
+       "request": {"rule": "CUSTOM", "base": "2025-12-12"},
+       "requested_base": "2025-12-12",
+       "effective_window": {"base_date": "2025-12-12", "last_period_end": "2026-01-02", "observation_count": 15, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.100000000000",
+       "exact": "-1/10",
+       "thresholds": null,
+       "peak_date": "2025-12-25",
+       "trough_date": "2025-12-26",
+       "recovery_date": null,
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-12-12"},
+       "requested_base": "2025-12-12",
+       "effective_window": {"base_date": "2025-12-12", "last_period_end": "2026-01-02", "observation_count": 3, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["INSUFFICIENT_OBSERVATIONS"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "P2-D2",
+     "as_of": "2026-01-02",
+     "ledger_version": 2,
+     "purpose": "Window base 2025-12-05, the all-time high itself. Canonical (base included in the peak search): 99/120-1 = -0.175. A rule that starts the peak search at the first in-window observation (the M1 chart error, mirrored) would give -0.1. The conventions DISAGREE here (Ruling 1.2).",
+     "counter_conventions": {"ALL_HISTORY_RUNNING_MAX": "-0.175", "BASE_EXCLUDED_FROM_PEAK_SEARCH": "-0.1"},
+     "expect": [
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-12-05"},
+       "requested_base": "2025-12-05",
+       "effective_window": {"base_date": "2025-12-05", "last_period_end": "2026-01-02", "observation_count": 4, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.175000000000",
+       "exact": "-7/40",
+       "thresholds": null,
+       "peak_date": "2025-12-05",
+       "trough_date": "2025-12-26",
+       "recovery_date": null,
+       "details_include": [],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000003",
+   "name": "P3 (USD; one US listing alternating 100/104 every Friday; long weekly series)",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4030000-0000-4000-8000-000000000001", "name": "A1"}],
+   "inception_base": "2022-12-29",
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "P3-E1",
+     "event": {
+      "event_id": "e4030000-0000-4000-8000-000000000001",
+      "account_id": "a4030000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "P3-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "P3-E2",
+     "event": {
+      "event_id": "e4030000-0000-4000-8000-000000000002",
+      "account_id": "a4030000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "listing_id": "c4000000-0000-4000-8000-000000000003",
+      "quantity": "100",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "P3-E2 at 100.00"
+     }
+    }
+   ],
+   "assertions": [
+    {
+     "id": "P3-A1",
+     "as_of": "2026-01-02",
+     "ledger_version": 2,
+     "purpose": "The PRD 14 default: 3Y weekly. 156 observations >= N3=155: AVAILABLE. Closed forms in the derivation (78 periods of +1/25 and 78 of -1/26).",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.283808204205",
+       "exact": null,
+       "exact_square": "7803/96875",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "downside_deviation",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.200284751778",
+       "exact": null,
+       "exact_square": "156444529/3900000000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.038461538462",
+       "exact": "-1/26",
+       "thresholds": null,
+       "peak_date": "2023-01-06",
+       "trough_date": "2023-01-13",
+       "recovery_date": "2023-01-20",
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sharpe",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.008691315579",
+       "exact": null,
+       "exact_square": "42439/561816000",
+       "sign": -1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sortino",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.012315798606",
+       "exact": null,
+       "exact_square": "71188/469333587",
+       "sign": -1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "P3-A2",
+     "as_of": "2026-01-02",
+     "ledger_version": 2,
+     "purpose": "Frequency invariance on a full window (HG1 round 5 Ruling 1(c)): the same 3Y window is AVAILABLE at DAILY, WEEKLY and MONTHLY; the annualization factors 260, 52 and 12 are exercised on the same path.",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "DAILY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-02", "last_period_end": "2026-01-02", "observation_count": 784, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.283328848745",
+       "exact": null,
+       "exact_square": "25666/319725",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 259, "available_from": 781},
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "MONTHLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-31", "last_period_end": "2025-12-31", "observation_count": 35, "stub_start_days": 29, "stub_end_days": 2},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.080746455372",
+       "exact": null,
+       "exact_square": "409761/62846875",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 11, "available_from": 35},
+       "details_include": [],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "P3-A3",
+     "as_of": "2026-01-02",
+     "ledger_version": 2,
+     "purpose": "1Y: LIMITED at every frequency (52 weekly, 11 monthly, daily count below 781).",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.285657137142",
+       "exact": null,
+       "exact_square": "51/625",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "downside_deviation",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.201478009871",
+       "exact": null,
+       "exact_square": "10554281/260000000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.038461538462",
+       "exact": "-1/26",
+       "thresholds": null,
+       "peak_date": "2025-01-03",
+       "trough_date": "2025-01-10",
+       "recovery_date": "2025-01-17",
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sharpe",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "-0.051110223067",
+       "exact": null,
+       "exact_square": "5329/2040000",
+       "sign": -1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sortino",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "-0.072464483888",
+       "exact": null,
+       "exact_square": "277108/52771405",
+       "sign": -1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "DAILY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-02", "last_period_end": "2026-01-02", "observation_count": 261, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.285721923185",
+       "exact": null,
+       "exact_square": "346243/4241250",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 259, "available_from": 781},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "MONTHLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-31", "last_period_end": "2025-12-31", "observation_count": 11, "stub_start_days": 29, "stub_end_days": 2},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.072949096889",
+       "exact": null,
+       "exact_square": "6183/1161875",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 11, "available_from": 35},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "P3-A4",
+     "as_of": "2026-01-02",
+     "ledger_version": 2,
+     "purpose": "27 weekly observations: below N1=51, so the dispersion statistics are INSUFFICIENT_DATA (no number); the maximum drawdown is a path fact and stays AVAILABLE.",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-06-27"},
+       "requested_base": "2025-06-27",
+       "effective_window": {"base_date": "2025-06-27", "last_period_end": "2026-01-02", "observation_count": 27, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["INSUFFICIENT_OBSERVATIONS"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sharpe",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-06-27"},
+       "requested_base": "2025-06-27",
+       "effective_window": {"base_date": "2025-06-27", "last_period_end": "2026-01-02", "observation_count": 27, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["INSUFFICIENT_OBSERVATIONS"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-06-27"},
+       "requested_base": "2025-06-27",
+       "effective_window": {"base_date": "2025-06-27", "last_period_end": "2026-01-02", "observation_count": 27, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.038461538462",
+       "exact": "-1/26",
+       "thresholds": null,
+       "peak_date": "2025-07-04",
+       "trough_date": "2025-07-11",
+       "recovery_date": "2025-07-18",
+       "details_include": [],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "P3-A5",
+     "as_of": "2026-01-02",
+     "ledger_version": 2,
+     "purpose": "5Y requested on a 3-year-old portfolio: refused, never silently shortened (Ruling 7.2).",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 60},
+       "requested_base": "2021-01-02",
+       "effective_window": null,
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "details_include": ["WINDOW_BEFORE_INCEPTION"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 60},
+       "requested_base": "2021-01-02",
+       "effective_window": null,
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "details_include": ["WINDOW_BEFORE_INCEPTION"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "P3-A6",
+     "as_of": "2026-01-02",
+     "ledger_version": 2,
+     "purpose": "MAX_AVAILABLE: base at the first Friday on or after inception (2022-12-30); 157 observations, labelled with the actual window.",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "MAX_AVAILABLE"},
+       "requested_base": "2022-12-29",
+       "effective_window": {"base_date": "2022-12-30", "last_period_end": "2026-01-02", "observation_count": 157, "stub_start_days": 1, "stub_end_days": 0, "max_available_start": "INCEPTION"},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.283796616177",
+       "exact": null,
+       "exact_square": "205479/2551250",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sharpe",
+       "frequency": "WEEKLY",
+       "request": {"rule": "MAX_AVAILABLE"},
+       "requested_base": "2022-12-29",
+       "effective_window": {"base_date": "2022-12-30", "last_period_end": "2026-01-02", "observation_count": 157, "stub_start_days": 1, "stub_end_days": 0, "max_available_start": "INCEPTION"},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.037229496383",
+       "exact": null,
+       "exact_square": "223568917/161301015000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "MAX_AVAILABLE"},
+       "requested_base": "2022-12-29",
+       "effective_window": {"base_date": "2022-12-30", "last_period_end": "2026-01-02", "observation_count": 157, "stub_start_days": 1, "stub_end_days": 0, "max_available_start": "INCEPTION"},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.038461538462",
+       "exact": "-1/26",
+       "thresholds": null,
+       "peak_date": "2023-01-06",
+       "trough_date": "2023-01-13",
+       "recovery_date": "2023-01-20",
+       "details_include": [],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "P3-A7",
+     "as_of": "2025-12-31",
+     "ledger_version": 2,
+     "purpose": "A full 1Y window ending on a Wednesday: start stub 3 days, end stub 5 days, 51 observations = N1: LIMITED (the HG1 round-4 '52 weekly' floor would have refused a full year).",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2024-12-31",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2025-12-26", "observation_count": 51, "stub_start_days": 3, "stub_end_days": 5},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.285657137142",
+       "exact": null,
+       "exact_square": "51/625",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2024-12-31",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2025-12-26", "observation_count": 51, "stub_start_days": 3, "stub_end_days": 5},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.038461538462",
+       "exact": "-1/26",
+       "thresholds": null,
+       "peak_date": "2025-01-03",
+       "trough_date": "2025-01-10",
+       "recovery_date": "2025-01-17",
+       "details_include": [],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000004",
+   "name": "P4 (USD; cash only, no interest)",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4040000-0000-4000-8000-000000000001", "name": "A1"}],
+   "inception_base": "2022-12-29",
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "P4-E1",
+     "event": {
+      "event_id": "e4040000-0000-4000-8000-000000000001",
+      "account_id": "a4040000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "P4-E1"
+     }
+    }
+   ],
+   "assertions": [
+    {
+     "id": "P4-C1",
+     "as_of": "2026-01-30",
+     "ledger_version": 1,
+     "purpose": "Cash-only (HG3 edge case): volatility 0 is a fact (AVAILABLE); Sharpe and Sortino are undefined (ZERO_VOLATILITY); the downside deviation is the shortfall below the risk-free rate, not a loss; maximum drawdown 0.",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-30",
+       "effective_window": {"base_date": "2023-02-03", "last_period_end": "2026-01-30", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.000000000000",
+       "exact": null,
+       "exact_square": "0",
+       "sign": 0,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "downside_deviation",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-30",
+       "effective_window": {"base_date": "2023-02-03", "last_period_end": "2026-01-30", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.006338769597",
+       "exact": null,
+       "exact_square": "2009/50000000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-30",
+       "effective_window": {"base_date": "2023-02-03", "last_period_end": "2026-01-30", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.000000000000",
+       "exact": "0",
+       "thresholds": null,
+       "peak_date": null,
+       "trough_date": null,
+       "recovery_date": null,
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sharpe",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-30",
+       "effective_window": {"base_date": "2023-02-03", "last_period_end": "2026-01-30", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["ZERO_VOLATILITY"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sortino",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-30",
+       "effective_window": {"base_date": "2023-02-03", "last_period_end": "2026-01-30", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["ZERO_VOLATILITY"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "P4-C2",
+     "as_of": "2026-02-27",
+     "ledger_version": 1,
+     "purpose": "The period starting 2026-02-06 uses a risk-free quote 2 publications stale: LIMITED + STALE_DATA for the rf-dependent downside deviation; Sharpe stays INSUFFICIENT_DATA with NO reason (staleness is a LIMITED-level cause and does not compete, performance Ruling 1.5 (1.1)).",
+     "expect": [
+      {
+       "kind": "downside_deviation",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-02-27",
+       "effective_window": {"base_date": "2023-03-03", "last_period_end": "2026-02-27", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": "STALE_DATA",
+       "value": "0.006491532947",
+       "exact": null,
+       "exact_square": "2107/50000000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["RISK_FREE_STALE"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sharpe",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-02-27",
+       "effective_window": {"base_date": "2023-03-03", "last_period_end": "2026-02-27", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["RISK_FREE_STALE", "ZERO_VOLATILITY"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-02-27",
+       "effective_window": {"base_date": "2023-03-03", "last_period_end": "2026-02-27", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.000000000000",
+       "exact": null,
+       "exact_square": "0",
+       "sign": 0,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "P4-C3",
+     "as_of": "2026-03-27",
+     "ledger_version": 1,
+     "purpose": "The period starting 2026-03-06 has no risk-free quote within 4 publications: the rf-dependent metrics are INSUFFICIENT_DATA + STALE_DATA; volatility (rf-independent) is unaffected.",
+     "expect": [
+      {
+       "kind": "downside_deviation",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-03-27",
+       "effective_window": {"base_date": "2023-03-31", "last_period_end": "2026-03-27", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "STALE_DATA",
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["RISK_FREE_STALE"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-03-27",
+       "effective_window": {"base_date": "2023-03-31", "last_period_end": "2026-03-27", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.000000000000",
+       "exact": null,
+       "exact_square": "0",
+       "sign": 0,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000005",
+   "name": "P5 (USD reporting; HKD cash only: multi-currency, the return is the FX return)",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4050000-0000-4000-8000-000000000001", "name": "A1 (HKD)"}],
+   "inception_base": "2024-12-29",
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "P5-E1",
+     "event": {
+      "event_id": "e4050000-0000-4000-8000-000000000001",
+      "account_id": "a4050000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2024-12-30",
+      "currency": "HKD",
+      "amount": {"amount": "84000", "currency": "HKD"},
+      "source_reference": "P5-E1"
+     }
+    }
+   ],
+   "assertions": [
+    {
+     "id": "P5-M1",
+     "as_of": "2026-01-02",
+     "ledger_version": 1,
+     "purpose": "Multi-currency (HG3 edge case): returns in R are translated at each grid point's ECB fixing; alternating +1/200 and -1/201.",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.036316716806",
+       "exact": null,
+       "exact_square": "27175369/20604510000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "downside_deviation",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.030774018556",
+       "exact": null,
+       "exact_square": "765227437/808020000000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.004975124378",
+       "exact": "-1/201",
+       "thresholds": null,
+       "peak_date": "2025-01-10",
+       "trough_date": "2025-01-17",
+       "recovery_date": "2025-01-24",
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sharpe",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "-1.485630821718",
+       "exact": null,
+       "exact_square": "887259291/402002500",
+       "sign": -1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sortino",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "-1.753207295085",
+       "exact": null,
+       "exact_square": "69588964/22639865",
+       "sign": -1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000006",
+   "name": "P6 (USD; the P3 listing received by external in-kind transfer with NO cost basis)",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4060000-0000-4000-8000-000000000001", "name": "A1"}],
+   "inception_base": "2022-12-29",
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "P6-E1",
+     "event": {
+      "event_id": "e4060000-0000-4000-8000-000000000001",
+      "account_id": "a4060000-0000-4000-8000-000000000001",
+      "event_type": "TRANSFER_IN",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "listing_id": "c4000000-0000-4000-8000-000000000003",
+      "quantity": "100",
+      "source_reference": "P6-E1 external, in kind, no cost_basis"
+     }
+    }
+   ],
+   "assertions": [
+    {
+     "id": "P6-B1",
+     "as_of": "2026-01-02",
+     "ledger_version": 1,
+     "purpose": "Missing cost basis (HG3 edge case): risk statistics do not read cost basis; values equal P3-A1's and the state is AVAILABLE, never MISSING_COST_BASIS.",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.283808204205",
+       "exact": null,
+       "exact_square": "7803/96875",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sharpe",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.008691315579",
+       "exact": null,
+       "exact_square": "42439/561816000",
+       "sign": -1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.038461538462",
+       "exact": "-1/26",
+       "thresholds": null,
+       "peak_date": "2023-01-06",
+       "trough_date": "2023-01-13",
+       "recovery_date": "2023-01-20",
+       "details_include": [],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000007",
+   "name": "P7 (USD reporting; CNY cash; ECB CNY quote missing 5 fixings, later 2 fixings)",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4070000-0000-4000-8000-000000000001", "name": "A1 (CNY)"}],
+   "inception_base": "2024-12-29",
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "P7-E1",
+     "event": {
+      "event_id": "e4070000-0000-4000-8000-000000000001",
+      "account_id": "a4070000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2024-12-30",
+      "currency": "CNY",
+      "amount": {"amount": "78000", "currency": "CNY"},
+      "source_reference": "P7-E1"
+     }
+    }
+   ],
+   "assertions": [
+    {
+     "id": "P7-F1",
+     "as_of": "2026-01-02",
+     "ledger_version": 1,
+     "purpose": "Missing FX (HG3 edge case): the valuation at 2025-06-13 has 5 missed CNY fixings, so the two periods that use it are INSUFFICIENT_DATA + MISSING_FX_HISTORY, and so is every statistic over a window containing them. No period is dropped, filled or re-gridded.",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "MISSING_FX_HISTORY",
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "stale_period_count": 2,
+       "details_include": ["PERIOD_INSUFFICIENT", "STALE_PERIODS", "OBSERVATIONS_BELOW_STANDARD"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "MISSING_FX_HISTORY",
+       "value": null,
+       "exact": null,
+       "thresholds": null,
+       "stale_period_count": 2,
+       "details_include": ["PERIOD_INSUFFICIENT", "STALE_PERIODS"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "P7-F2",
+     "as_of": "2026-01-02",
+     "ledger_version": 1,
+     "purpose": "MAX_AVAILABLE starts at the end of the last INSUFFICIENT period (2025-06-20): 28 observations. Two periods use a 2-fixings-stale rate (LIMITED + STALE_DATA). Volatility: INSUFFICIENT by count, reason none. Maximum drawdown: 0, LIMITED + STALE_DATA.",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "MAX_AVAILABLE"},
+       "requested_base": "2024-12-29",
+       "effective_window": {"base_date": "2025-06-20", "last_period_end": "2026-01-02", "observation_count": 28, "stub_start_days": 173, "stub_end_days": 0, "max_available_start": "AFTER_INSUFFICIENT_PERIOD"},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "stale_period_count": 2,
+       "details_include": ["STALE_PERIODS", "INSUFFICIENT_OBSERVATIONS"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "MAX_AVAILABLE"},
+       "requested_base": "2024-12-29",
+       "effective_window": {"base_date": "2025-06-20", "last_period_end": "2026-01-02", "observation_count": 28, "stub_start_days": 173, "stub_end_days": 0, "max_available_start": "AFTER_INSUFFICIENT_PERIOD"},
+       "state": "LIMITED",
+       "reason": "STALE_DATA",
+       "value": "0.000000000000",
+       "exact": "0",
+       "thresholds": null,
+       "peak_date": null,
+       "trough_date": null,
+       "recovery_date": null,
+       "stale_period_count": 2,
+       "details_include": ["STALE_PERIODS"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000008",
+   "name": "P8 (USD; only a security first listed 2025-10-06, bought that day)",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4080000-0000-4000-8000-000000000001", "name": "A1"}],
+   "inception_base": "2025-10-05",
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "P8-E1",
+     "event": {
+      "event_id": "e4080000-0000-4000-8000-000000000001",
+      "account_id": "a4080000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2025-10-06",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "P8-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "P8-E2",
+     "event": {
+      "event_id": "e4080000-0000-4000-8000-000000000002",
+      "account_id": "a4080000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2025-10-06",
+      "currency": "USD",
+      "listing_id": "c4000000-0000-4000-8000-000000000008",
+      "quantity": "100",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "P8-E2 at the first print, 100.00"
+     }
+    }
+   ],
+   "assertions": [
+    {
+     "id": "P8-L1",
+     "as_of": "2026-01-02",
+     "ledger_version": 2,
+     "purpose": "Recently listed security (HG3 edge case): a 1Y window starts before inception: refused (WINDOW_BEFORE_INCEPTION).",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": null,
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "details_include": ["WINDOW_BEFORE_INCEPTION"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "P8-L2",
+     "as_of": "2026-01-02",
+     "ledger_version": 2,
+     "purpose": "MAX_AVAILABLE: 12 weekly observations from 2025-10-10 (the 10-06 to 10-10 stub is excluded): volatility INSUFFICIENT by count; maximum drawdown -2/21 (peak 10-31, trough 11-21, recovered 12-26).",
+     "expect": [
+      {
+       "kind": "return_series",
+       "frequency": "WEEKLY",
+       "request": {"rule": "MAX_AVAILABLE"},
+       "requested_base": "2025-10-05",
+       "effective_window": {"base_date": "2025-10-10", "last_period_end": "2026-01-02", "observation_count": 12, "stub_start_days": 5, "stub_end_days": 0, "max_available_start": "INCEPTION"},
+       "state": "AVAILABLE",
+       "reason": null,
+       "returns": [
+        {"period_end": "2025-10-17", "exact": "-2/103", "state": "AVAILABLE"},
+        {"period_end": "2025-10-24", "exact": "-3/101", "state": "AVAILABLE"},
+        {"period_end": "2025-10-31", "exact": "1/14", "state": "AVAILABLE"},
+        {"period_end": "2025-11-07", "exact": "-1/105", "state": "AVAILABLE"},
+        {"period_end": "2025-11-14", "exact": "-5/104", "state": "AVAILABLE"},
+        {"period_end": "2025-11-21", "exact": "-4/99", "state": "AVAILABLE"},
+        {"period_end": "2025-11-28", "exact": "1/19", "state": "AVAILABLE"},
+        {"period_end": "2025-12-05", "exact": "1/50", "state": "AVAILABLE"},
+        {"period_end": "2025-12-12", "exact": "-5/102", "state": "AVAILABLE"},
+        {"period_end": "2025-12-19", "exact": "4/97", "state": "AVAILABLE"},
+        {"period_end": "2025-12-26", "exact": "5/101", "state": "AVAILABLE"},
+        {"period_end": "2026-01-02", "exact": "1/53", "state": "AVAILABLE"}
+       ],
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "MAX_AVAILABLE"},
+       "requested_base": "2025-10-05",
+       "effective_window": {"base_date": "2025-10-10", "last_period_end": "2026-01-02", "observation_count": 12, "stub_start_days": 5, "stub_end_days": 0, "max_available_start": "INCEPTION"},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["INSUFFICIENT_OBSERVATIONS"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "MAX_AVAILABLE"},
+       "requested_base": "2025-10-05",
+       "effective_window": {"base_date": "2025-10-10", "last_period_end": "2026-01-02", "observation_count": 12, "stub_start_days": 5, "stub_end_days": 0, "max_available_start": "INCEPTION"},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.095238095238",
+       "exact": "-2/21",
+       "thresholds": null,
+       "peak_date": "2025-10-31",
+       "trough_date": "2025-11-21",
+       "recovery_date": "2025-12-26",
+       "details_include": [],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000009",
+   "name": "P9 (P3 plus a Wednesday deposit fully invested the same day)",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4090000-0000-4000-8000-000000000001", "name": "A1"}],
+   "inception_base": "2022-12-29",
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "P9-E1",
+     "event": {
+      "event_id": "e4090000-0000-4000-8000-000000000001",
+      "account_id": "a4090000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "P9-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "P9-E2",
+     "event": {
+      "event_id": "e4090000-0000-4000-8000-000000000002",
+      "account_id": "a4090000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "listing_id": "c4000000-0000-4000-8000-000000000003",
+      "quantity": "100",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "P9-E2 at 100.00"
+     }
+    },
+    {
+     "ledger_seq": 3,
+     "label": "P9-E3",
+     "event": {
+      "event_id": "e4090000-0000-4000-8000-000000000003",
+      "account_id": "a4090000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2025-06-11",
+      "currency": "USD",
+      "amount": {"amount": "10400", "currency": "USD"},
+      "source_reference": "P9-E3 mid-week deposit"
+     }
+    },
+    {
+     "ledger_seq": 4,
+     "label": "P9-E4",
+     "event": {
+      "event_id": "e4090000-0000-4000-8000-000000000004",
+      "account_id": "a4090000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2025-06-11",
+      "currency": "USD",
+      "listing_id": "c4000000-0000-4000-8000-000000000003",
+      "quantity": "100",
+      "amount": {"amount": "10400", "currency": "USD"},
+      "source_reference": "P9-E4 at 104.00"
+     }
+    }
+   ],
+   "assertions": [
+    {
+     "id": "P9-W0",
+     "as_of": "2025-06-20",
+     "ledger_version": 4,
+     "purpose": "The week ending 2025-06-13 contains the Wednesday deposit of 10,400 and a purchase at that day's close (104.00). Its return is the TWR over the week: -1/26, as in P3. The flow moves the value, not the return.",
+     "expect": [
+      {
+       "kind": "return_series",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-05-30"},
+       "requested_base": "2025-05-30",
+       "effective_window": {"base_date": "2025-05-30", "last_period_end": "2025-06-20", "observation_count": 3, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "returns": [
+        {"period_end": "2025-06-06", "exact": "1/25", "state": "AVAILABLE"},
+        {"period_end": "2025-06-13", "exact": "-1/26", "state": "AVAILABLE"},
+        {"period_end": "2025-06-20", "exact": "1/25", "state": "AVAILABLE"}
+       ],
+       "details_include": [],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "P9-W1",
+     "as_of": "2026-01-02",
+     "ledger_version": 4,
+     "purpose": "A period containing an external flow: its return is the performance/1.12 TWR over the period, so the flow does not move it (week ending 2025-06-13 is -1/26 as in P3). Every statistic equals P3-A1's.",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.283808204205",
+       "exact": null,
+       "exact_square": "7803/96875",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "downside_deviation",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.200284751778",
+       "exact": null,
+       "exact_square": "156444529/3900000000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.038461538462",
+       "exact": "-1/26",
+       "thresholds": null,
+       "peak_date": "2023-01-06",
+       "trough_date": "2023-01-13",
+       "recovery_date": "2023-01-20",
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sharpe",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.008691315579",
+       "exact": null,
+       "exact_square": "42439/561816000",
+       "sign": -1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sortino",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.012315798606",
+       "exact": null,
+       "exact_square": "71188/469333587",
+       "sign": -1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000010",
+   "name": "P10 (CNY reporting; one A-share; a closed week and a closed Friday; no CNY risk-free series)",
+   "reporting_currency": "CNY",
+   "accounts": [{"account_id": "a4100000-0000-4000-8000-000000000001", "name": "A1 (Mainland)"}],
+   "inception_base": "2025-09-18",
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "P10-E1",
+     "event": {
+      "event_id": "e4100000-0000-4000-8000-000000000001",
+      "account_id": "a4100000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2025-09-19",
+      "currency": "CNY",
+      "amount": {"amount": "10000", "currency": "CNY"},
+      "source_reference": "P10-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "P10-E2",
+     "event": {
+      "event_id": "e4100000-0000-4000-8000-000000000002",
+      "account_id": "a4100000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2025-09-19",
+      "currency": "CNY",
+      "listing_id": "c4000000-0000-4000-8000-000000000010",
+      "quantity": "1000",
+      "amount": {"amount": "10000", "currency": "CNY"},
+      "source_reference": "P10-E2 at 10.00"
+     }
+    }
+   ],
+   "assertions": [
+    {
+     "id": "P10-H1",
+     "as_of": "2025-10-17",
+     "ledger_version": 2,
+     "purpose": "Ruling 2.2: the grid is calendar-based. The closed week gives a 0 return that is KEPT; the closed Friday is valued at Thursday's close (0 sessions missed, CURRENT). Daily grid: every weekday, including closed ones. No CNY risk-free series is in M: rf-dependent metrics carry NO_RISK_FREE_SOURCE.",
+     "expect": [
+      {
+       "kind": "return_series",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-09-19"},
+       "requested_base": "2025-09-19",
+       "effective_window": {"base_date": "2025-09-19", "last_period_end": "2025-10-17", "observation_count": 4, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "returns": [
+        {"period_end": "2025-09-26", "exact": "1/20", "state": "AVAILABLE"},
+        {"period_end": "2025-10-03", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-10-10", "exact": "1/10", "state": "AVAILABLE"},
+        {"period_end": "2025-10-17", "exact": "-1/21", "state": "AVAILABLE"}
+       ],
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "return_series",
+       "frequency": "DAILY",
+       "request": {"rule": "CUSTOM", "base": "2025-09-19"},
+       "requested_base": "2025-09-19",
+       "effective_window": {"base_date": "2025-09-19", "last_period_end": "2025-10-17", "observation_count": 20, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "returns": [
+        {"period_end": "2025-09-22", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-09-23", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-09-24", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-09-25", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-09-26", "exact": "1/20", "state": "AVAILABLE"},
+        {"period_end": "2025-09-29", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-09-30", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-10-01", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-10-02", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-10-03", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-10-06", "exact": "1/10", "state": "AVAILABLE"},
+        {"period_end": "2025-10-07", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-10-08", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-10-09", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-10-10", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-10-13", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-10-14", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-10-15", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-10-16", "exact": "-1/21", "state": "AVAILABLE"},
+        {"period_end": "2025-10-17", "exact": "0", "state": "AVAILABLE"}
+       ],
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-09-19"},
+       "requested_base": "2025-09-19",
+       "effective_window": {"base_date": "2025-09-19", "last_period_end": "2025-10-17", "observation_count": 4, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.047619047619",
+       "exact": "-1/21",
+       "thresholds": null,
+       "peak_date": "2025-10-10",
+       "trough_date": "2025-10-17",
+       "recovery_date": null,
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sharpe",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-09-19"},
+       "requested_base": "2025-09-19",
+       "effective_window": {"base_date": "2025-09-19", "last_period_end": "2025-10-17", "observation_count": 4, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["NO_RISK_FREE_SOURCE", "INSUFFICIENT_OBSERVATIONS"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "downside_deviation",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-09-19"},
+       "requested_base": "2025-09-19",
+       "effective_window": {"base_date": "2025-09-19", "last_period_end": "2025-10-17", "observation_count": 4, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["NO_RISK_FREE_SOURCE", "INSUFFICIENT_OBSERVATIONS"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000011",
+   "name": "P11 (USD; the P3 listing plus cash since 2022; buys the recently listed SYN8 on 2025-10-06)",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4110000-0000-4000-8000-000000000001", "name": "A1"}],
+   "inception_base": "2022-12-29",
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "P11-E1",
+     "event": {
+      "event_id": "e4110000-0000-4000-8000-000000000001",
+      "account_id": "a4110000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "20000", "currency": "USD"},
+      "source_reference": "P11-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "P11-E2",
+     "event": {
+      "event_id": "e4110000-0000-4000-8000-000000000002",
+      "account_id": "a4110000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "listing_id": "c4000000-0000-4000-8000-000000000003",
+      "quantity": "100",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "P11-E2 at 100.00"
+     }
+    },
+    {
+     "ledger_seq": 3,
+     "label": "P11-E3",
+     "event": {
+      "event_id": "e4110000-0000-4000-8000-000000000003",
+      "account_id": "a4110000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2025-10-06",
+      "currency": "USD",
+      "listing_id": "c4000000-0000-4000-8000-000000000008",
+      "quantity": "100",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "P11-E3 at the first print, 100.00"
+     }
+    }
+   ],
+   "assertions": [
+    {
+     "id": "P11-R1",
+     "as_of": "2026-01-02",
+     "ledger_version": 3,
+     "purpose": "Recently listed security inside an established portfolio: the portfolio series is the ACTUAL history (Ruling 0.2), so no price of SYN8 before 2025-10-06 is needed and the 3Y statistics are AVAILABLE.",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.148577273401",
+       "exact": null,
+       "exact_square": "159776277620601890700702474930077896169/7237815872784202844627610763432159200000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.052884615385",
+       "exact": "-11/208",
+       "thresholds": null,
+       "peak_date": "2025-11-07",
+       "trough_date": "2025-12-12",
+       "recovery_date": "2026-01-02",
+       "details_include": [],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sharpe",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.125657359028",
+       "exact": null,
+       "exact_square": "315353871893455467650998584022359242311/19972034702575236337587809366259737021125",
+       "sign": -1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": [],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "structural_assertions": [
+  {
+   "id": "S-1",
+   "statement": "Every result is marked synthetic, and every manifest cites the convention ids of 'convention_sets' (minimum versions) and the registry digest of methodology/registry/RISK_1.0_REGISTRY.json (Ruling 9.2)."
+  },
+  {
+   "id": "S-2",
+   "statement": "RS-1 (Ruling 2.1): for every item with an effective window, the product of (1 + r_k) over its periods equals 1 + the performance/1.12 TWR computed directly over (base_date, last_period_end], exactly."
+  },
+  {
+   "id": "S-3",
+   "statement": "RD-1 (Ruling 1.4): for every max_drawdown item with a trough, 1 + value = 1 + TWR(peak_date, trough_date] computed by the TWR engine directly, exactly. RD-2: no pair of grid dates in the window has a TWR below the value (brute force). RD-3: value <= min(0, min_k r_k)."
+  },
+  {
+   "id": "S-4",
+   "statement": "Mutations (Ruling 1.5), each on a scratch copy, each shown to flip the named item from pass to fail: M-DD1 (running peak over all history) fails P2-D1 WEEKLY; M-DD2 (peak search from g_1) fails P2-D2; M-DD3 (base moved to g_1) fails P2-D2 and P2-D1's effective_window; M-DD4 (peak date = earliest at the high-water mark) fails P2-D1 DAILY's peak_date."
+  },
+  {
+   "id": "S-5",
+   "statement": "Mutations of the series and the rate, each shown to fail: dropping the zero-return week from P10's weekly series fails P10-H1; using the risk-free quote at the period END fails P1-S1 risk_free_rates (July: 31/5000 against 31/10000); dividing the downside sum by the downside count fails P1-S1 downside_deviation; n instead of n-1 fails every non-zero volatility and every Sharpe; 252 instead of 260 fails P3-A2 DAILY; thresholds 52/156 weekly instead of 51/155 fail P3-A7 (LIMITED becomes INSUFFICIENT_DATA at 51 observations)."
+  },
+  {
+   "id": "S-6",
+   "statement": "Metamorphic (Ruling 6.13): P6 (no cost basis) and P9 (a mid-week flow) give exactly P3's values; the state of a full window is the same at DAILY, WEEKLY and MONTHLY (P3-A1/A2 at 3Y, P3-A3 at 1Y)."
+  },
+  {
+   "id": "S-7",
+   "statement": "Determinism: byte-identical canonical results across runs and PYTHONHASHSEED values, and with events shuffled within a day (ledger_seq unchanged)."
+  }
+ ],
+ "item_counts": {
+  "note": "For FIXTURE_PINS: number of 'expect' items per assertion id.",
+  "P1-S1": 7,
+  "P1-S2": 2,
+  "P2-D1": 4,
+  "P2-D2": 1,
+  "P3-A1": 5,
+  "P3-A2": 2,
+  "P3-A3": 7,
+  "P3-A4": 3,
+  "P3-A5": 2,
+  "P3-A6": 3,
+  "P3-A7": 2,
+  "P4-C1": 5,
+  "P4-C2": 3,
+  "P4-C3": 2,
+  "P5-M1": 5,
+  "P6-B1": 3,
+  "P7-F1": 2,
+  "P7-F2": 2,
+  "P8-L1": 1,
+  "P8-L2": 3,
+  "P9-W0": 1,
+  "P9-W1": 5,
+  "P10-H1": 5,
+  "P11-R1": 3
+ }
+}

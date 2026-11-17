@@ -1,0 +1,1330 @@
+--- /dev/null
++++ b/src/marketdata/synthetic_provenance.py
+@@ -0,0 +1,280 @@
++"""Opt-in invented-byte provenance; never admission, discovery, or current rights.
++
++Witnesses and expected pins are separate trusted-operator inputs. Storing them
++cannot authenticate a collector. E11 remains unchanged and authoritative.
++"""
++from __future__ import annotations
++
++from dataclasses import dataclass, field
++import hashlib
++import uuid
++
++from marketdata.acquisition import (AcquisitionCode, AcquisitionError, EnvelopeIndex,
++    TrustedAcquisitionWitness, canonical_bytes, parse_canonical_metadata)
++from marketdata.canonical import canonical_json
++from marketdata.manifest import DataKind, SourceRecord
++from marketdata.manifest_v2 import FileManifestV2, read_manifest_metadata, verify_acquisition_binding
++
++CONTEXT_SCHEMA = "finweb.synthetic_provenance_context/1"
++REQUEST_SCHEMA = "finweb.synthetic_provenance_registration/1"
++RESPONSE_SCHEMA = "finweb.synthetic_provenance_registration_result/1"
++SCOPE = "SYNTHETIC_TEST"
++STATE = "INTEGRITY_BOUND_NOT_ADMITTED"
++MAX_ITEMS, MAX_PAYLOAD, MAX_METADATA, MAX_WITNESS, MAX_BUNDLE = 16, 65536, 65536, 4096, 4194304
++CONTEXT_KEYS = frozenset("schema scope state promotable source_admitted financial_context_sha256 source_records members".split())
++MEMBER_KEYS = frozenset("role payload_sha256 manifest_sha256 envelope_sha256 witness_sha256".split())
++WITNESS_KEYS = ("expected_envelope_sha256", "expected_manifest_sha256", "actor_agent_id", "actor_role", "approved_full_request_sha256")
++
++
++class ProvenanceError(ValueError):
++    def __init__(self, code="NP_SHAPE"):
++        self.code = code
++        super().__init__(code)
++
++
++def refuse(code="NP_SHAPE"):
++    raise ProvenanceError(code)
++
++
++def sha256(value):
++    return hashlib.sha256(value).hexdigest()
++
++
++def require_digest(value):
++    if type(value) is not str or len(value) != 64 or any(c not in "0123456789abcdef" for c in value):
++        refuse()
++    return value
++
++
++def metadata(raw, limit=MAX_METADATA):
++    if type(raw) is not bytes or not 2 <= len(raw) <= limit:
++        refuse()
++    try:
++        return parse_canonical_metadata(raw)
++    except AcquisitionError as exc:
++        refuse("NP_UNSUPPORTED_PROVENANCE" if exc.code is AcquisitionCode.SCHEMA_UNSUPPORTED else "NP_SHAPE")
++
++
++@dataclass(frozen=True)
++class SyntheticMemberKey:
++    role: str
++    payload_sha256: str
++    manifest_sha256: str
++    envelope_sha256: str | None
++    witness_sha256: str | None
++
++    def __post_init__(self):
++        if type(self.role) is not str:
++            refuse()
++        try:
++            DataKind(self.role)
++        except ValueError:
++            refuse()
++        require_digest(self.payload_sha256)
++        require_digest(self.manifest_sha256)
++        if (self.envelope_sha256 is None) != (self.witness_sha256 is None):
++            refuse()
++        if self.envelope_sha256 is not None:
++            require_digest(self.envelope_sha256)
++            require_digest(self.witness_sha256)
++
++    def sort_key(self):
++        return (self.role, self.payload_sha256, self.manifest_sha256,
++                self.envelope_sha256 or "", self.witness_sha256 or "")
++
++    def to_obj(self):
++        return {k: getattr(self, k) for k in MEMBER_KEYS}
++
++
++@dataclass(frozen=True)
++class SyntheticArtifactBundle:
++    context_bytes: bytes
++    payloads: tuple
++    manifests: tuple
++    envelopes: tuple
++    witnesses: tuple
++
++
++@dataclass(frozen=True)
++class ValidatedSyntheticContext:
++    context_sha256: str
++    bundle: SyntheticArtifactBundle
++    members: tuple
++    source_records: tuple
++    envelope_index: EnvelopeIndex = field(repr=False)
++    state: str = field(default=STATE, init=False)
++    scope: str = field(default=SCOPE, init=False)
++    promotable: bool = field(default=False, init=False)
++    source_admitted: bool = field(default=False, init=False)
++
++    @property
++    def financial_context_sha256(self):
++        return metadata(self.bundle.context_bytes)["financial_context_sha256"]
++
++
++def witness_bytes(witness):
++    if type(witness) is not TrustedAcquisitionWitness:
++        refuse("NP_BINDING_DIFFERS")
++    return canonical_bytes({key: getattr(witness, key) for key in WITNESS_KEYS})
++
++
++def _artifacts(items, maximum):
++    if type(items) is not tuple or len(items) > MAX_ITEMS:
++        refuse()
++    keys, result = [], {}
++    for pair in items:
++        if type(pair) is not tuple or len(pair) != 2:
++            refuse()
++        key, raw = pair
++        require_digest(key)
++        if type(raw) is not bytes or len(raw) > maximum:
++            refuse()
++        if sha256(raw) != key:
++            refuse("NP_BINDING_DIFFERS")
++        if key in result:
++            refuse()
++        keys.append(key)
++        result[key] = raw
++    if keys != sorted(keys):
++        refuse()
++    return result
++
++
++def _members(items):
++    if type(items) is not tuple or not 1 <= len(items) <= MAX_ITEMS or any(type(x) is not SyntheticMemberKey for x in items):
++        refuse()
++    keys = [x.sort_key() for x in items]
++    if keys != sorted(keys) or len(set(keys)) != len(keys):
++        refuse()
++    return items
++
++
++def _sources(items):
++    if type(items) is not list or not 1 <= len(items) <= MAX_ITEMS:
++        refuse()
++    records = []
++    required = {"source_id", "name", "upstream_provider", "independence_group", "terms_url", "terms_check", "synthetic"}
++    for item in items:
++        if type(item) is not dict or set(item) not in (required, required | {"source_priority"}):
++            refuse()
++        if item["synthetic"] is not True or item["terms_url"] is not None or item["terms_check"] is not None:
++            refuse("NP_SCOPE_REFUSED")
++        if any(type(item[k]) is not str or not item[k] or len(item[k].encode("utf8")) > 128 for k in
++               ("source_id", "name", "upstream_provider", "independence_group")):
++            refuse()
++        if "source_priority" in item and (type(item["source_priority"]) is not int or not 1 <= item["source_priority"] < 2**63):
++            refuse()
++        try:
++            record = SourceRecord(**item)
++        except (TypeError, ValueError):
++            refuse()
++        if record.to_obj() != item:
++            refuse()
++        records.append(record)
++    ids = [x.source_id for x in records]
++    if ids != sorted(ids) or len(set(ids)) != len(ids):
++        refuse()
++    return tuple(records)
++
++
++def validate_bundle(bundle, *, expected_context_sha256, expected_members, witnesses):
++    """Validate every byte before storage; expected values are never read from it."""
++    require_digest(expected_context_sha256)
++    expected_members = _members(expected_members)
++    if type(bundle) is not SyntheticArtifactBundle:
++        refuse()
++    raw = bundle.context_bytes
++    if type(raw) is not bytes or len(raw) > MAX_METADATA:
++        refuse()
++    if sha256(raw) != expected_context_sha256:
++        refuse("NP_CONTEXT_DIFFERS")
++    # Byte/count bounds precede metadata tree construction.
++    payloads = _artifacts(bundle.payloads, MAX_PAYLOAD)
++    manifests = _artifacts(bundle.manifests, MAX_METADATA)
++    envelopes = _artifacts(bundle.envelopes, MAX_METADATA)
++    stored_witnesses = _artifacts(bundle.witnesses, MAX_WITNESS)
++    if len(raw) + sum(len(v) for values in (payloads, manifests, envelopes, stored_witnesses) for v in values.values()) > MAX_BUNDLE:
++        refuse()
++    obj = metadata(raw)
++    if set(obj) != CONTEXT_KEYS or obj["schema"] != CONTEXT_SCHEMA:
++        refuse("NP_UNSUPPORTED_PROVENANCE")
++    if (obj["scope"] != SCOPE or obj["state"] != STATE or obj["promotable"] is not False or obj["source_admitted"] is not False):
++        refuse("NP_SCOPE_REFUSED")
++    if obj["financial_context_sha256"] is not None:
++        require_digest(obj["financial_context_sha256"])
++    raw_members = obj["members"]
++    if type(raw_members) is not list or not 1 <= len(raw_members) <= MAX_ITEMS:
++        refuse()
++    members = []
++    for value in raw_members:
++        if type(value) is not dict or set(value) != MEMBER_KEYS:
++            refuse()
++        members.append(SyntheticMemberKey(**value))
++    members = _members(tuple(members))
++    if members != expected_members:
++        refuse("NP_CONTEXT_DIFFERS")
++    sources = _sources(obj["source_records"])
++    if type(witnesses) is not tuple or len(witnesses) > MAX_ITEMS or any(type(x) is not TrustedAcquisitionWitness for x in witnesses):
++        refuse("NP_BINDING_DIFFERS")
++    wk = [x.expected_manifest_sha256 for x in witnesses]
++    if wk != sorted(wk) or len(set(wk)) != len(wk):
++        refuse("NP_BINDING_DIFFERS")
++    trusted = {x.expected_manifest_sha256: x for x in witnesses}
++    refs = (set(x.payload_sha256 for x in members), set(x.manifest_sha256 for x in members),
++            set(x.envelope_sha256 for x in members if x.envelope_sha256 is not None),
++            set(x.witness_sha256 for x in members if x.witness_sha256 is not None))
++    for supplied, selected in ((payloads, refs[0]), (manifests, refs[1]), (envelopes, refs[2]), (stored_witnesses, refs[3])):
++        if set(supplied) != selected:
++            refuse("NP_INPUT_MISSING" if selected - set(supplied) else "NP_BINDING_DIFFERS")
++    if set(trusted) != {x.manifest_sha256 for x in members if x.envelope_sha256 is not None}:
++        refuse("NP_BINDING_DIFFERS")
++    index = EnvelopeIndex(tuple(envelopes.items()))
++    source_ids = set()
++    for member in members:
++        mraw = manifests[member.manifest_sha256]
++        mobj = metadata(mraw)
++        try:
++            manifest = read_manifest_metadata(mraw)
++        except AcquisitionError as exc:
++            refuse("NP_UNSUPPORTED_PROVENANCE" if exc.code is AcquisitionCode.SCHEMA_UNSUPPORTED else "NP_SHAPE")
++        if (mobj["file_sha256"] != member.payload_sha256 or mobj["data_kind"] != member.role
++                or mobj["size_bytes"] != len(payloads[member.payload_sha256])):
++            refuse("NP_BINDING_DIFFERS")
++        source_ids.add(mobj["source_id"])
++        if type(manifest) is FileManifestV2:
++            if member.envelope_sha256 is None or mobj["acquisition"]["envelope_sha256"] != member.envelope_sha256:
++                refuse("NP_BINDING_DIFFERS")
++            witness = trusted[member.manifest_sha256]
++            wraw = stored_witnesses[member.witness_sha256]
++            metadata(wraw, MAX_WITNESS)
++            if witness_bytes(witness) != wraw:
++                refuse("NP_BINDING_DIFFERS")
++            try:
++                verify_acquisition_binding(manifest, index, witness)
++            except AcquisitionError:
++                refuse("NP_BINDING_DIFFERS")
++        elif (member.envelope_sha256 is not None or mobj["retrieved_by"] != "synthetic" or mobj["usage_scope"] != SCOPE):
++            refuse("NP_SCOPE_REFUSED")
++    if source_ids != {x.source_id for x in sources}:
++        refuse("NP_BINDING_DIFFERS")
++    return ValidatedSyntheticContext(expected_context_sha256, bundle, members, sources, index)
++
++
++def registration_request(operation_id, context):
++    if type(operation_id) is not uuid.UUID or type(context) is not ValidatedSyntheticContext:
++        refuse()
++    b = context.bundle
++    return canonical_bytes(dict(schema=REQUEST_SCHEMA, scope=SCOPE, operation_id=str(operation_id),
++        context_sha256=context.context_sha256, payload_sha256s=[k for k, _ in b.payloads],
++        manifest_sha256s=[k for k, _ in b.manifests], envelope_sha256s=[k for k, _ in b.envelopes],
++        witness_sha256s=[k for k, _ in b.witnesses]))
++
++
++def registration_response(operation_id, request_bytes, context):
++    if type(operation_id) is not uuid.UUID or type(context) is not ValidatedSyntheticContext or type(request_bytes) is not bytes:
++        refuse()
++    b = context.bundle
++    return canonical_json(dict(schema=RESPONSE_SCHEMA, scope=SCOPE, state=STATE, promotable=False,
++        source_admitted=False, operation_id=str(operation_id), request_sha256=sha256(request_bytes),
++        context_sha256=context.context_sha256, payload_count=len(b.payloads), manifest_count=len(b.manifests),
++        envelope_count=len(b.envelopes), member_count=len(context.members))).encode("utf8")
+--- /dev/null
++++ b/src/persistence/synthetic_provenance_store.py
+@@ -0,0 +1,314 @@
++"""Explicit synthetic metadata repository; no provider, runtime or HTTP factory.
++
++Only registration owns writes. Real PostgreSQL COMMIT/identity/lease gates are
++required; typed Python witnesses are trusted-operator integrity expectations.
++"""
++from __future__ import annotations
++
++from dataclasses import dataclass, field
++import json
++from pathlib import Path
++import re
++import uuid
++
++import psycopg
++from psycopg import sql
++from psycopg.pq import TransactionStatus
++
++from marketdata.acquisition import TrustedAcquisitionWitness
++from marketdata.canonical import canonical_json
++from marketdata.synthetic_provenance import (ProvenanceError, SyntheticArtifactBundle,
++    SyntheticMemberKey, ValidatedSyntheticContext, registration_request, registration_response,
++    require_digest, sha256, validate_bundle)
++from persistence.guarded_workspace_context import ExecutionScope
++
++TABLES = ("np_payload", "np_acquisition", "np_manifest", "np_context", "np_registration")
++FUNCTIONS = {
++ "np_json": (False, "i", 2), "np_keys": (False, "i", 2),
++ "np_caller": (True, "s", 1), "np_validate_bundle": (False, "i", 5),
++ "np_collect_context": (True, "s", 2), "np_guard": (True, "v", 1),
++ "np_immutable": (False, "v", 0), "np_put_context": (True, "v", 7),
++ "np_get_context": (True, "s", 2), "np_load_context": (True, "v", 2),
++}
++NP_CODES = frozenset("NP_SHAPE NP_SCOPE_REFUSED NP_UNSUPPORTED_PROVENANCE NP_INPUT_MISSING NP_BINDING_DIFFERS NP_STORAGE_CONFLICT NP_OPERATION_CONFLICT NP_CONTEXT_DIFFERS NP_OUTER_TRANSACTION_REQUIRED NP_LEASE_REQUIRED NP_CAPACITY NP_ROLE_REFUSED NP_INSTALL_REFUSED".split())
++F2_CODES = frozenset("F2_ISOLATION F2_MODE_HOLD F2_SCOPE_DIFFERS F2_GENERATION_DIFFERS F2_EXPIRY_HOLD F2_RIGHT_REFUSED F2_NOT_FOUND F2_SINGLE_SCOPE".split())
++IDENT = re.compile(r"[a-z][a-z0-9_]{0,62}\Z")
++
++
++def _identifier(value):
++    if type(value) is not str or IDENT.fullmatch(value) is None:
++        raise ProvenanceError()
++    return value
++
++
++def _entry(conn):
++    # These properties are checked BEFORE any identity/metadata SELECT. A false
++    # autocommit otherwise turns transaction() into an implicit savepoint.
++    if conn.info.transaction_status != TransactionStatus.IDLE or conn.autocommit is not True:
++        raise ProvenanceError("NP_OUTER_TRANSACTION_REQUIRED")
++
++
++def _role(conn, expected, *, owner=False):
++    row = conn.execute("SELECT current_user::text,session_user::text,current_setting('role')").fetchone()
++    if row is None or row[0] != expected or not owner and tuple(row) != (expected, expected, "none"):
++        raise ProvenanceError("NP_ROLE_REFUSED")
++    flags = conn.execute("SELECT r.rolcanlogin,r.rolinherit,r.rolsuper,r.rolbypassrls,r.rolcreatedb,r.rolcreaterole,r.rolreplication,"
++        "EXISTS(SELECT 1 FROM pg_auth_members m WHERE m.member=r.oid OR m.roleid=r.oid) FROM pg_roles r WHERE r.rolname=%s", (expected,)).fetchone()
++    if flags != (not owner, False, False, False, False, False, False, False):
++        raise ProvenanceError("NP_ROLE_REFUSED")
++
++
++def _query(conn, schema, function, values):
++    return conn.execute(sql.SQL("SELECT * FROM {}.{}(" + ",".join(["%s"] * len(values)) + ")").format(
++        sql.Identifier(schema), sql.Identifier(function)), values)
++
++
++def _translate(error):
++    primary = getattr(getattr(error, "diag", None), "message_primary", None)
++    if primary in NP_CODES or primary in F2_CODES:
++        raise ProvenanceError(primary) from None
++    code = getattr(error, "sqlstate", None) or ""
++    if code.startswith("22"):
++        raise ProvenanceError("NP_SHAPE") from None
++    if code == "23503":
++        raise ProvenanceError("NP_INPUT_MISSING") from None
++    if code == "42501":
++        raise ProvenanceError("NP_ROLE_REFUSED") from None
++    # No arbitrary PostgreSQL diagnostic, caller value, or credential is echoed.
++
++
++def _f2_recordset(conn, schema):
++    functions = []
++    rows = conn.execute("SELECT p.proname,pg_get_function_identity_arguments(p.oid),pg_get_functiondef(p.oid),"
++        "p.proowner::regrole::text,CASE WHEN p.proacl IS NULL THEN NULL ELSE ARRAY(SELECT a::text FROM unnest(p.proacl) a ORDER BY a::text) END,"
++        "p.prosecdef,p.provolatile,CASE WHEN p.proconfig IS NULL THEN NULL ELSE ARRAY(SELECT c FROM unnest(p.proconfig) c ORDER BY c) END "
++        "FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname=%s AND left(p.proname,3)='gw_' ORDER BY p.proname,pg_get_function_identity_arguments(p.oid)", (schema,)).fetchall()
++    names = ("name", "identity_arguments", "definition", "owner", "acl", "security_definer", "volatility", "config")
++    for row in rows:
++        functions.append(dict(zip(names, row)))
++    relations = []
++    rows = conn.execute("SELECT c.oid,c.relname,c.relowner::regrole::text,CASE WHEN c.relacl IS NULL THEN NULL ELSE ARRAY(SELECT a::text FROM unnest(c.relacl) a ORDER BY a::text) END,c.relrowsecurity,c.relforcerowsecurity "
++        "FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname=%s AND left(c.relname,3)='gw_' AND c.relkind='r' ORDER BY c.relname", (schema,)).fetchall()
++    for oid, name, owner, acl, rls, force in rows:
++        constraints = [dict(zip(("name", "type", "deferrable", "deferred", "definition"), x)) for x in conn.execute(
++            "SELECT conname,contype,condeferrable,condeferred,pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid=%s ORDER BY conname", (oid,)).fetchall()]
++        relations.append(dict(name=name, owner=owner, acl=acl, row_security=rls, force_row_security=force, constraints=constraints))
++    return dict(functions=functions, relations=relations)
++
++
++def fingerprint_installed_f2(conn, *, schema):
++    """Read-only explicit operator helper; NOT an independent expected value."""
++    return sha256(canonical_json(_f2_recordset(conn, _identifier(schema))).encode("utf8"))
++
++
++def install_synthetic_provenance(conn, *, schema, owner_role, loader_role, executor_role, expected_f2_fingerprint):
++    names = tuple(_identifier(x) for x in (schema, owner_role, loader_role, executor_role))
++    if len(set(names[1:])) != 3:
++        raise ProvenanceError("NP_INSTALL_REFUSED")
++    require_digest(expected_f2_fingerprint)
++    _entry(conn)
++    with conn.transaction():
++        _role(conn, owner_role, owner=True)
++        for role, login in ((loader_role, True), (executor_role, True)):
++            flags = conn.execute("SELECT r.rolcanlogin,r.rolinherit,r.rolsuper,r.rolbypassrls,r.rolcreatedb,r.rolcreaterole,r.rolreplication,"
++                "EXISTS(SELECT 1 FROM pg_auth_members m WHERE m.member=r.oid OR m.roleid=r.oid) FROM pg_roles r WHERE r.rolname=%s", (role,)).fetchone()
++            if flags != (login, False, False, False, False, False, False, False):
++                raise ProvenanceError("NP_INSTALL_REFUSED")
++        owner = conn.execute("SELECT nspowner::regrole::text FROM pg_namespace WHERE nspname=%s", (schema,)).fetchone()
++        if owner != (owner_role,):
++            raise ProvenanceError("NP_INSTALL_REFUSED")
++        for catalog, namespace, name in (("pg_class", "relnamespace", "relname"), ("pg_type", "typnamespace", "typname"), ("pg_proc", "pronamespace", "proname")):
++            if conn.execute(sql.SQL("SELECT EXISTS(SELECT 1 FROM pg_catalog.{} x JOIN pg_namespace n ON n.oid=x.{} WHERE n.nspname=%s AND left(x.{},3)='np_')").format(
++                    sql.Identifier(catalog), sql.Identifier(namespace), sql.Identifier(name)), (schema,)).fetchone()[0]:
++                raise ProvenanceError("NP_INSTALL_REFUSED")
++        before = _f2_recordset(conn, schema)
++        if (sha256(canonical_json(before).encode("utf8")) != expected_f2_fingerprint
++                or len(before["relations"]) != 9 or not {"gw_mode", "gw_head", "gw_lease", "gw_root", "gw_snapshot"}.issubset({x["name"] for x in before["relations"]})
++                or not {"gw_admit", "gw_scope", "gw_rights_valid", "gw_validate"}.issubset({x["name"] for x in before["functions"]})):
++            raise ProvenanceError("NP_INSTALL_REFUSED")
++        body = Path(__file__).with_name("synthetic_provenance_v1.sql").read_text("utf8")
++        for marker, name in zip(("__NP_SCHEMA__", "__NP_OWNER__", "__NP_LOADER__", "__NP_EXECUTOR__"), names):
++            body = body.replace(marker, name)
++        conn.execute(body)
++        if _f2_recordset(conn, schema) != before:
++            raise ProvenanceError("NP_INSTALL_REFUSED")
++        rows = conn.execute("SELECT p.proname,p.pronargs,p.prosecdef,p.provolatile,p.proowner::regrole::text,p.proconfig,"
++            "has_function_privilege(%s,p.oid,'EXECUTE'),has_function_privilege(%s,p.oid,'EXECUTE'),"
++            "EXISTS(SELECT 1 FROM aclexplode(p.proacl) a WHERE a.grantee=0 AND a.privilege_type='EXECUTE') "
++            "FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname=%s AND left(p.proname,3)='np_' ORDER BY p.proname", (loader_role, executor_role, schema)).fetchall()
++        if len(rows) != len(FUNCTIONS):
++            raise ProvenanceError("NP_INSTALL_REFUSED")
++        for name, nargs, definer, volatility, owner, config, loader_exec, app_exec, public_exec in rows:
++            if (FUNCTIONS.get(name) != (definer, volatility, nargs) or owner != owner_role or public_exec
++                    or loader_exec != (name in ("np_put_context", "np_get_context")) or app_exec != (name == "np_load_context")
++                    or not config or [x.replace(" ", "") for x in config] != ["search_path=pg_catalog," + schema + ",pg_temp"]):
++                raise ProvenanceError("NP_INSTALL_REFUSED")
++        rows = conn.execute("SELECT c.relname,c.relowner::regrole::text,c.relrowsecurity,c.relforcerowsecurity FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname=%s AND left(c.relname,3)='np_' AND c.relkind='r' ORDER BY c.relname", (schema,)).fetchall()
++        if {x[0] for x in rows} != set(TABLES) or any(x[1:] != (owner_role, False, False) for x in rows):
++            raise ProvenanceError("NP_INSTALL_REFUSED")
++        triggers = conn.execute("SELECT t.tgname,c.relname FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname=%s AND left(c.relname,3)='np_' AND NOT t.tgisinternal", (schema,)).fetchall()
++        if set(triggers) != {(t + suffix, t) for t in TABLES for suffix in ("_immutable_rows", "_immutable_truncate")}:
++            raise ProvenanceError("NP_INSTALL_REFUSED")
++        for table in TABLES:
++            for role in (loader_role, executor_role):
++                if conn.execute("SELECT has_table_privilege(%s,%s,'SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER')", (role, schema + "." + table)).fetchone()[0]:
++                    raise ProvenanceError("NP_INSTALL_REFUSED")
++    _entry(conn)
++
++
++@dataclass(frozen=True)
++class CommittedSyntheticRegistration:
++    operation_id: uuid.UUID
++    response_bytes: bytes
++    response_sha256: str
++    persisted: bool = field(default=True, init=False)
++    synthetic: bool = field(default=True, init=False)
++
++
++@dataclass(frozen=True)
++class UnknownSyntheticRegistration:
++    operation_id: uuid.UUID
++    disposition: str = field(default="UNKNOWN", init=False)
++
++
++def _expectations(members, witnesses):
++    if type(members) is not tuple or not 1 <= len(members) <= 16 or any(type(x) is not SyntheticMemberKey for x in members):
++        raise ProvenanceError()
++    keys = [x.sort_key() for x in members]
++    if keys != sorted(keys) or len(set(keys)) != len(keys):
++        raise ProvenanceError()
++    if type(witnesses) is not tuple or len(witnesses) > 16 or any(type(x) is not TrustedAcquisitionWitness for x in witnesses):
++        raise ProvenanceError("NP_BINDING_DIFFERS")
++    keys = [x.expected_manifest_sha256 for x in witnesses]
++    if keys != sorted(keys) or len(set(keys)) != len(keys):
++        raise ProvenanceError("NP_BINDING_DIFFERS")
++
++
++def _bytes(value):
++    if type(value) not in (bytes, memoryview):
++        raise ProvenanceError("NP_SHAPE")
++    return bytes(value)
++
++
++def _loaded(row, context_sha, members, witnesses):
++    if row is None:
++        raise ProvenanceError("NP_INPUT_MISSING")
++    if len(row) != 6:
++        raise ProvenanceError()
++    raw, *arrays, response = row
++    values = []
++    for arr in arrays:
++        if type(arr) not in (list, tuple) or len(arr) > 16:
++            raise ProvenanceError()
++        # Preserve SQL order; validate_bundle rejects unsorted results.
++        values.append(tuple((sha256(_bytes(x)), _bytes(x)) for x in arr))
++    bundle = SyntheticArtifactBundle(_bytes(raw), *values)
++    context = validate_bundle(bundle, expected_context_sha256=context_sha, expected_members=members, witnesses=witnesses)
++    return context, None if response is None else _bytes(response)
++
++
++class SyntheticProvenanceStore:
++    def __init__(self, connect, *, schema, loader_role, executor_role):
++        if not callable(connect):
++            raise ProvenanceError()
++        self.connect = connect
++        self.schema, self.loader_role, self.executor_role = (_identifier(x) for x in (schema, loader_role, executor_role))
++        if self.loader_role == self.executor_role:
++            raise ProvenanceError()
++
++    @staticmethod
++    def _before_commit(conn):
++        if conn.info.transaction_status != TransactionStatus.INTRANS:
++            raise ProvenanceError("NP_OUTER_TRANSACTION_REQUIRED")
++
++    @staticmethod
++    def _after_commit_ack(conn):
++        _entry(conn)
++
++    def register(self, operation_id, bundle, *, expected_context_sha256, expected_members, witnesses):
++        if type(operation_id) is not uuid.UUID:
++            raise ProvenanceError()
++        context = validate_bundle(bundle, expected_context_sha256=expected_context_sha256, expected_members=expected_members, witnesses=witnesses)
++        request = registration_request(operation_id, context)
++        expected_response = registration_response(operation_id, request, context)
++        arrays = [list(raw for _, raw in x) for x in (bundle.payloads, bundle.manifests, bundle.envelopes, bundle.witnesses)]
++        try:
++            with self.connect() as conn:
++                _entry(conn)
++                _role(conn, self.loader_role)
++                with conn.transaction():
++                    row = _query(conn, self.schema, "np_put_context", (operation_id, request, bundle.context_bytes, *arrays)).fetchone()
++                    if row is None or _bytes(row[0]) != expected_response:
++                        raise ProvenanceError("NP_BINDING_DIFFERS")
++                    stored = _query(conn, self.schema, "np_get_context", (None, operation_id)).fetchone()
++                    _, original = _loaded(stored, expected_context_sha256, expected_members, witnesses)
++                    if original != expected_response:
++                        raise ProvenanceError("NP_BINDING_DIFFERS")
++                    self._before_commit(conn)
++                _entry(conn)
++                self._after_commit_ack(conn)
++            return CommittedSyntheticRegistration(operation_id, expected_response, sha256(expected_response))
++        except psycopg.Error as exc:
++            _translate(exc)
++            return UnknownSyntheticRegistration(operation_id)
++
++    def load_context(self, context_sha256, *, expected_members, witnesses):
++        require_digest(context_sha256)
++        _expectations(expected_members, witnesses)
++        try:
++            with self.connect() as conn:
++                _entry(conn)
++                _role(conn, self.loader_role)
++                with conn.transaction():
++                    row = _query(conn, self.schema, "np_get_context", (context_sha256, None)).fetchone()
++                    context, response = _loaded(row, context_sha256, expected_members, witnesses)
++                    if response is not None:
++                        raise ProvenanceError("NP_BINDING_DIFFERS")
++                _entry(conn)
++            return context
++        except psycopg.Error as exc:
++            _translate(exc)
++            raise ProvenanceError("NP_INPUT_MISSING") from None
++
++    def load_guarded(self, conn, scope, context_sha256, *, expected_members, witnesses):
++        require_digest(context_sha256)
++        _expectations(expected_members, witnesses)
++        if type(scope) is not ExecutionScope or scope.schema != self.schema or conn.info.transaction_status != TransactionStatus.INTRANS:
++            raise ProvenanceError("NP_LEASE_REQUIRED")
++        scope.assert_current(conn)
++        _role(conn, self.executor_role)
++        try:
++            row = _query(conn, self.schema, "np_load_context", (context_sha256, scope.purpose)).fetchone()
++            context, response = _loaded(row, context_sha256, expected_members, witnesses)
++            if response is not None or context.financial_context_sha256 != scope.context_id:
++                raise ProvenanceError("NP_CONTEXT_DIFFERS")
++            scope.assert_current(conn)
++            return context
++        except psycopg.Error as exc:
++            _translate(exc)
++            raise ProvenanceError("NP_INPUT_MISSING") from None
++
++    def reconcile(self, operation_id, *, expected_request_sha256, expected_context_sha256, expected_members, witnesses):
++        if type(operation_id) is not uuid.UUID:
++            raise ProvenanceError()
++        require_digest(expected_request_sha256)
++        require_digest(expected_context_sha256)
++        _expectations(expected_members, witnesses)
++        try:
++            with self.connect() as conn:
++                _entry(conn)
++                _role(conn, self.loader_role)
++                with conn.transaction():
++                    row = _query(conn, self.schema, "np_get_context", (None, operation_id)).fetchone()
++                    if row is None:
++                        return UnknownSyntheticRegistration(operation_id)
++                    context, original = _loaded(row, expected_context_sha256, expected_members, witnesses)
++                    request = registration_request(operation_id, context)
++                    expected = registration_response(operation_id, request, context)
++                    if sha256(request) != expected_request_sha256 or original != expected:
++                        raise ProvenanceError("NP_OPERATION_CONFLICT")
++                _entry(conn)
++            return CommittedSyntheticRegistration(operation_id, original, sha256(original))
++        except psycopg.Error as exc:
++            _translate(exc)
++            return UnknownSyntheticRegistration(operation_id)
+--- /dev/null
++++ b/src/persistence/synthetic_provenance_v1.sql
+@@ -0,0 +1,287 @@
++-- Explicit new SYNTHETIC_TEST instance only. Not a migration/startup hook.
++CREATE TABLE __NP_SCHEMA__.np_payload (
++ payload_sha256 text CONSTRAINT np_payload_pkey PRIMARY KEY,
++ size_bytes bigint NOT NULL, payload bytea NOT NULL,
++ CONSTRAINT np_payload_digest_ck CHECK(payload_sha256 ~ '^[0-9a-f]{64}$'),
++ CONSTRAINT np_payload_size_ck CHECK(size_bytes BETWEEN 0 AND 65536),
++ CONSTRAINT np_payload_bytes_ck CHECK(size_bytes=octet_length(payload) AND payload_sha256=encode(sha256(payload),'hex'))
++);
++CREATE TABLE __NP_SCHEMA__.np_acquisition (
++ envelope_sha256 text CONSTRAINT np_acquisition_pkey PRIMARY KEY, envelope bytea NOT NULL,
++ CONSTRAINT np_acquisition_digest_ck CHECK(envelope_sha256 ~ '^[0-9a-f]{64}$'),
++ CONSTRAINT np_acquisition_bytes_ck CHECK(octet_length(envelope) BETWEEN 2 AND 65536 AND envelope_sha256=encode(sha256(envelope),'hex'))
++);
++CREATE TABLE __NP_SCHEMA__.np_manifest (
++ manifest_sha256 text CONSTRAINT np_manifest_pkey PRIMARY KEY, manifest bytea NOT NULL,
++ payload_sha256 text NOT NULL CONSTRAINT np_manifest_payload_fkey REFERENCES __NP_SCHEMA__.np_payload(payload_sha256),
++ envelope_sha256 text CONSTRAINT np_manifest_envelope_fkey REFERENCES __NP_SCHEMA__.np_acquisition(envelope_sha256),
++ witness_sha256 text, witness bytea,
++ CONSTRAINT np_manifest_digest_ck CHECK(manifest_sha256 ~ '^[0-9a-f]{64}$'),
++ CONSTRAINT np_manifest_bytes_ck CHECK(octet_length(manifest) BETWEEN 2 AND 65536 AND manifest_sha256=encode(sha256(manifest),'hex')),
++ CONSTRAINT np_manifest_witness_ck CHECK((envelope_sha256 IS NULL AND witness_sha256 IS NULL AND witness IS NULL) OR
++ (envelope_sha256 IS NOT NULL AND witness_sha256 IS NOT NULL AND witness IS NOT NULL AND witness_sha256 ~ '^[0-9a-f]{64}$'
++ AND octet_length(witness) BETWEEN 2 AND 4096 AND witness_sha256=encode(sha256(witness),'hex')))
++);
++CREATE TABLE __NP_SCHEMA__.np_context (
++ context_sha256 text CONSTRAINT np_context_pkey PRIMARY KEY, context bytea NOT NULL,
++ financial_context_sha256 text CONSTRAINT np_context_financial_fkey REFERENCES __NP_SCHEMA__.gw_snapshot(context_id),
++ CONSTRAINT np_context_digest_ck CHECK(context_sha256 ~ '^[0-9a-f]{64}$'),
++ CONSTRAINT np_context_bytes_ck CHECK(octet_length(context) BETWEEN 2 AND 65536 AND context_sha256=encode(sha256(context),'hex'))
++);
++CREATE TABLE __NP_SCHEMA__.np_registration (
++ operation_id uuid CONSTRAINT np_registration_pkey PRIMARY KEY,
++ request bytea NOT NULL,request_sha256 text NOT NULL,
++ context_sha256 text NOT NULL CONSTRAINT np_registration_context_fkey REFERENCES __NP_SCHEMA__.np_context(context_sha256),
++ response bytea NOT NULL,response_sha256 text NOT NULL,backend_pid integer NOT NULL,xid text NOT NULL,committed_at timestamptz NOT NULL,
++ CONSTRAINT np_registration_request_ck CHECK(octet_length(request) BETWEEN 2 AND 65536 AND request_sha256 ~ '^[0-9a-f]{64}$' AND request_sha256=encode(sha256(request),'hex')),
++ CONSTRAINT np_registration_response_ck CHECK(octet_length(response) BETWEEN 2 AND 65536 AND response_sha256 ~ '^[0-9a-f]{64}$' AND response_sha256=encode(sha256(response),'hex')),
++ CONSTRAINT np_registration_origin_ck CHECK(backend_pid>0 AND length(xid)>0)
++);
++CREATE FUNCTION __NP_SCHEMA__.np_json(v jsonb,depth integer DEFAULT 0) RETURNS text
++LANGUAGE plpgsql IMMUTABLE SET search_path=pg_catalog,__NP_SCHEMA__,pg_temp AS $$
++DECLARE result text;
++BEGIN
++ IF v IS NULL OR depth IS NULL OR depth NOT BETWEEN 0 AND 8 THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++ CASE jsonb_typeof(v)
++ WHEN 'object' THEN SELECT '{'||COALESCE(string_agg(to_jsonb(key)::text||':'||__NP_SCHEMA__.np_json(value,depth+1),',' ORDER BY key COLLATE "C"),'')||'}' INTO result FROM jsonb_each(v);
++ WHEN 'array' THEN SELECT '['||COALESCE(string_agg(__NP_SCHEMA__.np_json(value,depth+1),',' ORDER BY ord),'')||']' INTO result FROM jsonb_array_elements(v) WITH ORDINALITY a(value,ord);
++ ELSE result:=v::text;
++ END CASE;
++ RETURN result;
++END $$;
++CREATE FUNCTION __NP_SCHEMA__.np_keys(v jsonb,keys text[]) RETURNS boolean
++LANGUAGE sql IMMUTABLE SET search_path=pg_catalog,__NP_SCHEMA__,pg_temp AS $$
++ SELECT COALESCE(jsonb_typeof(v)='object' AND v ?& keys AND (SELECT count(*) FROM jsonb_object_keys(v))=cardinality(keys),false)
++$$;
++CREATE FUNCTION __NP_SCHEMA__.np_caller(expected_role text) RETURNS void
++LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog,__NP_SCHEMA__,pg_temp AS $$
++DECLARE r pg_roles%ROWTYPE;
++BEGIN
++ IF expected_role NOT IN ('__NP_LOADER__','__NP_EXECUTOR__') OR session_user::text IS DISTINCT FROM expected_role OR current_setting('role') IS DISTINCT FROM 'none' THEN RAISE EXCEPTION 'NP_ROLE_REFUSED'; END IF;
++ SELECT * INTO r FROM pg_roles WHERE rolname=expected_role;
++ IF NOT FOUND OR NOT r.rolcanlogin OR r.rolinherit OR r.rolsuper OR r.rolbypassrls OR r.rolcreatedb OR r.rolcreaterole OR r.rolreplication
++ OR EXISTS(SELECT 1 FROM pg_auth_members WHERE member=r.oid OR roleid=r.oid) THEN RAISE EXCEPTION 'NP_ROLE_REFUSED'; END IF;
++END $$;
++CREATE FUNCTION __NP_SCHEMA__.np_validate_bundle(context_b bytea,payloads bytea[],manifests bytea[],envelopes bytea[],witnesses bytea[]) RETURNS void
++LANGUAGE plpgsql IMMUTABLE SET search_path=pg_catalog,__NP_SCHEMA__,pg_temp AS $$
++DECLARE c jsonb;m jsonb;e jsonb;w jsonb;member jsonb;source jsonb;raw bytea;arr bytea[];kind integer;total bigint;lo integer;hi integer;
++ last_sha text;k text;sort_key text;last_member text;keys text[];refs text[];source_ids text[];selected_sources text[];envelope_key text;witness_key text;
++BEGIN
++ IF context_b IS NULL OR octet_length(context_b) NOT BETWEEN 2 AND 65536 THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++ total:=octet_length(context_b);
++ FOR kind IN 1..4 LOOP
++  CASE kind WHEN 1 THEN arr:=payloads;lo:=0;hi:=65536; WHEN 2 THEN arr:=manifests;lo:=2;hi:=65536; WHEN 3 THEN arr:=envelopes;lo:=2;hi:=65536; ELSE arr:=witnesses;lo:=2;hi:=4096; END CASE;
++  IF arr IS NULL OR cardinality(arr)>16 OR COALESCE(array_ndims(arr),1)<>1 OR cardinality(arr)>0 AND array_lower(arr,1)<>1 THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++  last_sha:=NULL;
++  FOREACH raw IN ARRAY arr LOOP
++   IF raw IS NULL OR octet_length(raw) NOT BETWEEN lo AND hi THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++   total:=total+octet_length(raw);k:=encode(sha256(raw),'hex');
++   IF last_sha IS NOT NULL AND k COLLATE "C"<=last_sha COLLATE "C" THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++   last_sha:=k;
++  END LOOP;
++ END LOOP;
++ IF total>4194304 THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++ c:=convert_from(context_b,'UTF8')::jsonb;
++ IF NOT __NP_SCHEMA__.np_keys(c,ARRAY['schema','scope','state','promotable','source_admitted','financial_context_sha256','source_records','members']) OR c->>'schema' IS DISTINCT FROM 'finweb.synthetic_provenance_context/1' THEN RAISE EXCEPTION 'NP_UNSUPPORTED_PROVENANCE'; END IF;
++ IF c->>'scope' IS DISTINCT FROM 'SYNTHETIC_TEST' OR c->>'state' IS DISTINCT FROM 'INTEGRITY_BOUND_NOT_ADMITTED' OR c->'promotable' IS DISTINCT FROM 'false'::jsonb OR c->'source_admitted' IS DISTINCT FROM 'false'::jsonb THEN RAISE EXCEPTION 'NP_SCOPE_REFUSED'; END IF;
++ IF c->'financial_context_sha256'<>'null'::jsonb AND (jsonb_typeof(c->'financial_context_sha256')<>'string' OR c->>'financial_context_sha256' !~ '^[0-9a-f]{64}$') THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++ IF jsonb_typeof(c->'members') IS DISTINCT FROM 'array' OR jsonb_typeof(c->'source_records') IS DISTINCT FROM 'array' THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++ IF jsonb_array_length(c->'members') NOT BETWEEN 1 AND 16 OR jsonb_array_length(c->'source_records') NOT BETWEEN 1 AND 16 THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++ last_sha:=NULL;source_ids:=ARRAY[]::text[];
++ FOR source IN SELECT value FROM jsonb_array_elements(c->'source_records') LOOP
++  IF NOT (__NP_SCHEMA__.np_keys(source,ARRAY['source_id','name','upstream_provider','independence_group','terms_url','terms_check','synthetic']) OR __NP_SCHEMA__.np_keys(source,ARRAY['source_id','name','upstream_provider','independence_group','terms_url','terms_check','synthetic','source_priority'])) THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++  IF source->'synthetic' IS DISTINCT FROM 'true'::jsonb OR source->'terms_url' IS DISTINCT FROM 'null'::jsonb OR source->'terms_check' IS DISTINCT FROM 'null'::jsonb THEN RAISE EXCEPTION 'NP_SCOPE_REFUSED'; END IF;
++  FOREACH k IN ARRAY ARRAY['source_id','name','upstream_provider','independence_group'] LOOP
++   IF jsonb_typeof(source->k) IS DISTINCT FROM 'string' OR octet_length(source->>k) NOT BETWEEN 1 AND 128 THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++  END LOOP;
++  IF source ? 'source_priority' AND (jsonb_typeof(source->'source_priority') IS DISTINCT FROM 'number' OR source->>'source_priority' !~ '^[1-9][0-9]*$' OR (source->>'source_priority')::numeric>9223372036854775807) THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++  k:=source->>'source_id';IF last_sha IS NOT NULL AND k COLLATE "C"<=last_sha COLLATE "C" THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++  source_ids:=array_append(source_ids,k);last_sha:=k;
++ END LOOP;
++ last_member:=NULL;selected_sources:=ARRAY[]::text[];
++ FOR member IN SELECT value FROM jsonb_array_elements(c->'members') LOOP
++  IF NOT __NP_SCHEMA__.np_keys(member,ARRAY['role','payload_sha256','manifest_sha256','envelope_sha256','witness_sha256']) THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++  IF jsonb_typeof(member->'role') IS DISTINCT FROM 'string' OR member->>'role' NOT IN ('QUOTE','FX','CORPORATE_ACTION','BENCHMARK','RISK_FREE','IDENTITY','CALENDAR','RESOLUTION_RECORD') THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++  FOREACH k IN ARRAY ARRAY['payload_sha256','manifest_sha256'] LOOP
++   IF jsonb_typeof(member->k) IS DISTINCT FROM 'string' OR member->>k !~ '^[0-9a-f]{64}$' THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++  END LOOP;
++  envelope_key:=member->>'envelope_sha256';witness_key:=member->>'witness_sha256';
++  IF (envelope_key IS NULL)<>(witness_key IS NULL) OR envelope_key IS NOT NULL AND (envelope_key !~ '^[0-9a-f]{64}$' OR witness_key !~ '^[0-9a-f]{64}$') THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++  sort_key:=(member->>'role')||':'||(member->>'payload_sha256')||':'||(member->>'manifest_sha256')||':'||COALESCE(envelope_key,'')||':'||COALESCE(witness_key,'');
++  IF last_member IS NOT NULL AND sort_key COLLATE "C"<=last_member COLLATE "C" THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;last_member:=sort_key;
++  SELECT b INTO raw FROM unnest(manifests) b WHERE encode(sha256(b),'hex')=member->>'manifest_sha256';
++  IF NOT FOUND THEN RAISE EXCEPTION 'NP_INPUT_MISSING'; END IF;m:=convert_from(raw,'UTF8')::jsonb;
++  IF m->>'schema'='finweb.marketdata.file_manifest/2' THEN IF NOT __NP_SCHEMA__.np_keys(m,ARRAY['schema','file_sha256','size_bytes','payload_filename','payload_format','source_id','data_kind','market','retrieval_time','retrieved_by','request','declared_adjustment','adjustment_anchor','declared_currency','declared_delay','source_identifiers','script','libraries','usage_scope','coverage']||ARRAY['acquisition']) OR NOT __NP_SCHEMA__.np_keys(m->'acquisition',ARRAY['schema','envelope_sha256']) OR m->'acquisition'->>'schema' IS DISTINCT FROM 'finweb.marketdata.acquisition_ref/1' THEN RAISE EXCEPTION 'NP_SHAPE';END IF;
++  ELSIF m->>'schema'='finweb.marketdata.file_manifest/1' THEN IF NOT __NP_SCHEMA__.np_keys(m,ARRAY['schema','file_sha256','size_bytes','payload_filename','payload_format','source_id','data_kind','market','retrieval_time','retrieved_by','request','declared_adjustment','adjustment_anchor','declared_currency','declared_delay','source_identifiers','script','libraries','usage_scope','coverage']) THEN RAISE EXCEPTION 'NP_SHAPE';END IF;
++  ELSE RAISE EXCEPTION 'NP_UNSUPPORTED_PROVENANCE';END IF;
++  SELECT b INTO raw FROM unnest(payloads) b WHERE encode(sha256(b),'hex')=member->>'payload_sha256';
++  IF NOT FOUND THEN RAISE EXCEPTION 'NP_INPUT_MISSING'; END IF;
++  IF m->>'file_sha256' IS DISTINCT FROM member->>'payload_sha256' OR m->>'data_kind' IS DISTINCT FROM member->>'role' OR m->'size_bytes' IS DISTINCT FROM to_jsonb(octet_length(raw)) THEN RAISE EXCEPTION 'NP_BINDING_DIFFERS'; END IF;
++  selected_sources:=array_append(selected_sources,m->>'source_id');
++  IF m->>'schema'='finweb.marketdata.file_manifest/2' THEN
++   IF envelope_key IS NULL OR m->>'retrieved_by' IS DISTINCT FROM 'agent' OR m->>'usage_scope' IS DISTINCT FROM 'INTERNAL_DEVELOPMENT_ONLY' OR m->'acquisition'->>'envelope_sha256' IS DISTINCT FROM envelope_key THEN RAISE EXCEPTION 'NP_SCOPE_REFUSED'; END IF;
++   SELECT b INTO raw FROM unnest(envelopes) b WHERE encode(sha256(b),'hex')=envelope_key;
++   IF NOT FOUND THEN RAISE EXCEPTION 'NP_INPUT_MISSING'; END IF;e:=convert_from(raw,'UTF8')::jsonb;
++   IF NOT __NP_SCHEMA__.np_keys(e,ARRAY['schema','actor','authorization','tool','request','attempt','result','evidence','visibility']) THEN RAISE EXCEPTION 'NP_SHAPE';END IF;
++   SELECT b INTO raw FROM unnest(witnesses) b WHERE encode(sha256(b),'hex')=witness_key;
++   IF NOT FOUND THEN RAISE EXCEPTION 'NP_INPUT_MISSING'; END IF;w:=convert_from(raw,'UTF8')::jsonb;
++   IF NOT __NP_SCHEMA__.np_keys(w,ARRAY['expected_envelope_sha256','expected_manifest_sha256','actor_agent_id','actor_role','approved_full_request_sha256']) THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++   IF e->>'schema' IS DISTINCT FROM 'finweb.marketdata.acquisition_envelope/1' OR w->>'expected_envelope_sha256' IS DISTINCT FROM envelope_key OR w->>'expected_manifest_sha256' IS DISTINCT FROM member->>'manifest_sha256'
++    OR e->'actor'->>'agent_id' IS DISTINCT FROM w->>'actor_agent_id' OR e->'actor'->>'role' IS DISTINCT FROM w->>'actor_role' OR e->'request'->>'sha256' IS DISTINCT FROM w->>'approved_full_request_sha256'
++    OR e->'result'->>'payload_sha256' IS DISTINCT FROM member->>'payload_sha256' OR e->'result'->'size_bytes' IS DISTINCT FROM m->'size_bytes'
++    OR e->'result'->>'retrieved_at' IS DISTINCT FROM m->>'retrieval_time' OR e->'request'->>'source_id' IS DISTINCT FROM m->>'source_id'
++    OR e->'request'->'parameters' IS DISTINCT FROM m->'request' OR m->'script' IS DISTINCT FROM jsonb_build_object('name',e->'tool'->'name','version',e->'tool'->'version','script_sha256',e->'tool'->'sha256') THEN RAISE EXCEPTION 'NP_BINDING_DIFFERS'; END IF;
++  ELSIF m->>'schema'='finweb.marketdata.file_manifest/1' THEN
++   IF envelope_key IS NOT NULL OR m->>'retrieved_by' IS DISTINCT FROM 'synthetic' OR m->>'usage_scope' IS DISTINCT FROM 'SYNTHETIC_TEST' THEN RAISE EXCEPTION 'NP_SCOPE_REFUSED'; END IF;
++  ELSE RAISE EXCEPTION 'NP_UNSUPPORTED_PROVENANCE';END IF;
++ END LOOP;
++ SELECT array_agg(DISTINCT x ORDER BY x) INTO selected_sources FROM unnest(selected_sources) x;
++ IF source_ids IS DISTINCT FROM selected_sources THEN RAISE EXCEPTION 'NP_BINDING_DIFFERS'; END IF;
++ FOR kind IN 1..4 LOOP
++  CASE kind WHEN 1 THEN arr:=payloads;k:='payload_sha256';WHEN 2 THEN arr:=manifests;k:='manifest_sha256';WHEN 3 THEN arr:=envelopes;k:='envelope_sha256';ELSE arr:=witnesses;k:='witness_sha256';END CASE;
++  SELECT COALESCE(array_agg(encode(sha256(b),'hex') ORDER BY encode(sha256(b),'hex') COLLATE "C"),ARRAY[]::text[]) INTO keys FROM unnest(arr) b;
++  SELECT COALESCE(array_agg(DISTINCT value->>k ORDER BY value->>k),ARRAY[]::text[]) INTO refs FROM jsonb_array_elements(c->'members') WHERE value->>k IS NOT NULL;
++  IF keys IS DISTINCT FROM refs THEN RAISE EXCEPTION 'NP_BINDING_DIFFERS'; END IF;
++ END LOOP;
++EXCEPTION WHEN data_exception THEN RAISE EXCEPTION 'NP_SHAPE';
++END $$;
++CREATE FUNCTION __NP_SCHEMA__.np_collect_context(context_sha text,op uuid)
++RETURNS TABLE(context_b bytea,payloads bytea[],manifests bytea[],envelopes bytea[],witnesses bytea[],registration_response bytea)
++LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog,__NP_SCHEMA__,pg_temp AS $$
++DECLARE c jsonb;q jsonb;r __NP_SCHEMA__.np_registration%ROWTYPE;k text;expected bytea;
++BEGIN
++ IF (context_sha IS NULL)=(op IS NULL) OR context_sha IS NOT NULL AND context_sha !~ '^[0-9a-f]{64}$' THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++ IF op IS NOT NULL THEN
++  SELECT * INTO r FROM __NP_SCHEMA__.np_registration WHERE operation_id=op;IF NOT FOUND THEN RETURN;END IF;context_sha:=r.context_sha256;
++ END IF;
++ SELECT x.context INTO context_b FROM __NP_SCHEMA__.np_context x WHERE x.context_sha256=context_sha;IF NOT FOUND THEN RETURN;END IF;
++ IF encode(sha256(context_b),'hex') IS DISTINCT FROM context_sha THEN RAISE EXCEPTION 'NP_BINDING_DIFFERS'; END IF;c:=convert_from(context_b,'UTF8')::jsonb;
++ IF c->>'financial_context_sha256' IS DISTINCT FROM (SELECT x.financial_context_sha256 FROM __NP_SCHEMA__.np_context x WHERE x.context_sha256=context_sha) THEN RAISE EXCEPTION 'NP_CONTEXT_DIFFERS'; END IF;
++ SELECT COALESCE(array_agg(x.payload ORDER BY x.payload_sha256 COLLATE "C"),ARRAY[]::bytea[]) INTO payloads FROM __NP_SCHEMA__.np_payload x WHERE x.payload_sha256 IN (SELECT value->>'payload_sha256' FROM jsonb_array_elements(c->'members'));
++ SELECT COALESCE(array_agg(x.manifest ORDER BY x.manifest_sha256 COLLATE "C"),ARRAY[]::bytea[]) INTO manifests FROM __NP_SCHEMA__.np_manifest x WHERE x.manifest_sha256 IN (SELECT value->>'manifest_sha256' FROM jsonb_array_elements(c->'members'));
++ SELECT COALESCE(array_agg(x.envelope ORDER BY x.envelope_sha256 COLLATE "C"),ARRAY[]::bytea[]) INTO envelopes FROM __NP_SCHEMA__.np_acquisition x WHERE x.envelope_sha256 IN (SELECT value->>'envelope_sha256' FROM jsonb_array_elements(c->'members'));
++ SELECT COALESCE(array_agg(x.witness ORDER BY x.witness_sha256 COLLATE "C"),ARRAY[]::bytea[]) INTO witnesses FROM (SELECT DISTINCT witness_sha256,witness FROM __NP_SCHEMA__.np_manifest WHERE manifest_sha256 IN (SELECT value->>'manifest_sha256' FROM jsonb_array_elements(c->'members')) AND witness_sha256 IS NOT NULL) x;
++ PERFORM __NP_SCHEMA__.np_validate_bundle(context_b,payloads,manifests,envelopes,witnesses);
++ IF EXISTS(SELECT 1 FROM __NP_SCHEMA__.np_manifest x JOIN jsonb_array_elements(c->'members') a ON x.manifest_sha256=a.value->>'manifest_sha256' WHERE x.payload_sha256 IS DISTINCT FROM a.value->>'payload_sha256' OR x.envelope_sha256 IS DISTINCT FROM a.value->>'envelope_sha256' OR x.witness_sha256 IS DISTINCT FROM a.value->>'witness_sha256') THEN RAISE EXCEPTION 'NP_BINDING_DIFFERS'; END IF;
++ IF op IS NOT NULL THEN
++  q:=convert_from(r.request,'UTF8')::jsonb;
++  IF NOT __NP_SCHEMA__.np_keys(q,ARRAY['schema','scope','operation_id','context_sha256','payload_sha256s','manifest_sha256s','envelope_sha256s','witness_sha256s']) OR q->>'schema' IS DISTINCT FROM 'finweb.synthetic_provenance_registration/1' OR q->>'scope' IS DISTINCT FROM 'SYNTHETIC_TEST' OR q->>'operation_id' IS DISTINCT FROM op::text OR q->>'context_sha256' IS DISTINCT FROM context_sha OR encode(sha256(r.request),'hex') IS DISTINCT FROM r.request_sha256 THEN RAISE EXCEPTION 'NP_BINDING_DIFFERS'; END IF;
++  FOREACH k IN ARRAY ARRAY['payload','manifest','envelope','witness'] LOOP
++   IF q->(k||'_sha256s') IS DISTINCT FROM (SELECT COALESCE(jsonb_agg(DISTINCT value->(k||'_sha256') ORDER BY value->(k||'_sha256')),'[]'::jsonb) FROM jsonb_array_elements(c->'members') WHERE value->>(k||'_sha256') IS NOT NULL) THEN RAISE EXCEPTION 'NP_BINDING_DIFFERS'; END IF;
++  END LOOP;
++  expected:=convert_to(__NP_SCHEMA__.np_json(jsonb_build_object('schema','finweb.synthetic_provenance_registration_result/1','scope','SYNTHETIC_TEST','state','INTEGRITY_BOUND_NOT_ADMITTED','promotable',false,'source_admitted',false,'operation_id',op::text,'request_sha256',r.request_sha256,'context_sha256',context_sha,'payload_count',cardinality(payloads),'manifest_count',cardinality(manifests),'envelope_count',cardinality(envelopes),'member_count',jsonb_array_length(c->'members'))),'UTF8');
++  IF r.response IS DISTINCT FROM expected OR encode(sha256(r.response),'hex') IS DISTINCT FROM r.response_sha256 THEN RAISE EXCEPTION 'NP_BINDING_DIFFERS'; END IF;registration_response:=r.response;
++ ELSE registration_response:=NULL;END IF;
++ RETURN NEXT;
++EXCEPTION WHEN data_exception THEN RAISE EXCEPTION 'NP_SHAPE';
++END $$;
++CREATE FUNCTION __NP_SCHEMA__.np_guard(purpose text) RETURNS void
++LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,__NP_SCHEMA__,pg_temp AS $$
++DECLARE m text;l __NP_SCHEMA__.gw_lease%ROWTYPE;h __NP_SCHEMA__.gw_head%ROWTYPE;r __NP_SCHEMA__.gw_root%ROWTYPE;
++BEGIN
++ IF purpose IS NULL OR purpose NOT IN ('EXECUTE_CREATE','ARCHIVE_READ','ARCHIVE_EXPORT','EXECUTE_REPRODUCE') THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++ IF current_setting('transaction_isolation')<>'read committed' THEN RAISE EXCEPTION 'F2_ISOLATION'; END IF;
++ SELECT mode INTO m FROM __NP_SCHEMA__.gw_mode WHERE singleton FOR SHARE;
++ IF m IS DISTINCT FROM 'FICTIONAL_ONLY' THEN RAISE EXCEPTION 'F2_MODE_HOLD'; END IF;
++ SELECT * INTO l FROM __NP_SCHEMA__.gw_lease WHERE backend_pid=pg_backend_pid() AND xid=pg_current_xact_id()::text;
++ IF NOT FOUND THEN RAISE EXCEPTION 'NP_LEASE_REQUIRED'; END IF;
++ IF l.purpose IS DISTINCT FROM purpose OR purpose='EXECUTE_CREATE' AND l.phase NOT IN ('OPEN','SEALED','REPLAY') OR purpose<>'EXECUTE_CREATE' AND l.phase IS DISTINCT FROM 'READONLY' THEN RAISE EXCEPTION 'F2_SCOPE_DIFFERS'; END IF;
++ SELECT * INTO h FROM __NP_SCHEMA__.gw_head WHERE context_id=l.context_id FOR SHARE;
++ IF NOT FOUND OR h.generation IS DISTINCT FROM l.generation THEN RAISE EXCEPTION 'F2_GENERATION_DIFFERS'; END IF;
++ IF h.expiry IS DISTINCT FROM 'NONE' THEN RAISE EXCEPTION 'F2_EXPIRY_HOLD'; END IF;
++ IF NOT __NP_SCHEMA__.gw_rights_valid(h.rights) OR NOT COALESCE((h.rights->>'ARCHIVE_READ')::boolean,false) OR NOT COALESCE((h.rights->>purpose)::boolean,false) THEN RAISE EXCEPTION 'F2_RIGHT_REFUSED'; END IF;
++ SELECT * INTO r FROM __NP_SCHEMA__.gw_root WHERE root_id=l.root_id;
++ IF NOT FOUND OR r.owner_id IS DISTINCT FROM l.owner_id OR r.context_id IS DISTINCT FROM l.context_id OR l.generation<1 THEN RAISE EXCEPTION 'F2_NOT_FOUND'; END IF;
++END $$;
++CREATE FUNCTION __NP_SCHEMA__.np_immutable() RETURNS trigger
++LANGUAGE plpgsql VOLATILE SET search_path=pg_catalog,__NP_SCHEMA__,pg_temp AS $$ BEGIN RAISE EXCEPTION 'NP_STORAGE_CONFLICT'; END $$;
++CREATE FUNCTION __NP_SCHEMA__.np_put_context(op uuid,request_b bytea,context_b bytea,payloads bytea[],manifests bytea[],envelopes bytea[],witnesses bytea[]) RETURNS bytea
++LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,__NP_SCHEMA__,pg_temp AS $$
++DECLARE c jsonb;q jsonb;m jsonb;b bytea;prior_b bytea;k text;wkey text;wraw bytea;cs text;rs text;result bytea;r __NP_SCHEMA__.np_registration%ROWTYPE;arr bytea[];kind integer;req_keys jsonb;prior_record record;
++BEGIN
++ PERFORM __NP_SCHEMA__.np_caller('__NP_LOADER__');
++ IF op IS NULL OR request_b IS NULL OR octet_length(request_b) NOT BETWEEN 2 AND 65536 THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++ PERFORM __NP_SCHEMA__.np_validate_bundle(context_b,payloads,manifests,envelopes,witnesses);
++ c:=convert_from(context_b,'UTF8')::jsonb;cs:=encode(sha256(context_b),'hex');q:=convert_from(request_b,'UTF8')::jsonb;rs:=encode(sha256(request_b),'hex');
++ IF NOT __NP_SCHEMA__.np_keys(q,ARRAY['schema','scope','operation_id','context_sha256','payload_sha256s','manifest_sha256s','envelope_sha256s','witness_sha256s']) OR q->>'schema' IS DISTINCT FROM 'finweb.synthetic_provenance_registration/1' OR q->>'scope' IS DISTINCT FROM 'SYNTHETIC_TEST' OR q->>'operation_id' IS DISTINCT FROM op::text OR q->>'context_sha256' IS DISTINCT FROM cs THEN RAISE EXCEPTION 'NP_SHAPE'; END IF;
++ FOR kind IN 1..4 LOOP
++  CASE kind WHEN 1 THEN arr:=payloads;k:='payload';WHEN 2 THEN arr:=manifests;k:='manifest';WHEN 3 THEN arr:=envelopes;k:='envelope';ELSE arr:=witnesses;k:='witness';END CASE;
++  SELECT COALESCE(jsonb_agg(encode(sha256(x),'hex') ORDER BY encode(sha256(x),'hex') COLLATE "C"),'[]'::jsonb) INTO req_keys FROM unnest(arr) x;
++  IF q->(k||'_sha256s') IS DISTINCT FROM req_keys THEN RAISE EXCEPTION 'NP_BINDING_DIFFERS'; END IF;
++ END LOOP;
++ PERFORM pg_advisory_xact_lock(hashtextextended('finweb.n2a.register:'||'__NP_SCHEMA__',0));
++ SELECT * INTO r FROM __NP_SCHEMA__.np_registration WHERE operation_id=op;
++ IF FOUND THEN
++  IF r.request IS DISTINCT FROM request_b OR r.context_sha256 IS DISTINCT FROM cs THEN RAISE EXCEPTION 'NP_OPERATION_CONFLICT'; END IF;
++  SELECT * INTO prior_record FROM __NP_SCHEMA__.np_collect_context(NULL,op);
++  IF NOT FOUND THEN RAISE EXCEPTION 'NP_INPUT_MISSING'; END IF;RETURN prior_record.registration_response;
++ END IF;
++ IF (SELECT count(*) FROM __NP_SCHEMA__.np_registration)>=4096 OR (SELECT count(*) FROM __NP_SCHEMA__.np_context)+(CASE WHEN EXISTS(SELECT 1 FROM __NP_SCHEMA__.np_context WHERE context_sha256=cs) THEN 0 ELSE 1 END)>1024
++ OR (SELECT count(*) FROM __NP_SCHEMA__.np_payload)+(SELECT count(*) FROM unnest(payloads) x WHERE NOT EXISTS(SELECT 1 FROM __NP_SCHEMA__.np_payload WHERE payload_sha256=encode(sha256(x),'hex')))>16384
++ OR (SELECT count(*) FROM __NP_SCHEMA__.np_acquisition)+(SELECT count(*) FROM unnest(envelopes) x WHERE NOT EXISTS(SELECT 1 FROM __NP_SCHEMA__.np_acquisition WHERE envelope_sha256=encode(sha256(x),'hex')))>16384
++ OR (SELECT count(*) FROM __NP_SCHEMA__.np_manifest)+(SELECT count(*) FROM unnest(manifests) x WHERE NOT EXISTS(SELECT 1 FROM __NP_SCHEMA__.np_manifest WHERE manifest_sha256=encode(sha256(x),'hex')))>16384 THEN RAISE EXCEPTION 'NP_CAPACITY'; END IF;
++ FOREACH b IN ARRAY payloads LOOP
++  k:=encode(sha256(b),'hex');SELECT x.payload INTO prior_b FROM __NP_SCHEMA__.np_payload x WHERE x.payload_sha256=k;
++  IF FOUND THEN IF prior_b IS DISTINCT FROM b THEN RAISE EXCEPTION 'NP_STORAGE_CONFLICT';END IF; ELSE INSERT INTO __NP_SCHEMA__.np_payload VALUES(k,octet_length(b),b);END IF;
++ END LOOP;
++ FOREACH b IN ARRAY envelopes LOOP
++  k:=encode(sha256(b),'hex');SELECT x.envelope INTO prior_b FROM __NP_SCHEMA__.np_acquisition x WHERE x.envelope_sha256=k;
++  IF FOUND THEN IF prior_b IS DISTINCT FROM b THEN RAISE EXCEPTION 'NP_STORAGE_CONFLICT';END IF; ELSE INSERT INTO __NP_SCHEMA__.np_acquisition VALUES(k,b);END IF;
++ END LOOP;
++ FOREACH b IN ARRAY manifests LOOP
++  k:=encode(sha256(b),'hex');m:=convert_from(b,'UTF8')::jsonb;SELECT a.value->>'witness_sha256' INTO wkey FROM jsonb_array_elements(c->'members') a WHERE a.value->>'manifest_sha256'=k;
++  wraw:=NULL;IF wkey IS NOT NULL THEN SELECT x INTO wraw FROM unnest(witnesses) x WHERE encode(sha256(x),'hex')=wkey;END IF;
++  SELECT x.manifest INTO prior_b FROM __NP_SCHEMA__.np_manifest x WHERE x.manifest_sha256=k;
++  IF FOUND THEN
++   IF prior_b IS DISTINCT FROM b OR NOT EXISTS(SELECT 1 FROM __NP_SCHEMA__.np_manifest x WHERE x.manifest_sha256=k AND x.payload_sha256=m->>'file_sha256' AND x.envelope_sha256 IS NOT DISTINCT FROM m->'acquisition'->>'envelope_sha256' AND x.witness_sha256 IS NOT DISTINCT FROM wkey AND x.witness IS NOT DISTINCT FROM wraw) THEN RAISE EXCEPTION 'NP_STORAGE_CONFLICT';END IF;
++  ELSE INSERT INTO __NP_SCHEMA__.np_manifest VALUES(k,b,m->>'file_sha256',m->'acquisition'->>'envelope_sha256',wkey,wraw);END IF;
++ END LOOP;
++ SELECT x.context INTO prior_b FROM __NP_SCHEMA__.np_context x WHERE x.context_sha256=cs;
++ IF FOUND THEN IF prior_b IS DISTINCT FROM context_b THEN RAISE EXCEPTION 'NP_CONTEXT_DIFFERS';END IF;ELSE INSERT INTO __NP_SCHEMA__.np_context VALUES(cs,context_b,c->>'financial_context_sha256');END IF;
++ result:=convert_to(__NP_SCHEMA__.np_json(jsonb_build_object('schema','finweb.synthetic_provenance_registration_result/1','scope','SYNTHETIC_TEST','state','INTEGRITY_BOUND_NOT_ADMITTED','promotable',false,'source_admitted',false,'operation_id',op::text,'request_sha256',rs,'context_sha256',cs,'payload_count',cardinality(payloads),'manifest_count',cardinality(manifests),'envelope_count',cardinality(envelopes),'member_count',jsonb_array_length(c->'members'))),'UTF8');
++ INSERT INTO __NP_SCHEMA__.np_registration VALUES(op,request_b,rs,cs,result,encode(sha256(result),'hex'),pg_backend_pid(),pg_current_xact_id()::text,clock_timestamp());
++ RETURN result;
++EXCEPTION WHEN data_exception THEN RAISE EXCEPTION 'NP_SHAPE';WHEN foreign_key_violation THEN RAISE EXCEPTION 'NP_INPUT_MISSING';
++END $$;
++CREATE FUNCTION __NP_SCHEMA__.np_get_context(context_sha text,op uuid)
++RETURNS TABLE(context_b bytea,payloads bytea[],manifests bytea[],envelopes bytea[],witnesses bytea[],registration_response bytea)
++LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog,__NP_SCHEMA__,pg_temp AS $$
++BEGIN PERFORM __NP_SCHEMA__.np_caller('__NP_LOADER__');RETURN QUERY SELECT * FROM __NP_SCHEMA__.np_collect_context(context_sha,op);END $$;
++CREATE FUNCTION __NP_SCHEMA__.np_load_context(context_sha text,purpose text)
++RETURNS TABLE(context_b bytea,payloads bytea[],manifests bytea[],envelopes bytea[],witnesses bytea[],registration_response bytea)
++LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,__NP_SCHEMA__,pg_temp AS $$
++DECLARE l __NP_SCHEMA__.gw_lease%ROWTYPE;f text;
++BEGIN
++ PERFORM __NP_SCHEMA__.np_caller('__NP_EXECUTOR__');
++ IF context_sha IS NULL OR context_sha !~ '^[0-9a-f]{64}$' THEN RAISE EXCEPTION 'NP_SHAPE';END IF;
++ PERFORM __NP_SCHEMA__.np_guard(purpose);
++ SELECT * INTO l FROM __NP_SCHEMA__.gw_lease WHERE backend_pid=pg_backend_pid() AND xid=pg_current_xact_id()::text;
++ SELECT x.financial_context_sha256 INTO f FROM __NP_SCHEMA__.np_context x WHERE x.context_sha256=context_sha;
++ IF NOT FOUND THEN RETURN;END IF;
++ IF f IS NULL OR f IS DISTINCT FROM l.context_id THEN RAISE EXCEPTION 'NP_CONTEXT_DIFFERS';END IF;
++ RETURN QUERY SELECT * FROM __NP_SCHEMA__.np_collect_context(context_sha,NULL);
++END $$;
++CREATE TRIGGER np_payload_immutable_rows BEFORE UPDATE OR DELETE ON __NP_SCHEMA__.np_payload FOR EACH ROW EXECUTE FUNCTION __NP_SCHEMA__.np_immutable();
++CREATE TRIGGER np_payload_immutable_truncate BEFORE TRUNCATE ON __NP_SCHEMA__.np_payload FOR EACH STATEMENT EXECUTE FUNCTION __NP_SCHEMA__.np_immutable();
++CREATE TRIGGER np_acquisition_immutable_rows BEFORE UPDATE OR DELETE ON __NP_SCHEMA__.np_acquisition FOR EACH ROW EXECUTE FUNCTION __NP_SCHEMA__.np_immutable();
++CREATE TRIGGER np_acquisition_immutable_truncate BEFORE TRUNCATE ON __NP_SCHEMA__.np_acquisition FOR EACH STATEMENT EXECUTE FUNCTION __NP_SCHEMA__.np_immutable();
++CREATE TRIGGER np_manifest_immutable_rows BEFORE UPDATE OR DELETE ON __NP_SCHEMA__.np_manifest FOR EACH ROW EXECUTE FUNCTION __NP_SCHEMA__.np_immutable();
++CREATE TRIGGER np_manifest_immutable_truncate BEFORE TRUNCATE ON __NP_SCHEMA__.np_manifest FOR EACH STATEMENT EXECUTE FUNCTION __NP_SCHEMA__.np_immutable();
++CREATE TRIGGER np_context_immutable_rows BEFORE UPDATE OR DELETE ON __NP_SCHEMA__.np_context FOR EACH ROW EXECUTE FUNCTION __NP_SCHEMA__.np_immutable();
++CREATE TRIGGER np_context_immutable_truncate BEFORE TRUNCATE ON __NP_SCHEMA__.np_context FOR EACH STATEMENT EXECUTE FUNCTION __NP_SCHEMA__.np_immutable();
++CREATE TRIGGER np_registration_immutable_rows BEFORE UPDATE OR DELETE ON __NP_SCHEMA__.np_registration FOR EACH ROW EXECUTE FUNCTION __NP_SCHEMA__.np_immutable();
++CREATE TRIGGER np_registration_immutable_truncate BEFORE TRUNCATE ON __NP_SCHEMA__.np_registration FOR EACH STATEMENT EXECUTE FUNCTION __NP_SCHEMA__.np_immutable();
++REVOKE ALL ON FUNCTION __NP_SCHEMA__.np_json(jsonb,integer) FROM PUBLIC;
++REVOKE ALL ON FUNCTION __NP_SCHEMA__.np_keys(jsonb,text[]) FROM PUBLIC;
++REVOKE ALL ON FUNCTION __NP_SCHEMA__.np_caller(text) FROM PUBLIC;
++REVOKE ALL ON FUNCTION __NP_SCHEMA__.np_validate_bundle(bytea,bytea[],bytea[],bytea[],bytea[]) FROM PUBLIC;
++REVOKE ALL ON FUNCTION __NP_SCHEMA__.np_collect_context(text,uuid) FROM PUBLIC;
++REVOKE ALL ON FUNCTION __NP_SCHEMA__.np_guard(text) FROM PUBLIC;
++REVOKE ALL ON FUNCTION __NP_SCHEMA__.np_immutable() FROM PUBLIC;
++REVOKE ALL ON FUNCTION __NP_SCHEMA__.np_put_context(uuid,bytea,bytea,bytea[],bytea[],bytea[],bytea[]) FROM PUBLIC;
++REVOKE ALL ON FUNCTION __NP_SCHEMA__.np_get_context(text,uuid) FROM PUBLIC;
++REVOKE ALL ON FUNCTION __NP_SCHEMA__.np_load_context(text,text) FROM PUBLIC;
++REVOKE ALL ON TABLE __NP_SCHEMA__.np_payload,__NP_SCHEMA__.np_acquisition,__NP_SCHEMA__.np_manifest,__NP_SCHEMA__.np_context,__NP_SCHEMA__.np_registration FROM PUBLIC;
++GRANT USAGE ON SCHEMA __NP_SCHEMA__ TO __NP_LOADER__;
++GRANT EXECUTE ON FUNCTION __NP_SCHEMA__.np_put_context(uuid,bytea,bytea,bytea[],bytea[],bytea[],bytea[]),__NP_SCHEMA__.np_get_context(text,uuid) TO __NP_LOADER__;
++GRANT EXECUTE ON FUNCTION __NP_SCHEMA__.np_load_context(text,text) TO __NP_EXECUTOR__;
+--- /dev/null
++++ b/tests/product/test_postgres_synthetic_provenance.py
+@@ -0,0 +1,206 @@
++"""Author N2a actual-PG groups; root injects CONFIG and owns native lifecycle.
++
++No discovery, subprocess/startup, provider, browser, or old fixture input.
++"""
++from concurrent.futures import ThreadPoolExecutor
++from dataclasses import replace
++import json
++import unittest
++from unittest.mock import patch
++import uuid
++
++import psycopg
++from psycopg import sql
++from psycopg.types.json import Jsonb
++from marketdata.synthetic_provenance import ProvenanceError
++from persistence.synthetic_provenance_store import (SyntheticProvenanceStore,
++    CommittedSyntheticRegistration, UnknownSyntheticRegistration, TABLES)
++from persistence.guarded_workspace_context import _scope_from_database
++from test_synthetic_provenance import invented_fixture, encode, h
++
++CONFIG = None
++CASE_EVENTS = []
++RIGHTS = {k: True for k in ("EXECUTE_CREATE", "ARCHIVE_READ", "ARCHIVE_EXPORT", "EXECUTE_REPRODUCE")}
++
++
++class PostgresSyntheticProvenance(unittest.TestCase):
++    def setUp(self):
++        if CONFIG is None:
++            self.skipTest("root-provisioned isolated N2a CONFIG required")
++        self.schema = CONFIG["schema"]
++        self.store = SyntheticProvenanceStore(lambda: CONFIG["connect"](CONFIG["loader_role"]), schema=self.schema,
++            loader_role=CONFIG["loader_role"], executor_role=CONFIG["executor_role"])
++
++    def q(self, conn, name, args=()):
++        return conn.execute(sql.SQL("SELECT * FROM {}.{}(" + ",".join(["%s"] * len(args)) + ")").format(sql.Identifier(self.schema), sql.Identifier(name)), args)
++
++    def save(self, fixture, op=None):
++        b, m, w = fixture
++        op = op or uuid.uuid4()
++        value = self.store.register(op, b, expected_context_sha256=h(b.context_bytes), expected_members=m, witnesses=w)
++        return op, value
++
++    def load(self, fixture):
++        b, m, w = fixture
++        return self.store.load_context(h(b.context_bytes), expected_members=m, witnesses=w)
++
++    def request(self, op, fixture):
++        b, _, _ = fixture
++        # Independent format construction, not author's product encoder.
++        return encode(dict(schema="finweb.synthetic_provenance_registration/1", scope="SYNTHETIC_TEST", operation_id=str(op), context_sha256=h(b.context_bytes), payload_sha256s=[k for k, _ in b.payloads], manifest_sha256s=[k for k, _ in b.manifests], envelope_sha256s=[k for k, _ in b.envelopes], witness_sha256s=[k for k, _ in b.witnesses]))
++
++    def recover(self, op, fixture):
++        b, m, w = fixture
++        return self.store.reconcile(op, expected_request_sha256=h(self.request(op, fixture)), expected_context_sha256=h(b.context_bytes), expected_members=m, witnesses=w)
++
++    def snapshot(self, *, native=False):
++        result = {}
++        with CONFIG["connect"](CONFIG["owner_role"]) as conn:
++            if native:
++                tables = [r[0] for r in conn.execute("SELECT c.relname FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname=%s AND c.relkind='r' AND left(c.relname,3)<>'np_' ORDER BY c.relname", (self.schema,)).fetchall()]
++            else:
++                tables = TABLES
++            for table in tables:
++                result[table] = conn.execute(sql.SQL("SELECT COALESCE(jsonb_agg(to_jsonb(t) ORDER BY to_jsonb(t)::text),'[]'::jsonb) FROM {}.{} t").format(sql.Identifier(self.schema), sql.Identifier(table))).fetchone()[0]
++        return result
++
++    def test_p01_durable_original_and_empty_fresh_load(self):
++        native = self.snapshot(native=True)
++        for payload in (b"synthetic-payload-one\n", b""):
++            fixture = invented_fixture(payload)
++            _, saved = self.save(fixture)
++            self.assertIsInstance(saved, CommittedSyntheticRegistration)
++            loaded = self.load(fixture)
++            self.assertEqual(loaded.bundle, fixture[0])
++            self.assertEqual((loaded.state, loaded.promotable, loaded.source_admitted), ("INTEGRITY_BOUND_NOT_ADMITTED", False, False))
++        self.assertEqual(self.snapshot(native=True), native)
++
++    def test_p02_two_acquisitions_preserved_and_exact_replay_counts(self):
++        native = self.snapshot(native=True)
++        old, both = invented_fixture(acquisitions=(1,)), invented_fixture(acquisitions=(1, 2))
++        _, old_saved = self.save(old)
++        op, saved = self.save(both)
++        self.assertIsInstance(saved, CommittedSyntheticRegistration)
++        before = self.snapshot()
++        _, replay = self.save(both, op)
++        self.assertEqual(replay, saved)
++        self.assertEqual(self.snapshot(), before)
++        self.assertEqual(self.load(old).bundle, old[0])
++        self.assertEqual(self.load(both).bundle, both[0])
++        self.assertEqual((json.loads(saved.response_bytes)["payload_count"], json.loads(saved.response_bytes)["manifest_count"], json.loads(saved.response_bytes)["envelope_count"], json.loads(saved.response_bytes)["member_count"]), (1, 2, 2, 2))
++        self.assertEqual(self.snapshot(native=True), native)
++
++    def test_p03_conflict_missing_and_bad_selectors_have_no_partial_rows(self):
++        first, other = invented_fixture(), invented_fixture(acquisitions=(2,))
++        op, result = self.save(first)
++        self.assertIsInstance(result, CommittedSyntheticRegistration)
++        before, native = self.snapshot(), self.snapshot(native=True)
++        # Static A1 finding: JSON null is SQL NULL under ->>; <> silently skips
++        # the IF. Direct SQL must reject it too, before any partial bundle row.
++        bad_context = json.loads(first[0].context_bytes)
++        bad_context["schema"] = None
++        bad_bundle = replace(first[0], context_bytes=encode(bad_context))
++        bad_fixture = (bad_bundle, first[1], first[2])
++        bad_op = uuid.uuid4()
++        with CONFIG["connect"](CONFIG["loader_role"]) as conn:
++            with self.assertRaises(psycopg.Error) as caught:
++                self.q(conn, "np_put_context", (bad_op, self.request(bad_op, bad_fixture), bad_bundle.context_bytes,
++                    *[list(raw for _, raw in values) for values in (bad_bundle.payloads, bad_bundle.manifests, bad_bundle.envelopes, bad_bundle.witnesses)]))
++            self.assertEqual(caught.exception.diag.message_primary, "NP_UNSUPPORTED_PROVENANCE")
++        self.assertEqual(self.snapshot(), before)
++        with self.assertRaisesRegex(ProvenanceError, "NP_OPERATION_CONFLICT"):
++            self.save(other, op)
++        b, members, witnesses = first
++        with self.assertRaisesRegex(ProvenanceError, "NP_INPUT_MISSING"):
++            self.store.load_context(h(b"absent context"), expected_members=members, witnesses=witnesses)
++        with CONFIG["connect"](CONFIG["loader_role"]) as conn:
++            for args in ((None, None), (h(b.context_bytes), op), ("invalid", None)):
++                with self.assertRaises(psycopg.Error) as caught:
++                    self.q(conn, "np_get_context", args)
++                self.assertEqual(caught.exception.diag.message_primary, "NP_SHAPE")
++        self.assertEqual(self.snapshot(), before)
++        self.assertEqual(self.snapshot(native=True), native)
++
++    def test_p04_actual_outer_rollback_and_postcommit_ackloss(self):
++        fixture = invented_fixture(acquisitions=(3,))
++        before, native = self.snapshot(), self.snapshot(native=True)
++        failed_op = uuid.uuid4()
++        with patch.object(SyntheticProvenanceStore, "_before_commit", side_effect=psycopg.OperationalError("labelled precommit fault")):
++            _, unknown = self.save(fixture, failed_op)
++        self.assertIsInstance(unknown, UnknownSyntheticRegistration)
++        self.assertEqual(self.snapshot(), before)
++        self.assertIsInstance(self.recover(failed_op, fixture), UnknownSyntheticRegistration)
++        committed_op = uuid.uuid4()
++        with patch.object(SyntheticProvenanceStore, "_after_commit_ack", side_effect=psycopg.OperationalError("labelled postcommit fault")):
++            _, unknown = self.save(fixture, committed_op)
++        self.assertIsInstance(unknown, UnknownSyntheticRegistration)
++        original = self.recover(committed_op, fixture)
++        self.assertIsInstance(original, CommittedSyntheticRegistration)
++        self.assertEqual(original.response_bytes, self.recover(committed_op, fixture).response_bytes)
++        self.assertEqual(self.snapshot(native=True), native)
++
++    def test_p05_actual_roles_and_original_f2_lease_read(self):
++        # Legal original issuer metadata/rights fixture, BEFORE native baseline.
++        # This is not financial computation or bytes-to-compute provenance.
++        owner, root, op = uuid.uuid4(), uuid.uuid4(), uuid.uuid4()
++        snapshot = json.dumps(dict(scope="SYNTHETIC_TEST", fixture="N2a lease only", nonce=str(op)), sort_keys=True, separators=(",", ":")).encode()
++        financial_context = h(snapshot)
++        with CONFIG["connect"](CONFIG["issuer_role"]) as issuer:
++            self.assertEqual(self.q(issuer, "gw_publish", (snapshot,)).fetchone()[0], financial_context)
++            self.q(issuer, "gw_set_rights", (financial_context, 1, Jsonb(RIGHTS), "NONE"))
++        with CONFIG["connect"](CONFIG["executor_role"]) as conn:
++            conn.execute(sql.SQL("INSERT INTO {}.app_user VALUES(%s)").format(sql.Identifier(self.schema)), (owner,))
++        fixture = invented_fixture(financial_context=financial_context)
++        _, saved = self.save(fixture)
++        self.assertIsInstance(saved, CommittedSyntheticRegistration)
++        native = self.snapshot(native=True)
++        b, members, witnesses = fixture
++        with CONFIG["connect"](CONFIG["executor_role"]) as conn:
++            with self.assertRaises(psycopg.Error) as caught:
++                self.q(conn, "np_load_context", (h(b.context_bytes), "EXECUTE_CREATE"))
++            self.assertEqual(caught.exception.diag.message_primary, "NP_LEASE_REQUIRED")
++            # Real gw_root/lease are temporary and MUST disappear on rollback.
++            with conn.transaction(force_rollback=True):
++                admitted = self.q(conn, "gw_admit", (owner, root, financial_context, 1, "EXECUTE_CREATE", op, "1" * 64, True)).fetchone()[0]
++                scope = _scope_from_database(conn, self.schema, bytes(admitted))
++                loaded = self.store.load_guarded(conn, scope, h(b.context_bytes), expected_members=members, witnesses=witnesses)
++                self.assertEqual(loaded.bundle, b)
++                self.assertFalse(loaded.promotable)
++                self.assertEqual(self.q(conn, "gw_scope").fetchone()[1], root)
++        self.assertEqual(self.snapshot(native=True), native)
++        with CONFIG["connect"](CONFIG["owner_role"]) as conn:
++            for table in ("gw_root", "gw_lease", "gw_artifact", "gw_operation", "gw_journal"):
++                column = "root_id"
++                self.assertEqual(conn.execute(sql.SQL("SELECT count(*) FROM {}.{} WHERE {}=%s").format(sql.Identifier(self.schema), sql.Identifier(table), sql.Identifier(column)), (root,)).fetchone()[0], 0)
++        for role in (CONFIG["loader_role"], CONFIG["executor_role"]):
++            with CONFIG["connect"](role) as conn:
++                self.assertEqual(conn.execute("SELECT current_user::text,session_user::text,current_setting('role')").fetchone(), (role, role, "none"))
++                for statement in (sql.SQL("SELECT * FROM {}.np_payload").format(sql.Identifier(self.schema)), sql.SQL("UPDATE {}.np_payload SET size_bytes=size_bytes").format(sql.Identifier(self.schema)), sql.SQL("CREATE TABLE {}.np_illegal(value integer)").format(sql.Identifier(self.schema)), sql.SQL("SET ROLE {}").format(sql.Identifier(CONFIG["owner_role"]))):
++                    with self.assertRaises(psycopg.Error) as caught:
++                        conn.execute(statement)
++                    self.assertEqual(caught.exception.sqlstate, "42501")
++        self.assertEqual(self.snapshot(native=True), native)
++
++    def test_p06_concurrent_exact_and_conflicting_operation(self):
++        fixture = invented_fixture(acquisitions=(4,))
++        native = self.snapshot(native=True)
++        op = uuid.uuid4()
++        with ThreadPoolExecutor(max_workers=2) as pool:
++            futures = [pool.submit(self.save, fixture, op) for _ in range(2)]
++            results = [f.result(timeout=20)[1] for f in futures]
++        self.assertTrue(all(isinstance(x, CommittedSyntheticRegistration) for x in results))
++        self.assertEqual(results[0], results[1])
++        self.assertEqual(self.load(fixture).bundle, fixture[0])
++        other = invented_fixture(acquisitions=(5,))
++        op = uuid.uuid4()
++        def offer(f):
++            try:
++                return self.save(f, op)[1]
++            except ProvenanceError as exc:
++                return exc.code
++        with ThreadPoolExecutor(max_workers=2) as pool:
++            futures = [pool.submit(offer, f) for f in (fixture, other)]
++            result = [f.result(timeout=20) for f in futures]
++        self.assertEqual(sum(isinstance(x, CommittedSyntheticRegistration) for x in result), 1)
++        self.assertEqual(sum(x == "NP_OPERATION_CONFLICT" for x in result), 1)
++        self.assertEqual(self.snapshot(native=True), native)
+--- /dev/null
++++ b/tests/product/test_synthetic_provenance.py
+@@ -0,0 +1,228 @@
++"""Author invented-byte N2a cases. No provider, files, DB or old fixture imports."""
++import copy
++from dataclasses import replace
++import hashlib
++import json
++from types import SimpleNamespace
++import unittest
++from unittest.mock import Mock, patch
++import uuid
++
++from marketdata.acquisition import TrustedAcquisitionWitness
++from marketdata.synthetic_provenance import (SyntheticArtifactBundle, SyntheticMemberKey,
++    ProvenanceError, validate_bundle, registration_request, registration_response)
++from persistence.synthetic_provenance_store import SyntheticProvenanceStore, _entry
++from psycopg.pq import TransactionStatus
++
++
++def h(raw):
++    return hashlib.sha256(raw).hexdigest()
++
++
++def encode(value):
++    return (json.dumps(value, sort_keys=True, indent=2, ensure_ascii=False, allow_nan=False) + "\n").encode()
++
++
++def invented_fixture(payload=b"synthetic-payload-one\n", acquisitions=(1,), *, financial_context=None, v1=False):
++    """INVENTED agent/human fields are not real actions or permissions."""
++    manifests, envelopes, raw_witnesses, members, witnesses = {}, {}, {}, [], []
++    for n in acquisitions:
++        request_pin = h(("invented full request " + str(n)).encode())
++        tool_pin = h(b"invented frozen tool")
++        time = "2001-02-" + str(n + 3).zfill(2) + "T03:02:01Z"
++        parameters = [["from", "2001-02-03"], ["to", "2001-02-03"], ["fmt", "json"]]
++        env = dict(schema="finweb.marketdata.acquisition_envelope/1",
++            actor=dict(kind="AGENT", agent_id="/root/invented_collector", role="engineer"),
++            authorization=dict(kind="HUMAN_DECISION", decision_record="decisions/product/PD-9001-invented-evaluation.md",
++                decision_sha256=h(b"invented decision"), approval_receipt_sha256=h(b"invented receipt")),
++            tool=dict(name="invented_collector.py", version="1.0.0", sha256=tool_pin),
++            request=dict(fingerprint_schema="fictional.request_spec/1", sha256=request_pin, source_id="fictional.source",
++                provider="InventedProvider", product="invented_rows", method="GET", host="fictional.invalid", path="/api/splits/FICTION", parameters=parameters),
++            attempt=dict(max_attempts=1, ordinal=1, reservation_receipt_sha256=h(("reservation" + str(n)).encode()), execution_receipt_sha256=h(("execution" + str(n)).encode())),
++            result=dict(state="COMPLETE", http_status=200, payload_sha256=h(payload), size_bytes=len(payload), retrieved_at=time),
++            evidence=[dict(role=r, sha256=h(("invented " + r).encode())) for r in ("APPROVAL_PACKET", "REQUEST_SPEC", "EXECUTION_METADATA", "EXECUTION_REVIEW")],
++            visibility=dict(raw="PRIVATE_LOCAL_ONLY", model="APPROVED_METADATA_ONLY"))
++        eraw = encode(env)
++        manifest = dict(schema="finweb.marketdata.file_manifest/2", file_sha256=h(payload), size_bytes=len(payload),
++            payload_filename="invented.json", payload_format="fictional_rows/1", source_id="fictional.source", data_kind="CORPORATE_ACTION", market=None,
++            retrieval_time=time, retrieved_by="agent", request=parameters, declared_adjustment="RAW", adjustment_anchor=None, declared_currency=None,
++            declared_delay="UNKNOWN", source_identifiers=["FICTION.US"], script=dict(name="invented_collector.py", version="1.0.0", script_sha256=tool_pin),
++            libraries=[], usage_scope="INTERNAL_DEVELOPMENT_ONLY", coverage=[["from", "2001-02-03"], ["to", "2001-02-03"]],
++            acquisition=dict(schema="finweb.marketdata.acquisition_ref/1", envelope_sha256=h(eraw)))
++        if v1:
++            del manifest["acquisition"]
++            manifest.update(schema="finweb.marketdata.file_manifest/1", retrieved_by="synthetic", usage_scope="SYNTHETIC_TEST")
++        mraw = encode(manifest)
++        manifests[h(mraw)] = mraw
++        if v1:
++            members.append(SyntheticMemberKey("CORPORATE_ACTION", h(payload), h(mraw), None, None))
++        else:
++            # Independent expected request/actor inputs exist before stored w JSON.
++            witness = TrustedAcquisitionWitness(h(eraw), h(mraw), "/root/invented_collector", "engineer", request_pin)
++            wraw = encode(dict(expected_envelope_sha256=h(eraw), expected_manifest_sha256=h(mraw), actor_agent_id="/root/invented_collector", actor_role="engineer", approved_full_request_sha256=request_pin))
++            raw_witnesses[h(wraw)] = wraw
++            envelopes[h(eraw)] = eraw
++            witnesses.append(witness)
++            members.append(SyntheticMemberKey("CORPORATE_ACTION", h(payload), h(mraw), h(eraw), h(wraw)))
++    members = tuple(sorted(members, key=lambda x: x.sort_key()))
++    ctx = encode(dict(schema="finweb.synthetic_provenance_context/1", scope="SYNTHETIC_TEST", state="INTEGRITY_BOUND_NOT_ADMITTED",
++        promotable=False, source_admitted=False, financial_context_sha256=financial_context,
++        source_records=[dict(source_id="fictional.source", name="Invented source", upstream_provider="InventedProvider", independence_group="InventedProvider", terms_url=None, terms_check=None, synthetic=True)],
++        members=[x.to_obj() for x in members]))
++    bundle = SyntheticArtifactBundle(ctx, ((h(payload), payload),), tuple(sorted(manifests.items())), tuple(sorted(envelopes.items())), tuple(sorted(raw_witnesses.items())))
++    return bundle, members, tuple(sorted(witnesses, key=lambda x: x.expected_manifest_sha256))
++
++
++def context_change(bundle, **changes):
++    obj = json.loads(bundle.context_bytes)
++    obj.update(changes)
++    return replace(bundle, context_bytes=encode(obj))
++
++
++def validate(fixture):
++    b, members, witnesses = fixture
++    return validate_bundle(b, expected_context_sha256=h(b.context_bytes), expected_members=members, witnesses=witnesses)
++
++
++class SyntheticProvenanceContracts(unittest.TestCase):
++    def test_01_original_bytes_and_nonadmission(self):
++        fixture = invented_fixture()
++        value = validate(fixture)
++        self.assertEqual(value.bundle, fixture[0])
++        self.assertEqual(value.bundle.payloads[0][1], b"synthetic-payload-one\n")
++        self.assertEqual(len(value.bundle.payloads[0][1]), 22)
++        self.assertEqual((value.scope, value.state, value.promotable, value.source_admitted), ("SYNTHETIC_TEST", "INTEGRITY_BOUND_NOT_ADMITTED", False, False))
++        self.assertFalse(hasattr(value, "rights"))
++
++    def test_02_many_acquisitions_share_payload_without_collapsing(self):
++        old = validate(invented_fixture())
++        new = validate(invented_fixture(acquisitions=(1, 2)))
++        self.assertEqual(len(new.bundle.payloads), 1)
++        self.assertEqual(len(new.bundle.manifests), 2)
++        self.assertEqual(len(new.bundle.envelopes), 2)
++        self.assertEqual(new.members[0].payload_sha256, new.members[1].payload_sha256)
++        self.assertNotEqual(new.members[0].manifest_sha256, new.members[1].manifest_sha256)
++        self.assertEqual(old.bundle, invented_fixture()[0])
++
++    def test_03_empty_and_maximum_payload(self):
++        self.assertEqual(validate(invented_fixture(b"")).bundle.payloads[0][1], b"")
++        self.assertEqual(len(validate(invented_fixture(b"x" * 65536)).bundle.payloads[0][1]), 65536)
++
++    def test_04_byte_limits_precede_metadata_tree(self):
++        b, m, w = invented_fixture()
++        huge = b"x" * 65537
++        b = replace(b, payloads=((h(huge), huge),))
++        with patch("marketdata.synthetic_provenance.parse_canonical_metadata", side_effect=AssertionError("tree reached")) as tree:
++            with self.assertRaises(ProvenanceError):
++                validate((b, m, w))
++            tree.assert_not_called()
++
++    def test_05_scope_flags_are_exact_and_no_rights(self):
++        b, m, w = invented_fixture()
++        for change in (dict(scope="REAL"), dict(promotable=True), dict(source_admitted=True), dict(state="QUALIFIED"), dict(promotable=0)):
++            with self.subTest(change=change), self.assertRaises(ProvenanceError):
++                validate((context_change(b, **change), m, w))
++
++    def test_06_independent_actor_and_full_request_witness(self):
++        b, m, w = invented_fixture()
++        for wrong in (replace(w[0], actor_agent_id="/root/other"), replace(w[0], approved_full_request_sha256=h(b"another full request"))):
++            with self.assertRaisesRegex(ProvenanceError, "NP_BINDING_DIFFERS"):
++                validate((b, m, (wrong,)))
++
++    def test_07_changed_bytes_do_not_keep_an_old_digest(self):
++        b, m, w = invented_fixture()
++        key, raw = b.envelopes[0]
++        with self.assertRaisesRegex(ProvenanceError, "NP_BINDING_DIFFERS"):
++            validate((replace(b, envelopes=((key, raw + b" "),)), m, w))
++
++    def test_08_missing_and_extraneous_artifacts(self):
++        b, m, w = invented_fixture()
++        for changed in (replace(b, envelopes=()), replace(b, payloads=tuple(sorted(b.payloads + ((h(b"extra"), b"extra"),))))):
++            with self.assertRaises(ProvenanceError):
++                validate((changed, m, w))
++
++    def test_09_digest_order_and_duplicate_members_refuse(self):
++        b, m, w = invented_fixture(acquisitions=(1, 2))
++        for changed in (replace(b, manifests=tuple(reversed(b.manifests))), replace(b, manifests=b.manifests + b.manifests[:1]), context_change(b, members=[m[0].to_obj(), m[0].to_obj()])):
++            with self.assertRaises(ProvenanceError):
++                validate((changed, m, w))
++        with self.assertRaises(ProvenanceError):
++            validate((b, tuple(reversed(m)), w))
++
++    def test_10_manifest_kind_is_the_member_role(self):
++        b, m, w = invented_fixture()
++        wrong = replace(m[0], role="QUOTE")
++        with self.assertRaisesRegex(ProvenanceError, "NP_BINDING_DIFFERS"):
++            validate((context_change(b, members=[wrong.to_obj()]), (wrong,), w))
++
++    def test_11_source_records_are_exact_selected_set(self):
++        b, m, w = invented_fixture()
++        sources = json.loads(b.context_bytes)["source_records"]
++        extra = dict(sources[0], source_id="unused.source")
++        with self.assertRaisesRegex(ProvenanceError, "NP_BINDING_DIFFERS"):
++            validate((context_change(b, source_records=sources + [extra]), m, w))
++        sources[0]["synthetic"] = False
++        with self.assertRaisesRegex(ProvenanceError, "NP_SCOPE_REFUSED"):
++            validate((context_change(b, source_records=sources), m, w))
++
++    def test_12_v1_compatibility_has_explicit_null_provenance(self):
++        b, members, witnesses = invented_fixture(v1=True)
++        value = validate((b, members, witnesses))
++        self.assertIsNone(value.members[0].envelope_sha256)
++        self.assertEqual((b.envelopes, b.witnesses, witnesses), ((), (), ()))
++        manifest = json.loads(b.manifests[0][1])
++        manifest["retrieved_by"] = "human"
++        raw = encode(manifest)
++        member = replace(members[0], manifest_sha256=h(raw))
++        changed = replace(context_change(b, members=[member.to_obj()]), manifests=((h(raw), raw),))
++        with self.assertRaisesRegex(ProvenanceError, "NP_SCOPE_REFUSED"):
++            validate((changed, (member,), ()))
++
++    def test_13_v2_is_not_downgraded_when_provenance_is_missing(self):
++        b, m, w = invented_fixture()
++        wrong = replace(m[0], envelope_sha256=None, witness_sha256=None)
++        b = replace(context_change(b, members=[wrong.to_obj()]), envelopes=(), witnesses=())
++        with self.assertRaisesRegex(ProvenanceError, "NP_BINDING_DIFFERS"):
++            validate((b, (wrong,), ()))
++
++    def test_14_noncanonical_context_and_independent_pin_mismatch(self):
++        b, m, w = invented_fixture()
++        with self.assertRaises(ProvenanceError):
++            validate((replace(b, context_bytes=b.context_bytes[:-1]), m, w))
++        with self.assertRaisesRegex(ProvenanceError, "NP_CONTEXT_DIFFERS"):
++            validate_bundle(b, expected_context_sha256=h(b"wrong context"), expected_members=m, witnesses=w)
++
++    def test_15_no_io_or_environment_fallback(self):
++        fixture = invented_fixture()
++        with patch("builtins.open", side_effect=AssertionError("file fallback")), patch("os.getenv", side_effect=AssertionError("environment fallback")):
++            self.assertEqual(validate(fixture).bundle, fixture[0])
++
++    def test_16_request_response_exact_keys_and_selected_counts(self):
++        value = validate(invented_fixture(acquisitions=(1, 2)))
++        op = uuid.UUID("90000000-0000-4000-8000-000000000001")
++        b = value.bundle
++        expected = encode(dict(schema="finweb.synthetic_provenance_registration/1", scope="SYNTHETIC_TEST", operation_id=str(op), context_sha256=h(b.context_bytes), payload_sha256s=[x[0] for x in b.payloads], manifest_sha256s=[x[0] for x in b.manifests], envelope_sha256s=[x[0] for x in b.envelopes], witness_sha256s=[x[0] for x in b.witnesses]))
++        self.assertEqual(registration_request(op, value), expected)
++        response = registration_response(op, expected, value)
++        obj = json.loads(response)
++        self.assertEqual(set(obj), set("schema scope state promotable source_admitted operation_id request_sha256 context_sha256 payload_count manifest_count envelope_count member_count".split()))
++        self.assertEqual((obj["payload_count"], obj["manifest_count"], obj["envelope_count"], obj["member_count"]), (1, 2, 2, 2))
++        self.assertEqual(response, json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode())
++        self.assertEqual(obj["request_sha256"], h(expected))
++
++    def test_17_autocommit_and_idle_are_checked_without_a_query(self):
++        for ac, state in ((False, TransactionStatus.IDLE), (True, TransactionStatus.INTRANS)):
++            conn = SimpleNamespace(autocommit=ac, info=SimpleNamespace(transaction_status=state), execute=Mock(side_effect=AssertionError("query reached")))
++            with self.assertRaisesRegex(ProvenanceError, "NP_OUTER_TRANSACTION_REQUIRED"):
++                _entry(conn)
++            conn.execute.assert_not_called()
++
++    def test_18_preflight_refusal_cannot_open_a_connection(self):
++        connect = Mock(side_effect=AssertionError("DB reached"))
++        store = SyntheticProvenanceStore(connect, schema="n2a", loader_role="n2a_loader", executor_role="n2a_executor")
++        b, m, w = invented_fixture()
++        with self.assertRaisesRegex(ProvenanceError, "NP_CONTEXT_DIFFERS"):
++            store.register(uuid.uuid4(), b, expected_context_sha256=h(b"wrong pin"), expected_members=m, witnesses=w)
++        with self.assertRaises(ProvenanceError):
++            store.reconcile("not-uuid", expected_request_sha256="0" * 64, expected_context_sha256=h(b.context_bytes), expected_members=m, witnesses=w)
++        connect.assert_not_called()

@@ -1,0 +1,1034 @@
+{
+ "data": {
+  "calendar_files_cited": [
+   {
+    "adapter_id": "calendar.manual.calendar",
+    "adapter_version": "0.1.0",
+    "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+   },
+   {
+    "adapter_id": "calendar.manual.calendar",
+    "adapter_version": "0.1.0",
+    "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+   },
+   {
+    "adapter_id": "calendar.manual.calendar",
+    "adapter_version": "0.1.0",
+    "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+   },
+   {
+    "adapter_id": "calendar.manual.calendar",
+    "adapter_version": "0.1.0",
+    "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+   }
+  ],
+  "data_files": [
+   {
+    "admitted": true,
+    "data_kind": "CALENDAR",
+    "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d",
+    "payload_filename": "SYN_NYSE.json",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "calendar.manual",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "CALENDAR",
+    "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738",
+    "payload_filename": "SYN_HKEX.json",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "calendar.manual",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "CALENDAR",
+    "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c",
+    "payload_filename": "SYN_CN_A.json",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "calendar.manual",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "CALENDAR",
+    "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e",
+    "payload_filename": "SYN_ECB.json",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "calendar.manual",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "FX",
+    "file_sha256": "73559db60807a482355dab868d1dce26b8b2e049525c16a727d2de3b1da26e59",
+    "payload_filename": "fx.csv",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.ecb_direct",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "QUOTE",
+    "file_sha256": "a0f0179c0829fe79593a0c211658d86993023ec23b9903f02b25826adbc1e97f",
+    "payload_filename": "AAPL.csv",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.alphavantage_us",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "QUOTE",
+    "file_sha256": "7eb5006f93105014776ab9295a574276b21ec9af35fa5c01cef6e54f760f9cdb",
+    "payload_filename": "00700.csv",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.sina_hk",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "QUOTE",
+    "file_sha256": "206c36c2f24f4da36b43d7ac4aa3bc589537adf9a1710fbe202884e6a89484e5",
+    "payload_filename": "MSFT.csv",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.alphavantage_us",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "QUOTE",
+    "file_sha256": "f44cf4b8829f3c098c5c68207cdbac92ad1ab741ca3abf692aef93e8a505a62e",
+    "payload_filename": "SYNA.csv",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.eastmoney_cn",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "QUOTE",
+    "file_sha256": "76ede853f0355e07dbc1abe28b193177c28d01ef247a7bd608429594ebb20790",
+    "payload_filename": "SYNU.csv",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.alphavantage_us",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "QUOTE",
+    "file_sha256": "f9081ddfc08a61ae81d6ae77a1e0a6d04b10f6ee8319f446cabe62ef4b31dfa2",
+    "payload_filename": "SYNH.csv",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.sina_hk",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "QUOTE",
+    "file_sha256": "78d72f99ab2f18e8d6ca5ad87440fce2a598b1574487c2eafb513bcf0d3acbf5",
+    "payload_filename": "SYNP.csv",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.sina_hk",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "QUOTE",
+    "file_sha256": "41e80c986cbf5324d64b570e884dc8503c4252ef53bd911d7b64fecf03564934",
+    "payload_filename": "SYNM.csv",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.alphavantage_us",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "QUOTE",
+    "file_sha256": "5320b679ce96ffa5d82cb787459133e91e07521cc8012c1b1c5e5794150f925d",
+    "payload_filename": "SYNK.csv",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.alphavantage_us",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "QUOTE",
+    "file_sha256": "778c40f43df7fc0c99c5f396089f01b088026c611f63f00fec817a1f2a9d00d0",
+    "payload_filename": "SYNS.csv",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.alphavantage_us",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "QUOTE",
+    "file_sha256": "658d6ffff08b6e7ceebbbcb018d51e9c21fa232b507f0e17474c22c741b537ec",
+    "payload_filename": "SYNF.csv",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.alphavantage_us",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "QUOTE",
+    "file_sha256": "780f15c58538ee8bf3caa298527e5cf41fab51590f3deb825034fb14205f85ff",
+    "payload_filename": "SYNT.csv",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.alphavantage_us",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "QUOTE",
+    "file_sha256": "e14129a32c8a16baed0b2efa23f631b98ebd2b93d41b7aaac11512d8cfb3b4ef",
+    "payload_filename": "SYNG.csv",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.alphavantage_us",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "CORPORATE_ACTION",
+    "file_sha256": "ecd78bfa72a911f977cf1a7ba5d58ef44b3bd59a5efa02007a9c425a77d762cd",
+    "payload_filename": "SYNS_feed.json",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.ca_feed",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "CORPORATE_ACTION",
+    "file_sha256": "ec79e0116ded65b5766eed8328e6ef9aa7d69418debd3d8b77afeb474fee7cf9",
+    "payload_filename": "SYNS_filing.json",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.ca_filing",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "CORPORATE_ACTION",
+    "file_sha256": "1f4863645cf3838c5b6f09b0bbebe63754b3a6a01396ecfc46a5eda56691e94b",
+    "payload_filename": "SYNT_feed.json",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.ca_feed",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   },
+   {
+    "admitted": true,
+    "data_kind": "CORPORATE_ACTION",
+    "file_sha256": "18fcb30cae47bbb2eea3354e5ea57521af1a6481d51f2130b57dc77a022d2fed",
+    "payload_filename": "SYNT_filing.json",
+    "retrieval_time": "2026-02-02T09:00:00+00:00",
+    "source_id": "synthetic.ca_filing",
+    "synthetic": true,
+    "usage_scope": "SYNTHETIC_TEST"
+   }
+  ],
+  "files_cited_by_the_valuation_manifest": [
+   {
+    "consumed": [
+     {
+      "adapter_id": "synthetic.alphavantage_us.quotes",
+      "adapter_version": "0.1.0",
+      "file_sha256": "206c36c2f24f4da36b43d7ac4aa3bc589537adf9a1710fbe202884e6a89484e5"
+     },
+     {
+      "adapter_id": "calendar.manual.calendar",
+      "adapter_version": "0.1.0",
+      "file_sha256": "3029fa08ad99d20fe9ab01e340c81dabb788d04d199af88812aa192288417738"
+     },
+     {
+      "adapter_id": "synthetic.sina_hk.quotes",
+      "adapter_version": "0.2.0",
+      "file_sha256": "7eb5006f93105014776ab9295a574276b21ec9af35fa5c01cef6e54f760f9cdb"
+     },
+     {
+      "adapter_id": "synthetic.alphavantage_us.quotes",
+      "adapter_version": "0.1.0",
+      "file_sha256": "a0f0179c0829fe79593a0c211658d86993023ec23b9903f02b25826adbc1e97f"
+     },
+     {
+      "adapter_id": "calendar.manual.calendar",
+      "adapter_version": "0.1.0",
+      "file_sha256": "e47e364bc0d1a43690879b9a3b78a15e9d69a3552724b8146b1747a55ecc128c"
+     },
+     {
+      "adapter_id": "synthetic.eastmoney_cn.quotes",
+      "adapter_version": "0.2.0",
+      "file_sha256": "f44cf4b8829f3c098c5c68207cdbac92ad1ab741ca3abf692aef93e8a505a62e"
+     },
+     {
+      "adapter_id": "calendar.manual.calendar",
+      "adapter_version": "0.1.0",
+      "file_sha256": "f507364fd40760bdcb6294ff61851302539b95ddef9f7be4555ee1fee77c1e8d"
+     }
+    ],
+    "kind": "QUOTE"
+   },
+   {
+    "consumed": [
+     {
+      "adapter_id": "synthetic.ecb_direct.fx",
+      "adapter_version": "0.1.0",
+      "file_sha256": "73559db60807a482355dab868d1dce26b8b2e049525c16a727d2de3b1da26e59"
+     },
+     {
+      "adapter_id": "calendar.manual.calendar",
+      "adapter_version": "0.1.0",
+      "file_sha256": "de052e3181ba6ff781c1bdce72b5d6896db38a5810ae7479d156f1c17d6f9c8e"
+     }
+    ],
+    "kind": "FX"
+   }
+  ],
+  "per_component": [
+   {
+    "details": [],
+    "freshness": {
+     "delays": [],
+     "entries": []
+    },
+    "lineage": {
+     "fx_date_used": "2025-04-30",
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+    },
+    "metric_id": "cash_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "currency",
+      "HKD"
+     ]
+    ],
+    "view": "NATIVE"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [],
+     "entries": []
+    },
+    "lineage": {
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+    },
+    "metric_id": "cash_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "currency",
+      "USD"
+     ]
+    ],
+    "view": "NATIVE"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [],
+     "entries": []
+    },
+    "lineage": {
+     "fx_date_used": "2025-04-30",
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+    },
+    "metric_id": "cash_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000002"
+     ],
+     [
+      "currency",
+      "HKD"
+     ]
+    ],
+    "view": "NATIVE"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [],
+     "entries": []
+    },
+    "lineage": {
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+    },
+    "metric_id": "cash_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000003"
+     ],
+     [
+      "currency",
+      "USD"
+     ]
+    ],
+    "view": "NATIVE"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [],
+     "entries": []
+    },
+    "lineage": {
+     "fx_date_used": "2025-04-30",
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+    },
+    "metric_id": "cash_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000004"
+     ],
+     [
+      "currency",
+      "CNY"
+     ]
+    ],
+    "view": "NATIVE"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "HKD",
+       "kind": "CURRENCY",
+       "mics": [],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ]
+    },
+    "lineage": {
+     "fx_date_used": "2025-04-30",
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+    },
+    "metric_id": "cash_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "currency",
+      "HKD"
+     ]
+    ],
+    "view": "REPORTING"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [],
+     "entries": []
+    },
+    "lineage": {
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+    },
+    "metric_id": "cash_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "currency",
+      "USD"
+     ]
+    ],
+    "view": "REPORTING"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "HKD",
+       "kind": "CURRENCY",
+       "mics": [],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ]
+    },
+    "lineage": {
+     "fx_date_used": "2025-04-30",
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+    },
+    "metric_id": "cash_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000002"
+     ],
+     [
+      "currency",
+      "HKD"
+     ]
+    ],
+    "view": "REPORTING"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [],
+     "entries": []
+    },
+    "lineage": {
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+    },
+    "metric_id": "cash_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000003"
+     ],
+     [
+      "currency",
+      "USD"
+     ]
+    ],
+    "view": "REPORTING"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "CNY",
+       "kind": "CURRENCY",
+       "mics": [],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ]
+    },
+    "lineage": {
+     "fx_date_used": "2025-04-30",
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+    },
+    "metric_id": "cash_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000004"
+     ],
+     [
+      "currency",
+      "CNY"
+     ]
+    ],
+    "view": "REPORTING"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_HKEX",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XHKG"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ]
+    },
+    "lineage": {
+     "fx_date_used": "2025-04-30",
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect",
+     "last_print_date": "2025-04-30",
+     "price_date_used": "2025-04-30",
+     "price_missed_sessions": "0"
+    },
+    "metric_id": "holding_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-000000000700"
+     ]
+    ],
+    "view": "NATIVE"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_NYSE",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XNYS"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ]
+    },
+    "lineage": {
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect",
+     "last_print_date": "2025-04-30",
+     "price_date_used": "2025-04-30",
+     "price_missed_sessions": "0"
+    },
+    "metric_id": "holding_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000a001"
+     ]
+    ],
+    "view": "NATIVE"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_NYSE",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XNYS"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ]
+    },
+    "lineage": {
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect",
+     "last_print_date": "2025-04-30",
+     "price_date_used": "2025-04-30",
+     "price_missed_sessions": "0"
+    },
+    "metric_id": "holding_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "view": "NATIVE"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_HKEX",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XHKG"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ]
+    },
+    "lineage": {
+     "fx_date_used": "2025-04-30",
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect",
+     "last_print_date": "2025-04-30",
+     "price_date_used": "2025-04-30",
+     "price_missed_sessions": "0"
+    },
+    "metric_id": "holding_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000002"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-000000000700"
+     ]
+    ],
+    "view": "NATIVE"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_CN_A",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XSHG"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ]
+    },
+    "lineage": {
+     "fx_date_used": "2025-04-30",
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect",
+     "last_print_date": "2025-04-30",
+     "price_date_used": "2025-04-30",
+     "price_missed_sessions": "0"
+    },
+    "metric_id": "holding_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000004"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-0000000a0001"
+     ]
+    ],
+    "view": "NATIVE"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "HKD",
+       "kind": "CURRENCY",
+       "mics": [],
+       "missed": 0,
+       "state": "CURRENT"
+      },
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_HKEX",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XHKG"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ]
+    },
+    "lineage": {
+     "fx_date_used": "2025-04-30",
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect",
+     "last_print_date": "2025-04-30",
+     "price_date_used": "2025-04-30",
+     "price_missed_sessions": "0"
+    },
+    "metric_id": "holding_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-000000000700"
+     ]
+    ],
+    "view": "REPORTING"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_NYSE",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XNYS"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ]
+    },
+    "lineage": {
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect",
+     "last_print_date": "2025-04-30",
+     "price_date_used": "2025-04-30",
+     "price_missed_sessions": "0"
+    },
+    "metric_id": "holding_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000a001"
+     ]
+    ],
+    "view": "REPORTING"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_NYSE",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XNYS"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ]
+    },
+    "lineage": {
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect",
+     "last_print_date": "2025-04-30",
+     "price_date_used": "2025-04-30",
+     "price_missed_sessions": "0"
+    },
+    "metric_id": "holding_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "view": "REPORTING"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "HKD",
+       "kind": "CURRENCY",
+       "mics": [],
+       "missed": 0,
+       "state": "CURRENT"
+      },
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_HKEX",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XHKG"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ]
+    },
+    "lineage": {
+     "fx_date_used": "2025-04-30",
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect",
+     "last_print_date": "2025-04-30",
+     "price_date_used": "2025-04-30",
+     "price_missed_sessions": "0"
+    },
+    "metric_id": "holding_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000002"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-000000000700"
+     ]
+    ],
+    "view": "REPORTING"
+   },
+   {
+    "details": [],
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "CNY",
+       "kind": "CURRENCY",
+       "mics": [],
+       "missed": 0,
+       "state": "CURRENT"
+      },
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_CN_A",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XSHG"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ]
+    },
+    "lineage": {
+     "fx_date_used": "2025-04-30",
+     "fx_note:parity": "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect",
+     "last_print_date": "2025-04-30",
+     "price_date_used": "2025-04-30",
+     "price_missed_sessions": "0"
+    },
+    "metric_id": "holding_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000004"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-0000000a0001"
+     ]
+    ],
+    "view": "REPORTING"
+   }
+  ],
+  "release_id": "0dc32672467898a1af764c1e1e3b84816981edc22206991b1e3ea10db3cee214"
+ },
+ "kind": "SYNTHETIC_DEMONSTRATION_A",
+ "labels": {
+  "all_results_synthetic": true,
+  "any_result_synthetic": true,
+  "demonstration_ledger": "DEMONSTRATION LEDGER: these events are not a user's holdings (P8); they exist to exercise the engine.",
+  "fx_sources_in_m": [
+   {
+    "source_id": "synthetic.ecb_direct",
+    "what_it_is": "synthetic.ecb_direct"
+   }
+  ],
+  "label": "SYNTHETIC: every result below was computed from a market-data version that holds synthetic files; none is a real market fact (market-data Ruling 4.8).",
+  "pd_0035_caveat": "PD-0035 section 3: Mainland China and Hong Kong price behaviour is shown on SYNTHETIC data only. No admissible real CN or HK price source exists (PD-0031, PD-0032); the real slice is US prices (Alpha Vantage, the last 100 sessions) and ECB FX only. A synthetic result is never a real market fact (market-data Ruling 4.8)."
+ },
+ "section": "04_price_fx_timestamps",
+ "subject": "DEMO-A: US + HK + CN synthetic cross-border portfolio",
+ "title": "Price and FX timestamps"
+}

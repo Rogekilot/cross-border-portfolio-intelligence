@@ -1,0 +1,1350 @@
+/*
+ * app.css — component styles for the HG1 revision-2 prototype.
+ * Depends on tokens.css. Naming convention: kebab-case, feature-prefixed
+ * (.claim-*, .metric-*, .chart-*, .chip, .state-badge, .confidence-pill, .block-*).
+ * Do not introduce a second visual language — extend these classes, don't fork them.
+ */
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.55;
+}
+/* HG1 Condition 1B: headings previously had no explicit size at all (browser default),
+   which is its own version of "not controlled by a token." h1 is unused in this build
+   today but the page-heading role token exists for whichever surface needs it next;
+   h2/h3/h4 get explicit sizes off the existing generic scale rather than staying at
+   whatever the browser's UA stylesheet happens to pick. */
+h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 600; margin: 0 0 var(--space-2) 0; }
+h1 { font-size: var(--type-page-heading); }
+h2 { font-size: var(--text-lg); }
+h3 { font-size: var(--text-md); }
+h4 { font-size: var(--text-base); font-weight: 700; }
+p { margin: 0 0 var(--space-2) 0; }
+button { font-family: inherit; cursor: pointer; }
+.tabular-nums { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* ---------------------------------------------------------------- */
+/* Synthetic-data banner                                             */
+/* ---------------------------------------------------------------- */
+.synthetic-banner {
+  background: var(--color-accent-strong);
+  color: #eef3f1;
+  font-size: 12px;
+  letter-spacing: .03em;
+  text-align: center;
+  padding: var(--space-2) var(--space-3);
+}
+
+/* ---------------------------------------------------------------- */
+/* Top chrome / primary + secondary nav                              */
+/* ---------------------------------------------------------------- */
+header.app-header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-line);
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-3) var(--space-6);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.app-brand { font-family: var(--font-serif); font-weight: 700; font-size: 17px; color: var(--color-accent-strong); white-space: nowrap; }
+.app-brand-sub { display: block; font-family: var(--font-sans); font-weight: 400; font-size: 10px; color: var(--color-ink-faint); text-transform: uppercase; letter-spacing: .08em; }
+nav#app-nav { display: flex; gap: var(--space-1); flex: 0 0 auto; }
+.nav-tab {
+  background: none; border: none; padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm); font-size: 14px; font-weight: 600;
+  color: var(--color-ink-soft);
+}
+.nav-tab:hover { background: var(--color-accent-soft); }
+.nav-tab-active { background: var(--color-accent); color: #fff; }
+.app-header-right { display: flex; align-items: center; gap: var(--space-3); margin-left: auto; }
+#app-freshness-global .freshness-strip { padding: var(--space-1) var(--space-2); margin: 0; border: none; background: none; }
+.icon-btn {
+  background: var(--color-bg-recessed); border: 1px solid var(--color-line);
+  color: var(--color-ink-soft); border-radius: 50%; width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center; font-size: 15px;
+}
+.ai-ask-btn {
+  border: 1px solid var(--color-accent); color: var(--color-accent-strong);
+  background: none; border-radius: var(--radius-sm); padding: var(--space-2) var(--space-4);
+  font-weight: 600; font-size: 13.5px;
+}
+.ai-ask-btn:hover { background: var(--color-accent); color: #fff; }
+
+nav#app-subnav {
+  display: flex; gap: var(--space-4); padding: var(--space-2) var(--space-6);
+  background: var(--color-bg-recessed); border-bottom: 1px solid var(--color-line);
+}
+.subnav-tab { background: none; border: none; padding-bottom: 6px; font-size: 13px; color: var(--color-ink-faint); border-bottom: 2px solid transparent; }
+.subnav-tab-active { color: var(--color-ink); border-bottom-color: var(--color-accent); font-weight: 600; }
+
+/* ---------------------------------------------------------------- */
+/* Layout: content + inspector dock                                  */
+/* ---------------------------------------------------------------- */
+.app-workspace { display: flex; align-items: flex-start; }
+main#app-content-wrap { flex: 1 1 auto; min-width: 0; }
+/* HG1 Round 5 (S1e) — reads the LAYOUT measure (tokens.css), which grows above ~1106px
+   viewport width instead of staying fixed at 1040px forever. This does not by itself
+   align the content column with header.app-header (still full-bleed, outside this
+   write scope), but it does stop every pixel of a wide window from landing as one-
+   sided void inside a fixed-width column — combined with the layout primitive and
+   chart-family min-widths below, a wider column gives S1's redistribution rules more
+   room to actually redistribute into. Unchanged at 1024/1280px (the clamp floors at
+   exactly the prior 1040px value there). */
+.app-content-inner { max-width: var(--content-measure-layout); margin: 0 auto; padding: var(--space-6) var(--space-5) var(--space-12); }
+/* A utility for PROSE-length text (paragraphs, long-form claim body copy) — the
+   narrower measure, kept separate from the layout column above on purpose (S1e: "split
+   --content-max-width into a prose measure and a layout measure"). Not applied to any
+   element by this pass (the elements it would apply to are authored in js/surfaces/*.js
+   and js/shell.js, outside this designer's write scope this round) — available for
+   Phase 2 to adopt at a call site without a new stylesheet rule. */
+.prose { max-width: var(--content-measure-prose); }
+
+/* Collapsed state is a slim, ALWAYS-VISIBLE 28px rail (not width:0) specifically so the
+   toggle button is never clipped and never becomes unreachable — a width:0 + overflow:
+   hidden collapse would trap a user who closed it with no way to reopen it. This is the
+   literal reading of Direction B's "collapsible not closable — it can shrink to a rail
+   ... never fully vanish." */
+#app-inspector {
+  width: 28px; flex: 0 0 28px;
+  overflow: hidden;
+  border-left: 1px solid var(--color-analytical-line);
+  background: var(--color-analytical-surface);
+  min-height: calc(100vh - 60px);
+  position: sticky; top: var(--sticky-header-clearance);
+  transition: width .15s ease, flex-basis .15s ease;
+}
+#app-inspector.inspector-open { width: var(--inspector-width); flex: 0 0 var(--inspector-width); box-shadow: var(--shadow-inspector); }
+#app-inspector-inner { width: var(--inspector-width); padding: var(--space-4) var(--space-4) var(--space-4) 40px; opacity: 0; pointer-events: none; transition: opacity .1s ease; }
+/* HG1 ux_planning revision (review-06, B5) — opt-in wide variant (see tokens.css's
+   `--inspector-width-wide` comment for the full account). `ctx.ui.inspector.focus`
+   adds `inspector-wide` to `#app-inspector` only for payloads that ask for it
+   (currently: the Sleeve Correlation Matrix); every other caller is unaffected,
+   including whatever content is already mounted when a caller does NOT request it —
+   `.clear()` (js/shell.js) always removes this class so a later default-width payload
+   never inherits a previous wide one. */
+#app-inspector.inspector-wide.inspector-open { width: var(--inspector-width-wide); flex: 0 0 var(--inspector-width-wide); }
+#app-inspector.inspector-wide #app-inspector-inner { width: var(--inspector-width-wide); }
+#app-inspector.inspector-open #app-inspector-inner { opacity: 1; pointer-events: auto; }
+/* HG1 ux_planning revision (review-06, B6) — now holds two children (the title text
+   and a close button, js/shell.js's APP.ui.inspector.focus) instead of one bare text
+   node; `display:flex` lays them out on one row with the close control pinned to the
+   far end, instead of the button falling onto its own line below the (still
+   uppercase/letter-spaced) title text. */
+#app-inspector-title { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--color-ink-faint); border-bottom: 1px solid var(--color-analytical-line); padding-bottom: var(--space-2); margin-bottom: var(--space-3); }
+/* The close button itself should read as ordinary case (an "×" glyph, not a letter),
+   and must not inherit the title's own text-transform/letter-spacing — .app-overlay-
+   close (reused here, same visual language as the Evidence/Settings overlays' own
+   close buttons) already sets its own font-size/color; this scopes the override. */
+#app-inspector-title .app-overlay-close { text-transform: none; letter-spacing: normal; flex: 0 0 auto; }
+#app-inspector-toggle {
+  position: absolute; left: 0; top: 12px; width: 28px; height: 40px;
+  border: none; border-bottom: 1px solid var(--color-analytical-line);
+  background: var(--color-analytical-surface); font-size: 12px; color: var(--color-ink-faint);
+}
+#app-inspector-toggle:hover { background: var(--color-accent-soft); }
+
+/* ---------------------------------------------------------------- */
+/* "Not yet built" placeholder — must render cleanly at every stage   */
+/* ---------------------------------------------------------------- */
+.not-built-panel {
+  border: 1px dashed var(--color-line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-recessed);
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+  color: var(--color-ink-soft);
+}
+.not-built-badge {
+  display: inline-block; background: var(--color-gold); color: #fff;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 999px; margin-bottom: var(--space-3);
+}
+.surface-error { border-color: var(--color-danger); }
+
+/* ---------------------------------------------------------------- */
+/* Blocks / cards — Direction C's stacked-briefing language           */
+/* ---------------------------------------------------------------- */
+.block, .card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6) var(--space-4);
+  margin-bottom: var(--space-5);
+  box-shadow: var(--shadow-card);
+}
+.block-header {
+  display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap;
+  gap: var(--space-2); border-bottom: 1px solid var(--color-line);
+  padding-bottom: var(--space-2); margin-bottom: var(--space-3);
+}
+.block-kicker { font-size: var(--text-xs); letter-spacing: .06em; text-transform: uppercase; color: var(--color-accent); font-weight: 700; }
+
+/* Analytics / analytical surfaces graft Direction B's denser, cooler card language */
+.analytical-surface .block, .analytical-surface .card { background: var(--color-analytical-surface); border-color: var(--color-analytical-line); }
+.analytical-surface .metric-number, .analytical-surface .stat-value { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* ---------------------------------------------------------------- */
+/* Claim card + depth ladder (D2)                                    */
+/* ---------------------------------------------------------------- */
+.claim-card { }
+.claim-body > * + * { margin-top: var(--space-2); }
+.claim-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-2); flex-wrap: wrap; }
+.claim-title-wrap { display: flex; align-items: center; gap: var(--space-2); }
+.claim-label { font-weight: 700; font-size: var(--type-card-title); }
+.claim-conclusion { font-size: var(--text-base); }
+.claim-simple, .claim-reference, .claim-professional-detail { font-size: var(--type-annotation); color: var(--color-ink-soft); }
+.claim-caveat { font-size: var(--type-annotation); color: var(--color-limited); background: var(--color-limited-bg); border: 1px solid var(--color-limited-border); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); }
+.claim-investor-detail { font-size: var(--type-annotation); color: var(--color-ink-soft); background: var(--color-bg-recessed); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); }
+.claim-value-row { margin: var(--space-2) 0; }
+.claim-scenario { border: 1.5px solid var(--color-scenario-border); background: var(--color-scenario-bg); }
+
+.depth-ladder { display: flex; gap: 3px; flex-wrap: nowrap; }
+.depth-pill {
+  font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: var(--radius-sm);
+  color: var(--color-ink-faint); border: 1px solid transparent; background: none;
+  /* HG1 ux_planning revision (review-06, B1) — no `white-space` was ever declared here,
+     so at `?lang=zh-CN` each two-character pill label (简要/简明/专业) wrapped one
+     character per line inside its own already-narrow padding box (English's
+     Quick/Simple/Professional never hit this because a single Latin word has no
+     internal break opportunity at this width). `nowrap` keeps every pill's label on
+     one line in both languages; `flex-wrap: nowrap` on `.depth-ladder` (above) keeps
+     the three pills themselves in one row rather than letting the flex row wrap them
+     onto separate lines once they can no longer shrink internally. This does not touch
+     the depth model or its label set (still exactly 简要/简明/专业 — see I18N's
+     depth.quick/simple/professional) and does not remove the header control from the
+     narrow-width (<=1024px) reflow block below, which still wraps the WHOLE
+     `.app-header-right` row, pills included, onto a second header line rather than
+     ever hiding or shortening any pill. */
+  white-space: nowrap;
+}
+.depth-pill:hover { background: var(--color-accent-soft); }
+.depth-pill-active { background: var(--color-accent); color: #fff; }
+/* HG1 ux_planning revision (review-06, secondary — active depth-pill hover contrast).
+   `.depth-pill:hover` and `.depth-pill-active` have equal specificity (one class +
+   :hover vs. one class); `.depth-pill:hover`'s LATER-declared `background` alone was
+   winning the cascade on an already-active pill (its light `--color-accent-soft`
+   background), while `.depth-pill-active`'s own `color: #fff` was untouched (`:hover`
+   never set `color`) — white text on a light background, illegible. This rule,
+   declared after both above, reasserts the active pill's own (already-legible)
+   background/color combination on hover instead of picking up the plain hover
+   treatment meant for an INACTIVE pill. The inactive-pill hover above is unchanged. */
+.depth-pill-active:hover { background: var(--color-accent); color: #fff; }
+
+.evidence-control {
+  margin-top: var(--space-2); background: none; border: 1px solid var(--color-line-strong);
+  color: var(--color-accent-strong); font-size: 12px; font-weight: 600;
+  border-radius: var(--radius-sm); padding: 4px 10px;
+}
+.evidence-control:hover { background: var(--color-accent-soft); }
+.evidence-control-sm { margin-top: 0; padding: 2px 8px; font-size: 11px; }
+
+/* ---------------------------------------------------------------- */
+/* Metric-state rendering (D3.2) — the single source of truth          */
+/* ---------------------------------------------------------------- */
+.metric-unit { display: inline-flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.metric-number { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: var(--type-metric-number); font-weight: 600; color: var(--color-available); }
+.metric-state-limited .metric-number { color: var(--color-limited); }
+.metric-qualifier {
+  font-size: 11.5px; font-weight: 600; color: var(--color-limited); background: var(--color-limited-bg);
+  border: 1px solid var(--color-limited-border); border-radius: var(--radius-sm); padding: 2px 8px;
+}
+.metric-insufficient { color: var(--color-insufficient); font-style: italic; }
+.metric-insufficient-label {
+  font-size: var(--text-base); font-style: normal; font-weight: 600;
+  background: var(--color-insufficient-bg); border: 1px solid var(--color-insufficient-border);
+  border-radius: var(--radius-sm); padding: 2px 10px; display: inline-block;
+}
+.metric-reason { display: block; font-size: 11px; color: var(--color-ink-faint); margin-top: 2px; }
+.metric-missing { color: var(--color-ink-faint); }
+
+/* HG1 round-4 (PD-0014 Part 1 §1.2) — temporal comparability, a disclosure dimension
+   distinct from both freshness (.freshness-pill) and sufficiency (.metric-qualifier).
+   Deliberately its own token family and its own visual shape (rounded pill, not the
+   qualifier's rectangle) so the three vocabularies are never visually confusable with
+   each other, matching this build's existing "distinct component per vocabulary" rule
+   (see CONTRACT.md's OCR-confidence-vs-sufficiency note, applied here a third time). */
+.comparability-flag {
+  font-size: 11.5px; font-weight: 600; color: var(--color-comparability);
+  background: var(--color-comparability-bg); border: 1px solid var(--color-comparability-border);
+  border-radius: 999px; padding: 2px 9px; white-space: nowrap;
+}
+
+/* Genuinely directional financial results only (HG1 Condition 2) — applied by
+   js/shell.js's renderMetricValue ONLY when claim.directional is true (set in js/data.js
+   on a small, deliberate list: portfolio return, absolute/percent P&L, benchmark-
+   relative performance, FX attribution, alpha, per-holding unrealized gain/loss) AND
+   sufficiency is AVAILABLE. LIMITED keeps its amber treatment undiluted — data-
+   sufficiency and value-direction are different vocabularies, and a LIMITED numeral
+   already carries its own mandatory qualifier; this pass does not layer a second color
+   semantic on top of it. Color is never the only signal: formatPercent/formatCurrency
+   already print an explicit "+"/"-" sign, and .metric-direction-glyph adds a small
+   redundant arrow so the distinction survives for a color-blind reader without relying
+   on the numeral's sign alone either. */
+.metric-positive { color: var(--color-positive); }
+.metric-negative { color: var(--color-negative); }
+.metric-direction-glyph { font-size: 0.68em; margin-right: 3px; }
+.metric-direction-glyph:empty { display: none; margin: 0; }
+
+/* ---------------------------------------------------------------- */
+/* Freshness (D5) — never merge axes                                 */
+/* ---------------------------------------------------------------- */
+.freshness-strip { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius-md); padding: var(--space-2) var(--space-4); margin-bottom: var(--space-5); font-size: var(--type-annotation); }
+.freshness-pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--color-line); background: var(--color-bg); color: var(--color-ink-soft); white-space: nowrap; }
+
+/* PD-0015 Part 1 — the valuation-time-mode indicator. A distinct, neutral vocabulary
+   (same pill shape as .freshness-pill, not the same class) — this is neither a
+   freshness state nor a comparability flag, and the CONTRACT.md "distinct component
+   per vocabulary" rule applies to this fourth vocabulary too, not just the first
+   three. Neutral, not color-coded: this build only ever names one mode (Historical
+   as-of), so there is nothing here to alert on. */
+.valuation-mode-badge { display: inline-flex; align-items: center; padding: 2px 9px; border-radius: 999px; border: 1px solid var(--color-line); background: var(--color-bg); color: var(--color-ink-soft); font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+.freshness-pill.freshness-live { border-color: var(--color-fresh-live); background: var(--color-fresh-live-bg); color: var(--color-fresh-live); }
+.freshness-pill.freshness-delayed { border-color: var(--color-fresh-delayed); background: var(--color-fresh-delayed-bg); color: var(--color-fresh-delayed); }
+.freshness-pill.freshness-end_of_day { border-color: var(--color-fresh-eod); background: var(--color-fresh-eod-bg); color: var(--color-fresh-eod); }
+.freshness-pill.freshness-stale { border-color: var(--color-fresh-stale); background: var(--color-fresh-stale-bg); color: var(--color-fresh-stale); }
+.freshness-least-note { margin-left: auto; font-weight: 600; color: var(--color-fresh-stale); font-size: 12px; }
+
+/* ---------------------------------------------------------------- */
+/* ACTUAL / SCENARIO (P8) and STAGED / COMMITTED (ingestion) badges   */
+/* ---------------------------------------------------------------- */
+.state-badge { font-size: 10.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+.badge-actual { background: var(--color-accent-soft); color: var(--color-accent-strong); border: 1px solid var(--color-accent); }
+.badge-scenario { background: var(--color-scenario-bg); color: var(--color-scenario); border: 1px solid var(--color-scenario-border); }
+.badge-staged { background: var(--color-staged-bg); color: var(--color-staged); border: 1px solid var(--color-limited-border); }
+.badge-committed { background: var(--color-committed-bg); color: var(--color-committed); border: 1px solid var(--color-fresh-live); }
+
+/* ---------------------------------------------------------------- */
+/* OCR confidence — a vocabulary DISTINCT from metric sufficiency     */
+/* ---------------------------------------------------------------- */
+.confidence-pill { font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: var(--radius-sm); border: 1px solid; white-space: nowrap; }
+.confidence-pill.confidence-high { color: var(--color-confidence-high); background: var(--color-confidence-high-bg); border-color: var(--color-confidence-high); }
+.confidence-pill.confidence-low, .confidence-pill.confidence-low-confidence { color: var(--color-confidence-low); background: var(--color-confidence-low-bg); border-color: var(--color-confidence-low); }
+.confidence-pill.confidence-ambiguous-security { color: var(--color-confidence-ambiguous); background: var(--color-confidence-ambiguous-bg); border-color: var(--color-confidence-ambiguous); }
+.confidence-pill.confidence-missing-field { color: var(--color-confidence-missing); background: var(--color-confidence-missing-bg); border-color: var(--color-confidence-missing); }
+.confidence-pill.confidence-possible-duplicate { color: var(--color-confidence-possible-duplicate); background: var(--color-confidence-possible-duplicate-bg); border-color: var(--color-confidence-possible-duplicate); }
+.confidence-pill.confidence-corrected { color: var(--color-confidence-corrected); background: var(--color-confidence-corrected-bg); border-color: var(--color-confidence-corrected); }
+.confidence-pill.confidence-confirmed { color: var(--color-confidence-confirmed); background: var(--color-confidence-confirmed-bg); border-color: var(--color-confidence-confirmed); }
+
+/* ---------------------------------------------------------------- */
+/* Provenance chip (P1) — inline in AI-authored prose                 */
+/* ---------------------------------------------------------------- */
+.ai-narrative { font-size: var(--text-base); }
+.chip {
+  font-family: var(--font-mono); font-size: 0.95em; background: var(--color-accent-soft);
+  border: 1px solid var(--color-accent); border-radius: 5px; padding: 0 6px; color: var(--color-accent-strong);
+  cursor: pointer; font-weight: 600;
+}
+.chip:hover { background: var(--color-accent); color: #fff; }
+
+/* ---------------------------------------------------------------- */
+/* Insights list                                                     */
+/* ---------------------------------------------------------------- */
+.insights-list { display: flex; flex-direction: column; gap: var(--space-1); }
+.insight-row { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2) 0; border-bottom: 1px solid var(--color-line); font-size: 13px; }
+.insight-row:last-child { border-bottom: none; }
+.insight-glyph { width: 16px; text-align: center; flex: 0 0 16px; }
+.severity-warning .insight-glyph { color: var(--color-severity-warning); }
+.severity-attention .insight-glyph { color: var(--color-severity-attention); }
+.severity-observation .insight-glyph { color: var(--color-severity-observation); }
+.insight-text { flex: 1; }
+.insight-judgment-tag { font-size: 10px; color: var(--color-ink-faint); border: 1px solid var(--color-line); border-radius: 10px; padding: 2px 8px; white-space: nowrap; }
+
+/* ---------------------------------------------------------------- */
+/* Contextual AI affordance                                          */
+/* ---------------------------------------------------------------- */
+.ai-affordance {
+  background: none; border: 1px dashed var(--color-accent); color: var(--color-accent-strong);
+  border-radius: var(--radius-sm); padding: 3px 10px; font-size: 12px; font-weight: 600;
+}
+.ai-affordance:hover { background: var(--color-accent-soft); }
+
+/* ---------------------------------------------------------------- */
+/* Overlays: AI panel, Evidence/Methodology, Settings                */
+/* ---------------------------------------------------------------- */
+.app-overlay {
+  position: fixed; top: 0; right: 0; bottom: 0; width: min(420px, 92vw);
+  background: var(--color-surface); border-left: 1px solid var(--color-line);
+  box-shadow: var(--shadow-raised); z-index: 100; display: flex; flex-direction: column;
+}
+.app-overlay[hidden] { display: none; }
+.app-overlay-head { display: flex; align-items: center; justify-content: space-between; padding: var(--space-4); border-bottom: 1px solid var(--color-line); }
+.app-overlay-body { padding: var(--space-4); overflow-y: auto; flex: 1; }
+.app-overlay-close { background: none; border: none; font-size: 18px; color: var(--color-ink-faint); }
+.evidence-default-banner { font-size: 11.5px; color: var(--color-ink-faint); background: var(--color-bg-recessed); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); margin-bottom: var(--space-3); }
+dl.evidence-fields, dl.methodology-fields { font-size: 12px; }
+dl.evidence-fields dt, dl.methodology-fields dt { font-weight: 700; color: var(--color-ink-soft); margin-top: var(--space-2); text-transform: capitalize; }
+dl.evidence-fields dd, dl.methodology-fields dd { margin: 0; color: var(--color-ink); }
+.methodology-entry { border-top: 1px solid var(--color-line); padding-top: var(--space-3); margin-top: var(--space-3); }
+.methodology-not-published { font-style: italic; color: var(--color-ink-faint); }
+.policy-disclosure { font-size: 13px; background: var(--color-accent-soft); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); }
+
+/* ---------------------------------------------------------------- */
+/* Footer                                                             */
+/* ---------------------------------------------------------------- */
+footer.app-footer { padding: var(--space-4) var(--space-6); border-top: 1px solid var(--color-line); font-size: 11.5px; color: var(--color-ink-faint); text-align: center; }
+footer.app-footer a { color: var(--color-accent-strong); }
+
+/* ---------------------------------------------------------------- */
+/* Chart FAMILIES (HG1 Condition 1A) — max-width caps applied by the   */
+/* family class charts.js now attaches to every chart it draws (see    */
+/* charts.js's familyClass()). An SVG's width:100% (below) means it    */
+/* stretches to fill whatever container it's dropped into; capping    */
+/* max-width at (about) the chart's own authored viewBox size is what  */
+/* stops that stretch — and because chart type lives in the same       */
+/* viewBox user-coordinate space as everything else in the SVG, this   */
+/* is also the fix for "chart labels are disproportionately large":    */
+/* a chart that no longer stretches 2-3x past its authored size no     */
+/* longer scales its own text up 2-3x either. Every family still       */
+/* shrinks gracefully below its cap in a narrower column.               */
+/* ---------------------------------------------------------------- */
+/* HG1 Round 5 (S3) — every family now ALSO carries a min-width (tokens.css has the full
+   derivation of each number). A max-width alone only prevents OVER-stretch; it does
+   nothing when a narrow flex/grid ancestor (S1's still-open layout defects) squeezes
+   the container BELOW the chart's own authored size, which is exactly how the audit's
+   measured 0.469 scale (Overview's Rolling 90-Day Volatility chart, an SVG collapsing
+   toward the browser's ~300px default replaced-element size inside an unsized flex
+   item) and its <9px / ~4.7px chart text arose. The min-width is deliberately allowed
+   to force a visible horizontal overflow or row-reflow in a too-narrow container
+   rather than let the SVG — and every text node inside it, since SVG type lives in the
+   same scaled viewBox unit space — keep shrinking past legibility. See the @media rule
+   near the bottom of this file for the one place (Analytics'/Overview's two-chart
+   rolling+bar rows at <=1180px) this designer found the trade-off worth pre-empting. */
+.chart-family-hero { max-width: var(--chart-hero-max-width); min-width: var(--chart-hero-min-width); }
+.chart-family-analytical { max-width: var(--chart-analytical-max-width); min-width: var(--chart-analytical-min-width); }
+.chart-family-compact { max-width: var(--chart-compact-max-width); min-width: var(--chart-compact-min-width); }
+.chart-family-donut { max-width: var(--chart-donut-max-width); min-width: var(--chart-donut-min-width); }
+.chart-family-bar { max-width: var(--chart-bar-max-width); min-width: var(--chart-bar-min-width); }
+/* New this round (S2 + S3) — charts.js's bar()/pairedBar() now choose this family
+   INSTEAD OF chart-family-bar once their own (possibly S2-grown) viewBox width crosses
+   a threshold, entirely inside charts.js; no caller was edited. See tokens.css's
+   comment on --chart-bar-wide-max-width for why one shared "bar" cap could not fit
+   both the ~320px-default callers and the two 400/420px-explicit callers at once. */
+.chart-family-bar-wide { max-width: var(--chart-bar-wide-max-width); min-width: var(--chart-bar-wide-min-width); }
+.chart-family-scatter { max-width: var(--chart-scatter-max-width); min-width: var(--chart-scatter-min-width); }
+.chart-family-matrix { max-width: var(--chart-matrix-max-width); min-width: var(--chart-matrix-min-width); }
+.chart-family-rolling { max-width: var(--chart-rolling-max-width); min-width: var(--chart-rolling-min-width); }
+
+/* ---------------------------------------------------------------- */
+/* Chart theming (colors read via getComputedStyle in charts.js;      */
+/* structural classes styled here). Every text class below now names   */
+/* an explicit --type-chart-* role token (HG1 Condition 1B) instead of  */
+/* a literal px value, and charts.js itself sets none of these sizes —  */
+/* it only assigns class names. "Do not let chart libraries             */
+/* independently determine type scale": charts.js does not.             */
+/* ---------------------------------------------------------------- */
+/* HG1 Round 5 (S1a) — `margin-inline: auto` is a FLOOR, not the fix (per this
+   designer's brief, echoing the audit): it converts a capped chart's one-sided void
+   (a 380px bar pinned left in a 950px card, per Problem 2) into a SYMMETRIC void
+   instead of removing it. The actual fix — binding the card's own width to its
+   content, per the layout primitive below — requires a markup/call-site change this
+   designer cannot make (js/surfaces/*.js). This alone at least stops asymmetric
+   pinning from being the DEFAULT for every capped chart with no other layout rule
+   reaching it. */
+.chart { display: block; width: 100%; height: auto; margin-inline: auto; font-family: var(--font-sans); }
+.chart-gridline, .chart-axis-zero { stroke: var(--color-chart-grid); stroke-width: 1; }
+.chart-axis-zero { stroke-dasharray: 2 3; }
+.chart-tick { fill: var(--color-ink-faint); font-size: var(--type-chart-axis); font-family: var(--font-mono); }
+.chart-subtitle { fill: var(--color-ink-faint); font-size: var(--type-chart-axis); text-transform: uppercase; letter-spacing: .05em; }
+.chart-line-portfolio { stroke: var(--color-chart-portfolio); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+/* Portfolio vs. benchmark is teal-vs-gray (current state vs. reference), never
+   green-vs-red (HG1 Condition 2: "the benchmark isn't inherently 'bad'"). The dashed
+   stroke on the benchmark line is the NON-COLOR encoding of that same distinction
+   (solid = current state, dashed = reference series) — a reader who cannot perceive the
+   color difference still sees a different line style, per Condition 2's accessibility
+   line. Do not make this line solid; do not give it a directional (green/red) color. */
+.chart-line-benchmark { stroke: var(--color-chart-benchmark); stroke-width: 1.6; stroke-dasharray: 4 3; stroke-linejoin: round; stroke-linecap: round; }
+.chart-area-drawdown { fill: var(--color-chart-drawdown); stroke: none; }
+.chart-swatch { }
+.chart-swatch-portfolio { fill: var(--color-chart-portfolio); }
+.chart-swatch-benchmark { fill: var(--color-chart-benchmark); }
+.chart-legend-label { font-size: var(--type-chart-value-label); fill: var(--color-ink-soft); }
+.chart-sparkline-path { stroke-width: 1.75; }
+.chart-donut-seg-0 { fill: var(--color-accent); }
+.chart-donut-seg-1 { fill: var(--color-gold); }
+.chart-donut-seg-2 { fill: var(--color-ink-faint); }
+.chart-donut-seg-3 { fill: #7d8fd0; }
+.chart-donut-seg-4 { fill: var(--color-scenario); }
+.chart-donut-seg-5 { fill: var(--color-fresh-eod); }
+.chart-donut-center { font-size: var(--type-chart-value-label); fill: var(--color-ink-soft); }
+.chart-bar-label { font-size: var(--type-chart-category-label); fill: var(--color-ink-soft); dominant-baseline: middle; }
+.chart-bar-fill { fill: var(--color-accent); }
+.chart-bar-value { font-size: var(--type-chart-value-label); fill: var(--color-ink); font-family: var(--font-mono); }
+.chart-stack-seg-0 { fill: var(--color-accent); }
+.chart-stack-seg-1 { fill: var(--color-chart-fx); }
+.chart-stack-seg-2 { fill: var(--color-ink-faint); }
+.chart-sml-line { stroke: var(--color-chart-sml-line); stroke-width: 1.5; stroke-dasharray: 3 3; }
+/* SML/CAPM scatter groups: color is portfolio=teal / benchmark=gray / sleeve=gold, same
+   vocabulary as the hero chart, PLUS every point already carries a text label
+   (chart-scatter-label, drawn by charts.js's scatter() for every point) naming which
+   group it is — the accessibility redundancy already existed structurally; nothing new
+   needed here beyond keeping these three fills distinct from the directional
+   green/red pair below. */
+.chart-scatter-point circle { fill: var(--color-ink-faint); stroke: #fff; stroke-width: 1.5; }
+.chart-scatter-portfolio circle { fill: var(--color-accent); }
+.chart-scatter-benchmark circle { fill: var(--color-chart-benchmark); }
+.chart-scatter-sleeve circle { fill: var(--color-gold); }
+.chart-scatter-label { font-size: var(--type-chart-category-label); fill: var(--color-ink-soft); }
+.chart-heatmap-label { font-size: var(--type-chart-category-label); fill: var(--color-ink-soft); }
+/* Correlation sign is a statistical relationship, not a financial verdict — a neutral
+   diverging pair (HG1 Condition 2 fix), not the app's directional green/red. See
+   tokens.css's --color-heatmap-pos/--color-heatmap-neg comment. Each cell's own text
+   value (chart-heatmap-value, below) already states the signed number, so the sign is
+   never color-only. */
+.chart-heatmap-pos { fill: var(--color-heatmap-pos); }
+.chart-heatmap-neg { fill: var(--color-heatmap-neg); }
+.chart-heatmap-value { font-size: var(--type-chart-value-label); fill: var(--color-ink); font-family: var(--font-mono); }
+
+/* ---------------------------------------------------------------- */
+/* HG1 Condition 3 — chart-interpretability pass additions.           */
+/* Legend swatches for the SML scatter's three point groups: legendItem()  */
+/* (charts.js) draws a <rect>, so these target the swatch RECT, distinct   */
+/* from the point-circle rules above (.chart-scatter-portfolio circle etc).*/
+/* ---------------------------------------------------------------- */
+.chart-swatch.chart-scatter-portfolio { fill: var(--color-accent); }
+.chart-swatch.chart-scatter-benchmark { fill: var(--color-chart-benchmark); }
+.chart-swatch.chart-scatter-sleeve { fill: var(--color-gold); }
+
+/* Axis titles — SML/CAPM scatter must clearly identify "x = beta, y =
+   historical annualized return" (HG1 Condition 3), not leave it to unlabeled
+   tick numbers. */
+.chart-axis-title { font-size: var(--type-chart-category-label); fill: var(--color-ink-soft); font-weight: 600; }
+
+/* Historical Jensen alpha as the vertical distance from the portfolio point to
+   the SML line — the chart's single most important annotation this pass adds.
+   Reuses the app's directional green/red vocabulary (HG1 Condition 2) because
+   alpha genuinely is a directional historical result (above/below the line),
+   unlike beta or the line itself. */
+.chart-alpha-connector { stroke: var(--color-ink-faint); stroke-width: 1.25; stroke-dasharray: 2 2; }
+.chart-alpha-label { font-size: var(--type-chart-value-label); font-family: var(--font-mono); font-weight: 700; }
+.chart-alpha-positive { fill: var(--color-positive); }
+.chart-alpha-negative { fill: var(--color-negative); }
+
+/* Hero chart (lineCompare) — end labels, hover crosshair, relative-performance
+   callout. Portfolio stays teal/solid, benchmark stays gray/dashed throughout,
+   matching the existing series vocabulary (HG1 Condition 2) — nothing here
+   introduces a new color, only new places the same two colors appear. */
+.chart-end-dot-portfolio { fill: var(--color-chart-portfolio); stroke: var(--color-surface); stroke-width: 1.5; }
+.chart-end-dot-benchmark { fill: var(--color-chart-benchmark); stroke: var(--color-surface); stroke-width: 1.5; }
+.chart-end-label { font-size: var(--type-chart-value-label); font-family: var(--font-mono); }
+.chart-end-label-portfolio { fill: var(--color-chart-portfolio); font-weight: 700; }
+.chart-end-label-benchmark { fill: var(--color-chart-benchmark); }
+.chart-relative-callout { font-size: var(--type-chart-value-label); font-family: var(--font-mono); font-weight: 600; }
+.chart-relative-positive { fill: var(--color-positive); }
+.chart-relative-negative { fill: var(--color-negative); }
+.chart-hover-hitarea { cursor: crosshair; }
+.chart-hover-line { stroke: var(--color-ink-faint); stroke-width: 1; stroke-dasharray: 2 2; pointer-events: none; }
+.chart-hover-dot-portfolio { fill: var(--color-chart-portfolio); stroke: var(--color-surface); stroke-width: 1.5; pointer-events: none; }
+.chart-hover-dot-benchmark { fill: var(--color-chart-benchmark); stroke: var(--color-surface); stroke-width: 1.5; pointer-events: none; }
+.chart-hover-box { fill: var(--color-surface); stroke: var(--color-line-strong); fill-opacity: 0.97; pointer-events: none; }
+.chart-hover-text { font-size: var(--type-chart-value-label); fill: var(--color-ink-soft); font-family: var(--font-mono); pointer-events: none; }
+.chart-hover-text-title { fill: var(--color-ink); font-weight: 700; font-family: var(--font-sans); }
+.chart-hover-text-diff { fill: var(--color-ink); font-weight: 600; }
+
+/* Underwater drawdown chart — trough marker (the deepest point, named
+   explicitly rather than left to be read off the axis by eye). */
+.chart-drawdown-trough-dot { fill: var(--color-danger); stroke: var(--color-surface); stroke-width: 1.25; }
+.chart-drawdown-trough-label { fill: var(--color-danger); font-weight: 700; font-family: var(--font-sans); }
+
+/* Capital weight vs. risk contribution paired bar (HG1 Condition 3's
+   "eventually" item, built this pass since the data already exists). Weight
+   is a neutral fact (same ink-faint tone family used for the benchmark line
+   and other non-directional reference figures); risk contribution is the
+   headline analytical figure this block exists to show, in the app's accent
+   color. Neither is the app's directional green/red vocabulary — a capital
+   weight or a risk-contribution share is not itself a gain or a loss. */
+.chart-pair-seg-a { fill: var(--color-ink-faint); }
+.chart-pair-seg-b { fill: var(--color-accent); }
+.chart-bar-insufficient { fill: none; stroke: var(--color-insufficient-border); stroke-width: 1; stroke-dasharray: 3 2; }
+.chart-bar-insufficient-label { font-size: var(--type-chart-value-label); fill: var(--color-insufficient); font-style: italic; font-family: var(--font-sans); }
+
+/* ---------------------------------------------------------------- */
+/* Generic table (Holdings / Transactions / Import review use this)  */
+/* HG1 Condition 1C — strict column grid: a numeric column's header    */
+/* now carries the SAME .num class as its data cells (th.num below)    */
+/* so the label sits right-aligned directly over its own numbers —     */
+/* the previous rule only right-aligned <td>, leaving every numeric    */
+/* column's heading flush left of the values beneath it, which is      */
+/* exactly the "numbers do not always align cleanly under their        */
+/* intended columns" defect the owner named. font-variant-numeric is   */
+/* now explicit (not just implied by the monospace font) per the       */
+/* owner's literal instruction to use tabular numerals.                 */
+/* ---------------------------------------------------------------- */
+table.data-table { width: 100%; border-collapse: collapse; font-size: var(--type-table-cell); }
+table.data-table th {
+  text-align: left; font-size: var(--type-secondary-metadata); color: var(--color-ink-faint);
+  text-transform: uppercase; letter-spacing: .05em; padding: var(--space-2) var(--space-2);
+  border-bottom: 1px solid var(--color-line-strong);
+}
+table.data-table th.num { text-align: right; }
+table.data-table td { padding: var(--space-2); border-bottom: 1px solid var(--color-line); vertical-align: top; }
+table.data-table td.num {
+  text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+  /* HG1 ux_planning revision (review-06, B4) — a numeric cell is always a single
+     token (a formatted number, or a short fallback label like "不适用"/"N/A" when the
+     value is not applicable); it should never wrap, in either language. Previously
+     unset, so a narrow auto-layout column could still break a short CJK fallback
+     label one character per line (Transactions' Quantity column, "不适用" -> "不适/用"). */
+  white-space: nowrap;
+}
+/* A short, right-aligned placeholder for a numeric cell whose value is not provided
+   (e.g. Holdings' Avg Cost for an in-kind-transferred position) — keeps the column's
+   scannability intact instead of a long sentence breaking the right-aligned rhythm.
+   The full explanation still exists, via the cell's title attribute. This is NOT the
+   claim-object INSUFFICIENT_DATA component (P5) — it is a raw ledger field with no
+   claim behind it — so it deliberately does not borrow .metric-insufficient-label's
+   markup, only its "short label + no numeral" spirit. */
+table.data-table td.num-placeholder { color: var(--color-ink-faint); font-style: italic; font-family: var(--font-sans); font-variant-numeric: normal; }
+/* Fix (post-Checkpoint-A round-3 review), found while correcting Holdings' Unrealized
+   G/L cell (js/surfaces/portfolio.js's claimNumCell): APP.ui.renderMetricValue's own
+   `.metric-number` span (js/shell.js) is styled for stat-card/metric-strip contexts —
+   --type-metric-number, this build's LARGEST numeral size — with no awareness of
+   whether it has been mounted inside a dense data-table row. Any claim rendered
+   directly into a table cell (Holdings' Unrealized G/L; Transactions' Reporting-
+   Currency Conversion claim, when present) would otherwise render its numeral at that
+   stat-card size — visibly out of scale with every plain-formatted numeral beside it
+   in the same row, which follow the table's own --type-table-cell token. This scoped
+   override brings a table-mounted claim's numeral back down to the table's own type
+   role (HG1 Condition 1B: "do not allow [a component] to invent its own type
+   hierarchy," applied here to the shared claim renderer the same way it was already
+   applied to charts.js) while keeping its bold weight, so a directional claim's
+   numeral reads as part of the same row, not a different scale, than the cells around
+   it. */
+table.data-table .metric-number { font-size: var(--type-table-cell); font-weight: 600; }
+/* Fix (post-Checkpoint-A round-3 review, second follow-up): Holdings renders one
+   <table> per account, and the browser's default (auto) table-layout sizes each
+   table's columns from ITS OWN content only — so four independently laid-out tables
+   resolved to four slightly different column-edge positions (a measured 17px spread on
+   the Unrealized G/L column's right edge alone) even after every column WITHIN each
+   table aligned perfectly. Scoped to `.holdings-ledger-table` only — not
+   `table.data-table` generally, which would also reach Accounts & Cash and
+   Transactions (single tables with a different column count that never had this
+   cross-table problem; leaving them on the browser's normal auto layout is correct,
+   not an oversight). `table-layout: fixed` makes the browser honor the percentage
+   widths on the shared <colgroup> (js/surfaces/portfolio.js's HOLDINGS_COLS/
+   holdingsColgroup()) instead of each table recomputing its own widths from its own
+   content — so every account's ledger table, regardless of which holdings it lists,
+   resolves to the SAME track widths and its columns line up with every other
+   account's table stacked above and below it. */
+table.holdings-ledger-table { table-layout: fixed; }
+/* HG1 ux_planning revision (review-06, B4) — same fix, same reasoning, applied to the
+   Transactions table (js/surfaces/portfolio.js's TRANSACTIONS_COLS/
+   transactionsColgroup()): `table-layout: fixed` + an explicit percentage `<colgroup>`
+   gives every column a guaranteed share of the table's own 100%-of-card width, instead
+   of the browser's `auto` layout asymmetrically starving short CJK columns (whose
+   min-content is one glyph) to protect long English/Chinese free-text columns. See
+   that file's own comment on TRANSACTIONS_COLS for the full account, including why
+   this is also the fix for unused horizontal space at wide viewports. Scoped to this
+   one table — Accounts & Cash keeps the browser's normal auto layout, unchanged. */
+table.transactions-ledger-table { table-layout: fixed; }
+
+/* [Post-HG1 Checkpoint A — D1, designer-33.] `.metric-reason` (js/shell.js's
+   renderMetricValue — the sentence-length INSUFFICIENT_DATA/LIMITED reason
+   rendered inline beside a claim's compact value) can be mounted inside this
+   table's own numeric cell (td.num) — e.g. Holdings' Unrealized G/L column,
+   and Overview's major-holdings table, which renders the same claim through
+   the same renderMetricValue/td.num path (overview.js). `table.data-table
+   td.num`'s `white-space: nowrap` above (review-06 B4) was written on the
+   premise that "a numeric cell is always a single token" (a formatted number,
+   or a short fallback label); a full-sentence reason is not that token, and
+   forced onto one unbroken line it overflows the cell and the table's own
+   fixed-width column, is clipped at the card edge, and is only reachable by
+   horizontal scroll — which also pushes the SECURITY column out of view
+   (Post-HG1 Checkpoint A Stage-0 baseline §2). This rule restores normal
+   wrapping for `.metric-reason` ONLY: it does not touch `td.num`'s own
+   nowrap rule (a short numeral or short fallback label, e.g. "不适用"/"N/A",
+   stays exactly the single-line token it is today), does not touch column
+   widths or the shared `<colgroup>`, and does not touch `renderMetricValue`
+   itself — the caveat is never hidden or shortened to fit, only wrapped.
+   `.metric-reason`'s parent (`.metric-unit`, `display: inline-flex;
+   flex-wrap: wrap`) sizes each flex item to its own max-content width by
+   default, which is what let the sentence grow past the cell in the first
+   place; `min-width: 0` plus `flex-basis: 100%` let it shrink and wrap to
+   the flex container's own available width instead (the chip already sits
+   on its own line above the reason, matching the baseline's observed
+   layout — only the sentence's own internal wrapping was missing).
+   Left-aligned because a wrapped multi-line sentence read right-aligned
+   (inherited from td.num) produces a ragged, harder-to-read left edge; the
+   numeral and chip keep their own existing alignment untouched. */
+table.data-table td.num .metric-reason {
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+  text-align: left;
+  min-width: 0;
+  flex-basis: 100%;
+}
+
+/* [Post-HG1 Checkpoint A correction round 3 — F-1, designer-35.] The LIMITED-state
+   sibling of the fix immediately above, for a DIFFERENT element and a DIFFERENT bug.
+   `.metric-reason` is the sentence-length INSUFFICIENT_DATA/LIMITED *reason* — a full
+   clause that legitimately wants its own full-width line, which is why the rule above
+   correctly forces it there with `flex-basis: 100%`. `.metric-qualifier` (js/shell.js's
+   renderMetricValue, LIMITED branch) is a different thing: the mandatory, non-dismissible
+   D3.2-row-3 qualifier pill — short compact text, rendered as a bordered chip that must
+   stay visually part of the SAME unit as its numeral, not a detached block. It inherited
+   `white-space: nowrap` from `table.data-table td.num` (review-06 B4) with no rule of its
+   own to override that, so for a long qualifierShort string — e.g. 601318.SS's EN "limited
+   · thinly traded; price prints sparse" / ZH "有限 · 交易稀少,价格数据零散" — the pill could
+   not wrap and, as a flex item of `.metric-unit` (`display: inline-flex; flex-wrap: wrap`),
+   its automatic min-width stayed pinned to that unbroken string's own max-content width
+   even after wrapping to its own flex line, so it kept its full unwrapped width and spilled
+   out of the fixed-width `td.num` cell into the next column (Freshness).
+   Deliberately NOT `flex-basis: 100%` (unlike `.metric-reason` above): forcing the pill
+   full-width would stretch a compact chip across the whole cell width and read as a
+   detached full-width block sitting under the numeral, which is exactly the visual
+   regression this fix must not introduce — the qualifier is meant to sit beside the
+   numeral when there is room, or wrap to its own line as a same-size chip when there is
+   not, never to become a banner. `white-space: normal` is the smallest change that fixes
+   the actual defect: it lets the pill's own text wrap onto multiple lines inside its own
+   border/padding instead of forcing one unbroken line. `overflow-wrap: break-word` is a
+   safety net for a single token that alone exceeds the available width (matches the
+   `.metric-reason` rule's own reasoning; ZH text does not need it to wrap — CJK line-
+   breaking is permitted between characters under `word-break: normal` by default — but EN
+   qualifier text does rely on breaking at the existing spaces/middot, which `white-space:
+   normal` alone already restores). `min-width: 0` overrides the flex item's default
+   `min-width: auto`, so once wrapping is possible the pill can actually shrink down to
+   (rather than stay pinned above) the available space instead of merely being ALLOWED to
+   wrap in principle. `max-width: 100%` is an explicit belt-and-suspenders cap so the pill
+   can never exceed its flex container's own available width even under an edge case this
+   review did not enumerate. Scoped identically to the rule above (`table.data-table
+   td.num`) — this never touches `.metric-qualifier` where it is mounted elsewhere (stat
+   cards, metric strips), which have generous width and no overflow defect to fix; does not
+   touch `td.num`'s own nowrap rule, column widths, the shared `<colgroup>`, or
+   `renderMetricValue` itself; does not shorten, truncate, or hide any qualifier text. */
+table.data-table td.num .metric-qualifier {
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ---------------------------------------------------------------- */
+/* Analytics surface (js/surfaces/analytics.js) — Direction B graft.  */
+/* Phase-2 authors could not write this file (styles/ was closed to  */
+/* them, per CONTRACT.md §0); these classes had no rules until this  */
+/* integration pass. Added by designer-14.                           */
+/*                                                                    */
+/* Several class names below are pure taxonomic wrappers combined    */
+/* with .block on the same element (e.g. "block analytics-sml") —    */
+/* .block/.analytical-surface already supply their card styling, so  */
+/* no separate rule is added for: .analytics-surface, .analytics-    */
+/* intro, .analytics-performance, .analytics-risk-grid, .analytics-  */
+/* rolling, .analytics-sml, .analytics-exposure, .analytics-          */
+/* correlation, .analytics-contribution, .analytics-ai. Adding an     */
+/* empty ruleset for those would not close any visual gap.           */
+/* ---------------------------------------------------------------- */
+.block-lead { color: var(--color-ink-soft); font-size: var(--text-base); margin: 0; }
+.block-sub { margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--color-line); }
+.block-subheading { font-size: var(--text-sm); font-weight: 700; color: var(--color-ink-soft); text-transform: uppercase; letter-spacing: .04em; margin: 0 0 var(--space-2); }
+
+.chart-range-selector { display: flex; gap: 3px; margin-bottom: var(--space-3); flex-wrap: wrap; }
+.range-pill {
+  font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: var(--radius-sm);
+  color: var(--color-ink-faint); border: 1px solid var(--color-line-strong); background: none;
+}
+.range-pill:hover { background: var(--color-accent-soft); }
+.range-pill-active { background: var(--color-accent); color: #fff; border-color: var(--color-accent); }
+
+.analytics-hero-chart-wrap { margin-bottom: var(--space-4); }
+
+/* HG1 Round 5 (S1d) — `.metric-strip`'s own children (`.metric-cell`/`.metric-cell-
+   button`, from js/surfaces/analytics.js's focusableMetricCell) previously had no
+   `flex` rule of their own, so a flex row with `flex-wrap: wrap` and no per-child
+   sizing content-sizes and LEFT-PACKS each cell, dumping the remainder as a single
+   void on the right (measured: hero stats ending at ~x610 of 950 -> ~340px void).
+   `flex: 1 1 200px` makes each cell grow to share the row's full width instead. */
+.metric-strip { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-3); }
+.metric-strip > .metric-cell,
+.metric-strip > .metric-cell-button { flex: 1 1 200px; min-width: 0; }
+/* HG1 Round 5 (S1c) — `auto-fill` -> `auto-fit`, the confirmed fix (PM-verified worse
+   than the audit's own estimate: all four `.metric-grid`s on #/analytics resolved to
+   5 tracks x 180px in a 950px container holding 1/3/2/2 children -> 4/2/3/3
+   PERMANENTLY EMPTY tracks, one row a single 180px card with 720px of dead width).
+   `auto-fill` reserves a track for every column THAT COULD FIT even with nothing to
+   put in it; `auto-fit` collapses an empty repetition to 0 and hands its width to the
+   `1fr` tracks that DO hold content, so a short group's card(s) grow to fill the row
+   instead of being stranded beside dead space (AC-S1.2: no grid may have an
+   unoccupied track in any row — auto-fit satisfies this by construction, it cannot
+   create a track with nothing in it). */
+.metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-3); }
+
+/* ============================================================
+   LAYOUT PRIMITIVE (HG1 Round 5, S1) — CONTRACT FOR PHASE 2
+   ============================================================
+   Defined here so Phase 2 can adopt it at call sites (js/surfaces/*.js,
+   js/shell.js's row() helper) WITHOUT this designer editing those files — per this
+   round's write-scope boundary, this designer defines the primitive; Phase 2 wires it
+   in. Two classes, one shared mental model with .metric-grid above (an existing,
+   independently-fixed grid) but named separately because THIS pair is new and
+   intended to eventually replace every ad-hoc row class this build accumulated —
+   .metric-strip (above), .analytics-chart-row, .analytics-sml-row, .analytics-
+   exposure-dual, .scenario-allocation-row, .scenario-compare-row, and overview.js's
+   own inline-styled row() (S1 item b) — the audit's "seven ad-hoc row classes."
+   Migrating any of those to alias or call this primitive is Phase 2's decision, not
+   mandated by this pass; the CONTRACT below is what must hold if/when they do.
+
+   .layout-row[data-cols]
+     display:flex; flex-wrap:wrap; gap:var(--space-5) (a caller may narrow this with
+     an inline `--row-gap` custom property — not yet wired to a rule here, reserved).
+     ANY `data-cols` attribute (its value is not read by CSS; only its PRESENCE
+     matters) switches children from the default `flex:1 1 240px` (content-width-ish,
+     wraps gracefully with no caller math) to `flex:1 1 0` — an EQUAL-division row,
+     for when a caller already knows it has exactly N same-weight children and wants
+     them to divide the row evenly rather than each claim only its own content width.
+     A child that must NOT stretch to its equal share (a chart card whose own content
+     should cap it, e.g. a 340px "bar" family chart in an otherwise-equal-division
+     row) sets `flex: 0 0 auto` (or its own explicit basis) ON ITSELF — this is the
+     literal reading of "bind card width to content class, not to the column": the ROW
+     supplies the distribution rule, the CHILD's own content class decides how much of
+     it that child actually claims. Do not centre a chart inside an equal-division
+     column instead of giving the column the chart's own width — centring a 380px
+     chart in a 475px column still wastes 95px on each side AND breaks the column's
+     alignment with its own text/caption below it (this designer's brief, "centring is
+     not the fix for most of these").
+
+   .layout-grid[data-min]
+     display:grid; grid-template-columns:repeat(auto-fit, minmax(var(--data-min-px,
+     180px), 1fr)); gap:var(--space-3). Same auto-fit reasoning as .metric-grid above,
+     generalised: NEVER auto-fill here, for the identical reason.
+     `--data-min-px` (a caller-set custom property, e.g. inline `style="--data-min-px:
+     220px"`) parameterises the per-card minimum instead of a second hardcoded grid
+     rule for a different minimum — one rule, one number to change.
+     `data-cols="2|3|4"` (value IS read, via the attribute-selector rules below)
+     overrides auto-fit's content-derived column count for a group whose size is
+     known in advance and should NOT reflow as it's items change over time — e.g. a
+     view that always renders exactly 3 cards should ask for exactly 3 equal columns,
+     not "however many 180px tracks happen to fit."
+
+   Binding rule for BOTH: a card whose content is a single chart binds its OWN width
+   via the chart's family class (app.css's .chart-family-*, each with a min AND a
+   max-width now — S3), never via the row/grid's column math; give it that chart's
+   family width as its flex-basis / grid min, not the other way around. A card whose
+   content is a table is full-measure (no flex-basis cap at all — let it take the row).
+   ============================================================ */
+.layout-row { display: flex; flex-wrap: wrap; gap: var(--space-5); align-items: flex-start; }
+.layout-row > * { flex: 1 1 240px; min-width: 0; }
+.layout-row[data-cols] > * { flex: 1 1 0; min-width: 0; }
+.layout-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--data-min-px, 180px), 1fr));
+  gap: var(--space-3);
+}
+.layout-grid[data-cols="2"] { grid-template-columns: repeat(2, minmax(var(--data-min-px, 180px), 1fr)); }
+.layout-grid[data-cols="3"] { grid-template-columns: repeat(3, minmax(var(--data-min-px, 180px), 1fr)); }
+.layout-grid[data-cols="4"] { grid-template-columns: repeat(4, minmax(var(--data-min-px, 180px), 1fr)); }
+
+/* HG1 Round 5 correction pass (Objective 3 — content-sensitive card sizing; the
+   owner's own decision: "centering alone is not sufficient where content still
+   occupies an obviously tiny fraction of a full-width card"). This is the gap
+   Phase 1/2 left open, named explicitly in HG1_ROUND5_PHASE2_VERIFICATION.md §5:
+   `.layout-row`'s default child rule two blocks up (`flex: 1 1 240px`) makes a LONE
+   child grow to the row's entire width, so a compact chart's own `margin-inline:
+   auto` (the `.chart` base rule, Phase 1) centres it INSIDE an oversized box rather
+   than binding the box. Measured worst case: a 150px donut in a 1310px block —
+   11% fill, balanced only in the sense that the empty 89% was split evenly on
+   each side of the donut, not in the sense the owner meant.
+   `.compact-chart-card` binds the WHOLE compact cluster (chart + legend + a short
+   caption, not just the SVG) to a caller-tunable bound and centres THAT, so the
+   residual becomes a genuine page/card-level margin — the pattern the owner did
+   accept (P8_2.png's symmetric page margins) — instead of empty space stranded
+   inside an oversized card. `width: 100%` + `flex-basis` (rather than a bare
+   `max-width` alone) is required specifically to opt OUT of `.layout-row`'s
+   flex-grow — a `max-width` alone does not stop a `flex: 1 1 240px` child from
+   growing past it before the browser applies the cap, which would still consume
+   the row's width, it would just clip the overflow rather than never claiming it.
+   Default bound (420px) comfortably covers `--chart-donut-max-width` (150px) plus
+   its legend column; a caller with a wider compact cluster may override via the
+   `--compact-card-max-width` custom property rather than a second class.
+   For TWO OR MORE compact visuals that belong side by side, prefer
+   `.layout-row[data-cols]` instead (each child already gets an equal share there) —
+   this class is specifically for the case that primitive does not solve: a single
+   compact visual with nothing else in its row to tile beside. */
+.compact-chart-card {
+  flex: 0 1 var(--compact-card-max-width, 420px);
+  max-width: var(--compact-card-max-width, 420px);
+  width: 100%;
+  margin-inline: auto;
+}
+.metric-cell { display: flex; flex-direction: column; gap: 4px; text-align: left; }
+.metric-cell-button {
+  cursor: pointer; font: inherit; color: inherit; width: 100%;
+  transition: box-shadow .12s ease, border-color .12s ease;
+}
+.metric-cell-button:hover { border-color: var(--color-accent); box-shadow: var(--shadow-raised); }
+.metric-cell-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--color-ink-faint); }
+.metric-cell-value { margin-top: 2px; }
+.metric-cell-conclusion { font-size: 12px; color: var(--color-ink-soft); margin: 2px 0 0; }
+
+.link-button {
+  display: inline-block; background: none; border: none; padding: 0; margin-top: var(--space-2);
+  color: var(--color-accent-strong); font-weight: 600; font-size: 13px;
+  text-decoration: underline; text-underline-offset: 2px;
+}
+.link-button:hover { color: var(--color-accent); }
+
+/* HG1 M3 fix — `.module-gate`/`.module-gate-collapsed`/`.module-gate-open`
+   (js/shell.js's ctx.ui.renderModule, HG1 Round 5 S5) had NO rule anywhere in this
+   file: a grep for "module-gate" across styles/ returned nothing. A collapsed module
+   therefore rendered as a bare, unstyled native <details> — the browser's own
+   disclosure triangle plus a `.link-button`-styled summary — floating inside the
+   surrounding `.block`'s full bordered, shadowed card (`.block, .card` above), which
+   reads as disproportionate: a whole card-sized frame around one small link.
+   `.module-gate-open` is a plain visible-content wrapper (a module that IS showing
+   should look like ordinary block content, not a second nested card) and gets no box
+   treatment. `.module-gate-collapsed` is styled as its own deliberate, self-contained
+   affordance row instead: a subtly recessed background and border so the "click to
+   reveal more" invitation reads as intentional, a generous click target across the
+   full row (not just the underlined text), and a CSS-drawn chevron — the native
+   marker is hidden and replaced because `::-webkit-details-marker`/`::marker` render
+   at inconsistent sizes across engines, which is the same "unstyled native control"
+   problem this whole rule exists to fix. Nothing here changes `.link-button`'s own
+   color/weight/underline (still supplies those); only structural affordance styling
+   is added at the higher specificity of the `.module-gate-collapsed > summary`
+   selector. */
+.module-gate-open { margin-top: var(--space-2); }
+.module-gate-collapsed {
+  margin-top: var(--space-2);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-recessed);
+}
+.module-gate-collapsed > summary {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-3) var(--space-4); margin-top: 0;
+  cursor: pointer;
+}
+.module-gate-collapsed > summary::-webkit-details-marker { display: none; }
+.module-gate-collapsed > summary::marker { content: ""; }
+.module-gate-collapsed > summary::before {
+  content: ""; flex: 0 0 auto; width: 0; height: 0;
+  border-style: solid; border-width: 5px 0 5px 6px;
+  border-color: transparent transparent transparent var(--color-ink-faint);
+  transition: transform .12s ease;
+}
+.module-gate-collapsed[open] > summary::before { transform: rotate(90deg); }
+.module-gate-collapsed > summary:hover::before { border-left-color: var(--color-accent); }
+.module-gate-collapsed > div { padding: var(--space-3) var(--space-4) var(--space-4); }
+
+.analytics-attribution { margin-top: var(--space-4); }
+.analytics-unsupported-note { margin-top: var(--space-3); }
+.analytics-chart-row { display: flex; flex-wrap: wrap; gap: var(--space-5); }
+.analytics-chart-cell { flex: 1 1 280px; min-width: 240px; }
+
+.analytics-sml-row { display: flex; flex-wrap: wrap; gap: var(--space-5); align-items: flex-start; margin-top: var(--space-3); }
+.analytics-sml-side { display: flex; flex-direction: column; gap: var(--space-3); flex: 0 0 200px; }
+
+.analytics-exposure-dual { display: flex; flex-wrap: wrap; gap: var(--space-6); margin-bottom: var(--space-4); }
+.analytics-exposure-col { flex: 1 1 260px; min-width: 220px; }
+
+.contribution-list { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-3); }
+.contribution-row { border-top: 1px solid var(--color-line); padding-top: var(--space-2); }
+.contribution-row:first-child { border-top: none; padding-top: 0; }
+
+/* ---------------------------------------------------------------- */
+/* Scenario Lab (js/surfaces/scenario.js) — P8: the ACTUAL/SCENARIO   */
+/* separation must be visually unmistakable at every comparison row,  */
+/* not just declared once at the top. None of these classes had any   */
+/* rule before this integration pass; Scenario Lab rendered as        */
+/* unstyled stacked text. Added by designer-14.                       */
+/* ---------------------------------------------------------------- */
+.scenario-legend { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-3); }
+.scenario-legend-text { font-size: 12.5px; color: var(--color-ink-soft); }
+
+.scenario-selector { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-5); }
+.scenario-selector-tab {
+  background: var(--color-surface); border: 1px solid var(--color-line-strong); color: var(--color-ink-soft);
+  border-radius: 999px; padding: var(--space-2) var(--space-4); font-size: 13px; font-weight: 600;
+}
+.scenario-selector-tab:hover { background: var(--color-accent-soft); }
+.scenario-selector-tab-active { background: var(--color-accent); color: #fff; border-color: var(--color-accent); }
+
+.scenario-warning { margin-top: var(--space-2); }
+.scenario-modifications-label { font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--color-ink-faint); margin-top: var(--space-3); }
+.scenario-modification-line { font-size: 13px; color: var(--color-ink-soft); font-family: var(--font-mono); margin: 2px 0 0; }
+
+.scenario-allocation-row { display: flex; flex-wrap: wrap; gap: var(--space-6); }
+.scenario-allocation-col {
+  flex: 1 1 220px; display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2);
+  padding: var(--space-4); border-radius: var(--radius-md);
+}
+.scenario-allocation-actual { background: var(--color-accent-soft); border: 1px solid var(--color-accent); }
+.scenario-allocation-scenario { background: var(--color-scenario-bg); border: 1px solid var(--color-scenario-border); }
+.scenario-allocation-chart { align-self: center; }
+
+.scenario-compare-row {
+  display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: stretch;
+  margin-bottom: var(--space-3); border-bottom: 1px solid var(--color-line); padding-bottom: var(--space-3);
+}
+.scenario-compare-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.scenario-compare-label { flex: 0 0 180px; font-weight: 700; font-size: 13.5px; align-self: center; }
+.scenario-compare-cell { flex: 1 1 200px; display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-3); border-radius: var(--radius-md); }
+.scenario-compare-actual { background: var(--color-accent-soft); border: 1px solid var(--color-accent); }
+.scenario-compare-scenario { background: var(--color-scenario-bg); border: 1px solid var(--color-scenario-border); }
+.scenario-compare-value { margin: 2px 0; }
+
+.scenario-expand-actual {
+  background: none; border: 1px solid var(--color-line-strong); color: var(--color-accent-strong);
+  border-radius: var(--radius-sm); padding: var(--space-2) var(--space-4); font-size: 13px; font-weight: 600;
+  margin-top: var(--space-2);
+}
+.scenario-expand-actual:hover { background: var(--color-accent-soft); }
+.scenario-expand-mount { margin-top: var(--space-3); }
+.scenario-ai-affordance { margin-top: var(--space-2); }
+/* .scenario-lab-page, .scenario-lab-intro, .scenario-description-block,
+   .scenario-risk-block, .scenario-concentration-block, .scenario-metric-block
+   are taxonomic wrappers combined with .block — no separate rule needed. */
+
+/* ---------------------------------------------------------------- */
+/* AI Analyst panel body (js/ai.js), mounted inside                  */
+/* .app-overlay#app-ai-overlay. Unstyled before this integration pass.*/
+/* ---------------------------------------------------------------- */
+.ai-panel { display: flex; flex-direction: column; gap: var(--space-3); }
+.ai-context-label { font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-accent-strong); margin: 0; }
+.ai-disclaimer { font-size: 11.5px; margin: 0; }
+.ai-thread { display: flex; flex-direction: column; gap: var(--space-4); }
+.ai-message { background: var(--color-bg-recessed); border: 1px solid var(--color-line); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); }
+.ai-message .ai-narrative { margin: 0 0 var(--space-2); }
+.ai-message .ai-narrative:last-child { margin-bottom: 0; }
+.ai-cited-freshness { margin: var(--space-1) 0; }
+.ai-cited-evidence { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
+.ai-cited-claim { margin-top: var(--space-3); }
+.ai-cited-insights { margin-top: var(--space-2); }
+.ai-suggestions { border-top: 1px solid var(--color-line); padding-top: var(--space-3); }
+.ai-suggestions-label { font-size: var(--text-xs); font-weight: 700; color: var(--color-ink-faint); text-transform: uppercase; letter-spacing: .04em; margin: 0 0 var(--space-2); }
+.ai-suggestion-btn {
+  display: block; width: 100%; text-align: left; background: none; border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); margin-bottom: var(--space-2);
+  font-size: 13px; color: var(--color-ink);
+}
+.ai-suggestion-btn:hover { background: var(--color-accent-soft); border-color: var(--color-accent); }
+
+/* Selector/ordinal digit inside AI narrative (e.g. "top 5 holdings") — the
+   explicit, auditable exception to "every digit is a chip," per PD-0008's own
+   ruling that a selector digit asserts nothing falsifiable about the
+   portfolio. See CONTRACT.md §6A and APP.ui.selectorHTML in shell.js. Plain
+   text visually (no chip affordance — it is not clickable evidence), so a
+   reader is never invited to click it expecting a Proof Packet. */
+.numeral-selector { color: inherit; }
+
+/* ---------------------------------------------------------------- */
+/* Evidence & Methodology overlay body (js/evidence.js), mounted      */
+/* inside .app-overlay#app-evidence-overlay. Unstyled before this     */
+/* integration pass.                                                  */
+/* ---------------------------------------------------------------- */
+.evidence-panel { display: flex; flex-direction: column; gap: var(--space-2); }
+.evidence-path-breadcrumb { font-size: 11px; letter-spacing: .03em; margin: 0 0 var(--space-3); }
+.evidence-fields-group-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-ink-faint); margin: var(--space-3) 0 var(--space-1); }
+.evidence-timestamp-list { margin: 0; padding-left: 18px; font-size: 11.5px; color: var(--color-ink-soft); }
+.evidence-registry-browse { display: flex; flex-direction: column; gap: var(--space-1); }
+.evidence-registry-item { border-bottom: 1px solid var(--color-line); padding: var(--space-2) 0; }
+.evidence-registry-item summary { cursor: pointer; font-weight: 600; font-size: 13px; color: var(--color-accent-strong); }
+/* .evidence-keynumber, .evidence-explanation, .evidence-proof-packet, .evidence-methodology,
+   .evidence-fact-fallback, .evidence-scenario-fallback, .evidence-not-found are built via
+   evidence.js's own block(className) helper, which always prefixes the shared .block class
+   — card styling already applies; no separate rule needed. */
+
+/* ---------------------------------------------------------------- */
+/* Small helpers                                                     */
+/* ---------------------------------------------------------------- */
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.text-faint { color: var(--color-ink-faint); }
+.mt-0 { margin-top: 0; }
+
+/* ---------------------------------------------------------------- */
+/* HG1 round-4 — accessibility (§23, WCAG 2.2 AA target)              */
+/* Visible focus indicator on every interactive element in this build. */
+/* `:focus-visible` (not a bare `:focus`) so a mouse click does not     */
+/* leave a ring behind, only keyboard/AT navigation does — this was    */
+/* entirely absent before this pass; every interactive element relied  */
+/* on whatever the browser's own UA default happened to be.            */
+/* ---------------------------------------------------------------- */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible,
+textarea:focus-visible, [tabindex]:focus-visible, summary:focus-visible {
+  outline: 2.5px solid var(--color-accent-strong);
+  outline-offset: 2px;
+}
+/* Chip/badge/pill controls sit on tinted backgrounds where a thin outline can lose
+   contrast against their own border color — a visible ring plus a shadow, so focus is
+   never ambiguous regardless of the control's own background. */
+.chip:focus-visible, .depth-pill:focus-visible, .range-pill:focus-visible,
+.nav-tab:focus-visible, .subnav-tab:focus-visible {
+  outline: 2.5px solid var(--color-accent-strong);
+  outline-offset: 1px;
+  box-shadow: 0 0 0 4px var(--color-accent-soft);
+}
+
+/* ---------------------------------------------------------------- */
+/* HG1 round-4 — Settings overlay controls (feedback log §14/§15,       */
+/* PD-0012 §1/§3/§4). Previously the Settings overlay had no form-       */
+/* control styling at all beyond generic <p>/<h4> — every field below    */
+/* now shares one small, token-driven vocabulary rather than four        */
+/* independently-styled controls.                                        */
+/* ---------------------------------------------------------------- */
+.settings-field { margin-bottom: var(--space-5); max-width: 420px; }
+.settings-field-label {
+  display: block; font-size: var(--text-xs); font-weight: 700; color: var(--color-ink-soft);
+  text-transform: uppercase; letter-spacing: .04em; margin-bottom: var(--space-1);
+}
+.settings-field-note { font-size: 11.5px; color: var(--color-ink-faint); margin: var(--space-1) 0 0; }
+.settings-select, .settings-number-input {
+  padding: var(--space-2) var(--space-3); border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-sm); font-size: var(--text-sm); font-family: inherit;
+  background: var(--color-surface); color: var(--color-ink); width: 100%; max-width: 320px;
+}
+.settings-radio-group { display: flex; flex-direction: column; gap: var(--space-2); }
+.settings-radio-row { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm); }
+
+/* ---------------------------------------------------------------- */
+/* PD-0012 §4 — gain/loss color convention is user-selectable, defaulting */
+/* to green-up/red-down. The default requires no override; selecting the */
+/* Mainland-China convention (red-up/green-down) toggles this ONE body    */
+/* class, which simply swaps which existing token each directional class */
+/* resolves to — the glyph (▲/▼) and the numeral's own +/- sign are       */
+/* UNCHANGED by this class, because direction must never depend on color  */
+/* alone (PD-0012 §4's explicit condition) regardless of which convention */
+/* is active. */
+/* ---------------------------------------------------------------- */
+body.color-convention-cn .metric-positive { color: var(--color-negative); }
+body.color-convention-cn .metric-negative { color: var(--color-positive); }
+body.color-convention-cn .metric-direction-glyph.metric-positive { color: var(--color-negative); }
+body.color-convention-cn .metric-direction-glyph.metric-negative { color: var(--color-positive); }
+body.color-convention-cn .chart-relative-positive { fill: var(--color-negative); }
+body.color-convention-cn .chart-relative-negative { fill: var(--color-positive); }
+body.color-convention-cn .chart-alpha-positive { fill: var(--color-negative); }
+body.color-convention-cn .chart-alpha-negative { fill: var(--color-positive); }
+body.color-convention-cn .chart-end-label-portfolio,
+body.color-convention-cn .chart-end-label-benchmark { /* series identity colors (teal/gray) are NOT part of the
+  gain/loss convention — portfolio-vs-benchmark stays teal-vs-gray either way (Condition 2's own rule); this
+  selector intentionally has no rule body, kept only to document that these two classes are excluded on purpose. */ }
+
+/* ---------------------------------------------------------------- */
+/* Donut legend (feedback log §9.1/§4.2 — "Scenario Lab donut charts     */
+/* lack sufficient labels"). Real DOM text beside the SVG ring, sharing   */
+/* the exact chart-donut-seg-N swatch-color cycle charts.js's donut()     */
+/* itself uses, so a legend row's color always matches its own wedge.    */
+/* ---------------------------------------------------------------- */
+.donut-legend { list-style: none; margin: var(--space-2) 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.donut-legend-row { display: flex; align-items: center; gap: var(--space-2); font-size: 12.5px; }
+.donut-legend-swatch { width: 11px; height: 11px; border-radius: 3px; flex: 0 0 11px; display: inline-block; }
+.donut-legend-label { flex: 1 1 auto; color: var(--color-ink-soft); }
+.donut-legend-value { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 600; }
+
+/* Scenario Lab — current-vs-scenario delta table (§9.1's "and/or delta table") */
+table.scenario-delta-table { width: 100%; border-collapse: collapse; font-size: var(--type-table-cell); margin-top: var(--space-2); }
+table.scenario-delta-table th { text-align: left; font-size: var(--type-secondary-metadata); color: var(--color-ink-faint); text-transform: uppercase; letter-spacing: .05em; padding: var(--space-1) var(--space-2); border-bottom: 1px solid var(--color-line-strong); }
+table.scenario-delta-table th.num, table.scenario-delta-table td.num { text-align: right; }
+table.scenario-delta-table td { padding: var(--space-1) var(--space-2); border-bottom: 1px solid var(--color-line); font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+table.scenario-delta-table td.scenario-delta-label { font-family: var(--font-sans); }
+
+/* ---------------------------------------------------------------- */
+/* HG1 round-4 — §20 responsive/narrow-width strategy, documented here   */
+/* (see this designer's handoff for the full account, including the      */
+/* strategies considered and NOT taken). CHOSEN STRATEGY: controlled     */
+/* horizontal scrolling for the three wide ledger tables (Holdings,      */
+/* Accounts & Cash, Transactions), inside an explicit scroll container —  */
+/* not the page itself. At >=1024px this container never needs to        */
+/* scroll HORIZONTALLY (content fits); below that, the table scrolls      */
+/* within its own card instead of the whole page gaining horizontal       */
+/* scroll, which was the actual 800px defect (§20's own staging-test      */
+/* finding). A visible affordance (a thin bottom scrollbar, browser-      */
+/* default) signals the table itself scrolls — this is intentional, not   */
+/* accidental, per §20's explicit requirement.                            */
+/* HG1 Round 5 (S6, second pass) — this container can ALSO now scroll      */
+/* VERTICALLY, independent of viewport width, once a table's own row       */
+/* count exceeds a bounded height (see .table-scroll-wrap below). That is  */
+/* a NEW axis of scrolling this §20 note did not originally cover — it     */
+/* exists to make this table's sticky header genuinely stick, not to       */
+/* address narrow-width overflow, which remains exactly the horizontal      */
+/* story above. */
+/* ---------------------------------------------------------------- */
+/* HG1 Round 5 (S6) — SECOND PASS. The PM's live probe DEFEATED my first fix and
+   documented exactly why, so the correction is recorded in the same amount of detail
+   as the mistake was.
+   First attempt: `overflow-y: clip` on this wrapper, reasoning that `clip` does not
+   establish a scroll container the way `auto`/`hidden`/`scroll` do, so `position:
+   sticky` inside it would search past the wrapper to the real page scrollport. WRONG
+   IN PRACTICE: the PM built an isolated probe (a bare div with authored
+   `overflow-x: auto; overflow-y: clip`) and read its COMPUTED style back as
+   `overflow-y: hidden`. CSS Overflow Level 3's axis-interaction rule does not only
+   convert a lone `visible` to `auto` when paired with a non-visible value on the
+   other axis — it ALSO converts a lone `clip` to `hidden` under the same pairing,
+   because `clip` and `visible` are treated as the same "non-scrolling" class for this
+   purpose. `hidden` DOES establish a scroll container, so the wrapper was still the
+   sticky scrollport and `top: 53px` was still a 53px downward displacement into row
+   0 — unchanged, confirmed live on all six tables, both languages.
+   The PM named three ways to actually change the outcome: (a) drop overflow-x from
+   the wrapper and solve narrow-width overflow another way, (b) keep the wrapper but
+   set the sticky offset to 0 (correct against the wrapper's OWN scrollport, whatever
+   it is), or (c) move the sticky element outside the scroll container entirely.
+   (c) requires splitting the table's header from its body into independently
+   positioned elements — a markup change in js/surfaces/portfolio.js, outside this
+   designer's write scope (styles/ + js/charts.js only) this round. (a) alone would
+   reopen the ORIGINAL pre-§20 defect this wrapper exists to close (a too-wide table
+   forcing the whole PAGE to gain horizontal scroll at narrow widths) with nothing
+   this designer can reach standing in for it, since only a markup-level split (not a
+   CSS-only change) can give a wide table both horizontal scroll AND a header sticky
+   to the PAGE.
+   CHOSEN: (b), extended into a genuine local scrollport rather than a disabled one. A
+   BARE `top: 0` alone would remove the displacement but the wrapper never scrolls
+   vertically by default (`scrollHeight === clientHeight`, confirmed live) — so a bare
+   top:0 fix would stop the header being WRONG without making it actually STICK to
+   anything; it would just sit at the top of the table and scroll away with it like a
+   plain `position: static` header, which does not satisfy this designer's own brief
+   ("do not simply delete position:sticky — §16 wants sticky headers for portfolio-
+   scale tables; make them work"). Adding a bounded `max-height` with a REAL
+   `overflow-y: auto` turns this wrapper into an intentional local scroll panel: for
+   any table shorter than the bound, nothing changes (no scrollbar appears, content
+   fits, top:0 is simply the header's natural position — identical to today visually).
+   For a table TALLER than the bound, the panel now genuinely scrolls internally, and
+   the header genuinely stays pinned to the top of that panel as it does — real
+   sticky behaviour, achieved without touching portfolio.js's markup. Both axes are
+   now real scrolling values (`auto`/`auto`), which the CSS Overflow spec does NOT
+   reinterpret the way the `auto`/`clip` pairing was — confirmed by the same
+   axis-interaction rule only applying when one side is `visible` or `clip`.
+   TRADE-OFF, stated plainly because it is a visible behaviour change this designer
+   cannot verify without a browser: a long table (many holdings/transactions) no
+   longer grows the page indefinitely — past ~560px (or 62% of viewport height,
+   whichever is smaller) it becomes its own internally-scrolling panel instead of
+   flowing with the page. This is deliberate: it is what makes "sticky while
+   scrolling" real instead of cosmetic, and a bounded, internally-scrolling data
+   panel is a legitimate, common pattern for a portfolio-scale table in this kind of
+   product. THE PM SHOULD VERIFY THIS SPECIFIC BEHAVIOUR CHANGE FIRST, on whichever
+   Holdings table has the most rows, at 1512x880 and at ~67% zoom, both languages —
+   ahead of re-checking the occlusion fix itself. */
+.table-scroll-wrap {
+  overflow-x: auto; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  max-height: min(560px, 62vh);
+}
+.table-scroll-wrap > table { min-width: 720px; }
+
+/* Sticky table headers (§16 — portfolio-scale interaction strategy) for the three   */
+/* tables long enough to benefit (Holdings, Accounts & Cash, Transactions) — opt-in,  */
+/* not applied to every table.data-table (the CSV column-mapping table in Import &    */
+/* Ingestion is two rows and never needs this). `top: 0` (CORRECTED, second pass —    */
+/* see the block comment above `.table-scroll-wrap`) is now measured against THIS      */
+/* wrapper's own scrollport, which is what the sticky search actually resolves to      */
+/* regardless of which of `overflow-x`/`overflow-y` triggered it — there is no page     */
+/* header to clear inside a local scroll panel; `--sticky-header-clearance` (53px)      */
+/* remains correct and in use for #app-inspector, which is NOT inside a nested scroll   */
+/* container and genuinely does need to clear header.app-header at the page level.      */
+/* Opaque backdrop spans the FULL header row (`thead`, not just each `th`'s own         */
+/* padding box) as defense in depth (S6) — belt-and-suspenders against any residual      */
+/* sub-pixel overlap ever rendering as a half-covered glyph; a thin bottom seam          */
+/* (box-shadow, not border, so it never shifts border-collapse geometry) makes the       */
+/* floating header visually legible as a layer above scrolled-under content. */
+table.sticky-head thead { background: var(--color-surface); }
+table.sticky-head thead th {
+  position: sticky; top: 0;
+  background: var(--color-surface); z-index: 4;
+  box-shadow: inset 0 -1px 0 var(--color-line-strong);
+}
+
+/* Table semantics (§23) — a scoped column header should read as a header of that
+   column to assistive tech, not just visually. `scope="col"` is applied by each
+   surface's own table-building code (js/surfaces/*.js); this rule only makes the
+   already-existing header styling explicit that it applies regardless of scope. */
+table.data-table th[scope="col"] { }
+
+/* ---------------------------------------------------------------- */
+/* HG1 Round 5 (S1f) — three explicit breakpoints. Previously ZERO existed anywhere in */
+/* this stylesheet; every adaptation was emergent from flex-wrap/auto-fill, both of    */
+/* which left-pack (the audit's own finding). None of these three touches Scenario    */
+/* Lab (accepted by the owner) and none removes the page margin the owner explicitly   */
+/* approved in P8_2 — the narrowest rule below TIGHTENS the page margin slightly at    */
+/* the narrowest supported width; nothing here goes full-bleed.                       */
+/* ---------------------------------------------------------------- */
+
+/* 1. Narrowest supported width (§20's own floor). Claws back a little side padding    */
+/*    so the content column keeps a touch more usable width exactly where Round 4's    */
+/*    own verification regime (V2, per the audit) already tests hardest.               */
+@media (max-width: 1024px) {
+  .app-content-inner { padding-left: var(--space-4); padding-right: var(--space-4); }
+
+  /* HG1 Round 5, Phase 2 CORRECTION pass — Blocker 2 (1024px page horizontal
+     scroll; reviews/gates/HG1_ROUND5_PHASE2_CORRECTION_VERIFICATION.md §4.1).
+     Measured: `.app-header-right` needs 524px (the freshness-pill strip, the
+     persistent `.depth-ladder` explanation-mode control at 199px, the "Ask your
+     portfolio" button, and the gear icon) with NEITHER `header.app-header` NOR
+     `.app-header-right` itself able to wrap — forcing the header row, and with it
+     the whole page, to 1201px against a 1024px viewport (177px of horizontal
+     scroll). 1280px is unaffected by this defect (header right edge 1256 < 1280)
+     and this rule, scoped to max-width:1024px, does not touch it or any wider
+     breakpoint (1512, ~2257) — both remain exactly as already measured clean.
+     FIX: let `.app-header-right` drop to its own full-width row beneath the brand
+     + nav row, then let ITS OWN children wrap within that row if they ever still
+     need to (comfortable headroom in both languages — the content needing 524px
+     now has close to the full ~1024px content width to lay out in, not the sliver
+     left over after brand+nav on a single shared row). Nothing is hidden or
+     shortened: every freshness pill, all three depth-ladder pills (still the
+     identical control, not replaced by a narrower substitute — it stays
+     discoverable, per this pass's own constraint), the ask button, and the gear
+     icon are all still present, unchanged, just reflowed onto a second line at
+     this one breakpoint. `gap` (already declared on both selectors below) applies
+     to both axes once wrapped, so no separate row-gap rule is needed. */
+  header.app-header { flex-wrap: wrap; }
+  .app-header-right { flex: 1 1 100%; flex-wrap: wrap; justify-content: flex-end; margin-left: 0; }
+
+  /* The header can now be two rows tall at this width instead of one.
+     HG1 Round 5 MICRO-PASS CORRECTION (Item 1) — the line that used to sit here,
+     `:root { --sticky-header-clearance: 96px; }`, was exactly this defect: a
+     second guessed constant for the wrapped-header case, measured afterwards at
+     72px (English) / 75px (简体中文) short of the real wrapped height (168px /
+     171px) — the sticky inspector rail sat that far underneath the header at
+     scroll. Raising this same guessed number again (e.g. to 171px, the
+     Round-5-verification worst case) would still be a constant guaranteed to
+     drift the next time the header's content changes in either language, at
+     either row count, or under browser zoom — exactly the failure mode that
+     produced the 72-75px gap in the first place.
+     REMOVED. `--sticky-header-clearance` is no longer set by any stylesheet rule
+     at any breakpoint. js/shell.js's `ResizeObserver` on `header.app-header`
+     measures the header's OWN real rendered height — wrapped or not, in either
+     language, at any zoom — and writes it to this custom property as an inline
+     style on `document.documentElement`, which outranks every selector-based
+     rule in this file regardless of media query (see tokens.css's own comment on
+     the property for the full mechanism). Nothing at this breakpoint needs its
+     own override anymore: the SAME derivation is correct at 1024px, 1280px,
+     1512px, and 2257px, in both languages, because it is never a fixed number to
+     begin with. */
+}
+
+/* 2. Reflow the two-chart analytical rows to a single column below the width where    */
+/*    two chart families' own new min-width floors (S3) would otherwise compete for    */
+/*    room with each other in the same flex row and force a horizontal overflow — e.g. */
+/*    Overview's Rolling-90-Day-Volatility (--chart-rolling-min-width: 615px) beside a  */
+/*    "bar" concentration chart (--chart-bar-min-width: 347px, raised in a later        */
+/*    correction pass — see tokens.css) in one row needs ~615+347+gap =~ 985px+ just    */
+/*    for the two charts, before the card's own padding;                                */
+/*    that no longer reliably fits inside a single card at the narrower end of this     */
+/*    build's supported range. Stacking them is the same trade-off named at the top of  */
+/*    app.css's chart-family block: a visible, single-column reflow instead of an       */
+/*    invisible illegible-text failure. `.analytics-sml-side`'s own fixed 200px basis   */
+/*    is released to `auto` in the stacked layout so its content (the beta card) is not */
+/*    pinned to a column width sized for a side-by-side arrangement it is no longer in. */
+@media (max-width: 1180px) {
+  .analytics-chart-row, .analytics-sml-row, .analytics-exposure-dual, .scenario-allocation-row {
+    flex-direction: column;
+  }
+  .analytics-sml-side { flex: 1 1 auto; }
+}
+
+/* 3. Wide-viewport breakpoint (the owner's own review condition — 1512px display at    */
+/*    100% zoom, and the ~2257px effective CSS px their screenshots reproduce at their   */
+/*    actual ~67% browser zoom). Lets short metric groups claim a little more per-card   */
+/*    width once there is genuinely more row to share, rather than holding every grid    */
+/*    at the same minimum regardless of how much wider the viewport has grown — the      */
+/*    layout-measure token (tokens.css) already grows the COLUMN at this width; this     */
+/*    lets the GRID inside it grow to match instead of just adding more same-size        */
+/*    tracks. */
+@media (min-width: 1600px) {
+  .layout-grid { --data-min-px: 200px; }
+  .metric-grid { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+}

@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/designer_cp7d",
+  "candidate_at_capture": "21870e69673ef1c0382d65b0a31cd38e76c1714885620c0089bd529a24c9ec2f",
+  "own_tab": "1460642544",
+  "count": 13,
+  "originals_preserved": "All first-round28 images and HOLD report remain unchanged. These13 images predate the final legacy limitation-label fix;12 records its observed residual.",
+  "files": {
+    "01-common-context-quick-en.jpg": {
+      "sha256": "809ca6d6b5b1ee31bdad6dc5e7a415e9f15165ad05d19e4e2abfbd179d018906",
+      "bytes": 58063,
+      "mime_type": "image/jpeg",
+      "width": 1512,
+      "height": 736,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    },
+    "02-common-context-professional-zh.jpg": {
+      "sha256": "a004e62cf513f5f745296c2f8b230b10a1d821757001de3368c4bb70ae479d98",
+      "bytes": 48520,
+      "mime_type": "image/jpeg",
+      "width": 1512,
+      "height": 736,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    },
+    "03-professional-controls-before-detail-390-en.jpg": {
+      "sha256": "902738b03f944e53e49dd5b076a35a0c0979313fd21276e2346a77da2f2b3710",
+      "bytes": 35867,
+      "mime_type": "image/jpeg",
+      "width": 390,
+      "height": 844,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    },
+    "04-complete-binding-keyboard-open-390-en.jpg": {
+      "sha256": "48d027f0eb9dff0a03ec684b586248ab9e54921e895d95dbad33f57ef8db49e9",
+      "bytes": 37380,
+      "mime_type": "image/jpeg",
+      "width": 390,
+      "height": 844,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    },
+    "05-essential-revision-source-pins-390-en.jpg": {
+      "sha256": "8b0a89bfb9f0717574ba27c3ba6e1d81b469804fba561388d3829e441be82346",
+      "bytes": 38785,
+      "mime_type": "image/jpeg",
+      "width": 390,
+      "height": 844,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    },
+    "06-repaired-gains-proof-reproduced-390-zh.jpg": {
+      "sha256": "cb7b23e9ef47eda1261ba3340732eddc268b3aded9a7b32b0742d4cc67ac68e9",
+      "bytes": 52820,
+      "mime_type": "image/jpeg",
+      "width": 390,
+      "height": 844,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    },
+    "07-professional-controls-before-detail-390-zh.jpg": {
+      "sha256": "4002e1b0fcfab8c97d277fc0b2a8130ba22f4e00853a2ee32635eba82b03fac4",
+      "bytes": 33572,
+      "mime_type": "image/jpeg",
+      "width": 390,
+      "height": 844,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    },
+    "08-benchmark-reconstruction-reasons-en.jpg": {
+      "sha256": "ecce4d0854022222757116c892c837b28a8ae3b45a273a1249361e142164e185",
+      "bytes": 128743,
+      "mime_type": "image/jpeg",
+      "width": 1512,
+      "height": 736,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    },
+    "09-benchmark-reconstruction-reasons-zh.jpg": {
+      "sha256": "746e135bf5cd05e082a7635410ed9b6820f4b9d5c3de20d70bc60fcb67f45ea1",
+      "bytes": 103819,
+      "mime_type": "image/jpeg",
+      "width": 1512,
+      "height": 736,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    },
+    "10-partial-2200-readable-exclusions-390-zh.jpg": {
+      "sha256": "dd57376114ba18924f51bdc3cac819e31a8a99072c2861325012ae91a05bb601",
+      "bytes": 36507,
+      "mime_type": "image/jpeg",
+      "width": 390,
+      "height": 844,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    },
+    "11-complete-excluded-record-keyboard-open-390-zh.jpg": {
+      "sha256": "59811596d8fc41e4c57e849dd988085412f92dcb682a65557e8bf41bed5f41f0",
+      "bytes": 34169,
+      "mime_type": "image/jpeg",
+      "width": 390,
+      "height": 844,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    },
+    "12-residual-incomplete-valuation-enum-390-zh.jpg": {
+      "sha256": "a723eb3f077d6f1cb23400a32556cf71fdf9c977cc1601e1246e6d2426ef6400",
+      "bytes": 28504,
+      "mime_type": "image/jpeg",
+      "width": 390,
+      "height": 844,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    },
+    "13-partial-2200-readable-exclusions-390-en.jpg": {
+      "sha256": "6b27e071f84b98ae2c4047661ed9a9118622f057c967745c996b8efd679f3cab",
+      "bytes": 42517,
+      "mime_type": "image/jpeg",
+      "width": 390,
+      "height": 844,
+      "inspected_exact_saved_bytes": true,
+      "acceptance": "ACCEPTED_FOR_RECORDED_SCOPE"
+    }
+  }
+}

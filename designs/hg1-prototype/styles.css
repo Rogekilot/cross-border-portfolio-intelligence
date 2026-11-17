@@ -1,0 +1,652 @@
+/* HG1 CP0 prototype — hand-written CSS, zero dependencies. */
+
+:root {
+  --ink: #1b2430;
+  --muted: #5b6674;
+  --border: #d7dce2;
+  --bg: #f5f7f9;
+  --panel: #ffffff;
+  --blue: #1f5fa8;
+  --blue-bg: #e8f0fb;
+  --amber: #9a6400;
+  --amber-bg: #fff3d6;
+  --red: #9c2b2b;
+  --red-bg: #fbe6e6;
+  --green: #1c6b45;
+  --green-bg: #e5f4ec;
+  --grey-bg: #eef0f2;
+  --scenario: #b45a00;
+  --scenario-bg: repeating-linear-gradient(
+    135deg,
+    #fff3e6,
+    #fff3e6 10px,
+    #ffe6c8 10px,
+    #ffe6c8 20px
+  );
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.45;
+  padding-top: 44px; /* space for fixed banner */
+}
+
+/* ---------------------------------------------------------------- banner */
+
+#synthetic-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #7a1f1f;
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 10px 12px;
+  font-size: 13px;
+  border-bottom: 3px solid #4d1212;
+}
+
+/* ------------------------------------------------------------------ nav */
+
+nav#surface-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 12px;
+  position: sticky;
+  top: 44px;
+  z-index: 900;
+}
+
+nav#surface-nav button {
+  border: 1px solid var(--border);
+  background: var(--grey-bg);
+  color: var(--ink);
+  padding: 7px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+nav#surface-nav button.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+nav#surface-nav button.gaps-tab {
+  margin-left: auto;
+  background: var(--red-bg);
+  border-color: var(--red);
+  color: var(--red);
+}
+
+nav#surface-nav button.gaps-tab.active {
+  background: var(--red);
+  color: #fff;
+}
+
+/* --------------------------------------------------------------- layout */
+
+main {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 20px 16px 80px;
+}
+
+h1.surface-title {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+
+p.surface-purpose {
+  margin: 0 0 14px;
+  color: var(--muted);
+}
+
+.look-at {
+  background: var(--blue-bg);
+  border: 1px solid #bcd4ee;
+  border-left: 4px solid var(--blue);
+  border-radius: 4px;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+
+.look-at strong {
+  color: var(--blue);
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.panel h2 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.panel h3 {
+  margin: 14px 0 6px;
+  font-size: 13px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+/* ----------------------------------------------------------- metric card */
+
+.metric-card {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: #fbfcfd;
+  position: relative;
+}
+
+.metric-card .metric-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.metric-value {
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.metric-refpoint {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+/* AVAILABLE plain and AVAILABLE+STALE_DATA share identical value styling —
+   this is deliberate (§D3.2): staleness must not look degraded. */
+.metric-card.state-AVAILABLE .metric-value {
+  color: var(--ink);
+}
+
+.freshness-pill {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: var(--amber-bg);
+  color: var(--amber);
+  margin-top: 6px;
+}
+
+.freshness-pill.fresh-LIVE {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+/* LIMITED: value plus a mandatory, non-dismissible qualifier IN the same
+   visual unit — never a tooltip. */
+.metric-card.state-LIMITED {
+  border-left: 4px solid var(--amber);
+  background: var(--amber-bg);
+}
+
+.metric-card.state-LIMITED .metric-value {
+  color: var(--amber);
+}
+
+.limited-qualifier {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--amber);
+  border-top: 1px dashed #d9b465;
+  padding-top: 6px;
+}
+
+/* INSUFFICIENT_DATA: NO numeric glyph of any kind. Distinct component. */
+.metric-card.state-INSUFFICIENT_DATA {
+  border: 1px dashed var(--red);
+  background: var(--red-bg);
+}
+
+.insufficient-data-render {
+  font-style: italic;
+  font-weight: 700;
+  color: var(--red);
+  font-size: 14px;
+}
+
+.insufficient-data-explain {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--red);
+}
+
+.reason-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid currentColor;
+  margin-left: 6px;
+}
+
+/* --------------------------------------------------------------- D4 evidence */
+
+.evidence-btn {
+  border: 1px solid var(--blue);
+  background: #fff;
+  color: var(--blue);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.evidence-btn:hover {
+  background: var(--blue-bg);
+}
+
+/* ------------------------------------------------------------------ modal */
+
+#modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 25, 35, 0.55);
+  z-index: 2000;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 60px 16px 40px;
+  overflow-y: auto;
+}
+
+#modal-backdrop.open {
+  display: flex;
+}
+
+#modal-box {
+  background: #fff;
+  border-radius: 8px;
+  max-width: 640px;
+  width: 100%;
+  padding: 18px 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+#modal-box h2 {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+#modal-box .modal-close {
+  float: right;
+  border: none;
+  background: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 12.5px;
+}
+
+.field-row .field-name {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.placeholder-value {
+  color: #9aa2ac;
+  font-style: italic;
+}
+
+.tag-empty-registry {
+  display: inline-block;
+  background: var(--grey-bg);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+/* ---------------------------------------------------------- depth toggle */
+
+.depth-toggle {
+  display: flex;
+  gap: 6px;
+  margin: 8px 0 12px;
+}
+
+.depth-toggle button {
+  border: 1px solid var(--border);
+  background: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.depth-toggle button.active {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+.worked-example {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  background: #fbfcfd;
+}
+
+.depth-conclusion {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.depth-caveat {
+  font-size: 12.5px;
+  background: var(--amber-bg);
+  border-left: 3px solid var(--amber);
+  padding: 6px 8px;
+  color: #6b4c00;
+}
+
+.depth-caveat::before {
+  content: "Caveat (P3): ";
+  font-weight: 700;
+}
+
+.must-not-say {
+  margin-top: 8px;
+  font-size: 11.5px;
+  color: var(--red);
+}
+
+/* -------------------------------------------------------------- AI Analyst */
+
+.chat-bubble {
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  max-width: 90%;
+}
+
+.chat-user {
+  background: var(--grey-bg);
+  margin-left: auto;
+}
+
+.chat-ai {
+  background: var(--blue-bg);
+}
+
+.citation-chip {
+  display: inline-block;
+  background: #fff;
+  border: 1.5px solid var(--blue);
+  color: var(--blue);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  border-radius: 4px;
+  padding: 1px 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.citation-chip.chip-LIMITED {
+  border-color: var(--amber);
+  color: var(--amber);
+  background: var(--amber-bg);
+}
+
+.selector-text {
+  font-style: italic;
+  color: var(--muted);
+  border-bottom: 1px dotted var(--muted);
+}
+
+.legend-row {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  margin: 8px 0 16px;
+  flex-wrap: wrap;
+}
+
+.legend-swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* -------------------------------------------------------------- Scenario Lab */
+
+.scenario-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.col-header {
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 6px 6px 0 0;
+  text-align: center;
+}
+
+.col-header.actual {
+  background: var(--blue);
+  color: #fff;
+}
+
+.col-header.scenario {
+  background: var(--scenario);
+  color: #fff;
+}
+
+.scenario-cell-wrap {
+  border: 1px solid var(--border);
+  border-radius: 0 0 6px 6px;
+  padding: 10px;
+}
+
+.scenario-cell-wrap.is-scenario {
+  background: var(--scenario-bg);
+  border-color: var(--scenario);
+}
+
+.hypothetical-badge {
+  display: inline-block;
+  background: var(--scenario);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-bottom: 6px;
+}
+
+.actual-badge {
+  display: inline-block;
+  background: var(--blue);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-bottom: 6px;
+}
+
+.scenario-row-label {
+  font-weight: 700;
+  margin: 14px 0 4px;
+  font-size: 13px;
+}
+
+.mock-btn {
+  border: 1px dashed var(--muted);
+  background: #fff;
+  color: var(--muted);
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: not-allowed;
+  margin: 3px 6px 3px 0;
+}
+
+/* -------------------------------------------------------------------- table */
+
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+table.data-table th {
+  text-align: left;
+  border-bottom: 2px solid var(--border);
+  padding: 6px 8px;
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+table.data-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+
+/* ---------------------------------------------------------------- misc */
+
+.badge {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.badge-observation { background: var(--grey-bg); color: var(--muted); }
+.badge-attention { background: var(--amber-bg); color: var(--amber); }
+.badge-warning { background: var(--red-bg); color: var(--red); }
+.badge-selector { background: var(--grey-bg); color: var(--muted); }
+.badge-claim { background: var(--blue-bg); color: var(--blue); }
+
+.gap-card {
+  border: 1px solid var(--red);
+  background: var(--red-bg);
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+
+.gap-card h3 {
+  margin: 0 0 6px;
+  color: var(--red);
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.gap-marker {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--red);
+  border: 1px solid var(--red);
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.check-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 12.5px;
+}
+
+.check-pass { color: var(--green); font-weight: 700; }
+.check-fail { color: var(--red); font-weight: 700; }
+
+.no-d4-note {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.isolation-note {
+  background: var(--grey-bg);
+  border-left: 4px solid var(--muted);
+  padding: 8px 10px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+.toggle-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+footer.doc-footer {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 10px 16px 40px;
+  font-size: 11px;
+  color: var(--muted);
+}

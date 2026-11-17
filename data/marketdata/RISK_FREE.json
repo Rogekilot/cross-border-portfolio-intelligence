@@ -1,0 +1,49 @@
+{
+  "catalog_id": "risk_free:1",
+  "owner": "main session (PM); sources attested by the human product owner",
+  "updated": "2026-10-02",
+  "governing_text": "risk/1.1 Rulings 4.1-4.6; PD-0039 D2; PD-0040 OD-R2",
+  "rules": [
+    "At most one entry per currency (two admitted series for one currency is an error: AMBIGUOUS_RISK_FREE_SERIES).",
+    "Only 'entries' are read by the engine. 'candidates' are never read; a candidate becomes an entry only after the owner attests its terms in SOURCES.json and confirms checklist items 1-8 of Ruling 4.6.",
+    "A currency with no entry gives Sharpe, Sortino, downside deviation and Jensen's alpha INSUFFICIENT_DATA, detail NO_RISK_FREE_SOURCE (Ruling 4.6). Never another currency's rate, never a constant, never 0.",
+    "Synthetic fixture series are never catalogued here (market-data Ruling 4.8).",
+    "A change to any field of an entry is a new catalog_id version."
+  ],
+  "entry_fields": {
+    "currency": "ISO 4217 code",
+    "series_id": "the publisher's exact series name",
+    "source_id": "SOURCES.json source id",
+    "instrument": "SOVEREIGN_BILL | INTERBANK (stated if used)",
+    "tenor_days": "about 91 (Ruling 4.2)",
+    "quote_type": "SIMPLE_YIELD | BANK_DISCOUNT",
+    "day_count_basis": "360 | 365 | ACT/ACT (stated by the publisher)",
+    "unit": "PERCENT | DECIMAL",
+    "decimals_published": "integer",
+    "date_semantics": "which date a value is for, time of day, time zone",
+    "calendar_id": "RATE_PUBLICATIONS calendar (Ruling 4.5)",
+    "revision_policy": "publisher's statement"
+  },
+  "entries": [],
+  "candidates": [
+    {
+      "currency": "USD",
+      "series_id": "US Treasury Daily Treasury Bill Rates, 13-week coupon equivalent",
+      "instrument": "SOVEREIGN_BILL",
+      "quote_type": "SIMPLE_YIELD",
+      "status": "PENDING_OWNER_ATTESTATION (PD-0039 D2, PD-0040 OD-R2). Day-count basis, date semantics and publication schedule to be confirmed against the publisher's documentation (risk/1.1 §14 item 1: from memory). Its RATE_PUBLICATIONS calendar is drafted by the session and registered by the owner (as PD-0034)."
+    },
+    {
+      "currency": "HKD",
+      "series_id": "HKMA Exchange Fund Bills, 91-day yield",
+      "instrument": "SOVEREIGN_BILL",
+      "status": "TO_BE_FOUND (PD-0040 OD-R2). Terms unknown; details from memory."
+    },
+    {
+      "currency": "CNY",
+      "series_id": "ChinaBond 3-month government bond yield",
+      "instrument": "SOVEREIGN_BILL",
+      "status": "TO_BE_FOUND (PD-0040 OD-R2). Terms unknown; details from memory."
+    }
+  ]
+}

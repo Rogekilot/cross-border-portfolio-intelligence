@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HG1 CP0 Prototype — Cross-Border Portfolio Intelligence (SYNTHETIC)</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div id="synthetic-banner">
+    SYNTHETIC DATA &nbsp;·&nbsp; NON-PRODUCTION PROTOTYPE &nbsp;·&nbsp; HG1 UNDECIDED &nbsp;·&nbsp; NOT AN APPROVAL
+  </div>
+
+  <nav id="surface-nav"></nav>
+
+  <main>
+    <div style="margin-bottom:14px;font-size:12px;color:#5b6674;">
+      This is an interactive prototype built to help the human product owner inspect the CP0 product/design
+      contract in a browser instead of reading the underlying specification documents. It is based strictly on
+      <code>designs/FEATURE_DESIGN.md</code>, <code>specs/FEATURE_PRD.md</code>, and
+      <code>decisions/product/PD-0004</code>–<code>PD-0008</code>. Every number on every screen is hand-authored
+      mock data — nothing is computed, fetched, or verified. Where the contract has a known, unresolved gap, it is
+      shown here as a visible gap (see the "Contract Checks &amp; Known Gaps" tab), not quietly resolved.
+    </div>
+    <div id="surface-root"></div>
+  </main>
+
+  <footer class="doc-footer">
+    HG1 CP0 prototype — static, zero-dependency, no network calls. Source: <code>designs/hg1-prototype/</code>.
+    Not an approval; HG1 remains undecided (<code>reviews/gates/HG1_GATE_REVIEW.md</code>).
+  </footer>
+
+  <div id="modal-backdrop">
+    <div id="modal-box"></div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

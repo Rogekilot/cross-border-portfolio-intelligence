@@ -1,0 +1,1876 @@
+{
+ "data": {
+  "as_of": "2025-04-30",
+  "as_of_note": "the as-of date the subject names; Current mode (D_c(t) over M_t) is available through the service and is not what this pack exercises",
+  "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+  "metric_states": {
+   "AVAILABLE": 24
+  },
+  "metrics": [
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "HKD",
+    "details": [],
+    "exact": "750",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [],
+     "entries": [],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_date_used",
+      "2025-04-30"
+     ],
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "cash_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "currency",
+      "HKD"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "750",
+    "view": "NATIVE",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "USD",
+    "details": [],
+    "exact": "2248",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [],
+     "entries": [],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "cash_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "currency",
+      "USD"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "2248",
+    "view": "NATIVE",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "HKD",
+    "details": [],
+    "exact": "3400",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [],
+     "entries": [],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_date_used",
+      "2025-04-30"
+     ],
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "cash_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000002"
+     ],
+     [
+      "currency",
+      "HKD"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "3400",
+    "view": "NATIVE",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "USD",
+    "details": [],
+    "exact": "1000",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [],
+     "entries": [],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "cash_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000003"
+     ],
+     [
+      "currency",
+      "USD"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "1000",
+    "view": "NATIVE",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "CNY",
+    "details": [],
+    "exact": "10000",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [],
+     "entries": [],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_date_used",
+      "2025-04-30"
+     ],
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "cash_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000004"
+     ],
+     [
+      "currency",
+      "CNY"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "10000",
+    "view": "NATIVE",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "USD",
+    "details": [],
+    "exact": "96",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "HKD",
+       "kind": "CURRENCY",
+       "mics": [],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_date_used",
+      "2025-04-30"
+     ],
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "cash_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "currency",
+      "HKD"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "96",
+    "view": "REPORTING",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "USD",
+    "details": [],
+    "exact": "2248",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [],
+     "entries": [],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "cash_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "currency",
+      "USD"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "2248",
+    "view": "REPORTING",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "USD",
+    "details": [],
+    "exact": "2176/5",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "HKD",
+       "kind": "CURRENCY",
+       "mics": [],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_date_used",
+      "2025-04-30"
+     ],
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "cash_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000002"
+     ],
+     [
+      "currency",
+      "HKD"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "435.2",
+    "view": "REPORTING",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "USD",
+    "details": [],
+    "exact": "1000",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [],
+     "entries": [],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "cash_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000003"
+     ],
+     [
+      "currency",
+      "USD"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "1000",
+    "view": "REPORTING",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "USD",
+    "details": [],
+    "exact": "40000/29",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "CNY",
+       "kind": "CURRENCY",
+       "mics": [],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_date_used",
+      "2025-04-30"
+     ],
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "cash_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": "performance/1.10#2.2-2.4",
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000004"
+     ],
+     [
+      "currency",
+      "CNY"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "1379.31",
+    "view": "REPORTING",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "HKD",
+    "details": [],
+    "exact": "7200",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_HKEX",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XHKG"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_date_used",
+      "2025-04-30"
+     ],
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ],
+     [
+      "last_print_date",
+      "2025-04-30"
+     ],
+     [
+      "price_date_used",
+      "2025-04-30"
+     ],
+     [
+      "price_missed_sessions",
+      "0"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "holding_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-000000000700"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "7200",
+    "view": "NATIVE",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "USD",
+    "details": [],
+    "exact": "6750",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_NYSE",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XNYS"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ],
+     [
+      "last_print_date",
+      "2025-04-30"
+     ],
+     [
+      "price_date_used",
+      "2025-04-30"
+     ],
+     [
+      "price_missed_sessions",
+      "0"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "holding_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000a001"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "6750",
+    "view": "NATIVE",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "USD",
+    "details": [],
+    "exact": "4000",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_NYSE",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XNYS"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ],
+     [
+      "last_print_date",
+      "2025-04-30"
+     ],
+     [
+      "price_date_used",
+      "2025-04-30"
+     ],
+     [
+      "price_missed_sessions",
+      "0"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "holding_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "4000",
+    "view": "NATIVE",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "HKD",
+    "details": [],
+    "exact": "18000",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_HKEX",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XHKG"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_date_used",
+      "2025-04-30"
+     ],
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ],
+     [
+      "last_print_date",
+      "2025-04-30"
+     ],
+     [
+      "price_date_used",
+      "2025-04-30"
+     ],
+     [
+      "price_missed_sessions",
+      "0"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "holding_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000002"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-000000000700"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "18000",
+    "view": "NATIVE",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "CNY",
+    "details": [],
+    "exact": "22000",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_CN_A",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XSHG"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_date_used",
+      "2025-04-30"
+     ],
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ],
+     [
+      "last_print_date",
+      "2025-04-30"
+     ],
+     [
+      "price_date_used",
+      "2025-04-30"
+     ],
+     [
+      "price_missed_sessions",
+      "0"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "holding_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000004"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-0000000a0001"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "22000",
+    "view": "NATIVE",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "USD",
+    "details": [],
+    "exact": "4608/5",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "HKD",
+       "kind": "CURRENCY",
+       "mics": [],
+       "missed": 0,
+       "state": "CURRENT"
+      },
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_HKEX",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XHKG"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_date_used",
+      "2025-04-30"
+     ],
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ],
+     [
+      "last_print_date",
+      "2025-04-30"
+     ],
+     [
+      "price_date_used",
+      "2025-04-30"
+     ],
+     [
+      "price_missed_sessions",
+      "0"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "holding_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-000000000700"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "921.6",
+    "view": "REPORTING",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "USD",
+    "details": [],
+    "exact": "6750",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_NYSE",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XNYS"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ],
+     [
+      "last_print_date",
+      "2025-04-30"
+     ],
+     [
+      "price_date_used",
+      "2025-04-30"
+     ],
+     [
+      "price_missed_sessions",
+      "0"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "holding_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000a001"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "6750",
+    "view": "REPORTING",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "USD",
+    "details": [],
+    "exact": "4000",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_NYSE",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XNYS"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ],
+     [
+      "last_print_date",
+      "2025-04-30"
+     ],
+     [
+      "price_date_used",
+      "2025-04-30"
+     ],
+     [
+      "price_missed_sessions",
+      "0"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "holding_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000001"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-00000000f001"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "4000",
+    "view": "REPORTING",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "USD",
+    "details": [],
+    "exact": "2304",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "HKD",
+       "kind": "CURRENCY",
+       "mics": [],
+       "missed": 0,
+       "state": "CURRENT"
+      },
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_HKEX",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XHKG"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_date_used",
+      "2025-04-30"
+     ],
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ],
+     [
+      "last_print_date",
+      "2025-04-30"
+     ],
+     [
+      "price_date_used",
+      "2025-04-30"
+     ],
+     [
+      "price_missed_sessions",
+      "0"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "holding_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000002"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-000000000700"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "2304",
+    "view": "REPORTING",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "USD",
+    "details": [],
+    "exact": "88000/29",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "CNY",
+       "kind": "CURRENCY",
+       "mics": [],
+       "missed": 0,
+       "state": "CURRENT"
+      },
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_CN_A",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XSHG"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_date_used",
+      "2025-04-30"
+     ],
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ],
+     [
+      "last_print_date",
+      "2025-04-30"
+     ],
+     [
+      "price_date_used",
+      "2025-04-30"
+     ],
+     [
+      "price_missed_sessions",
+      "0"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "holding_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": "performance/1.10#2.2-2.4",
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "account",
+      "a1000000-0000-4000-8000-000000000004"
+     ],
+     [
+      "listing",
+      "c0000000-0000-4000-8000-0000000a0001"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "3034.48",
+    "view": "REPORTING",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "CNY",
+    "details": [],
+    "exact": "32000",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_CN_A",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XSHG"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "portfolio_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "currency",
+      "CNY"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "32000",
+    "view": "NATIVE",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "HKD",
+    "details": [],
+    "exact": "29350",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_HKEX",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XHKG"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "portfolio_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "currency",
+      "HKD"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "29350",
+    "view": "NATIVE",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [],
+    "causes": [],
+    "conformant": false,
+    "currency": "USD",
+    "details": [],
+    "exact": "13998",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_NYSE",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XNYS"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "portfolio_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": null,
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "currency",
+      "USD"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "13998",
+    "view": "NATIVE",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   },
+   {
+    "breakdown": [
+     [
+      "holding:a1000000-0000-4000-8000-000000000001/c0000000-0000-4000-8000-000000000700",
+      "921.6",
+      "4608/5"
+     ],
+     [
+      "holding:a1000000-0000-4000-8000-000000000001/c0000000-0000-4000-8000-00000000a001",
+      "6750",
+      "6750"
+     ],
+     [
+      "holding:a1000000-0000-4000-8000-000000000001/c0000000-0000-4000-8000-00000000f001",
+      "4000",
+      "4000"
+     ],
+     [
+      "holding:a1000000-0000-4000-8000-000000000002/c0000000-0000-4000-8000-000000000700",
+      "2304",
+      "2304"
+     ],
+     [
+      "holding:a1000000-0000-4000-8000-000000000004/c0000000-0000-4000-8000-0000000a0001",
+      "3034.48",
+      "88000/29"
+     ],
+     [
+      "cash:a1000000-0000-4000-8000-000000000001/HKD",
+      "96",
+      "96"
+     ],
+     [
+      "cash:a1000000-0000-4000-8000-000000000001/USD",
+      "2248",
+      "2248"
+     ],
+     [
+      "cash:a1000000-0000-4000-8000-000000000002/HKD",
+      "435.2",
+      "2176/5"
+     ],
+     [
+      "cash:a1000000-0000-4000-8000-000000000003/USD",
+      "1000",
+      "1000"
+     ],
+     [
+      "cash:a1000000-0000-4000-8000-000000000004/CNY",
+      "1379.31",
+      "40000/29"
+     ]
+    ],
+    "causes": [],
+    "conformant": false,
+    "currency": "USD",
+    "details": [],
+    "exact": "3214446/145",
+    "excluded": [],
+    "excluded_weight": null,
+    "excluded_weight_presented": null,
+    "freshness": {
+     "delays": [
+      "END_OF_DAY"
+     ],
+     "entries": [
+      {
+       "date_used": "2025-04-30",
+       "key": "CNY",
+       "kind": "CURRENCY",
+       "mics": [],
+       "missed": 0,
+       "state": "CURRENT"
+      },
+      {
+       "date_used": "2025-04-30",
+       "key": "HKD",
+       "kind": "CURRENCY",
+       "mics": [],
+       "missed": 0,
+       "state": "CURRENT"
+      },
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_CN_A",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XSHG"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      },
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_HKEX",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XHKG"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      },
+      {
+       "date_used": "2025-04-30",
+       "key": "SYN_NYSE",
+       "kind": "EXCHANGE_CALENDAR",
+       "mics": [
+        "XNYS"
+       ],
+       "missed": 0,
+       "state": "CURRENT"
+      }
+     ],
+     "summary": "CURRENT"
+    },
+    "lineage": [
+     [
+      "fx_note:parity",
+      "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+     ],
+     [
+      "identity:I-1",
+      "PASS"
+     ]
+    ],
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "method_id": "performance.valuation/cp3b",
+    "metric_id": "portfolio_value",
+    "numeric_basis": "RATIONAL",
+    "partial": false,
+    "portfolio_state": "ACTUAL",
+    "reason": null,
+    "rounding_rule_id": "performance/1.10#2.2-2.4",
+    "stale_weight": null,
+    "stale_weight_presented": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "currency",
+      "USD"
+     ]
+    ],
+    "synthetic": true,
+    "unit": "CURRENCY_AMOUNT",
+    "value": "22168.59",
+    "view": "REPORTING",
+    "window": {
+     "days": 0,
+     "end": "2025-04-30",
+     "frequency": null,
+     "months": null,
+     "rule": "AS_OF",
+     "since_snapshot": false,
+     "start": "2025-04-30"
+    }
+   }
+  ],
+  "partial_priced_holdings_figure": [],
+  "total_reporting": [
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "3214446/145",
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "metric_id": "portfolio_value",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [
+     [
+      "currency",
+      "USD"
+     ]
+    ],
+    "synthetic": true,
+    "value": "22168.59",
+    "view": "REPORTING"
+   }
+  ]
+ },
+ "kind": "SYNTHETIC_DEMONSTRATION_A",
+ "labels": {
+  "all_results_synthetic": true,
+  "any_result_synthetic": true,
+  "demonstration_ledger": "DEMONSTRATION LEDGER: these events are not a user's holdings (P8); they exist to exercise the engine.",
+  "fx_sources_in_m": [
+   {
+    "source_id": "synthetic.ecb_direct",
+    "what_it_is": "synthetic.ecb_direct"
+   }
+  ],
+  "label": "SYNTHETIC: every result below was computed from a market-data version that holds synthetic files; none is a real market fact (market-data Ruling 4.8).",
+  "pd_0035_caveat": "PD-0035 section 3: Mainland China and Hong Kong price behaviour is shown on SYNTHETIC data only. No admissible real CN or HK price source exists (PD-0031, PD-0032); the real slice is US prices (Alpha Vantage, the last 100 sessions) and ECB FX only. A synthetic result is never a real market fact (market-data Ruling 4.8)."
+ },
+ "section": "02_current_value",
+ "subject": "DEMO-A: US + HK + CN synthetic cross-border portfolio",
+ "title": "Current portfolio value"
+}

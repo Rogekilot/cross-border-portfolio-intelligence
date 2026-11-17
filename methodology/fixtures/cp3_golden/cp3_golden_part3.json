@@ -1,0 +1,612 @@
+{
+  "fixture_id": "cp3_golden/1.2-part3",
+  "part": 3,
+  "scope": "FIFO lots and gains: the FIFO-mode lot book and relief records of the one lot fold (ledger-replay/1.4 Ruling 0.5), realized gain per sale, unrealized gain per position, remaining basis, the since-acquisition decomposition, realized and unrealized aggregates (incl. LIMITED with stated excluded weights), unknown and ENTRY-dated bases, Southbound mixed-currency basis, same-day pro rata independent of entry order, partial internal transfers from several lots, a sale and a move on one day, reversal and correction, and the FIFO-mode end of a carried split taint. Attribution is part 4.",
+  "change_notes": [
+    "1.2-part3 (2026-10-01): 'extends' now names cp3_golden/1.4-part1 and cp3_golden/1.2-part2 (the relabelled parts 1 and 2, which now cite the same convention sets as this file). Wording only: NO EXPECTED VALUE, STATE, REASON OR DETAIL CHANGED; 167 items; re-pin the content hash.",
+    "1.1-part3 (2026-10-01): PD-0036 (acquired_on; no new reason codes). convention_sets relabelled to performance/1.6 and ledger-replay/1.5; portfolio P20 added (26 items: opening lots with acquired_on, date kind RECORDED, FIFO by the recorded date, acquisition-date FX at acquired_on, a date before the FX coverage of M giving MISSING_FX_HISTORY, a USD basis needing no rate, a carried RECORDED lot, the snapshot horizon unchanged). NO EARLIER EXPECTED VALUE, STATE, REASON OR DETAIL CHANGED (no event in P1-P19 carries acquired_on); 141 -> 167 items; pin the content hash. Calculator extended for acquired_on.",
+    "1.0-part3 (2026-10-01): first issue, authored and ratified by quant-analyst. Every expected value is hand-derived (CP3_GOLDEN_PART3_DERIVATION.md) and re-checked by derivation/cp3_part3_calculator.py, a stdlib-only FIFO fold and gains calculator written from ledger-replay/1.4 Ruling 0.5 and performance/1.5 alone; it imports nothing from src/. No value comes from the engine. Note: performance/1.4's fixture plan gave E7's realized gain as 750; that plan value is wrong (it used the pre-split unit cost) and is corrected by the performance/1.5 erratum; this fixture asserts 375."
+  ],
+  "convention_sets": {
+    "performance": "performance/1.6",
+    "ledger_replay": "ledger-replay/1.5 (FIFO/1 mode); items of kind replay_basis with mode NONE are ledger-replay/1.3 outputs",
+    "market_data": "market-data/1.10",
+    "lot_relief": "FIFO/1"
+  },
+  "authored_by": "quant-analyst (independent derivation; see CP3_GOLDEN_PART3_DERIVATION.md)",
+  "authored_on": "2026-10-01",
+  "extends": {
+    "fixture_ids": ["cp3_golden/1.4-part1", "cp3_golden/1.2-part2"],
+    "rule": "Everything in part 1's and part 2's 'format' applies. P1 and P2 are cp1_golden/1.1's P1 and P2, unchanged. P3 is part 1's P3 (ledger_seq 1-7, unchanged) PLUS the events added below at ledger_seq 8-13; every part-1 P3 assertion pins ledger_version 7, so none is affected. P14 to P20 are new and fully defined here. The market-data version M for part 3 is ONE release: part 1's market_data block + part 2's market_data_additions + the market_data_additions below. No earlier series, rate, calendar or corporate action changes, so every part-1 and part-2 value still holds in this M."
+  },
+  "format": {
+    "inherits": "cp3_golden part 1 and part 2 'format': presented 'value' (money ROUND_HALF_UP to the minor unit; ratios to 1e-12), 'exact' as a reduced fraction 'p/q' or integer string, 'window' {request, base, end, days}, 'detail' null = NOT ASSERTED, 'lineage_includes', value null iff INSUFFICIENT_DATA. Numbers are JSON strings parsed with Decimal or Fraction, never float.",
+    "lot_fields": "A lot (in a lot_book) or a portion (in a relief) is {origin_event_id, carry, acquisition_date, date_kind, basis_currency, units, unit_cost, basis}. 'carry' is the ordered carry history (ledger-replay/1.4 0.5.1): a list of hops {from_account_id, out_event_id, in_event_id, date}; [] for a lot that never moved. date_kind is 'TRADE' (BUY), 'RECORDED' (OPENING_POSITION or external TRANSFER_IN carrying acquired_on; acquisition_date = acquired_on; ledger-replay/1.5 Ruling 0.6) or 'ENTRY' (the same events without acquired_on); a carried lot keeps its origin's. Events may carry the optional LedgerEvent field 'acquired_on' (an ISO date; PD-0036), only on OPENING_POSITION and external security TRANSFER_IN. basis_currency, unit_cost and basis are null for an unknown basis. units, unit_cost and basis are EXACT fraction strings (the fold never rounds). Lists of lots or portions are compared AS SETS keyed by (origin_event_id, the carry's out_event_ids).",
+    "kinds_added": {
+      "lot_book": "The FIFO-mode replay output for (account_id, listing_id) at (as_of, ledger_version): 'quantity' (exact) and 'lots' (the end-of-day lot book). No market data is read.",
+      "relief": "The FIFO-mode relief record of one depleting event (SELL or TRANSFER_OUT, by event_id): 'portions' as relieved on its date (each event's share, ledger-replay/1.4 0.5.5). For an internal out-leg these are exactly the lots its in-leg delivers, before the hop is appended.",
+      "replay_basis": "The replay state's emitted position basis in 'mode' NONE (ledger-replay/1.3, the CP1 'basis' kind) or FIFO (ledger-replay/1.4 0.5.11): value is a list of money objects sorted by currency, or null with reason and detail (ReplayDetail names).",
+      "realized_gain": "performance Ruling 3.8 (with 1.5) for one SELL (event_id). view REPORTING (in the reporting currency) or NATIVE (in the sale's event currency, 'currency').",
+      "unrealized_gain": "performance Ruling 3.9 for (account_id, listing_id) at as_of. view REPORTING, or NATIVE (in the listing's trading currency, 'currency').",
+      "remaining_basis": "performance Ruling 3.9a (basis.remaining). view REPORTING: one value. view NATIVE: 'value' is a list of {currency, value, exact}, one per basis currency, compared as a set.",
+      "since_acquisition": "performance Ruling 9.7 (with 1.5) for one lot ('lot': {origin_event_id, carry_out_event_ids}) at as_of, in the reporting currency: 'total' {value, exact} = the lot's UG_R; 'parts' in registry order LOCAL_AT_ACQUISITION_FX, FX_ON_COST, INTERACTION, each {line, exact, apportioned} where 'apportioned' is the Ruling 2.4 item 3 display value (the apportioned parts sum exactly to total.value).",
+      "realized_gain_total": "performance Ruling 3.10 (with 1.5): sum of RG_R over sales dated in the window. When LIMITED, 'excluded_weight' {exact, value} is the gross proceeds weight of the excluded sales.",
+      "unrealized_gain_total": "performance Ruling 3.10: sum of UG_R over positions at as_of. When LIMITED, 'excluded_weight' {exact, value} is the gross market-value weight of the excluded positions.",
+      "holding_value, portfolio_value, split_outcome": "As in parts 1 and 2."
+    },
+    "detail_names": "performance/1.5: UNKNOWN_BASIS, ACQUISITION_DATE_UNKNOWN, MIXED_CURRENCY_BASIS (gains and basis); ReplayDetail names for replay_basis (LOT_DEPLETION). SOURCE_CONFLICT items leave detail null (a CP2 lineage cause), as in part 2; SPLIT_SUPPRESSION_CARRIED is asserted through lineage_includes where the carried taint is the point.",
+    "engine_metric_ids": "As in parts 1 and 2: the loader maps kinds to the engine's metric ids; a rename is a mapping change, not a fixture change."
+  },
+  "market_data_additions": {
+    "synthetic": true,
+    "upstream": "synthetic",
+    "how_to_load": "As parts 1 and 2: expanded mechanically into real CP2 layouts under synthetic source ids, then ONE release M = part 1's files + part 2's files + these files.",
+    "prices": {
+      "layout": "as part 1 (RAW closes, volume '1000' on every row)",
+      "rows_rule": "as part 1",
+      "series": [
+        {"listing_id": "c0000000-0000-4000-8000-0000002a0001", "ticker": "SYNF", "calendar": "SYN_NYSE", "currency": "USD", "first": "2025-03-03", "last": "2025-04-30",
+         "steps": [{"from": "2025-03-03", "close": "9.00"}, {"from": "2025-03-05", "close": "11.00"}, {"from": "2025-03-10", "close": "12.00"}, {"from": "2025-03-12", "close": "13.00"}, {"from": "2025-04-15", "close": "12.50"}],
+         "gaps": [], "note": "Used by P14, P15, P16, P18 and P19. No corporate action."},
+        {"listing_id": "c0000000-0000-4000-8000-0000002b0001", "ticker": "SYNT", "calendar": "SYN_NYSE", "currency": "USD", "first": "2025-02-03", "last": "2025-04-30",
+         "steps": [{"from": "2025-02-03", "close": "80.00"}, {"from": "2025-03-03", "close": "20.00"}],
+         "gaps": [], "note": "RAW: 80.00 -> 20.00 is the 4:1 split of the corporate-action pair below. Used by P17."}
+      ]
+    },
+    "corporate_actions": [
+      {"listing_id": "c0000000-0000-4000-8000-0000002b0001", "type": "SPLIT", "ex_date": "2025-03-03", "ratio": {"new_units": "4", "old_units": "1"},
+       "records": [{"side": "FEED", "upstream": "synthetic", "synthetic": true}, {"side": "FILING", "upstream": "synthetic", "synthetic": true}],
+       "note": "Corroborated within the synthetic world (market-data Ruling 4.8 item 4(a)). W(K) = 20 SYN_NYSE sessions either side of 2025-03-03 = [2025-01-31, 2025-03-31], inside coverage; no other corroborated split of SYNT, so no overlap."}
+    ]
+  },
+  "listings_added": [
+    {"listing_id": "c0000000-0000-4000-8000-0000002a0001", "ticker": "SYNF", "mic": "XNYS", "trading_currency": "USD", "security_type": "COMMON_STOCK", "note": "synthetic US listing (FIFO cases)"},
+    {"listing_id": "c0000000-0000-4000-8000-0000002b0001", "ticker": "SYNT", "mic": "XNYS", "trading_currency": "USD", "security_type": "COMMON_STOCK", "note": "synthetic US listing with a synthetic corroborated split (taint case)"}
+  ],
+  "portfolios": [
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000001", "name": "P1", "reporting_currency": "USD", "events_from": "cp1_golden/1.1 P1 (seq 1-25)", "inception_base": "2025-01-01",
+      "assertions": [
+        {"id": "P1-L1", "as_of": "2025-03-04", "ledger_version": 25, "purpose": "E7 (SELL 50 on 03-03) relieves 50 post-split units of the one lot E2 (7,500 over 200 units after E5's 4:1 split, unit cost 75/2): relieved 1,875, realized 2,250 - 1,875 = 375 (NOT 750: the performance/1.4 plan value used the pre-split unit cost; see the performance/1.5 erratum). Remaining 5,625 = ledger-replay T7.",
+         "expect": [
+          {"kind": "lot_book", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000a001", "quantity": "150",
+           "lots": [{"origin_event_id": "e0000000-0000-4000-8000-000000000002", "carry": [], "acquisition_date": "2025-01-06", "date_kind": "TRADE", "basis_currency": "USD", "units": "150", "unit_cost": "75/2", "basis": "5625"}]},
+          {"kind": "relief", "event_id": "e0000000-0000-4000-8000-000000000008",
+           "portions": [{"origin_event_id": "e0000000-0000-4000-8000-000000000002", "carry": [], "acquisition_date": "2025-01-06", "date_kind": "TRADE", "basis_currency": "USD", "units": "50", "unit_cost": "75/2", "basis": "1875"}]},
+          {"kind": "realized_gain", "event_id": "e0000000-0000-4000-8000-000000000008", "view": "REPORTING", "state": "AVAILABLE", "value": "375.00", "exact": "375", "reason": null, "detail": null},
+          {"kind": "realized_gain", "event_id": "e0000000-0000-4000-8000-000000000008", "view": "NATIVE", "currency": "USD", "state": "AVAILABLE", "value": "375.00", "exact": "375", "reason": null, "detail": null},
+          {"kind": "remaining_basis", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000a001", "view": "REPORTING", "state": "AVAILABLE", "value": "5625.00", "exact": "5625", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000a001", "view": "REPORTING", "state": "AVAILABLE", "value": "1125.00", "exact": "1125", "reason": null, "detail": null}
+        ]},
+        {"id": "P1-L2", "as_of": "2025-06-16", "ledger_version": 25, "purpose": "06-16: X12 SELL 40 and X13 internal move 110 empty A1's one lot (150 units at 75/2). Each event takes its share of the single relieved portion: X12 40 units (1,500; realized 2,000 - 1,500 = 500), X13 110 units (4,125). A3 receives one lot keeping E2's acquisition date 2025-01-06, with one hop.",
+         "expect": [
+          {"kind": "relief", "event_id": "e0000000-0000-4000-8000-000000000021",
+           "portions": [{"origin_event_id": "e0000000-0000-4000-8000-000000000002", "carry": [], "acquisition_date": "2025-01-06", "date_kind": "TRADE", "basis_currency": "USD", "units": "40", "unit_cost": "75/2", "basis": "1500"}]},
+          {"kind": "relief", "event_id": "e0000000-0000-4000-8000-000000000022",
+           "portions": [{"origin_event_id": "e0000000-0000-4000-8000-000000000002", "carry": [], "acquisition_date": "2025-01-06", "date_kind": "TRADE", "basis_currency": "USD", "units": "110", "unit_cost": "75/2", "basis": "4125"}]},
+          {"kind": "realized_gain", "event_id": "e0000000-0000-4000-8000-000000000021", "view": "REPORTING", "state": "AVAILABLE", "value": "500.00", "exact": "500", "reason": null, "detail": null},
+          {"kind": "lot_book", "account_id": "a1000000-0000-4000-8000-000000000003", "listing_id": "c0000000-0000-4000-8000-00000000a001", "quantity": "110",
+           "lots": [{"origin_event_id": "e0000000-0000-4000-8000-000000000002", "carry": [{"from_account_id": "a1000000-0000-4000-8000-000000000001", "out_event_id": "e0000000-0000-4000-8000-000000000022", "in_event_id": "e0000000-0000-4000-8000-000000000023", "date": "2025-06-16"}], "acquisition_date": "2025-01-06", "date_kind": "TRADE", "basis_currency": "USD", "units": "110", "unit_cost": "75/2", "basis": "4125"}]},
+          {"kind": "lot_book", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000a001", "quantity": "0", "lots": []}
+        ]},
+        {"id": "P1-L3", "as_of": "2025-06-10", "ledger_version": 25, "purpose": "The two-lot MSFT case (Example L-1): X11 SELL 4 relieves 4 of X4 (dated 05-05, unit cost 400): 1,600; realized 1,720 - 1,600 = 120. Remaining 1 x 400 + 5 x 420 = 2,500.",
+         "expect": [
+          {"kind": "relief", "event_id": "e0000000-0000-4000-8000-000000000020",
+           "portions": [{"origin_event_id": "e0000000-0000-4000-8000-000000000013", "carry": [], "acquisition_date": "2025-05-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "4", "unit_cost": "400", "basis": "1600"}]},
+          {"kind": "realized_gain", "event_id": "e0000000-0000-4000-8000-000000000020", "view": "REPORTING", "state": "AVAILABLE", "value": "120.00", "exact": "120", "reason": null, "detail": null},
+          {"kind": "lot_book", "account_id": "a1000000-0000-4000-8000-000000000003", "listing_id": "c0000000-0000-4000-8000-00000000f001", "quantity": "6",
+           "lots": [{"origin_event_id": "e0000000-0000-4000-8000-000000000013", "carry": [], "acquisition_date": "2025-05-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "1", "unit_cost": "400", "basis": "400"},
+                    {"origin_event_id": "e0000000-0000-4000-8000-000000000019", "carry": [], "acquisition_date": "2025-06-03", "date_kind": "TRADE", "basis_currency": "USD", "units": "5", "unit_cost": "420", "basis": "2100"}]}
+        ]},
+        {"id": "P1-G1", "as_of": "2025-06-30", "ledger_version": 25, "purpose": "Remaining basis and unrealized gain per position at 06-30 (USD reporting; HKD 37.00 at 16/125; AAPL 50.00; MSFT 430.00). HKD lots at their acquisition-date FX: E4 (01-08) at 5/39, X3 (04-02) at 16/125. E8's MSFT lot has unknown basis: MISSING_COST_BASIS, never 0.",
+         "expect": [
+          {"kind": "remaining_basis", "account_id": "a1000000-0000-4000-8000-000000000003", "listing_id": "c0000000-0000-4000-8000-00000000f001", "view": "REPORTING", "state": "AVAILABLE", "value": "2500.00", "exact": "2500", "reason": null, "detail": null},
+          {"kind": "remaining_basis", "account_id": "a1000000-0000-4000-8000-000000000003", "listing_id": "c0000000-0000-4000-8000-00000000a001", "view": "REPORTING", "state": "AVAILABLE", "value": "4125.00", "exact": "4125", "reason": null, "detail": null},
+          {"kind": "remaining_basis", "account_id": "a1000000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "REPORTING", "state": "AVAILABLE", "value": "2243.59", "exact": "87500/39", "reason": null, "detail": null},
+          {"kind": "remaining_basis", "account_id": "a1000000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "NATIVE", "state": "AVAILABLE", "value": [{"currency": "HKD", "value": "17500.00", "exact": "17500"}], "reason": null, "detail": null},
+          {"kind": "remaining_basis", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000f001", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_COST_BASIS", "detail": ["UNKNOWN_BASIS"]},
+          {"kind": "lot_book", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000f001", "quantity": "10",
+           "lots": [{"origin_event_id": "e0000000-0000-4000-8000-000000000009", "carry": [], "acquisition_date": "2025-03-10", "date_kind": "ENTRY", "basis_currency": null, "units": "10", "unit_cost": null, "basis": null}]},
+          {"kind": "unrealized_gain", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "REPORTING", "state": "AVAILABLE", "value": "51.20", "exact": "256/5", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "NATIVE", "currency": "HKD", "state": "AVAILABLE", "value": "400.00", "exact": "400", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a1000000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "REPORTING", "state": "AVAILABLE", "value": "124.41", "exact": "4852/39", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a1000000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "NATIVE", "currency": "HKD", "state": "AVAILABLE", "value": "1000.00", "exact": "1000", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a1000000-0000-4000-8000-000000000003", "listing_id": "c0000000-0000-4000-8000-00000000a001", "view": "REPORTING", "state": "AVAILABLE", "value": "1375.00", "exact": "1375", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a1000000-0000-4000-8000-000000000003", "listing_id": "c0000000-0000-4000-8000-00000000f001", "view": "REPORTING", "state": "AVAILABLE", "value": "80.00", "exact": "80", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-00000000f001", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_COST_BASIS", "detail": ["UNKNOWN_BASIS"]}
+        ]},
+        {"id": "P1-G2", "as_of": "2025-06-30", "ledger_version": 25, "purpose": "Aggregates. Unrealized: four positions included (51.2 + 4,852/39 + 1,375 + 80 = 317,969/195); A1 MSFT excluded (MISSING_COST_BASIS), so LIMITED with the excluded weight 4,300 / 15,695.2 = 5,375/19,619 stated (Ruling 3.10, HG1 R1). Realized: E7 375 + X11 120 + X12 500 = 995 since inception; X11 + X12 = 620 over (03-31, 06-30].",
+         "expect": [
+          {"kind": "unrealized_gain_total", "view": "REPORTING", "state": "LIMITED", "value": "1630.61", "exact": "317969/195", "reason": "MISSING_COST_BASIS", "detail": null, "excluded_weight": {"exact": "5375/19619", "value": "0.273969111576"}},
+          {"kind": "realized_gain_total", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-01", "end": "2025-06-30", "days": 180}, "state": "AVAILABLE", "value": "995.00", "exact": "995", "reason": null, "detail": null},
+          {"kind": "realized_gain_total", "view": "REPORTING", "window": {"request": {"rule": "CUSTOM", "base": "2025-03-31"}, "base": "2025-03-31", "end": "2025-06-30", "days": 91}, "state": "AVAILABLE", "value": "620.00", "exact": "620", "reason": null, "detail": null}
+        ]},
+        {"id": "P1-S1", "as_of": "2025-06-30", "ledger_version": 25, "purpose": "Since-acquisition split (Ruling 9.7) of the two HKD lots. E4 (bought 01-08 at X_a 5/39; X_D 16/125; V 18,500 HKD, K 17,500 HKD): local 1,000 x 5/39, FX on cost 17,500 x (16/125 - 5/39) = -140/39, interaction 1,000 x (-1/4,875) = -8/39. X3 (bought 04-02 at 16/125 = X_D): all local, FX and interaction exactly 0.",
+         "expect": [
+          {"kind": "since_acquisition", "account_id": "a1000000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "lot": {"origin_event_id": "e0000000-0000-4000-8000-000000000004", "carry_out_event_ids": []}, "view": "REPORTING", "state": "AVAILABLE", "reason": null, "detail": null,
+           "total": {"value": "124.41", "exact": "4852/39"},
+           "parts": [{"line": "LOCAL_AT_ACQUISITION_FX", "exact": "5000/39", "apportioned": "128.21"}, {"line": "FX_ON_COST", "exact": "-140/39", "apportioned": "-3.59"}, {"line": "INTERACTION", "exact": "-8/39", "apportioned": "-0.21"}]},
+          {"kind": "since_acquisition", "account_id": "a1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "lot": {"origin_event_id": "e0000000-0000-4000-8000-000000000012", "carry_out_event_ids": []}, "view": "REPORTING", "state": "AVAILABLE", "reason": null, "detail": null,
+           "total": {"value": "51.20", "exact": "256/5"},
+           "parts": [{"line": "LOCAL_AT_ACQUISITION_FX", "exact": "256/5", "apportioned": "51.20"}, {"line": "FX_ON_COST", "exact": "0", "apportioned": "0.00"}, {"line": "INTERACTION", "exact": "0", "apportioned": "0.00"}]}
+        ]},
+        {"id": "P1-N1", "as_of": "2025-06-30", "ledger_version": 25, "purpose": "Mode contrast on A3 MSFT: the none mode (ledger-replay/1.3) reports the two-lot depletion of 06-10 unresolved, sticky; the FIFO mode emits 2,500.",
+         "expect": [
+          {"kind": "replay_basis", "mode": "NONE", "account_id": "a1000000-0000-4000-8000-000000000003", "listing_id": "c0000000-0000-4000-8000-00000000f001", "state": "INSUFFICIENT_DATA", "value": null, "reason": "UNRESOLVED_CONVENTION", "detail": ["LOT_DEPLETION"]},
+          {"kind": "replay_basis", "mode": "FIFO", "account_id": "a1000000-0000-4000-8000-000000000003", "listing_id": "c0000000-0000-4000-8000-00000000f001", "state": "AVAILABLE", "value": [{"amount": "2500", "currency": "USD"}], "reason": null, "detail": []}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000002", "name": "P2 (snapshot-only)", "reporting_currency": "HKD", "events_from": "cp1_golden/1.1 P2 (seq 1-3)", "inception_base": "2025-06-30",
+      "assertions": [
+        {"id": "P2-L1", "as_of": "2025-07-31", "ledger_version": 3, "purpose": "The opening lot has no cost_basis: an ENTRY lot dated S = 06-30 with unknown basis. The SELL of 200 on 07-02 relieves 200 unknown units: realized MISSING_COST_BASIS; the remaining 300 units, their unrealized gain and both aggregates are MISSING_COST_BASIS (every sale and every position excluded, so INSUFFICIENT_DATA, not LIMITED).",
+         "expect": [
+          {"kind": "lot_book", "account_id": "b1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "300",
+           "lots": [{"origin_event_id": "e2000000-0000-4000-8000-000000000001", "carry": [], "acquisition_date": "2025-06-30", "date_kind": "ENTRY", "basis_currency": null, "units": "300", "unit_cost": null, "basis": null}]},
+          {"kind": "relief", "event_id": "e2000000-0000-4000-8000-000000000003",
+           "portions": [{"origin_event_id": "e2000000-0000-4000-8000-000000000001", "carry": [], "acquisition_date": "2025-06-30", "date_kind": "ENTRY", "basis_currency": null, "units": "200", "unit_cost": null, "basis": null}]},
+          {"kind": "realized_gain", "event_id": "e2000000-0000-4000-8000-000000000003", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_COST_BASIS", "detail": ["UNKNOWN_BASIS"]},
+          {"kind": "remaining_basis", "account_id": "b1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_COST_BASIS", "detail": ["UNKNOWN_BASIS"]},
+          {"kind": "unrealized_gain", "account_id": "b1000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_COST_BASIS", "detail": ["UNKNOWN_BASIS"]},
+          {"kind": "realized_gain_total", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-06-30", "end": "2025-07-31", "days": 31}, "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_COST_BASIS", "detail": null},
+          {"kind": "unrealized_gain_total", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_COST_BASIS", "detail": null}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000003", "name": "P3 (CNY reporting; Southbound)", "reporting_currency": "CNY", "events_from": "cp3_golden part 1 P3 (seq 1-7), plus events_added (seq 8-13)", "inception_base": "2025-03-02",
+      "events_added": [
+        {"ledger_seq": 8, "event": {"event_id": "e3000000-0000-4000-8000-000000000008", "account_id": "a3000000-0000-4000-8000-000000000002", "event_type": "BUY", "event_date": "2025-04-01", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "200", "amount": {"amount": "7200", "currency": "HKD"}, "source_reference": "P3-E8"}},
+        {"ledger_seq": 9, "atomic_group": "transfer-P3-E9", "event": {"event_id": "e3000000-0000-4000-8000-000000000009", "account_id": "a3000000-0000-4000-8000-000000000001", "event_type": "TRANSFER_OUT", "event_date": "2025-04-02", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "1000", "counterparty_account_id": "a3000000-0000-4000-8000-000000000002", "source_reference": "P3-E9-OUT whole Southbound lot to the HK broker account"}},
+        {"ledger_seq": 10, "atomic_group": "transfer-P3-E9", "event": {"event_id": "e3000000-0000-4000-8000-000000000010", "account_id": "a3000000-0000-4000-8000-000000000002", "event_type": "TRANSFER_IN", "event_date": "2025-04-02", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "1000", "counterparty_account_id": "a3000000-0000-4000-8000-000000000001", "source_reference": "P3-E9-IN"}},
+        {"ledger_seq": 11, "event": {"event_id": "e3000000-0000-4000-8000-000000000011", "account_id": "a3000000-0000-4000-8000-000000000002", "event_type": "TRANSFER_IN", "event_date": "2025-04-03", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "100", "cost_basis": {"amount": "3000", "currency": "HKD"}, "source_reference": "P3-E11 external transfer in, HKD basis, no acquisition date"}},
+        {"ledger_seq": 12, "event": {"event_id": "e3000000-0000-4000-8000-000000000012", "account_id": "a3000000-0000-4000-8000-000000000002", "event_type": "SELL", "event_date": "2025-04-10", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "1100", "amount": {"amount": "39600", "currency": "HKD"}, "source_reference": "P3-E12"}},
+        {"ledger_seq": 13, "event": {"event_id": "e3000000-0000-4000-8000-000000000013", "account_id": "a3000000-0000-4000-8000-000000000002", "event_type": "SELL", "event_date": "2025-04-15", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "150", "amount": {"amount": "5400", "currency": "HKD"}, "source_reference": "P3-E13"}}
+      ],
+      "assertions": [
+        {"id": "P3-L1", "as_of": "2025-04-01", "ledger_version": 13, "purpose": "The Southbound lot (1,000 x 0700 paid 32,400 CNY on 03-04) before it moves: its basis is in CNY = R, so UG_R = 36,000 HKD x 116/125 - 32,400 = 1,008; no native (HKD) gain exists for a CNY basis on an HKD listing (Ruling 3.9: UNSUPPORTED_ASSET, MIXED_CURRENCY_BASIS).",
+         "expect": [
+          {"kind": "unrealized_gain", "account_id": "a3000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "REPORTING", "state": "AVAILABLE", "value": "1008.00", "exact": "1008", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a3000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "NATIVE", "currency": "HKD", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "UNSUPPORTED_ASSET", "detail": ["MIXED_CURRENCY_BASIS"]},
+          {"kind": "remaining_basis", "account_id": "a3000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "REPORTING", "state": "AVAILABLE", "value": "32400.00", "exact": "32400", "reason": null, "detail": null}
+        ]},
+        {"id": "P3-L2", "as_of": "2025-04-03", "ledger_version": 13, "purpose": "C2's 0700 lot book after the whole Southbound move (keeps 03-04 and its CNY basis) and the external transfer in with an HKD basis (ENTRY 04-03): native basis per currency, CNY 32,400 and HKD 10,200, never summed; the reporting basis is MISSING_COST_BASIS because the ENTRY lot's basis is not in CNY (ACQUISITION_DATE_UNKNOWN).",
+         "expect": [
+          {"kind": "lot_book", "account_id": "a3000000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "1300",
+           "lots": [{"origin_event_id": "e3000000-0000-4000-8000-000000000003", "carry": [{"from_account_id": "a3000000-0000-4000-8000-000000000001", "out_event_id": "e3000000-0000-4000-8000-000000000009", "in_event_id": "e3000000-0000-4000-8000-000000000010", "date": "2025-04-02"}], "acquisition_date": "2025-03-04", "date_kind": "TRADE", "basis_currency": "CNY", "units": "1000", "unit_cost": "162/5", "basis": "32400"},
+                    {"origin_event_id": "e3000000-0000-4000-8000-000000000008", "carry": [], "acquisition_date": "2025-04-01", "date_kind": "TRADE", "basis_currency": "HKD", "units": "200", "unit_cost": "36", "basis": "7200"},
+                    {"origin_event_id": "e3000000-0000-4000-8000-000000000011", "carry": [], "acquisition_date": "2025-04-03", "date_kind": "ENTRY", "basis_currency": "HKD", "units": "100", "unit_cost": "30", "basis": "3000"}]},
+          {"kind": "remaining_basis", "account_id": "a3000000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "NATIVE", "state": "AVAILABLE", "value": [{"currency": "CNY", "value": "32400.00", "exact": "32400"}, {"currency": "HKD", "value": "10200.00", "exact": "10200"}], "reason": null, "detail": null},
+          {"kind": "remaining_basis", "account_id": "a3000000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_COST_BASIS", "detail": ["ACQUISITION_DATE_UNKNOWN"]}
+        ]},
+        {"id": "P3-L3", "as_of": "2025-04-10", "ledger_version": 13, "purpose": "SELL 1,100 for 39,600 HKD relieves the Southbound lot whole (32,400 CNY) and 100 of the HKD lot (3,600 HKD): two basis currencies, so no native gain (MIXED_CURRENCY_BASIS); in CNY: 39,600 x 116/125 - 32,400 - 3,600 x 116/125 = 1,008.",
+         "expect": [
+          {"kind": "relief", "event_id": "e3000000-0000-4000-8000-000000000012",
+           "portions": [{"origin_event_id": "e3000000-0000-4000-8000-000000000003", "carry": [{"from_account_id": "a3000000-0000-4000-8000-000000000001", "out_event_id": "e3000000-0000-4000-8000-000000000009", "in_event_id": "e3000000-0000-4000-8000-000000000010", "date": "2025-04-02"}], "acquisition_date": "2025-03-04", "date_kind": "TRADE", "basis_currency": "CNY", "units": "1000", "unit_cost": "162/5", "basis": "32400"},
+                        {"origin_event_id": "e3000000-0000-4000-8000-000000000008", "carry": [], "acquisition_date": "2025-04-01", "date_kind": "TRADE", "basis_currency": "HKD", "units": "100", "unit_cost": "36", "basis": "3600"}]},
+          {"kind": "realized_gain", "event_id": "e3000000-0000-4000-8000-000000000012", "view": "NATIVE", "currency": "HKD", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "UNSUPPORTED_ASSET", "detail": ["MIXED_CURRENCY_BASIS"]},
+          {"kind": "realized_gain", "event_id": "e3000000-0000-4000-8000-000000000012", "view": "REPORTING", "state": "AVAILABLE", "value": "1008.00", "exact": "1008", "reason": null, "detail": null}
+        ]},
+        {"id": "P3-L4", "as_of": "2025-04-15", "ledger_version": 13, "purpose": "SELL 150 for 5,400 HKD relieves the rest of the HKD lot (100, 3,600) and 50 of the ENTRY lot (1,500): all HKD, so the native gain is 5,400 - 5,100 = 300 HKD; in CNY the ENTRY portion has no acquisition-date rate: MISSING_COST_BASIS (ACQUISITION_DATE_UNKNOWN).",
+         "expect": [
+          {"kind": "relief", "event_id": "e3000000-0000-4000-8000-000000000013",
+           "portions": [{"origin_event_id": "e3000000-0000-4000-8000-000000000008", "carry": [], "acquisition_date": "2025-04-01", "date_kind": "TRADE", "basis_currency": "HKD", "units": "100", "unit_cost": "36", "basis": "3600"},
+                        {"origin_event_id": "e3000000-0000-4000-8000-000000000011", "carry": [], "acquisition_date": "2025-04-03", "date_kind": "ENTRY", "basis_currency": "HKD", "units": "50", "unit_cost": "30", "basis": "1500"}]},
+          {"kind": "realized_gain", "event_id": "e3000000-0000-4000-8000-000000000013", "view": "NATIVE", "currency": "HKD", "state": "AVAILABLE", "value": "300.00", "exact": "300", "reason": null, "detail": null},
+          {"kind": "realized_gain", "event_id": "e3000000-0000-4000-8000-000000000013", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_COST_BASIS", "detail": ["ACQUISITION_DATE_UNKNOWN"]}
+        ]},
+        {"id": "P3-G1", "as_of": "2025-04-30", "ledger_version": 13, "purpose": "At 04-30 C2 holds 50 units of the ENTRY lot (native UG 50 x 36 - 1,500 = 300 HKD; R: ACQUISITION_DATE_UNKNOWN); C1 SYNA UG 22,000 - 20,000 = 2,000 CNY. The unrealized total is INSUFFICIENT_DATA because NOP1 is unvalued (Ruling 3.10 first bullet). The realized total over (03-31, 04-30] is LIMITED: 1,008 included, the 04-15 sale excluded with proceeds weight 5,400 / 45,000 = 3/25.",
+         "expect": [
+          {"kind": "lot_book", "account_id": "a3000000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "50",
+           "lots": [{"origin_event_id": "e3000000-0000-4000-8000-000000000011", "carry": [], "acquisition_date": "2025-04-03", "date_kind": "ENTRY", "basis_currency": "HKD", "units": "50", "unit_cost": "30", "basis": "1500"}]},
+          {"kind": "unrealized_gain", "account_id": "a3000000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "NATIVE", "currency": "HKD", "state": "AVAILABLE", "value": "300.00", "exact": "300", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a3000000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_COST_BASIS", "detail": ["ACQUISITION_DATE_UNKNOWN"]},
+          {"kind": "unrealized_gain", "account_id": "a3000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000000a0001", "view": "REPORTING", "state": "AVAILABLE", "value": "2000.00", "exact": "2000", "reason": null, "detail": null},
+          {"kind": "unrealized_gain_total", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_PRICE_HISTORY", "detail": null},
+          {"kind": "realized_gain_total", "view": "REPORTING", "window": {"request": {"rule": "CUSTOM", "base": "2025-03-31"}, "base": "2025-03-31", "end": "2025-04-30", "days": 30}, "state": "LIMITED", "value": "1008.00", "exact": "1008", "reason": "MISSING_COST_BASIS", "detail": null, "excluded_weight": {"exact": "3/25", "value": "0.120000000000"}}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-00000000000e", "name": "P14 (same-day buys and a sale; the sale entered first)", "reporting_currency": "USD",
+      "accounts": [{"account_id": "ae000000-0000-4000-8000-000000000001", "name": "F1"}], "inception_base": "2025-03-02",
+      "events": [
+        {"ledger_seq": 1, "event": {"event_id": "ee000000-0000-4000-8000-000000000001", "account_id": "ae000000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-03-03", "currency": "USD", "amount": {"amount": "10000", "currency": "USD"}, "source_reference": "P14-E1"}},
+        {"ledger_seq": 2, "event": {"event_id": "ee000000-0000-4000-8000-000000000002", "account_id": "ae000000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-03", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "30", "amount": {"amount": "270", "currency": "USD"}, "source_reference": "P14-E2 lot L0"}},
+        {"ledger_seq": 3, "event": {"event_id": "ee000000-0000-4000-8000-000000000003", "account_id": "ae000000-0000-4000-8000-000000000001", "event_type": "SELL", "event_date": "2025-03-05", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "80", "amount": {"amount": "880", "currency": "USD"}, "source_reference": "P14-E3 entered before the day's buys"}},
+        {"ledger_seq": 4, "event": {"event_id": "ee000000-0000-4000-8000-000000000004", "account_id": "ae000000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-05", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "100", "amount": {"amount": "1040", "currency": "USD"}, "source_reference": "P14-E4 lot L1"}},
+        {"ledger_seq": 5, "event": {"event_id": "ee000000-0000-4000-8000-000000000005", "account_id": "ae000000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-05", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "50", "amount": {"amount": "580", "currency": "USD"}, "source_reference": "P14-E5 lot L2"}},
+        {"ledger_seq": 6, "event": {"event_id": "ee000000-0000-4000-8000-000000000006", "account_id": "ae000000-0000-4000-8000-000000000001", "event_type": "SELL", "event_date": "2025-03-10", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "40", "amount": {"amount": "480", "currency": "USD"}, "source_reference": "P14-E6"}}
+      ],
+      "assertions": [
+        {"id": "P14-L1", "as_of": "2025-03-05", "ledger_version": 6, "purpose": "SELL 80 on 03-05 relieves L0 (30, dated 03-03) whole, then 50 from the one-date group {L1, L2} (150 units) pro rata: L1 100/3, L2 50/3. Relieved 270 + 1,040/3 + 580/3 = 810; realized 880 - 810 = 70. Fractional lot units, exact. The none mode reports the basis unresolved; the FIFO mode emits 1,080.",
+         "expect": [
+          {"kind": "relief", "event_id": "ee000000-0000-4000-8000-000000000003",
+           "portions": [{"origin_event_id": "ee000000-0000-4000-8000-000000000002", "carry": [], "acquisition_date": "2025-03-03", "date_kind": "TRADE", "basis_currency": "USD", "units": "30", "unit_cost": "9", "basis": "270"},
+                        {"origin_event_id": "ee000000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "100/3", "unit_cost": "52/5", "basis": "1040/3"},
+                        {"origin_event_id": "ee000000-0000-4000-8000-000000000005", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "50/3", "unit_cost": "58/5", "basis": "580/3"}]},
+          {"kind": "lot_book", "account_id": "ae000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "100",
+           "lots": [{"origin_event_id": "ee000000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "200/3", "unit_cost": "52/5", "basis": "2080/3"},
+                    {"origin_event_id": "ee000000-0000-4000-8000-000000000005", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "100/3", "unit_cost": "58/5", "basis": "1160/3"}]},
+          {"kind": "realized_gain", "event_id": "ee000000-0000-4000-8000-000000000003", "view": "REPORTING", "state": "AVAILABLE", "value": "70.00", "exact": "70", "reason": null, "detail": null},
+          {"kind": "replay_basis", "mode": "NONE", "account_id": "ae000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "state": "INSUFFICIENT_DATA", "value": null, "reason": "UNRESOLVED_CONVENTION", "detail": ["LOT_DEPLETION"]},
+          {"kind": "replay_basis", "mode": "FIFO", "account_id": "ae000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "state": "AVAILABLE", "value": [{"amount": "1080", "currency": "USD"}], "reason": null, "detail": []}
+        ]},
+        {"id": "P14-L2", "as_of": "2025-03-10", "ledger_version": 6, "purpose": "SELL 40 from the one-date group (100 units): L1 80/3 (832/3), L2 40/3 (464/3); relieved 432; realized 480 - 432 = 48.",
+         "expect": [
+          {"kind": "relief", "event_id": "ee000000-0000-4000-8000-000000000006",
+           "portions": [{"origin_event_id": "ee000000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "80/3", "unit_cost": "52/5", "basis": "832/3"},
+                        {"origin_event_id": "ee000000-0000-4000-8000-000000000005", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "40/3", "unit_cost": "58/5", "basis": "464/3"}]},
+          {"kind": "realized_gain", "event_id": "ee000000-0000-4000-8000-000000000006", "view": "REPORTING", "state": "AVAILABLE", "value": "48.00", "exact": "48", "reason": null, "detail": null}
+        ]},
+        {"id": "P14-G1", "as_of": "2025-03-31", "ledger_version": 6, "purpose": "Remaining L1 40 (416) + L2 20 (232) = 648; UG 60 x 13.00 - 648 = 132; realized 70 + 48 = 118. I-7: 118 + 132 = 880 + 480 + 780 - 1,890.",
+         "expect": [
+          {"kind": "lot_book", "account_id": "ae000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "60",
+           "lots": [{"origin_event_id": "ee000000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "40", "unit_cost": "52/5", "basis": "416"},
+                    {"origin_event_id": "ee000000-0000-4000-8000-000000000005", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "20", "unit_cost": "58/5", "basis": "232"}]},
+          {"kind": "remaining_basis", "account_id": "ae000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "view": "REPORTING", "state": "AVAILABLE", "value": "648.00", "exact": "648", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "ae000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "view": "REPORTING", "state": "AVAILABLE", "value": "132.00", "exact": "132", "reason": null, "detail": null},
+          {"kind": "realized_gain_total", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-03-31", "days": 29}, "state": "AVAILABLE", "value": "118.00", "exact": "118", "reason": null, "detail": null}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-00000000000f", "name": "P15 (P14's events with the 03-05 entry order reversed)", "reporting_currency": "USD",
+      "accounts": [{"account_id": "af000000-0000-4000-8000-000000000001", "name": "F1'"}], "inception_base": "2025-03-02",
+      "events": [
+        {"ledger_seq": 1, "event": {"event_id": "ef000000-0000-4000-8000-000000000001", "account_id": "af000000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-03-03", "currency": "USD", "amount": {"amount": "10000", "currency": "USD"}, "source_reference": "P15-E1"}},
+        {"ledger_seq": 2, "event": {"event_id": "ef000000-0000-4000-8000-000000000002", "account_id": "af000000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-03", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "30", "amount": {"amount": "270", "currency": "USD"}, "source_reference": "P15-E2 lot L0"}},
+        {"ledger_seq": 3, "event": {"event_id": "ef000000-0000-4000-8000-000000000003", "account_id": "af000000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-05", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "50", "amount": {"amount": "580", "currency": "USD"}, "source_reference": "P15-E3 lot L2"}},
+        {"ledger_seq": 4, "event": {"event_id": "ef000000-0000-4000-8000-000000000004", "account_id": "af000000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-05", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "100", "amount": {"amount": "1040", "currency": "USD"}, "source_reference": "P15-E4 lot L1"}},
+        {"ledger_seq": 5, "event": {"event_id": "ef000000-0000-4000-8000-000000000005", "account_id": "af000000-0000-4000-8000-000000000001", "event_type": "SELL", "event_date": "2025-03-05", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "80", "amount": {"amount": "880", "currency": "USD"}, "source_reference": "P15-E5 entered after the day's buys"}},
+        {"ledger_seq": 6, "event": {"event_id": "ef000000-0000-4000-8000-000000000006", "account_id": "af000000-0000-4000-8000-000000000001", "event_type": "SELL", "event_date": "2025-03-10", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "40", "amount": {"amount": "480", "currency": "USD"}, "source_reference": "P15-E6"}}
+      ],
+      "assertions": [
+        {"id": "P15-L1", "as_of": "2025-03-05", "ledger_version": 6, "purpose": "Identical to P14-L1: entry order within a day does not change any value (only event ids differ).",
+         "expect": [
+          {"kind": "relief", "event_id": "ef000000-0000-4000-8000-000000000005",
+           "portions": [{"origin_event_id": "ef000000-0000-4000-8000-000000000002", "carry": [], "acquisition_date": "2025-03-03", "date_kind": "TRADE", "basis_currency": "USD", "units": "30", "unit_cost": "9", "basis": "270"},
+                        {"origin_event_id": "ef000000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "100/3", "unit_cost": "52/5", "basis": "1040/3"},
+                        {"origin_event_id": "ef000000-0000-4000-8000-000000000003", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "50/3", "unit_cost": "58/5", "basis": "580/3"}]},
+          {"kind": "lot_book", "account_id": "af000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "100",
+           "lots": [{"origin_event_id": "ef000000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "200/3", "unit_cost": "52/5", "basis": "2080/3"},
+                    {"origin_event_id": "ef000000-0000-4000-8000-000000000003", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "100/3", "unit_cost": "58/5", "basis": "1160/3"}]},
+          {"kind": "realized_gain", "event_id": "ef000000-0000-4000-8000-000000000005", "view": "REPORTING", "state": "AVAILABLE", "value": "70.00", "exact": "70", "reason": null, "detail": null},
+          {"kind": "replay_basis", "mode": "NONE", "account_id": "af000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "state": "INSUFFICIENT_DATA", "value": null, "reason": "UNRESOLVED_CONVENTION", "detail": ["LOT_DEPLETION"]},
+          {"kind": "replay_basis", "mode": "FIFO", "account_id": "af000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "state": "AVAILABLE", "value": [{"amount": "1080", "currency": "USD"}], "reason": null, "detail": []}
+        ]},
+        {"id": "P15-L2", "as_of": "2025-03-10", "ledger_version": 6, "purpose": "Identical to P14-L2.",
+         "expect": [
+          {"kind": "relief", "event_id": "ef000000-0000-4000-8000-000000000006",
+           "portions": [{"origin_event_id": "ef000000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "80/3", "unit_cost": "52/5", "basis": "832/3"},
+                        {"origin_event_id": "ef000000-0000-4000-8000-000000000003", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "40/3", "unit_cost": "58/5", "basis": "464/3"}]},
+          {"kind": "realized_gain", "event_id": "ef000000-0000-4000-8000-000000000006", "view": "REPORTING", "state": "AVAILABLE", "value": "48.00", "exact": "48", "reason": null, "detail": null}
+        ]},
+        {"id": "P15-G1", "as_of": "2025-03-31", "ledger_version": 6, "purpose": "Identical to P14-G1.",
+         "expect": [
+          {"kind": "lot_book", "account_id": "af000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "60",
+           "lots": [{"origin_event_id": "ef000000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "40", "unit_cost": "52/5", "basis": "416"},
+                    {"origin_event_id": "ef000000-0000-4000-8000-000000000003", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "20", "unit_cost": "58/5", "basis": "232"}]},
+          {"kind": "remaining_basis", "account_id": "af000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "view": "REPORTING", "state": "AVAILABLE", "value": "648.00", "exact": "648", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "af000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "view": "REPORTING", "state": "AVAILABLE", "value": "132.00", "exact": "132", "reason": null, "detail": null},
+          {"kind": "realized_gain_total", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-03-31", "days": 29}, "state": "AVAILABLE", "value": "118.00", "exact": "118", "reason": null, "detail": null}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000010", "name": "P16 (partial internal move from two lots; receiver FIFO; a sale and a move on one day)", "reporting_currency": "USD",
+      "accounts": [{"account_id": "a1600000-0000-4000-8000-000000000001", "name": "T1"}, {"account_id": "a1600000-0000-4000-8000-000000000002", "name": "T2"}], "inception_base": "2025-03-02",
+      "events": [
+        {"ledger_seq": 1, "event": {"event_id": "e1600000-0000-4000-8000-000000000001", "account_id": "a1600000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-03-03", "currency": "USD", "amount": {"amount": "5000", "currency": "USD"}, "source_reference": "P16-E1"}},
+        {"ledger_seq": 2, "event": {"event_id": "e1600000-0000-4000-8000-000000000002", "account_id": "a1600000-0000-4000-8000-000000000002", "event_type": "DEPOSIT", "event_date": "2025-03-03", "currency": "USD", "amount": {"amount": "5000", "currency": "USD"}, "source_reference": "P16-E2"}},
+        {"ledger_seq": 3, "event": {"event_id": "e1600000-0000-4000-8000-000000000003", "account_id": "a1600000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-03", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "100", "amount": {"amount": "900", "currency": "USD"}, "source_reference": "P16-E3 lot a"}},
+        {"ledger_seq": 4, "event": {"event_id": "e1600000-0000-4000-8000-000000000004", "account_id": "a1600000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-05", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "100", "amount": {"amount": "1100", "currency": "USD"}, "source_reference": "P16-E4 lot b"}},
+        {"ledger_seq": 5, "event": {"event_id": "e1600000-0000-4000-8000-000000000005", "account_id": "a1600000-0000-4000-8000-000000000002", "event_type": "BUY", "event_date": "2025-03-06", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "100", "amount": {"amount": "1120", "currency": "USD"}, "source_reference": "P16-E5 lot o"}},
+        {"ledger_seq": 6, "atomic_group": "transfer-P16-E6", "event": {"event_id": "e1600000-0000-4000-8000-000000000006", "account_id": "a1600000-0000-4000-8000-000000000001", "event_type": "TRANSFER_OUT", "event_date": "2025-03-07", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "150", "counterparty_account_id": "a1600000-0000-4000-8000-000000000002", "source_reference": "P16-E6-OUT"}},
+        {"ledger_seq": 7, "atomic_group": "transfer-P16-E6", "event": {"event_id": "e1600000-0000-4000-8000-000000000007", "account_id": "a1600000-0000-4000-8000-000000000002", "event_type": "TRANSFER_IN", "event_date": "2025-03-07", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "150", "counterparty_account_id": "a1600000-0000-4000-8000-000000000001", "source_reference": "P16-E6-IN"}},
+        {"ledger_seq": 8, "event": {"event_id": "e1600000-0000-4000-8000-000000000008", "account_id": "a1600000-0000-4000-8000-000000000002", "event_type": "SELL", "event_date": "2025-03-10", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "120", "amount": {"amount": "1440", "currency": "USD"}, "source_reference": "P16-E8"}},
+        {"ledger_seq": 9, "event": {"event_id": "e1600000-0000-4000-8000-000000000009", "account_id": "a1600000-0000-4000-8000-000000000002", "event_type": "SELL", "event_date": "2025-03-12", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "40", "amount": {"amount": "520", "currency": "USD"}, "source_reference": "P16-E9"}},
+        {"ledger_seq": 10, "atomic_group": "transfer-P16-E10", "event": {"event_id": "e1600000-0000-4000-8000-000000000010", "account_id": "a1600000-0000-4000-8000-000000000002", "event_type": "TRANSFER_OUT", "event_date": "2025-03-12", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "50", "counterparty_account_id": "a1600000-0000-4000-8000-000000000001", "source_reference": "P16-E10-OUT"}},
+        {"ledger_seq": 11, "atomic_group": "transfer-P16-E10", "event": {"event_id": "e1600000-0000-4000-8000-000000000011", "account_id": "a1600000-0000-4000-8000-000000000001", "event_type": "TRANSFER_IN", "event_date": "2025-03-12", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "50", "counterparty_account_id": "a1600000-0000-4000-8000-000000000002", "source_reference": "P16-E10-IN"}},
+        {"ledger_seq": 12, "event": {"event_id": "e1600000-0000-4000-8000-000000000012", "account_id": "a1600000-0000-4000-8000-000000000001", "event_type": "SELL", "event_date": "2025-03-14", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "60", "amount": {"amount": "780", "currency": "USD"}, "source_reference": "P16-E12"}}
+      ],
+      "assertions": [
+        {"id": "P16-L1", "as_of": "2025-03-07", "ledger_version": 12, "purpose": "A partial internal move of 150 from two lots: FIFO selects the units: lot a (100 at 9, 03-03) whole and 50 of lot b (11, 03-05); carried 1,450, each carried lot keeping its acquisition date. T1 keeps b 50 (550). Portfolio basis unchanged (3,120). The none mode reports both sides unresolved.",
+         "expect": [
+          {"kind": "relief", "event_id": "e1600000-0000-4000-8000-000000000006",
+           "portions": [{"origin_event_id": "e1600000-0000-4000-8000-000000000003", "carry": [], "acquisition_date": "2025-03-03", "date_kind": "TRADE", "basis_currency": "USD", "units": "100", "unit_cost": "9", "basis": "900"},
+                        {"origin_event_id": "e1600000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "50", "unit_cost": "11", "basis": "550"}]},
+          {"kind": "lot_book", "account_id": "a1600000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "50",
+           "lots": [{"origin_event_id": "e1600000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "50", "unit_cost": "11", "basis": "550"}]},
+          {"kind": "lot_book", "account_id": "a1600000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "250",
+           "lots": [{"origin_event_id": "e1600000-0000-4000-8000-000000000003", "carry": [{"from_account_id": "a1600000-0000-4000-8000-000000000001", "out_event_id": "e1600000-0000-4000-8000-000000000006", "in_event_id": "e1600000-0000-4000-8000-000000000007", "date": "2025-03-07"}], "acquisition_date": "2025-03-03", "date_kind": "TRADE", "basis_currency": "USD", "units": "100", "unit_cost": "9", "basis": "900"},
+                    {"origin_event_id": "e1600000-0000-4000-8000-000000000004", "carry": [{"from_account_id": "a1600000-0000-4000-8000-000000000001", "out_event_id": "e1600000-0000-4000-8000-000000000006", "in_event_id": "e1600000-0000-4000-8000-000000000007", "date": "2025-03-07"}], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "50", "unit_cost": "11", "basis": "550"},
+                    {"origin_event_id": "e1600000-0000-4000-8000-000000000005", "carry": [], "acquisition_date": "2025-03-06", "date_kind": "TRADE", "basis_currency": "USD", "units": "100", "unit_cost": "56/5", "basis": "1120"}]},
+          {"kind": "replay_basis", "mode": "NONE", "account_id": "a1600000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "state": "INSUFFICIENT_DATA", "value": null, "reason": "UNRESOLVED_CONVENTION", "detail": ["LOT_DEPLETION"]},
+          {"kind": "replay_basis", "mode": "NONE", "account_id": "a1600000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "state": "INSUFFICIENT_DATA", "value": null, "reason": "UNRESOLVED_CONVENTION", "detail": ["LOT_DEPLETION"]}
+        ]},
+        {"id": "P16-L2", "as_of": "2025-03-10", "ledger_version": 12, "purpose": "T2's SELL 120 relieves the carried lots first (dated 03-03 and 03-05, older than T2's own lot o of 03-06, which T2 held before they arrived): a' 100 (900) + b' 20 (220) = 1,120; realized 1,440 - 1,120 = 320 (relieving o first would give 140).",
+         "expect": [
+          {"kind": "relief", "event_id": "e1600000-0000-4000-8000-000000000008",
+           "portions": [{"origin_event_id": "e1600000-0000-4000-8000-000000000003", "carry": [{"from_account_id": "a1600000-0000-4000-8000-000000000001", "out_event_id": "e1600000-0000-4000-8000-000000000006", "in_event_id": "e1600000-0000-4000-8000-000000000007", "date": "2025-03-07"}], "acquisition_date": "2025-03-03", "date_kind": "TRADE", "basis_currency": "USD", "units": "100", "unit_cost": "9", "basis": "900"},
+                        {"origin_event_id": "e1600000-0000-4000-8000-000000000004", "carry": [{"from_account_id": "a1600000-0000-4000-8000-000000000001", "out_event_id": "e1600000-0000-4000-8000-000000000006", "in_event_id": "e1600000-0000-4000-8000-000000000007", "date": "2025-03-07"}], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "20", "unit_cost": "11", "basis": "220"}]},
+          {"kind": "realized_gain", "event_id": "e1600000-0000-4000-8000-000000000008", "view": "REPORTING", "state": "AVAILABLE", "value": "320.00", "exact": "320", "reason": null, "detail": null}
+        ]},
+        {"id": "P16-L3", "as_of": "2025-03-12", "ledger_version": 12, "purpose": "A sale and a move on one day: q_dep = 40 + 50 = 90; FIFO relieves b' 30 (330) and o 60 (672); the sale takes 4/9 of each (40/3 and 80/3 units: 1,336/3; realized 520 - 1,336/3 = 224/3), the move 5/9 (50/3 and 100/3 units: 1,670/3). T1 then holds b (no hop), b'' (two hops) and o' (one hop).",
+         "expect": [
+          {"kind": "relief", "event_id": "e1600000-0000-4000-8000-000000000009",
+           "portions": [{"origin_event_id": "e1600000-0000-4000-8000-000000000004", "carry": [{"from_account_id": "a1600000-0000-4000-8000-000000000001", "out_event_id": "e1600000-0000-4000-8000-000000000006", "in_event_id": "e1600000-0000-4000-8000-000000000007", "date": "2025-03-07"}], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "40/3", "unit_cost": "11", "basis": "440/3"},
+                        {"origin_event_id": "e1600000-0000-4000-8000-000000000005", "carry": [], "acquisition_date": "2025-03-06", "date_kind": "TRADE", "basis_currency": "USD", "units": "80/3", "unit_cost": "56/5", "basis": "896/3"}]},
+          {"kind": "relief", "event_id": "e1600000-0000-4000-8000-000000000010",
+           "portions": [{"origin_event_id": "e1600000-0000-4000-8000-000000000004", "carry": [{"from_account_id": "a1600000-0000-4000-8000-000000000001", "out_event_id": "e1600000-0000-4000-8000-000000000006", "in_event_id": "e1600000-0000-4000-8000-000000000007", "date": "2025-03-07"}], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "50/3", "unit_cost": "11", "basis": "550/3"},
+                        {"origin_event_id": "e1600000-0000-4000-8000-000000000005", "carry": [], "acquisition_date": "2025-03-06", "date_kind": "TRADE", "basis_currency": "USD", "units": "100/3", "unit_cost": "56/5", "basis": "1120/3"}]},
+          {"kind": "realized_gain", "event_id": "e1600000-0000-4000-8000-000000000009", "view": "REPORTING", "state": "AVAILABLE", "value": "74.67", "exact": "224/3", "reason": null, "detail": null},
+          {"kind": "lot_book", "account_id": "a1600000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "40",
+           "lots": [{"origin_event_id": "e1600000-0000-4000-8000-000000000005", "carry": [], "acquisition_date": "2025-03-06", "date_kind": "TRADE", "basis_currency": "USD", "units": "40", "unit_cost": "56/5", "basis": "448"}]},
+          {"kind": "lot_book", "account_id": "a1600000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "100",
+           "lots": [{"origin_event_id": "e1600000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "50", "unit_cost": "11", "basis": "550"},
+                    {"origin_event_id": "e1600000-0000-4000-8000-000000000004", "carry": [{"from_account_id": "a1600000-0000-4000-8000-000000000001", "out_event_id": "e1600000-0000-4000-8000-000000000006", "in_event_id": "e1600000-0000-4000-8000-000000000007", "date": "2025-03-07"}, {"from_account_id": "a1600000-0000-4000-8000-000000000002", "out_event_id": "e1600000-0000-4000-8000-000000000010", "in_event_id": "e1600000-0000-4000-8000-000000000011", "date": "2025-03-12"}], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "50/3", "unit_cost": "11", "basis": "550/3"},
+                    {"origin_event_id": "e1600000-0000-4000-8000-000000000005", "carry": [{"from_account_id": "a1600000-0000-4000-8000-000000000002", "out_event_id": "e1600000-0000-4000-8000-000000000010", "in_event_id": "e1600000-0000-4000-8000-000000000011", "date": "2025-03-12"}], "acquisition_date": "2025-03-06", "date_kind": "TRADE", "basis_currency": "USD", "units": "100/3", "unit_cost": "56/5", "basis": "1120/3"}]}
+        ]},
+        {"id": "P16-L4", "as_of": "2025-03-14", "ledger_version": 12, "purpose": "T1's SELL 60: b and b'' share the acquisition date 03-05 (one group of 200/3 units), so they are relieved pro rata although their carry histories differ: b 45 (495), b'' 15 (165); relieved 660; realized 780 - 660 = 120.",
+         "expect": [
+          {"kind": "relief", "event_id": "e1600000-0000-4000-8000-000000000012",
+           "portions": [{"origin_event_id": "e1600000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "45", "unit_cost": "11", "basis": "495"},
+                        {"origin_event_id": "e1600000-0000-4000-8000-000000000004", "carry": [{"from_account_id": "a1600000-0000-4000-8000-000000000001", "out_event_id": "e1600000-0000-4000-8000-000000000006", "in_event_id": "e1600000-0000-4000-8000-000000000007", "date": "2025-03-07"}, {"from_account_id": "a1600000-0000-4000-8000-000000000002", "out_event_id": "e1600000-0000-4000-8000-000000000010", "in_event_id": "e1600000-0000-4000-8000-000000000011", "date": "2025-03-12"}], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "15", "unit_cost": "11", "basis": "165"}]},
+          {"kind": "realized_gain", "event_id": "e1600000-0000-4000-8000-000000000012", "view": "REPORTING", "state": "AVAILABLE", "value": "120.00", "exact": "120", "reason": null, "detail": null}
+        ]},
+        {"id": "P16-G1", "as_of": "2025-03-31", "ledger_version": 12, "purpose": "At 13.00: T1 basis 55 + 55/3 + 1,120/3 = 1,340/3, UG 520 - 1,340/3 = 220/3; T2 basis 448, UG 72. Realized 320 + 224/3 + 120 = 1,544/3; unrealized 436/3. I-7 at portfolio level: 1,544/3 + 436/3 = 660 = 2,740 + 1,040 - 3,120.",
+         "expect": [
+          {"kind": "lot_book", "account_id": "a1600000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "40",
+           "lots": [{"origin_event_id": "e1600000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "5", "unit_cost": "11", "basis": "55"},
+                    {"origin_event_id": "e1600000-0000-4000-8000-000000000004", "carry": [{"from_account_id": "a1600000-0000-4000-8000-000000000001", "out_event_id": "e1600000-0000-4000-8000-000000000006", "in_event_id": "e1600000-0000-4000-8000-000000000007", "date": "2025-03-07"}, {"from_account_id": "a1600000-0000-4000-8000-000000000002", "out_event_id": "e1600000-0000-4000-8000-000000000010", "in_event_id": "e1600000-0000-4000-8000-000000000011", "date": "2025-03-12"}], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "5/3", "unit_cost": "11", "basis": "55/3"},
+                    {"origin_event_id": "e1600000-0000-4000-8000-000000000005", "carry": [{"from_account_id": "a1600000-0000-4000-8000-000000000002", "out_event_id": "e1600000-0000-4000-8000-000000000010", "in_event_id": "e1600000-0000-4000-8000-000000000011", "date": "2025-03-12"}], "acquisition_date": "2025-03-06", "date_kind": "TRADE", "basis_currency": "USD", "units": "100/3", "unit_cost": "56/5", "basis": "1120/3"}]},
+          {"kind": "remaining_basis", "account_id": "a1600000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "view": "REPORTING", "state": "AVAILABLE", "value": "446.67", "exact": "1340/3", "reason": null, "detail": null},
+          {"kind": "remaining_basis", "account_id": "a1600000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "view": "REPORTING", "state": "AVAILABLE", "value": "448.00", "exact": "448", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a1600000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "view": "REPORTING", "state": "AVAILABLE", "value": "73.33", "exact": "220/3", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a1600000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "view": "REPORTING", "state": "AVAILABLE", "value": "72.00", "exact": "72", "reason": null, "detail": null},
+          {"kind": "realized_gain_total", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-03-31", "days": 29}, "state": "AVAILABLE", "value": "514.67", "exact": "1544/3", "reason": null, "detail": null},
+          {"kind": "unrealized_gain_total", "view": "REPORTING", "state": "AVAILABLE", "value": "145.33", "exact": "436/3", "reason": null, "detail": null}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000011", "name": "P17 (a carried split taint ended by FIFO relief)", "reporting_currency": "USD",
+      "accounts": [{"account_id": "a1700000-0000-4000-8000-000000000001", "name": "V1 (held SYNT at the ex-date)"}, {"account_id": "a1700000-0000-4000-8000-000000000002", "name": "V2 (receiver)"}], "inception_base": "2025-02-02",
+      "events": [
+        {"ledger_seq": 1, "event": {"event_id": "e1700000-0000-4000-8000-000000000001", "account_id": "a1700000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-02-03", "currency": "USD", "amount": {"amount": "10000", "currency": "USD"}, "source_reference": "P17-E1"}},
+        {"ledger_seq": 2, "event": {"event_id": "e1700000-0000-4000-8000-000000000002", "account_id": "a1700000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-02-03", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002b0001", "quantity": "100", "amount": {"amount": "8000", "currency": "USD"}, "source_reference": "P17-E2 lot s (pre-split units)"}},
+        {"ledger_seq": 3, "event": {"event_id": "e1700000-0000-4000-8000-000000000003", "account_id": "a1700000-0000-4000-8000-000000000002", "event_type": "DEPOSIT", "event_date": "2025-03-04", "currency": "USD", "amount": {"amount": "3000", "currency": "USD"}, "source_reference": "P17-E3"}},
+        {"ledger_seq": 4, "event": {"event_id": "e1700000-0000-4000-8000-000000000004", "account_id": "a1700000-0000-4000-8000-000000000002", "event_type": "BUY", "event_date": "2025-03-04", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002b0001", "quantity": "100", "amount": {"amount": "1950", "currency": "USD"}, "source_reference": "P17-E4 lot v (post-split units)"}},
+        {"ledger_seq": 5, "atomic_group": "transfer-P17-E5", "event": {"event_id": "e1700000-0000-4000-8000-000000000005", "account_id": "a1700000-0000-4000-8000-000000000001", "event_type": "TRANSFER_OUT", "event_date": "2025-03-05", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002b0001", "quantity": "40", "counterparty_account_id": "a1700000-0000-4000-8000-000000000002", "source_reference": "P17-E5-OUT"}},
+        {"ledger_seq": 6, "atomic_group": "transfer-P17-E5", "event": {"event_id": "e1700000-0000-4000-8000-000000000006", "account_id": "a1700000-0000-4000-8000-000000000002", "event_type": "TRANSFER_IN", "event_date": "2025-03-05", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002b0001", "quantity": "40", "counterparty_account_id": "a1700000-0000-4000-8000-000000000001", "source_reference": "P17-E5-IN"}},
+        {"ledger_seq": 7, "event": {"event_id": "e1700000-0000-4000-8000-000000000007", "account_id": "a1700000-0000-4000-8000-000000000002", "event_type": "SELL", "event_date": "2025-03-10", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002b0001", "quantity": "40", "amount": {"amount": "800", "currency": "USD"}, "source_reference": "P17-E7"}}
+      ],
+      "assertions": [
+        {"id": "P17-S1", "as_of": "2025-03-04", "ledger_version": 7, "purpose": "V1 held 100 SYNT at the start of the ex-date 03-03; no ledger SPLIT in W(K): NOT_RECORDED, append barred (synthetic evidence). V2 held none at 03-03 and is not subject to detection.",
+         "expect": [
+          {"kind": "split_outcome", "account_id": "a1700000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002b0001", "ex_date": "2025-03-03", "outcome": "NOT_RECORDED", "append": "BARRED_SYNTHETIC_EVIDENCE", "ledger_version_after": 7}
+        ]},
+        {"id": "P17-V1", "as_of": "2025-03-07", "ledger_version": 7, "purpose": "The 03-05 move out of V1 (suppressed since 03-03) carries a tainted lot s' (40 at 80, dated 02-03). V2 holds it beside its own lot v: V2's holding is INSUFFICIENT_DATA + SOURCE_CONFLICT (carried taint), and so is its remaining basis (Ruling 3.9a).",
+         "expect": [
+          {"kind": "holding_value", "view": "REPORTING", "account_id": "a1700000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-0000002b0001", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "SOURCE_CONFLICT", "detail": null, "lineage_includes": ["SPLIT_SUPPRESSION_CARRIED"]},
+          {"kind": "lot_book", "account_id": "a1700000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-0000002b0001", "quantity": "140",
+           "lots": [{"origin_event_id": "e1700000-0000-4000-8000-000000000002", "carry": [{"from_account_id": "a1700000-0000-4000-8000-000000000001", "out_event_id": "e1700000-0000-4000-8000-000000000005", "in_event_id": "e1700000-0000-4000-8000-000000000006", "date": "2025-03-05"}], "acquisition_date": "2025-02-03", "date_kind": "TRADE", "basis_currency": "USD", "units": "40", "unit_cost": "80", "basis": "3200"},
+                    {"origin_event_id": "e1700000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2025-03-04", "date_kind": "TRADE", "basis_currency": "USD", "units": "100", "unit_cost": "39/2", "basis": "1950"}]},
+          {"kind": "relief", "event_id": "e1700000-0000-4000-8000-000000000005",
+           "portions": [{"origin_event_id": "e1700000-0000-4000-8000-000000000002", "carry": [], "acquisition_date": "2025-02-03", "date_kind": "TRADE", "basis_currency": "USD", "units": "40", "unit_cost": "80", "basis": "3200"}]},
+          {"kind": "remaining_basis", "account_id": "a1700000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-0000002b0001", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "SOURCE_CONFLICT", "detail": null}
+        ]},
+        {"id": "P17-L1", "as_of": "2025-03-10", "ledger_version": 7, "purpose": "V2's SELL 40 relieves s' whole (02-03 is older than v's 03-04): the last tainted unit is relieved on 03-10. The sale relieves tainted units, so its realized gain is SOURCE_CONFLICT (Ruling 3.8 (1.5)). V2's end-of-day lot book holds only v, so its holding is valued: 100 x 20.00 = 2,000.00 AVAILABLE (Ruling 1.1a). The conservative rule would keep V2 suppressed (it never ends a day at 0).",
+         "expect": [
+          {"kind": "relief", "event_id": "e1700000-0000-4000-8000-000000000007",
+           "portions": [{"origin_event_id": "e1700000-0000-4000-8000-000000000002", "carry": [{"from_account_id": "a1700000-0000-4000-8000-000000000001", "out_event_id": "e1700000-0000-4000-8000-000000000005", "in_event_id": "e1700000-0000-4000-8000-000000000006", "date": "2025-03-05"}], "acquisition_date": "2025-02-03", "date_kind": "TRADE", "basis_currency": "USD", "units": "40", "unit_cost": "80", "basis": "3200"}]},
+          {"kind": "realized_gain", "event_id": "e1700000-0000-4000-8000-000000000007", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "SOURCE_CONFLICT", "detail": null},
+          {"kind": "lot_book", "account_id": "a1700000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-0000002b0001", "quantity": "100",
+           "lots": [{"origin_event_id": "e1700000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2025-03-04", "date_kind": "TRADE", "basis_currency": "USD", "units": "100", "unit_cost": "39/2", "basis": "1950"}]},
+          {"kind": "holding_value", "view": "REPORTING", "account_id": "a1700000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-0000002b0001", "state": "AVAILABLE", "value": "2000.00", "exact": "2000", "reason": null, "detail": null, "price_date_used": "2025-03-10", "missed_sessions": 0}
+        ]},
+        {"id": "P17-V2", "as_of": "2025-03-11", "ledger_version": 7, "purpose": "After the taint ends: V2 valued (2,000.00), UG 2,000 - 1,950 = 50, remaining basis 1,950. V1 is still suppressed (its own NOT_RECORDED suppression is open-ended), so the portfolio total stays INSUFFICIENT_DATA + SOURCE_CONFLICT.",
+         "expect": [
+          {"kind": "holding_value", "view": "REPORTING", "account_id": "a1700000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-0000002b0001", "state": "AVAILABLE", "value": "2000.00", "exact": "2000", "reason": null, "detail": null, "price_date_used": "2025-03-11", "missed_sessions": 0},
+          {"kind": "holding_value", "view": "REPORTING", "account_id": "a1700000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002b0001", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "SOURCE_CONFLICT", "detail": null},
+          {"kind": "portfolio_value", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "SOURCE_CONFLICT", "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a1700000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-0000002b0001", "view": "REPORTING", "state": "AVAILABLE", "value": "50.00", "exact": "50", "reason": null, "detail": null},
+          {"kind": "remaining_basis", "account_id": "a1700000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-0000002b0001", "view": "REPORTING", "state": "AVAILABLE", "value": "1950.00", "exact": "1950", "reason": null, "detail": null}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000012", "name": "P18 (snapshot with recorded opening bases in USD and HKD)", "reporting_currency": "USD",
+      "accounts": [{"account_id": "a1800000-0000-4000-8000-000000000001", "name": "O1 (snapshot S = 2025-03-31)"}], "inception_base": "2025-03-31",
+      "events": [
+        {"ledger_seq": 1, "event": {"event_id": "e1800000-0000-4000-8000-000000000001", "account_id": "a1800000-0000-4000-8000-000000000001", "event_type": "OPENING_POSITION", "event_date": "2025-03-31", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "50", "cost_basis": {"amount": "400", "currency": "USD"}, "source_reference": "P18-S-SYNF"}},
+        {"ledger_seq": 2, "event": {"event_id": "e1800000-0000-4000-8000-000000000002", "account_id": "a1800000-0000-4000-8000-000000000001", "event_type": "OPENING_POSITION", "event_date": "2025-03-31", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "1000", "cost_basis": {"amount": "30000", "currency": "HKD"}, "source_reference": "P18-S-0700"}},
+        {"ledger_seq": 3, "event": {"event_id": "e1800000-0000-4000-8000-000000000003", "account_id": "a1800000-0000-4000-8000-000000000001", "event_type": "OPENING_CASH", "event_date": "2025-03-31", "currency": "USD", "amount": {"amount": "1000", "currency": "USD"}, "source_reference": "P18-S-CASH"}},
+        {"ledger_seq": 4, "event": {"event_id": "e1800000-0000-4000-8000-000000000004", "account_id": "a1800000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-04-02", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "50", "amount": {"amount": "650", "currency": "USD"}, "source_reference": "P18-E4"}},
+        {"ledger_seq": 5, "event": {"event_id": "e1800000-0000-4000-8000-000000000005", "account_id": "a1800000-0000-4000-8000-000000000001", "event_type": "SELL", "event_date": "2025-04-03", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "60", "amount": {"amount": "780", "currency": "USD"}, "source_reference": "P18-E5"}},
+        {"ledger_seq": 6, "event": {"event_id": "e1800000-0000-4000-8000-000000000006", "account_id": "a1800000-0000-4000-8000-000000000001", "event_type": "SELL", "event_date": "2025-04-07", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "400", "amount": {"amount": "14400", "currency": "HKD"}, "source_reference": "P18-E6"}}
+      ],
+      "assertions": [
+        {"id": "P18-L1", "as_of": "2025-04-03", "ledger_version": 6, "purpose": "The opening lot (ENTRY, dated S = 03-31, basis in USD = R, so known in R) is the oldest: SELL 60 relieves it whole (400) and 10 of the 04-02 BUY (130); realized 780 - 530 = 250.",
+         "expect": [
+          {"kind": "relief", "event_id": "e1800000-0000-4000-8000-000000000005",
+           "portions": [{"origin_event_id": "e1800000-0000-4000-8000-000000000001", "carry": [], "acquisition_date": "2025-03-31", "date_kind": "ENTRY", "basis_currency": "USD", "units": "50", "unit_cost": "8", "basis": "400"},
+                        {"origin_event_id": "e1800000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2025-04-02", "date_kind": "TRADE", "basis_currency": "USD", "units": "10", "unit_cost": "13", "basis": "130"}]},
+          {"kind": "realized_gain", "event_id": "e1800000-0000-4000-8000-000000000005", "view": "REPORTING", "state": "AVAILABLE", "value": "250.00", "exact": "250", "reason": null, "detail": null}
+        ]},
+        {"id": "P18-L2", "as_of": "2025-04-07", "ledger_version": 6, "purpose": "The HKD opening lot has a recorded HKD basis but no recorded purchase date: the native gain is 14,400 - 400 x 30 = 2,400 HKD; in USD it is MISSING_COST_BASIS, ACQUISITION_DATE_UNKNOWN (never translated at S's rate).",
+         "expect": [
+          {"kind": "relief", "event_id": "e1800000-0000-4000-8000-000000000006",
+           "portions": [{"origin_event_id": "e1800000-0000-4000-8000-000000000002", "carry": [], "acquisition_date": "2025-03-31", "date_kind": "ENTRY", "basis_currency": "HKD", "units": "400", "unit_cost": "30", "basis": "12000"}]},
+          {"kind": "realized_gain", "event_id": "e1800000-0000-4000-8000-000000000006", "view": "NATIVE", "currency": "HKD", "state": "AVAILABLE", "value": "2400.00", "exact": "2400", "reason": null, "detail": null},
+          {"kind": "realized_gain", "event_id": "e1800000-0000-4000-8000-000000000006", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_COST_BASIS", "detail": ["ACQUISITION_DATE_UNKNOWN"]}
+        ]},
+        {"id": "P18-G1", "as_of": "2025-04-30", "ledger_version": 6, "purpose": "SYNF 40 left at 13 (520), close 12.50: UG -20. 0700 600 left at 30 HKD (18,000 HKD), close 36: native UG 3,600 HKD; in USD excluded (ACQUISITION_DATE_UNKNOWN), as is its since-acquisition split. Both aggregates LIMITED with stated weights: unrealized 2,764.8 / 3,264.8 = 3,456/4,081; realized 1,843.2 / 2,623.2 = 768/1,093.",
+         "expect": [
+          {"kind": "unrealized_gain", "account_id": "a1800000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "view": "REPORTING", "state": "AVAILABLE", "value": "-20.00", "exact": "-20", "reason": null, "detail": null},
+          {"kind": "remaining_basis", "account_id": "a1800000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "view": "REPORTING", "state": "AVAILABLE", "value": "520.00", "exact": "520", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a1800000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "NATIVE", "currency": "HKD", "state": "AVAILABLE", "value": "3600.00", "exact": "3600", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a1800000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_COST_BASIS", "detail": ["ACQUISITION_DATE_UNKNOWN"]},
+          {"kind": "remaining_basis", "account_id": "a1800000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "NATIVE", "state": "AVAILABLE", "value": [{"currency": "HKD", "value": "18000.00", "exact": "18000"}], "reason": null, "detail": null},
+          {"kind": "since_acquisition", "account_id": "a1800000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "lot": {"origin_event_id": "e1800000-0000-4000-8000-000000000002", "carry_out_event_ids": []}, "view": "REPORTING", "state": "INSUFFICIENT_DATA", "reason": "MISSING_COST_BASIS", "detail": ["ACQUISITION_DATE_UNKNOWN"], "total": null, "parts": null},
+          {"kind": "unrealized_gain_total", "view": "REPORTING", "state": "LIMITED", "value": "-20.00", "exact": "-20", "reason": "MISSING_COST_BASIS", "detail": null, "excluded_weight": {"exact": "3456/4081", "value": "0.846851261946"}},
+          {"kind": "realized_gain_total", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-31", "end": "2025-04-30", "days": 30}, "state": "LIMITED", "value": "250.00", "exact": "250", "reason": "MISSING_COST_BASIS", "detail": null, "excluded_weight": {"exact": "768/1093", "value": "0.702653247941"}}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000013", "name": "P19 (a purchase reversed and re-dated: FIFO recomputed per (D, L))", "reporting_currency": "USD",
+      "accounts": [{"account_id": "a1900000-0000-4000-8000-000000000001", "name": "R1"}], "inception_base": "2025-03-02",
+      "events": [
+        {"ledger_seq": 1, "event": {"event_id": "e1900000-0000-4000-8000-000000000001", "account_id": "a1900000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-03-03", "currency": "USD", "amount": {"amount": "5000", "currency": "USD"}, "source_reference": "P19-E1"}},
+        {"ledger_seq": 2, "event": {"event_id": "e1900000-0000-4000-8000-000000000002", "account_id": "a1900000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-03", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "100", "amount": {"amount": "900", "currency": "USD"}, "source_reference": "P19-E2 lot A (wrong date and amount)"}},
+        {"ledger_seq": 3, "event": {"event_id": "e1900000-0000-4000-8000-000000000003", "account_id": "a1900000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-05", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "100", "amount": {"amount": "1100", "currency": "USD"}, "source_reference": "P19-E3 lot B"}},
+        {"ledger_seq": 4, "event": {"event_id": "e1900000-0000-4000-8000-000000000004", "account_id": "a1900000-0000-4000-8000-000000000001", "event_type": "SELL", "event_date": "2025-03-10", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "100", "amount": {"amount": "1200", "currency": "USD"}, "source_reference": "P19-E4"}},
+        {"ledger_seq": 5, "atomic_group": "correction-P19-E2", "event": {"event_id": "e1900000-0000-4000-8000-000000000005", "account_id": "a1900000-0000-4000-8000-000000000001", "event_type": "REVERSAL", "event_date": "2025-03-20", "currency": "USD", "reverses_event_id": "e1900000-0000-4000-8000-000000000002", "source_reference": "P19-E5"}},
+        {"ledger_seq": 6, "atomic_group": "correction-P19-E2", "event": {"event_id": "e1900000-0000-4000-8000-000000000006", "account_id": "a1900000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-06", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "100", "amount": {"amount": "1120", "currency": "USD"}, "corrects_event_id": "e1900000-0000-4000-8000-000000000002", "source_reference": "P19-E6 lot A' (corrected: dated 03-06)"}}
+      ],
+      "assertions": [
+        {"id": "P19-L1", "as_of": "2025-03-05", "ledger_version": 4, "purpose": "Before the correction is known: lots A (03-03, 900) and B (03-05, 1,100).",
+         "expect": [
+          {"kind": "lot_book", "account_id": "a1900000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "200",
+           "lots": [{"origin_event_id": "e1900000-0000-4000-8000-000000000002", "carry": [], "acquisition_date": "2025-03-03", "date_kind": "TRADE", "basis_currency": "USD", "units": "100", "unit_cost": "9", "basis": "900"},
+                    {"origin_event_id": "e1900000-0000-4000-8000-000000000003", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "100", "unit_cost": "11", "basis": "1100"}]}
+        ]},
+        {"id": "P19-L2", "as_of": "2025-03-05", "ledger_version": 6, "purpose": "With the correction known, A never existed (at every D) and A' is dated 03-06, after D: only B.",
+         "expect": [
+          {"kind": "lot_book", "account_id": "a1900000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "100",
+           "lots": [{"origin_event_id": "e1900000-0000-4000-8000-000000000003", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "100", "unit_cost": "11", "basis": "1100"}]}
+        ]},
+        {"id": "P19-L3", "as_of": "2025-03-31", "ledger_version": 4, "purpose": "At the old L: the 03-10 SELL relieves A (900); realized 300; B remains; UG 1,300 - 1,100 = 200.",
+         "expect": [
+          {"kind": "relief", "event_id": "e1900000-0000-4000-8000-000000000004",
+           "portions": [{"origin_event_id": "e1900000-0000-4000-8000-000000000002", "carry": [], "acquisition_date": "2025-03-03", "date_kind": "TRADE", "basis_currency": "USD", "units": "100", "unit_cost": "9", "basis": "900"}]},
+          {"kind": "realized_gain", "event_id": "e1900000-0000-4000-8000-000000000004", "view": "REPORTING", "state": "AVAILABLE", "value": "300.00", "exact": "300", "reason": null, "detail": null},
+          {"kind": "lot_book", "account_id": "a1900000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "100",
+           "lots": [{"origin_event_id": "e1900000-0000-4000-8000-000000000003", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "100", "unit_cost": "11", "basis": "1100"}]},
+          {"kind": "unrealized_gain", "account_id": "a1900000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "view": "REPORTING", "state": "AVAILABLE", "value": "200.00", "exact": "200", "reason": null, "detail": null},
+          {"kind": "realized_gain_total", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-03-31", "days": 29}, "state": "AVAILABLE", "value": "300.00", "exact": "300", "reason": null, "detail": null}
+        ]},
+        {"id": "P19-L4", "as_of": "2025-03-31", "ledger_version": 6, "purpose": "At the new L the same SELL relieves B (1,100), because A' (03-06) is younger than B (03-05): realized 100; A' remains (1,120); UG 1,300 - 1,120 = 180. Retroactive in economic time, effective by ledger version; L = 4 still reproduces 300.",
+         "expect": [
+          {"kind": "relief", "event_id": "e1900000-0000-4000-8000-000000000004",
+           "portions": [{"origin_event_id": "e1900000-0000-4000-8000-000000000003", "carry": [], "acquisition_date": "2025-03-05", "date_kind": "TRADE", "basis_currency": "USD", "units": "100", "unit_cost": "11", "basis": "1100"}]},
+          {"kind": "realized_gain", "event_id": "e1900000-0000-4000-8000-000000000004", "view": "REPORTING", "state": "AVAILABLE", "value": "100.00", "exact": "100", "reason": null, "detail": null},
+          {"kind": "lot_book", "account_id": "a1900000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "100",
+           "lots": [{"origin_event_id": "e1900000-0000-4000-8000-000000000006", "carry": [], "acquisition_date": "2025-03-06", "date_kind": "TRADE", "basis_currency": "USD", "units": "100", "unit_cost": "56/5", "basis": "1120"}]},
+          {"kind": "unrealized_gain", "account_id": "a1900000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "view": "REPORTING", "state": "AVAILABLE", "value": "180.00", "exact": "180", "reason": null, "detail": null},
+          {"kind": "realized_gain_total", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-02", "end": "2025-03-31", "days": 29}, "state": "AVAILABLE", "value": "100.00", "exact": "100", "reason": null, "detail": null}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000014", "name": "P20 (snapshot lots with recorded acquisition dates: acquired_on, PD-0036)", "reporting_currency": "USD",
+      "accounts": [{"account_id": "a2a00000-0000-4000-8000-000000000001", "name": "Q1 (snapshot S = 2025-03-31)"}, {"account_id": "a2a00000-0000-4000-8000-000000000002", "name": "Q2 (receives a carried lot)"}], "inception_base": "2025-03-31",
+      "events": [
+        {"ledger_seq": 1, "event": {"event_id": "e2a00000-0000-4000-8000-000000000001", "account_id": "a2a00000-0000-4000-8000-000000000001", "event_type": "OPENING_POSITION", "event_date": "2025-03-31", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "400", "cost_basis": {"amount": "14000", "currency": "HKD"}, "acquired_on": "2025-01-04", "source_reference": "P20-O1 bought on a Saturday per the user's record"}},
+        {"ledger_seq": 2, "event": {"event_id": "e2a00000-0000-4000-8000-000000000002", "account_id": "a2a00000-0000-4000-8000-000000000001", "event_type": "OPENING_POSITION", "event_date": "2025-03-31", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "600", "cost_basis": {"amount": "18000", "currency": "HKD"}, "acquired_on": "2025-01-08", "source_reference": "P20-O2"}},
+        {"ledger_seq": 3, "event": {"event_id": "e2a00000-0000-4000-8000-000000000003", "account_id": "a2a00000-0000-4000-8000-000000000001", "event_type": "OPENING_POSITION", "event_date": "2025-03-31", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "200", "cost_basis": {"amount": "7600", "currency": "HKD"}, "source_reference": "P20-O3 no acquired_on (ENTRY)"}},
+        {"ledger_seq": 4, "event": {"event_id": "e2a00000-0000-4000-8000-000000000004", "account_id": "a2a00000-0000-4000-8000-000000000001", "event_type": "OPENING_POSITION", "event_date": "2025-03-31", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "100", "cost_basis": {"amount": "3200", "currency": "HKD"}, "acquired_on": "2024-12-16", "source_reference": "P20-O4 acquired before the market data's FX coverage"}},
+        {"ledger_seq": 5, "event": {"event_id": "e2a00000-0000-4000-8000-000000000005", "account_id": "a2a00000-0000-4000-8000-000000000001", "event_type": "OPENING_POSITION", "event_date": "2025-03-31", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "50", "cost_basis": {"amount": "400", "currency": "USD"}, "acquired_on": "2024-11-01", "source_reference": "P20-O5 USD basis, before coverage"}},
+        {"ledger_seq": 6, "event": {"event_id": "e2a00000-0000-4000-8000-000000000006", "account_id": "a2a00000-0000-4000-8000-000000000001", "event_type": "OPENING_CASH", "event_date": "2025-03-31", "currency": "USD", "amount": {"amount": "1000", "currency": "USD"}, "source_reference": "P20-CASH"}},
+        {"ledger_seq": 7, "event": {"event_id": "e2a00000-0000-4000-8000-000000000007", "account_id": "a2a00000-0000-4000-8000-000000000001", "event_type": "SELL", "event_date": "2025-04-07", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "450", "amount": {"amount": "16200", "currency": "HKD"}, "source_reference": "P20-E7"}},
+        {"ledger_seq": 8, "event": {"event_id": "e2a00000-0000-4000-8000-000000000008", "account_id": "a2a00000-0000-4000-8000-000000000001", "event_type": "SELL", "event_date": "2025-04-10", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "250", "amount": {"amount": "9000", "currency": "HKD"}, "source_reference": "P20-E8"}},
+        {"ledger_seq": 9, "atomic_group": "transfer-P20-E9", "event": {"event_id": "e2a00000-0000-4000-8000-000000000009", "account_id": "a2a00000-0000-4000-8000-000000000001", "event_type": "TRANSFER_OUT", "event_date": "2025-04-15", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "100", "counterparty_account_id": "a2a00000-0000-4000-8000-000000000002", "source_reference": "P20-E9-OUT"}},
+        {"ledger_seq": 10, "atomic_group": "transfer-P20-E9", "event": {"event_id": "e2a00000-0000-4000-8000-000000000010", "account_id": "a2a00000-0000-4000-8000-000000000002", "event_type": "TRANSFER_IN", "event_date": "2025-04-15", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "100", "counterparty_account_id": "a2a00000-0000-4000-8000-000000000001", "source_reference": "P20-E9-IN"}}
+      ],
+      "assertions": [
+        {"id": "P20-V1", "as_of": "2025-03-30", "ledger_version": 10, "purpose": "acquired_on before S does not extend the history: before S the portfolio is NOT_RECONSTRUCTABLE (ledger-replay/1.5 0.6.3).",
+         "expect": [
+          {"kind": "portfolio_value", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "NOT_RECONSTRUCTABLE", "detail": null}
+        ]},
+        {"id": "P20-L1", "as_of": "2025-03-31", "ledger_version": 10, "purpose": "Four opening lots of one position: three RECORDED (a = acquired_on, incl. 2024-12-16 before S), one ENTRY (a = S). The SYNF lot is RECORDED 2024-11-01 with a USD basis.",
+         "expect": [
+          {"kind": "lot_book", "account_id": "a2a00000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "1300",
+           "lots": [{"origin_event_id": "e2a00000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2024-12-16", "date_kind": "RECORDED", "basis_currency": "HKD", "units": "100", "unit_cost": "32", "basis": "3200"},
+                    {"origin_event_id": "e2a00000-0000-4000-8000-000000000001", "carry": [], "acquisition_date": "2025-01-04", "date_kind": "RECORDED", "basis_currency": "HKD", "units": "400", "unit_cost": "35", "basis": "14000"},
+                    {"origin_event_id": "e2a00000-0000-4000-8000-000000000002", "carry": [], "acquisition_date": "2025-01-08", "date_kind": "RECORDED", "basis_currency": "HKD", "units": "600", "unit_cost": "30", "basis": "18000"},
+                    {"origin_event_id": "e2a00000-0000-4000-8000-000000000003", "carry": [], "acquisition_date": "2025-03-31", "date_kind": "ENTRY", "basis_currency": "HKD", "units": "200", "unit_cost": "38", "basis": "7600"}]},
+          {"kind": "lot_book", "account_id": "a2a00000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "quantity": "50",
+           "lots": [{"origin_event_id": "e2a00000-0000-4000-8000-000000000005", "carry": [], "acquisition_date": "2024-11-01", "date_kind": "RECORDED", "basis_currency": "USD", "units": "50", "unit_cost": "8", "basis": "400"}]}
+        ]},
+        {"id": "P20-L2", "as_of": "2025-04-01", "ledger_version": 10, "purpose": "O4's acquired_on (2024-12-16) precedes every FX observation in M (first fixing 2025-01-02, calendar from 2025-01-01): its since-acquisition view is MISSING_FX_HISTORY (Ruling 3.7a item 3), never ACQUISITION_DATE_UNKNOWN. The position's reporting basis has two causes (O3 ENTRY: MISSING_COST_BASIS; O4: MISSING_FX_HISTORY); Ruling 1.5 picks MISSING_COST_BASIS.",
+         "expect": [
+          {"kind": "since_acquisition", "account_id": "a2a00000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "lot": {"origin_event_id": "e2a00000-0000-4000-8000-000000000004", "carry_out_event_ids": []}, "view": "REPORTING", "state": "INSUFFICIENT_DATA", "reason": "MISSING_FX_HISTORY", "detail": null, "lineage_includes": ["CALENDAR_COVERAGE_GAP"], "total": null, "parts": null},
+          {"kind": "remaining_basis", "account_id": "a2a00000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_COST_BASIS", "detail": null}
+        ]},
+        {"id": "P20-L3", "as_of": "2025-04-07", "ledger_version": 10, "purpose": "FIFO by recorded date: SELL 450 relieves O4 (2024-12-16) 100 and O1 (2025-01-04) 350, although O1 and O4 were entered as the 1st and 4th opening events. Native: 16,200 - 3,200 - 12,250 = 750 HKD. In USD the O4 portion has no rate: MISSING_FX_HISTORY.",
+         "expect": [
+          {"kind": "relief", "event_id": "e2a00000-0000-4000-8000-000000000007",
+           "portions": [{"origin_event_id": "e2a00000-0000-4000-8000-000000000004", "carry": [], "acquisition_date": "2024-12-16", "date_kind": "RECORDED", "basis_currency": "HKD", "units": "100", "unit_cost": "32", "basis": "3200"},
+                        {"origin_event_id": "e2a00000-0000-4000-8000-000000000001", "carry": [], "acquisition_date": "2025-01-04", "date_kind": "RECORDED", "basis_currency": "HKD", "units": "350", "unit_cost": "35", "basis": "12250"}]},
+          {"kind": "realized_gain", "event_id": "e2a00000-0000-4000-8000-000000000007", "view": "NATIVE", "currency": "HKD", "state": "AVAILABLE", "value": "750.00", "exact": "750", "reason": null, "detail": null},
+          {"kind": "realized_gain", "event_id": "e2a00000-0000-4000-8000-000000000007", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_FX_HISTORY", "detail": null, "lineage_includes": ["CALENDAR_COVERAGE_GAP"]}
+        ]},
+        {"id": "P20-L4", "as_of": "2025-04-10", "ledger_version": 10, "purpose": "SELL 250 relieves O1 50 and O2 200, both RECORDED inside coverage at 5/39 (O1's Saturday 2025-01-04 takes the 2025-01-03 fixing, m = 0): native 9,000 - 7,750 = 1,250 HKD; USD 9,000 x 16/125 - 7,750 x 5/39 = 1,152 - 38,750/39 = 6,178/39. ACQUISITION_DATE_UNKNOWN is resolved by the recorded date.",
+         "expect": [
+          {"kind": "relief", "event_id": "e2a00000-0000-4000-8000-000000000008",
+           "portions": [{"origin_event_id": "e2a00000-0000-4000-8000-000000000001", "carry": [], "acquisition_date": "2025-01-04", "date_kind": "RECORDED", "basis_currency": "HKD", "units": "50", "unit_cost": "35", "basis": "1750"},
+                        {"origin_event_id": "e2a00000-0000-4000-8000-000000000002", "carry": [], "acquisition_date": "2025-01-08", "date_kind": "RECORDED", "basis_currency": "HKD", "units": "200", "unit_cost": "30", "basis": "6000"}]},
+          {"kind": "realized_gain", "event_id": "e2a00000-0000-4000-8000-000000000008", "view": "NATIVE", "currency": "HKD", "state": "AVAILABLE", "value": "1250.00", "exact": "1250", "reason": null, "detail": null},
+          {"kind": "realized_gain", "event_id": "e2a00000-0000-4000-8000-000000000008", "view": "REPORTING", "state": "AVAILABLE", "value": "158.41", "exact": "6178/39", "reason": null, "detail": null}
+        ]},
+        {"id": "P20-L5", "as_of": "2025-04-15", "ledger_version": 10, "purpose": "An internal move of 100 relieves Q1's oldest remaining lot O2 (2025-01-08); Q2 receives it as RECORDED with its date kept and one hop. Q1 keeps O2 300 and the ENTRY lot O3 200.",
+         "expect": [
+          {"kind": "relief", "event_id": "e2a00000-0000-4000-8000-000000000009",
+           "portions": [{"origin_event_id": "e2a00000-0000-4000-8000-000000000002", "carry": [], "acquisition_date": "2025-01-08", "date_kind": "RECORDED", "basis_currency": "HKD", "units": "100", "unit_cost": "30", "basis": "3000"}]},
+          {"kind": "lot_book", "account_id": "a2a00000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "100",
+           "lots": [{"origin_event_id": "e2a00000-0000-4000-8000-000000000002", "carry": [{"from_account_id": "a2a00000-0000-4000-8000-000000000001", "out_event_id": "e2a00000-0000-4000-8000-000000000009", "in_event_id": "e2a00000-0000-4000-8000-000000000010", "date": "2025-04-15"}], "acquisition_date": "2025-01-08", "date_kind": "RECORDED", "basis_currency": "HKD", "units": "100", "unit_cost": "30", "basis": "3000"}]},
+          {"kind": "lot_book", "account_id": "a2a00000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "quantity": "500",
+           "lots": [{"origin_event_id": "e2a00000-0000-4000-8000-000000000002", "carry": [], "acquisition_date": "2025-01-08", "date_kind": "RECORDED", "basis_currency": "HKD", "units": "300", "unit_cost": "30", "basis": "9000"},
+                    {"origin_event_id": "e2a00000-0000-4000-8000-000000000003", "carry": [], "acquisition_date": "2025-03-31", "date_kind": "ENTRY", "basis_currency": "HKD", "units": "200", "unit_cost": "38", "basis": "7600"}]}
+        ]},
+        {"id": "P20-G1", "as_of": "2025-04-30", "ledger_version": 10, "purpose": "At 04-30 (0700 36.00, SYNF 12.50, USD per HKD 16/125). Q2's carried RECORDED lot: basis 3,000 x 5/39 = 5,000/13, UG 2,304/5 - 5,000/13 = 4,952/65; since-acquisition 1,000/13, -8/13, -8/65. Q1's O2 (300): 3,000/13, -24/13, -24/65 (total 14,856/65). Q1's position still holds the ENTRY lot O3, so its UG in USD is ACQUISITION_DATE_UNKNOWN. SYNF's USD basis needs no rate although acquired_on precedes coverage: UG 625 - 400 = 225, all local. Realized total LIMITED (the 04-07 sale excluded, weight 16,200/25,200 = 9/14); unrealized total LIMITED (Q1 0700 excluded, weight 2,304 / 3,389.8 = 11,520/16,949).",
+         "expect": [
+          {"kind": "remaining_basis", "account_id": "a2a00000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "REPORTING", "state": "AVAILABLE", "value": "384.62", "exact": "5000/13", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a2a00000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "REPORTING", "state": "AVAILABLE", "value": "76.18", "exact": "4952/65", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a2a00000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "NATIVE", "currency": "HKD", "state": "AVAILABLE", "value": "600.00", "exact": "600", "reason": null, "detail": null},
+          {"kind": "since_acquisition", "account_id": "a2a00000-0000-4000-8000-000000000002", "listing_id": "c0000000-0000-4000-8000-000000000700", "lot": {"origin_event_id": "e2a00000-0000-4000-8000-000000000002", "carry_out_event_ids": ["e2a00000-0000-4000-8000-000000000009"]}, "view": "REPORTING", "state": "AVAILABLE", "reason": null, "detail": null,
+           "total": {"value": "76.18", "exact": "4952/65"},
+           "parts": [{"line": "LOCAL_AT_ACQUISITION_FX", "exact": "1000/13", "apportioned": "76.92"}, {"line": "FX_ON_COST", "exact": "-8/13", "apportioned": "-0.62"}, {"line": "INTERACTION", "exact": "-8/65", "apportioned": "-0.12"}]},
+          {"kind": "since_acquisition", "account_id": "a2a00000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "lot": {"origin_event_id": "e2a00000-0000-4000-8000-000000000002", "carry_out_event_ids": []}, "view": "REPORTING", "state": "AVAILABLE", "reason": null, "detail": null,
+           "total": {"value": "228.55", "exact": "14856/65"},
+           "parts": [{"line": "LOCAL_AT_ACQUISITION_FX", "exact": "3000/13", "apportioned": "230.77"}, {"line": "FX_ON_COST", "exact": "-24/13", "apportioned": "-1.85"}, {"line": "INTERACTION", "exact": "-24/65", "apportioned": "-0.37"}]},
+          {"kind": "unrealized_gain", "account_id": "a2a00000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "NATIVE", "currency": "HKD", "state": "AVAILABLE", "value": "1400.00", "exact": "1400", "reason": null, "detail": null},
+          {"kind": "unrealized_gain", "account_id": "a2a00000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-000000000700", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_COST_BASIS", "detail": ["ACQUISITION_DATE_UNKNOWN"]},
+          {"kind": "unrealized_gain", "account_id": "a2a00000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "view": "REPORTING", "state": "AVAILABLE", "value": "225.00", "exact": "225", "reason": null, "detail": null},
+          {"kind": "since_acquisition", "account_id": "a2a00000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "lot": {"origin_event_id": "e2a00000-0000-4000-8000-000000000005", "carry_out_event_ids": []}, "view": "REPORTING", "state": "AVAILABLE", "reason": null, "detail": null,
+           "total": {"value": "225.00", "exact": "225"},
+           "parts": [{"line": "LOCAL_AT_ACQUISITION_FX", "exact": "225", "apportioned": "225.00"}, {"line": "FX_ON_COST", "exact": "0", "apportioned": "0.00"}, {"line": "INTERACTION", "exact": "0", "apportioned": "0.00"}]},
+          {"kind": "remaining_basis", "account_id": "a2a00000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000002a0001", "view": "REPORTING", "state": "AVAILABLE", "value": "400.00", "exact": "400", "reason": null, "detail": null},
+          {"kind": "realized_gain_total", "view": "REPORTING", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-31", "end": "2025-04-30", "days": 30}, "state": "LIMITED", "value": "158.41", "exact": "6178/39", "reason": "MISSING_FX_HISTORY", "detail": null, "excluded_weight": {"exact": "9/14", "value": "0.642857142857"}},
+          {"kind": "unrealized_gain_total", "view": "REPORTING", "state": "LIMITED", "value": "301.18", "exact": "19577/65", "reason": "MISSING_COST_BASIS", "detail": null, "excluded_weight": {"exact": "11520/16949", "value": "0.679686117175"}}
+        ]}
+      ]
+    }
+  ],
+  "structural_assertions": [
+    {"id": "S3-1", "statement": "Every result computed against this fixture's market data is marked synthetic (market-data Ruling 4.8), and every manifest cites the ids in 'convention_sets' (FIFO-mode state: ledger-replay/1.4 + FIFO/1; replay_basis NONE items: ledger-replay/1.3)."},
+    {"id": "S3-2", "statement": "Identity I-5 (lot conservation), exactly, for every relief in this fixture: relieved + remaining = the candidate set, per lot and per basis currency; and for every internal pair, the in-leg delivers exactly the out-leg's portions (units, basis, currency, acquisition date, date kind, known/unknown), with one hop appended."},
+    {"id": "S3-3", "statement": "Identity I-7 (method independence: RG + UG = proceeds + MV - costs), exactly, for P1 A3 MSFT at 2025-06-30 (120 + 80 = 1,720 + 2,580 - 4,100), P14 and P15 at 2025-03-31 (118 + 132), P16 at portfolio level at 2025-03-31 (1,544/3 + 436/3 = 660), and P19 at 2025-03-31 under both L = 4 (300 + 200) and L = 6 (100 + 180)."},
+    {"id": "S3-4", "statement": "Identity I-8: every AVAILABLE since_acquisition's exact parts sum to its exact total, and its apportioned parts sum to total.value exactly."},
+    {"id": "S3-5", "statement": "Entry-order independence (performance Ruling 11.3 item 1; ledger-replay/1.4 0.5.4 and 0.5.6): P14 and P15 differ only in the ledger_seq order of their 2025-03-05 events, and every expected value is identical (only event ids differ). Also, permuting ledger_seq within any day of any part-3 portfolio changes no output byte, carry histories included."},
+    {"id": "S3-6", "statement": "Mode consistency (ledger-replay/1.4 0.5.13): replaying every part-3 portfolio in the none mode gives the ledger-replay/1.3 output (cp1_golden/1.1 still passes unchanged); wherever that output emits a determinate basis, the FIFO mode emits the same value; quantities, cash and flags are identical in both modes."},
+    {"id": "S3-7", "statement": "Determinism: byte-identical lot books, relief records and gain results across runs, processes and PYTHONHASHSEED values."}
+  ],
+  "item_counts": {
+    "note": "For FIXTURE_PINS: number of 'expect' items per assertion id.",
+    "P1-L1": 6, "P1-L2": 5, "P1-L3": 3, "P1-G1": 13, "P1-G2": 3, "P1-S1": 2, "P1-N1": 2,
+    "P2-L1": 7,
+    "P3-L1": 3, "P3-L2": 3, "P3-L3": 3, "P3-L4": 3, "P3-G1": 6,
+    "P14-L1": 5, "P14-L2": 2, "P14-G1": 4,
+    "P15-L1": 5, "P15-L2": 2, "P15-G1": 4,
+    "P16-L1": 5, "P16-L2": 2, "P16-L3": 5, "P16-L4": 2, "P16-G1": 7,
+    "P17-S1": 1, "P17-V1": 4, "P17-L1": 4, "P17-V2": 5,
+    "P18-L1": 2, "P18-L2": 3, "P18-G1": 8,
+    "P19-L1": 1, "P19-L2": 1, "P19-L3": 5, "P19-L4": 5,
+    "P20-V1": 1, "P20-L1": 2, "P20-L2": 2, "P20-L3": 3, "P20-L4": 3, "P20-L5": 3, "P20-G1": 12,
+    "total": 167
+  }
+}

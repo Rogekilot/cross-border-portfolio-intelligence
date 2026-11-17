@@ -1,0 +1,196 @@
+{
+ "data": {
+  "basis_translation": "the reporting-currency basis of a lot is translated at the fixing of its acquisition date (Ruling 3.7); see section 13 for the lots",
+  "fx_sources_in_m": [
+   {
+    "source_id": "synthetic.ecb_direct",
+    "what_it_is": "synthetic.ecb_direct"
+   }
+  ],
+  "never": "the user's own conversion rate is never used as a rate (ledger-replay 5A.7)",
+  "rate_for_each_foreign_currency_event_at_its_own_date": [
+   {
+    "currency": "HKD",
+    "date": "2025-01-06",
+    "event_id": "e0000000-0000-4000-8000-000000000003",
+    "fixing_date_used": "2025-01-06",
+    "lineage_notes": [],
+    "missed_fixings": 0,
+    "outcome": "FOUND",
+    "rate": "5/39",
+    "source": [
+     {
+      "source_id": "synthetic.ecb_direct",
+      "what_it_is": "synthetic.ecb_direct"
+     },
+     {
+      "source_id": "synthetic.ecb_direct",
+      "what_it_is": "synthetic.ecb_direct"
+     }
+    ],
+    "synthetic": true,
+    "to": "USD",
+    "type": "DEPOSIT"
+   },
+   {
+    "currency": "HKD",
+    "date": "2025-01-08",
+    "event_id": "e0000000-0000-4000-8000-000000000004",
+    "fixing_date_used": "2025-01-08",
+    "lineage_notes": [],
+    "missed_fixings": 0,
+    "outcome": "FOUND",
+    "rate": "5/39",
+    "source": [
+     {
+      "source_id": "synthetic.ecb_direct",
+      "what_it_is": "synthetic.ecb_direct"
+     },
+     {
+      "source_id": "synthetic.ecb_direct",
+      "what_it_is": "synthetic.ecb_direct"
+     }
+    ],
+    "synthetic": true,
+    "to": "USD",
+    "type": "BUY"
+   },
+   {
+    "currency": "HKD",
+    "date": "2025-04-02",
+    "event_id": "e0000000-0000-4000-8000-000000000012",
+    "fixing_date_used": "2025-04-02",
+    "lineage_notes": [],
+    "missed_fixings": 0,
+    "outcome": "FOUND",
+    "rate": "16/125",
+    "source": [
+     {
+      "source_id": "synthetic.ecb_direct",
+      "what_it_is": "synthetic.ecb_direct"
+     },
+     {
+      "source_id": "synthetic.ecb_direct",
+      "what_it_is": "synthetic.ecb_direct"
+     }
+    ],
+    "synthetic": true,
+    "to": "USD",
+    "type": "BUY"
+   },
+   {
+    "currency": "CNY",
+    "date": "2025-03-03",
+    "event_id": "e1000000-0000-4000-8000-000000000026",
+    "fixing_date_used": "2025-03-03",
+    "lineage_notes": [
+     "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+    ],
+    "missed_fixings": 0,
+    "outcome": "FOUND",
+    "rate": "5/36",
+    "source": [
+     {
+      "source_id": "synthetic.ecb_direct",
+      "what_it_is": "synthetic.ecb_direct"
+     },
+     {
+      "source_id": "synthetic.ecb_direct",
+      "what_it_is": "synthetic.ecb_direct"
+     }
+    ],
+    "synthetic": true,
+    "to": "USD",
+    "type": "DEPOSIT"
+   },
+   {
+    "currency": "CNY",
+    "date": "2025-03-03",
+    "event_id": "e1000000-0000-4000-8000-000000000027",
+    "fixing_date_used": "2025-03-03",
+    "lineage_notes": [
+     "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+    ],
+    "missed_fixings": 0,
+    "outcome": "FOUND",
+    "rate": "5/36",
+    "source": [
+     {
+      "source_id": "synthetic.ecb_direct",
+      "what_it_is": "synthetic.ecb_direct"
+     },
+     {
+      "source_id": "synthetic.ecb_direct",
+      "what_it_is": "synthetic.ecb_direct"
+     }
+    ],
+    "synthetic": true,
+    "to": "USD",
+    "type": "BUY"
+   },
+   {
+    "currency": "HKD",
+    "date": "2025-04-24",
+    "event_id": "e1000000-0000-4000-8000-000000000028",
+    "fixing_date_used": "2025-04-24",
+    "lineage_notes": [],
+    "missed_fixings": 0,
+    "outcome": "FOUND",
+    "rate": "16/125",
+    "source": [
+     {
+      "source_id": "synthetic.ecb_direct",
+      "what_it_is": "synthetic.ecb_direct"
+     },
+     {
+      "source_id": "synthetic.ecb_direct",
+      "what_it_is": "synthetic.ecb_direct"
+     }
+    ],
+    "synthetic": true,
+    "to": "USD",
+    "type": "DIVIDEND"
+   },
+   {
+    "currency": "HKD",
+    "date": "2025-04-24",
+    "event_id": "e1000000-0000-4000-8000-000000000029",
+    "fixing_date_used": "2025-04-24",
+    "lineage_notes": [],
+    "missed_fixings": 0,
+    "outcome": "FOUND",
+    "rate": "16/125",
+    "source": [
+     {
+      "source_id": "synthetic.ecb_direct",
+      "what_it_is": "synthetic.ecb_direct"
+     },
+     {
+      "source_id": "synthetic.ecb_direct",
+      "what_it_is": "synthetic.ecb_direct"
+     }
+    ],
+    "synthetic": true,
+    "to": "USD",
+    "type": "TAX"
+   }
+  ]
+ },
+ "kind": "SYNTHETIC_DEMONSTRATION_A",
+ "labels": {
+  "all_results_synthetic": true,
+  "any_result_synthetic": true,
+  "demonstration_ledger": "DEMONSTRATION LEDGER: these events are not a user's holdings (P8); they exist to exercise the engine.",
+  "fx_sources_in_m": [
+   {
+    "source_id": "synthetic.ecb_direct",
+    "what_it_is": "synthetic.ecb_direct"
+   }
+  ],
+  "label": "SYNTHETIC: every result below was computed from a market-data version that holds synthetic files; none is a real market fact (market-data Ruling 4.8).",
+  "pd_0035_caveat": "PD-0035 section 3: Mainland China and Hong Kong price behaviour is shown on SYNTHETIC data only. No admissible real CN or HK price source exists (PD-0031, PD-0032); the real slice is US prices (Alpha Vantage, the last 100 sessions) and ECB FX only. A synthetic result is never a real market fact (market-data Ruling 4.8)."
+ },
+ "section": "05_historical_fx",
+ "subject": "DEMO-A: US + HK + CN synthetic cross-border portfolio",
+ "title": "Historical FX handling"
+}

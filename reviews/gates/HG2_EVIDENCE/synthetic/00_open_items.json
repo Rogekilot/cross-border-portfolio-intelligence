@@ -1,0 +1,14 @@
+{
+ "is_conformant": false,
+ "limitations": [
+  "Synthetic data throughout: this proves the engine and the pack, not a market fact.",
+  "Gains follow FIFO/1; a broker's lot method may differ.",
+  "`is_conformant` is False while the convention set's open items are listed (section 16)."
+ ],
+ "open_items": [
+  "HG2 evidence pack: built (performance_tools, CP3f); the gate decision is the owner's. Identity I-7 (method independence) runs in the test suite and the evidence pack only (Ruling 11.1 (1.2))",
+  "minor-unit table minor-units/1: rows from memory, owner to confirm against ISO 4217: AUD,CAD,CHF,CNY,EUR,GBP,HKD,JPY,SGD,USD"
+ ],
+ "pd_0035_caveat": "PD-0035 section 3: Mainland China and Hong Kong price behaviour is shown on SYNTHETIC data only. No admissible real CN or HK price source exists (PD-0031, PD-0032); the real slice is US prices (Alpha Vantage, the last 100 sessions) and ECB FX only. A synthetic result is never a real market fact (market-data Ruling 4.8).",
+ "requirements": []
+}

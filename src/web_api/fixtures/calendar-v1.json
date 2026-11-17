@@ -1,0 +1,14 @@
+{
+  "schema": "finweb.cp7.synthetic-calendar/1",
+  "calendar_id": "CP7_FICTIONAL_XNYS",
+  "label": "SYNTHETIC one-date calendar - not a real exchange holiday calendar",
+  "mic": "XNYS",
+  "timezone": "America/New_York",
+  "covers_from": "2026-01-02",
+  "covers_to": "2026-01-02",
+  "actual_through": "2026-01-02",
+  "dates": ["2026-01-02"],
+  "default_close": "16:00:00",
+  "prepared_on": "2026-01-02",
+  "registered_at": "2026-01-02T00:00:00Z"
+}

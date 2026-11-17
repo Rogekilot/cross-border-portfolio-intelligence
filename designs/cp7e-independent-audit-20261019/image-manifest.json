@@ -1,0 +1,158 @@
+{
+  "audit": "CP7-E1 independent design review",
+  "count": 19,
+  "captures": [
+    {
+      "file": "01-guest-portfolio.jpg",
+      "sha256": "30caaaf02162b68f060382e5f3441e4c021f50f6b634b3542b7467f37b429004",
+      "bytes": 55470,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 1200x671, components 3",
+      "saved_utc": "2026-10-19T06:29:19.023743+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "02-en-quick-readiness.jpg",
+      "sha256": "759dc9251cb0a038d56e6f29138fbccb10a277ba0158efe625761813285bcc31",
+      "bytes": 68595,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 1200x671, components 3",
+      "saved_utc": "2026-10-19T06:30:32.629442+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "03-en-quick-keyboard-actions.jpg",
+      "sha256": "d40dc26edca6e9d364e1754f833e7bd74fff3cc806dbc8ab984f8496f69cf953",
+      "bytes": 69313,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 1200x671, components 3",
+      "saved_utc": "2026-10-19T06:30:37.716015+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "04-en-simple-readiness.jpg",
+      "sha256": "f32ddb404edf98d264e5794d767be81d95b5c6133a6a32145f7c7688e8aa16c7",
+      "bytes": 76831,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 1200x671, components 3",
+      "saved_utc": "2026-10-19T06:31:05.095201+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "05-en-professional-expanded.jpg",
+      "sha256": "2911a39f372749c4cc9f3ee217bd46e0c48ba0318d00e5d338c051eaa45f410b",
+      "bytes": 66056,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 1200x671, components 3",
+      "saved_utc": "2026-10-19T06:31:20.049315+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "06-en-professional-capabilities.jpg",
+      "sha256": "9b6ab70244e35975ef53707c8002ec86c168025cbe848ab6c045ffbbaf61068d",
+      "bytes": 50546,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 1200x671, components 3",
+      "saved_utc": "2026-10-19T06:31:23.616657+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "07-en-professional-stage.jpg",
+      "sha256": "daf66b07b662b634cc3aeabf5931a47bf961e3f2c40214f011e0dff9725e6ab5",
+      "bytes": 43792,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 1200x671, components 3",
+      "saved_utc": "2026-10-19T06:31:31.607594+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "08-zh-professional-readiness.jpg",
+      "sha256": "a6fbb3da3b3a4be0a0f0b10d3a74862a9980d2fd4a62ac347d79ec461df59b43",
+      "bytes": 67399,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 1200x671, components 3",
+      "saved_utc": "2026-10-19T06:31:49.186265+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "09-zh-simple-readiness.jpg",
+      "sha256": "eeaea1acc901b78a9f94c58067bf171a04a2f1afbaff99dc454f8edd4605fe26",
+      "bytes": 72325,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 1200x671, components 3",
+      "saved_utc": "2026-10-19T06:31:50.382730+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "10-zh-quick-readiness.jpg",
+      "sha256": "d02af1679d414a9b6fd5155bfa7d446c80da2c161fc260ef27f0d0f5cc517cbe",
+      "bytes": 64436,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 1200x671, components 3",
+      "saved_utc": "2026-10-19T06:31:51.788438+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "11-mobile-390-zh-upper.jpg",
+      "sha256": "e262eb4c72983e854b22095408d8078f6fb50abb459a0db065ddcc9023f68732",
+      "bytes": 49168,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 390x844, components 3",
+      "saved_utc": "2026-10-19T06:32:21.815448+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "12-mobile-390-zh-lower.jpg",
+      "sha256": "9b0205a15cf587d28cb2482e15ef110d92f18b0f902b768225df96e0df325eac",
+      "bytes": 37294,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 390x844, components 3",
+      "saved_utc": "2026-10-19T06:32:32.458751+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "13-mobile-390-en-upper.jpg",
+      "sha256": "5ee0da5d06a30df98a661a5eddd5215274900082aa61d554f0251897f10279fb",
+      "bytes": 50829,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 390x844, components 3",
+      "saved_utc": "2026-10-19T06:32:48.128551+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "14-mobile-390-en-lower.jpg",
+      "sha256": "e88fd5528e2efc6040cfb51b6c2a1f82c572585a9bd70618ad2e0b73af449610",
+      "bytes": 38953,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 390x844, components 3",
+      "saved_utc": "2026-10-19T06:33:08.030472+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "15-mobile-keyboard-return-focus.jpg",
+      "sha256": "5aac917f906591740f86c08dd29044c1f206bfa73e2003597236356166a09c59",
+      "bytes": 37251,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 390x844, components 3",
+      "saved_utc": "2026-10-19T06:33:17.653261+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "16-synthetic-example-acknowledgement.jpg",
+      "sha256": "00e20a1d85d61bdd027e121cd8fc9c8d17c7399ad1d41c3a6d1551f98d1447d9",
+      "bytes": 45786,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 1200x671, components 3",
+      "saved_utc": "2026-10-19T06:33:47.666014+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "17-synthetic-saved-analysis-result.jpg",
+      "sha256": "757b028321cc78af3f8657b7383ac39054bd89625f335b91b18fc3227ccda329",
+      "bytes": 40029,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 1200x671, components 3",
+      "saved_utc": "2026-10-19T06:34:24.693326+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "18-retry-result-body-focus.jpg",
+      "sha256": "53ea84fe42a3671af786808e31483ee48ff259dcde54efe4bec75c418f187d9b",
+      "bytes": 70602,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 1200x671, components 3",
+      "saved_utc": "2026-10-19T06:34:50.938260+00:00",
+      "saved_file_viewed": true
+    },
+    {
+      "file": "19-logout-reload-guest-cleared.jpg",
+      "sha256": "878e409ded2c5730b00eb551cfee32d12edb635cffcb463b452a3715de05580e",
+      "bytes": 55281,
+      "format": "JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 1200x671, components 3",
+      "saved_utc": "2026-10-19T06:35:24.324509+00:00",
+      "saved_file_viewed": true
+    }
+  ]
+}

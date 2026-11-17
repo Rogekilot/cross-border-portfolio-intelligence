@@ -1,0 +1,364 @@
+{
+  "fixture_id": "cp3_golden/1.2-part2",
+  "part": 2,
+  "scope": "MWR/IRR and annualized MWR; income, fees, taxes, financing and conversion-result amounts; dividend receivables (ex-date accrual); one synthetic split-suppression case (market-data Ruling 4.8 item 4, 6.4). Lots and gains are part 3; attribution is part 4.",
+  "change_notes": [
+    "1.2-part2 (2026-10-01): convention_sets updated to performance/1.6 and ledger-replay/1.5 (FIFO/1 mode of the one lot fold); market-data/1.10 unchanged; 'extends' now names cp3_golden/1.4-part1. performance/1.5-1.6 and ledger-replay/1.4-1.5 add lot, gain, taint-by-lot-book and acquired_on rulings only; part 2 asserts no lot relief or gain, its one suppression case (P13) has no internal transfer and so no carried taint, and no part-2 event carries acquired_on. Wording only: NO EXPECTED VALUE, STATE, REASON OR DETAIL CHANGED; 78 items; re-pin the content hash.",
+    "1.1-part2 (2026-10-01): convention_sets updated to performance/1.4 and market-data/1.10 (the clarifications part 2 relies on in Ruling 8.6 are now under performance/1.4, their own id); 'extends' now names cp3_golden/1.3-part1. Wording only: NO EXPECTED VALUE, STATE, REASON OR DETAIL CHANGED; 78 items; pin the content hash.",
+    "1.0-part2 (2026-10-01): first issue, authored and ratified by quant-analyst. Every expected value is hand-derived (CP3_GOLDEN_PART2_DERIVATION.md); MWR roots are re-checked by derivation/cp3_part2_calculator.py with two independent methods (Ruling 6.2 Decimal bisection and the exact y = g^(1/n) bracket), which agree to the presented digit. No value comes from the engine."
+  ],
+  "convention_sets": {
+    "performance": "performance/1.6",
+    "ledger_replay": "ledger-replay/1.5 (FIFO/1 mode)",
+    "market_data": "market-data/1.10",
+    "lot_relief": "FIFO/1 (no assertion in part 2 depends on it)"
+  },
+  "authored_by": "quant-analyst (independent derivation; see CP3_GOLDEN_PART2_DERIVATION.md)",
+  "authored_on": "2026-10-01",
+  "extends": {
+    "fixture_id": "cp3_golden/1.4-part1",
+    "rule": "Everything in part 1's 'format' applies. P1, P2 (events from cp1_golden/1.1), P4 and P5 (events from part 1) are reused unchanged. The market-data version M for part 2 is part 1's market_data block PLUS the additions below (new listings only, one corporate-action pair); no part-1 series, rate or calendar changes, so every part-1 value still holds in this M."
+  },
+  "format": {
+    "inherits": "cp3_golden part 1 'format' (presented 'value', 'exact' as 'p/q', 'tolerance', 'window' {request, base, end, days}, 'detail' null = not asserted, 'lineage_includes').",
+    "kinds_added": {
+      "mwr": "Period MWR over the window (Ruling 6.1), a decimal fraction. Irrational in general: 'exact' is null and 'tolerance' is '1e-10' (Ruling 11.2) unless the root is rational and stated.",
+      "annualized_mwr": "Ruling 7.2 applied to the MWR, with 'year_fraction'.",
+      "income_amount": "Ruling 8.6: sum of income lines in R over (B, E] (positive).",
+      "fees_amount": "Ruling 8.6: sum of FEE lines (negative; a 2 USD fee is -2).",
+      "taxes_amount": "Ruling 8.6: sum of TAX lines (negative).",
+      "financing_amount": "Ruling 8.6: sum of INTEREST_CHARGED lines (negative).",
+      "conversion_result_amount": "Ruling 8.5 summed over the conversions dated in (B, E] (= attribution line 8, Ruling 9.3; 1.4 clarification in Ruling 8.6).",
+      "receivable_value": "Ruling 1.3 / 8.1: an accrued dividend receivable, keyed by the DIVIDEND's event_id, view NATIVE or REPORTING. 'emitted': false asserts that no receivable exists on that date.",
+      "split_outcome": "market-data Ruling 6.4a / 4.8 item 4: the F8 outcome for (account, listing, ex_date) and whether an append is allowed; 'append': 'BARRED_SYNTHETIC_EVIDENCE' means the dry run reports NOT_RECORDED with the append barred (never WOULD_APPEND)."
+    },
+    "engine_metric_ids": "As in part 1: the loader maps kinds to the engine's metric ids; a rename is a mapping change, not a fixture change."
+  },
+  "market_data_additions": {
+    "synthetic": true,
+    "upstream": "synthetic",
+    "how_to_load": "As part 1: expanded mechanically into real CP2 layouts under synthetic source ids, then ONE release M = part 1's files + these files.",
+    "prices": {
+      "layout": "as part 1 (RAW closes, volume '1000' on every row)",
+      "rows_rule": "as part 1",
+      "series": [
+        {"listing_id": "c0000000-0000-4000-8000-0000001a0001", "ticker": "SYNH", "calendar": "SYN_HKEX", "currency": "HKD", "first": "2025-03-31", "last": "2025-04-30",
+         "steps": [{"from": "2025-03-31", "close": "390.00"}, {"from": "2025-04-01", "close": "400.00"}], "gaps": []},
+        {"listing_id": "c0000000-0000-4000-8000-0000001b0001", "ticker": "SYNP", "calendar": "SYN_HKEX", "currency": "HKD", "first": "2025-04-01", "last": "2025-06-30",
+         "steps": [{"from": "2025-04-01", "close": "50.00"}, {"from": "2025-05-02", "close": "52.00"}, {"from": "2025-05-06", "close": "50.00"}, {"from": "2025-06-02", "close": "51.00"}], "gaps": [],
+         "note": "2025-05-06 is the ex-date of P7's 2.00 HKD/share dividend: 52.00 -> 50.00. HKEX closed 05-01 and 05-05."},
+        {"listing_id": "c0000000-0000-4000-8000-0000001c0001", "ticker": "SYNM", "calendar": "SYN_NYSE", "currency": "USD", "first": "2025-03-03", "last": "2025-03-31",
+         "steps": [{"from": "2025-03-03", "close": "1.00"}, {"from": "2025-03-04", "close": "3.50"}, {"from": "2025-03-06", "close": "1.25"}], "gaps": []},
+        {"listing_id": "c0000000-0000-4000-8000-0000001d0001", "ticker": "SYNK", "calendar": "SYN_NYSE", "currency": "USD", "first": "2025-03-10", "last": "2025-03-31",
+         "steps": [{"from": "2025-03-10", "close": "10.00"}, {"from": "2025-03-11", "close": "10.50"}, {"from": "2025-03-12", "close": "11.00"}], "gaps": []},
+        {"listing_id": "c0000000-0000-4000-8000-0000001e0001", "ticker": "SYNS", "calendar": "SYN_NYSE", "currency": "USD", "first": "2025-02-03", "last": "2025-03-31",
+         "steps": [{"from": "2025-02-03", "close": "80.00"}, {"from": "2025-03-03", "close": "20.00"}], "gaps": [],
+         "note": "RAW: 80.00 -> 20.00 is the 4:1 split of the corporate-action pair below."}
+      ]
+    },
+    "corporate_actions": [
+      {"listing_id": "c0000000-0000-4000-8000-0000001e0001", "type": "SPLIT", "ex_date": "2025-03-03", "ratio": {"new_units": "4", "old_units": "1"},
+       "records": [{"side": "FEED", "upstream": "synthetic", "synthetic": true}, {"side": "FILING", "upstream": "synthetic", "synthetic": true}],
+       "note": "A synthetic feed record and a synthetic filing record that agree: corroborated within the synthetic world (market-data Ruling 4.8 item 4(a)). Linking window W(K) = 20 SYN_NYSE sessions either side of 2025-03-03 = [2025-01-31, 2025-03-31], inside calendar coverage; no other corroborated split of SYNS, so no overlap."}
+    ]
+  },
+  "listings_added": [
+    {"listing_id": "c0000000-0000-4000-8000-0000001a0001", "ticker": "SYNH", "mic": "XHKG", "trading_currency": "HKD", "security_type": "COMMON_STOCK"},
+    {"listing_id": "c0000000-0000-4000-8000-0000001b0001", "ticker": "SYNP", "mic": "XHKG", "trading_currency": "HKD", "security_type": "COMMON_STOCK"},
+    {"listing_id": "c0000000-0000-4000-8000-0000001c0001", "ticker": "SYNM", "mic": "XNYS", "trading_currency": "USD", "security_type": "COMMON_STOCK"},
+    {"listing_id": "c0000000-0000-4000-8000-0000001d0001", "ticker": "SYNK", "mic": "XNYS", "trading_currency": "USD", "security_type": "COMMON_STOCK"},
+    {"listing_id": "c0000000-0000-4000-8000-0000001e0001", "ticker": "SYNS", "mic": "XNYS", "trading_currency": "USD", "security_type": "COMMON_STOCK"}
+  ],
+  "portfolios": [
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000001", "name": "P1", "reporting_currency": "USD",
+      "events_from": "cp1_golden/1.1 P1 (seq 1-25)", "inception_base": "2025-01-01",
+      "assertions": [
+        {"id": "P1-M1", "as_of": "2025-06-30", "ledger_version": 25, "purpose": "Since-inception MWR (flows at k = 0, 4, 68, 126, 151 days of 180; all investments precede the end value, so the root is unique); not annualized (Y < 1). P1's cost and income lines over the same window, including X8's conversion result -1,000 USD + 7,750 HKD x 16/125 = -8.",
+         "expect": [
+          {"kind": "mwr", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-01", "end": "2025-06-30", "days": 180}, "state": "AVAILABLE", "value": "0.182608960655", "exact": null, "tolerance": "1e-10", "reason": null, "detail": null},
+          {"kind": "annualized_mwr", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-01", "end": "2025-06-30", "days": 180}, "year_fraction": "2173/4380", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": null, "detail": ["PERIOD_SHORTER_THAN_ONE_YEAR"]},
+          {"kind": "income_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-01", "end": "2025-06-30", "days": 180}, "state": "AVAILABLE", "value": "0", "exact": "0", "reason": null, "detail": null},
+          {"kind": "fees_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-01", "end": "2025-06-30", "days": 180}, "state": "AVAILABLE", "value": "-2.00", "exact": "-2", "reason": null, "detail": null},
+          {"kind": "taxes_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-01", "end": "2025-06-30", "days": 180}, "state": "AVAILABLE", "value": "0", "exact": "0", "reason": null, "detail": null},
+          {"kind": "financing_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-01", "end": "2025-06-30", "days": 180}, "state": "AVAILABLE", "value": "-3.50", "exact": "-7/2", "reason": null, "detail": null},
+          {"kind": "conversion_result_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-01", "end": "2025-06-30", "days": 180}, "state": "AVAILABLE", "value": "-8.00", "exact": "-8", "reason": null, "detail": null}
+        ]},
+        {"id": "P1-M2", "as_of": "2026-01-31", "ledger_version": 25, "purpose": "Since inception over 395 days; annualized MWR with Y = 79/73 (Ruling 7.1).",
+         "expect": [
+          {"kind": "mwr", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-01", "end": "2026-01-31", "days": 395}, "state": "AVAILABLE", "value": "0.154104872920", "exact": null, "tolerance": "1e-10", "reason": null, "detail": null},
+          {"kind": "annualized_mwr", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-01", "end": "2026-01-31", "days": 395}, "year_fraction": "79/73", "state": "AVAILABLE", "value": "0.141610055620", "exact": null, "tolerance": "1e-10", "reason": null, "detail": null}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000002", "name": "P2 (snapshot-only)", "reporting_currency": "HKD",
+      "events_from": "cp1_golden/1.1 P2 (seq 1-3)", "inception_base": "2025-06-30",
+      "assertions": [
+        {"id": "P2-M1", "as_of": "2025-07-31", "ledger_version": 3, "purpose": "No flow inside the window: the MWR equals the TWR 3/215 (identity I-6). Labelled since S, not the investor's lifetime MWR (Ruling 6.4).",
+         "expect": [
+          {"kind": "mwr", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-06-30", "end": "2025-07-31", "days": 31}, "state": "AVAILABLE", "value": "0.013953488372", "exact": null, "tolerance": "1e-10", "reason": null, "detail": null}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000004", "name": "P4 (purchase recorded before its deposit)", "reporting_currency": "USD",
+      "events_from": "cp3_golden part 1 P4 (seq 1-2)", "inception_base": "2025-01-07",
+      "assertions": [
+        {"id": "P4-M1", "as_of": "2025-01-10", "ledger_version": 2, "purpose": "The MWR is AVAILABLE where the TWR is not (Ruling 6.4): flows -1,000 at k = 1 and +1,020 at k = 3 of 3, so g = 1.02^(3/2).",
+         "expect": [
+          {"kind": "mwr", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-07", "end": "2025-01-10", "days": 3}, "state": "AVAILABLE", "value": "0.030149503713", "exact": null, "tolerance": "1e-10", "reason": null, "detail": null},
+          {"kind": "twr", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-07", "end": "2025-01-10", "days": 3}, "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": null, "detail": ["NON_POSITIVE_BASE"]}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000005", "name": "P5 (fully withdrawn, then re-funded)", "reporting_currency": "USD",
+      "events_from": "cp3_golden part 1 P5 (seq 1-3)", "inception_base": "2025-01-01",
+      "assertions": [
+        {"id": "P5-M1", "as_of": "2025-01-06", "ledger_version": 3, "purpose": "A window with V_B = 0 and no flow: every investor flow is 0, so NO_CAPITAL (Ruling 6.4); the TWR is 0 (a 0/0 run, ZERO_CAPITAL_RUN) and G is 0.",
+         "expect": [
+          {"kind": "mwr", "window": {"request": {"rule": "CUSTOM", "base": "2025-01-03"}, "base": "2025-01-03", "end": "2025-01-06", "days": 3}, "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": null, "detail": ["NO_CAPITAL"]},
+          {"kind": "twr", "window": {"request": {"rule": "CUSTOM", "base": "2025-01-03"}, "base": "2025-01-03", "end": "2025-01-06", "days": 3}, "state": "AVAILABLE", "value": "0", "exact": "0", "reason": null, "detail": null, "lineage_includes": ["ZERO_CAPITAL_RUN"]},
+          {"kind": "gain_absolute", "window": {"request": {"rule": "CUSTOM", "base": "2025-01-03"}, "base": "2025-01-03", "end": "2025-01-06", "days": 3}, "state": "AVAILABLE", "value": "0.00", "exact": "0", "reason": null, "detail": null}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000007", "name": "P7 (USD reporting; HK listing; dividends, interest, stamp duty, fee, CNH dividend)", "reporting_currency": "USD",
+      "accounts": [{"account_id": "a7000000-0000-4000-8000-000000000001", "name": "G1 (HK broker)"}],
+      "inception_base": "2025-03-31",
+      "events": [
+        {"ledger_seq": 1, "label": "G-E1", "event": {"event_id": "e7000000-0000-4000-8000-000000000001", "account_id": "a7000000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-04-01", "currency": "HKD", "amount": {"amount": "100000", "currency": "HKD"}, "source_reference": "P7-E1"}},
+        {"ledger_seq": 2, "label": "G-E2", "event": {"event_id": "e7000000-0000-4000-8000-000000000002", "account_id": "a7000000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-04-01", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-0000001b0001", "quantity": "1000", "amount": {"amount": "50000", "currency": "HKD"}, "source_reference": "P7-E2"}},
+        {"ledger_seq": 3, "label": "G-E3", "event": {"event_id": "e7000000-0000-4000-8000-000000000003", "account_id": "a7000000-0000-4000-8000-000000000001", "event_type": "TAX", "event_date": "2025-04-01", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-0000001b0001", "amount": {"amount": "50", "currency": "HKD"}, "source_reference": "P7-E3 stamp duty"}},
+        {"ledger_seq": 4, "label": "G-E4", "event": {"event_id": "e7000000-0000-4000-8000-000000000004", "account_id": "a7000000-0000-4000-8000-000000000001", "event_type": "FEE", "event_date": "2025-04-01", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-0000001b0001", "amount": {"amount": "30", "currency": "HKD"}, "source_reference": "P7-E4 commission"}},
+        {"ledger_seq": 5, "label": "G-E5", "event": {"event_id": "e7000000-0000-4000-8000-000000000005", "account_id": "a7000000-0000-4000-8000-000000000001", "event_type": "DIVIDEND", "event_date": "2025-05-20", "ex_date": "2025-05-06", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-0000001b0001", "amount": {"amount": "2000", "currency": "HKD"}, "source_reference": "P7-E5 gross 2.00/share"}},
+        {"ledger_seq": 6, "label": "G-E6", "event": {"event_id": "e7000000-0000-4000-8000-000000000006", "account_id": "a7000000-0000-4000-8000-000000000001", "event_type": "TAX", "event_date": "2025-05-20", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-0000001b0001", "amount": {"amount": "200", "currency": "HKD"}, "source_reference": "P7-E6 withholding 10%"}},
+        {"ledger_seq": 7, "label": "G-E7", "event": {"event_id": "e7000000-0000-4000-8000-000000000007", "account_id": "a7000000-0000-4000-8000-000000000001", "event_type": "DIVIDEND", "event_date": "2025-06-10", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-0000001b0001", "amount": {"amount": "1000", "currency": "HKD"}, "source_reference": "P7-E7 net-only, no ex_date"}},
+        {"ledger_seq": 8, "label": "G-E8", "event": {"event_id": "e7000000-0000-4000-8000-000000000008", "account_id": "a7000000-0000-4000-8000-000000000001", "event_type": "INTEREST", "event_date": "2025-06-20", "currency": "HKD", "amount": {"amount": "12.34", "currency": "HKD"}, "source_reference": "P7-E8"}},
+        {"ledger_seq": 9, "label": "G-E9", "event": {"event_id": "e7000000-0000-4000-8000-000000000009", "account_id": "a7000000-0000-4000-8000-000000000001", "event_type": "DIVIDEND", "event_date": "2025-06-27", "currency": "CNH", "listing_id": "c0000000-0000-4000-8000-0000001b0001", "amount": {"amount": "500", "currency": "CNH"}, "source_reference": "P7-E9 paid in CNH"}}
+      ],
+      "assertions": [
+        {"id": "P7-V1", "as_of": "2025-05-05", "ledger_version": 9, "purpose": "Before the ex-date (HKEX closed 05-05; the 05-02 close 52.00 is CURRENT): no receivable.",
+         "expect": [
+          {"kind": "holding_value", "view": "REPORTING", "account_id": "a7000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000001b0001", "state": "AVAILABLE", "value": "6656.00", "exact": "6656", "reason": null, "detail": null, "price_date_used": "2025-05-02", "missed_sessions": 0},
+          {"kind": "receivable_value", "event_id": "e7000000-0000-4000-8000-000000000005", "emitted": false},
+          {"kind": "portfolio_value", "view": "REPORTING", "state": "AVAILABLE", "value": "13045.76", "exact": "326144/25", "reason": null, "detail": null}
+        ]},
+        {"id": "P7-V2", "as_of": "2025-05-06", "ledger_version": 9, "purpose": "Ex-date: the price drops 2.00 and the receivable of 2,000 HKD appears (Ruling 8.1); the total is unchanged.",
+         "expect": [
+          {"kind": "receivable_value", "view": "NATIVE", "event_id": "e7000000-0000-4000-8000-000000000005", "state": "AVAILABLE", "value": "2000", "exact": "2000", "reason": null, "detail": null},
+          {"kind": "receivable_value", "view": "REPORTING", "event_id": "e7000000-0000-4000-8000-000000000005", "state": "AVAILABLE", "value": "256.00", "exact": "256", "reason": null, "detail": null},
+          {"kind": "holding_value", "view": "REPORTING", "account_id": "a7000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000001b0001", "state": "AVAILABLE", "value": "6400.00", "exact": "6400", "reason": null, "detail": null, "price_date_used": "2025-05-06", "missed_sessions": 0},
+          {"kind": "portfolio_value", "view": "REPORTING", "state": "AVAILABLE", "value": "13045.76", "exact": "326144/25", "reason": null, "detail": null}
+        ]},
+        {"id": "P7-V3", "as_of": "2025-05-19", "ledger_version": 9, "purpose": "The last day of the receivable (ex_date <= D < pay date).",
+         "expect": [
+          {"kind": "receivable_value", "view": "REPORTING", "event_id": "e7000000-0000-4000-8000-000000000005", "state": "AVAILABLE", "value": "256.00", "exact": "256", "reason": null, "detail": null},
+          {"kind": "portfolio_value", "view": "REPORTING", "state": "AVAILABLE", "value": "13045.76", "exact": "326144/25", "reason": null, "detail": null}
+        ]},
+        {"id": "P7-V4", "as_of": "2025-05-20", "ledger_version": 9, "purpose": "Pay date: the receivable becomes cash (not income again); the withholding TAX of 200 HKD is booked.",
+         "expect": [
+          {"kind": "receivable_value", "event_id": "e7000000-0000-4000-8000-000000000005", "emitted": false},
+          {"kind": "portfolio_value", "view": "REPORTING", "state": "AVAILABLE", "value": "13020.16", "exact": "325504/25", "reason": null, "detail": null}
+        ]},
+        {"id": "P7-R1", "as_of": "2025-06-26", "ledger_version": 9, "purpose": "One inflow at the base, no other flow: TWR = MWR exactly (I-6). Income = accrued gross dividend (recognized on the ex-date) + net-only cash dividend + interest; taxes = stamp duty + withholding; the fee is not in any basis.",
+         "expect": [
+          {"kind": "twr", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-31", "end": "2025-06-26", "days": 87}, "state": "AVAILABLE", "value": "0.037323400000", "exact": "186617/5000000", "reason": null, "detail": null},
+          {"kind": "mwr", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-31", "end": "2025-06-26", "days": 87}, "state": "AVAILABLE", "value": "0.037323400000", "exact": null, "tolerance": "1e-10", "reason": null, "detail": null},
+          {"kind": "gain_absolute", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-31", "end": "2025-06-26", "days": 87}, "state": "AVAILABLE", "value": "477.74", "exact": "1492936/3125", "reason": null, "detail": null},
+          {"kind": "income_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-31", "end": "2025-06-26", "days": 87}, "state": "AVAILABLE", "value": "385.58", "exact": "1204936/3125", "reason": null, "detail": null},
+          {"kind": "taxes_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-31", "end": "2025-06-26", "days": 87}, "state": "AVAILABLE", "value": "-32.00", "exact": "-32", "reason": null, "detail": null},
+          {"kind": "fees_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-31", "end": "2025-06-26", "days": 87}, "state": "AVAILABLE", "value": "-3.84", "exact": "-96/25", "reason": null, "detail": null},
+          {"kind": "financing_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-31", "end": "2025-06-26", "days": 87}, "state": "AVAILABLE", "value": "0", "exact": "0", "reason": null, "detail": null}
+        ]},
+        {"id": "P7-R2", "as_of": "2025-05-31", "ledger_version": 9, "purpose": "Accrual timing: the ex-date 05-06 is inside (05-05, 05-31], so the dividend income 256.00 is in the window although the cash arrived 05-20.",
+         "expect": [
+          {"kind": "income_amount", "window": {"request": {"rule": "CUSTOM", "base": "2025-05-05"}, "base": "2025-05-05", "end": "2025-05-31", "days": 26}, "state": "AVAILABLE", "value": "256.00", "exact": "256", "reason": null, "detail": null},
+          {"kind": "taxes_amount", "window": {"request": {"rule": "CUSTOM", "base": "2025-05-05"}, "base": "2025-05-05", "end": "2025-05-31", "days": 26}, "state": "AVAILABLE", "value": "-25.60", "exact": "-128/5", "reason": null, "detail": null}
+        ]},
+        {"id": "P7-R3", "as_of": "2025-05-31", "ledger_version": 9, "purpose": "With base 05-06 the ex-date is the base, outside (05-06, 05-31]: income 0 although the cash arrived inside the window (the pay-date credit is not income again). The withholding stays in the window.",
+         "expect": [
+          {"kind": "income_amount", "window": {"request": {"rule": "CUSTOM", "base": "2025-05-06"}, "base": "2025-05-06", "end": "2025-05-31", "days": 25}, "state": "AVAILABLE", "value": "0", "exact": "0", "reason": null, "detail": null},
+          {"kind": "taxes_amount", "window": {"request": {"rule": "CUSTOM", "base": "2025-05-06"}, "base": "2025-05-06", "end": "2025-05-31", "days": 25}, "state": "AVAILABLE", "value": "-25.60", "exact": "-128/5", "reason": null, "detail": null}
+        ]},
+        {"id": "P7-R4", "as_of": "2025-06-30", "ledger_version": 9, "purpose": "A CNH dividend (06-27) cannot be translated: income, the total, G and the MWR over a window containing it are INSUFFICIENT_DATA + MISSING_FX_HISTORY; the fee and tax lines are unaffected (Ruling 8.6 clarification).",
+         "expect": [
+          {"kind": "income_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-31", "end": "2025-06-30", "days": 91}, "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_FX_HISTORY", "detail": null},
+          {"kind": "fees_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-31", "end": "2025-06-30", "days": 91}, "state": "AVAILABLE", "value": "-3.84", "exact": "-96/25", "reason": null, "detail": null},
+          {"kind": "taxes_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-31", "end": "2025-06-30", "days": 91}, "state": "AVAILABLE", "value": "-32.00", "exact": "-32", "reason": null, "detail": null},
+          {"kind": "portfolio_value", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_FX_HISTORY", "detail": null},
+          {"kind": "gain_absolute", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-31", "end": "2025-06-30", "days": 91}, "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_FX_HISTORY", "detail": null},
+          {"kind": "mwr", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-31", "end": "2025-06-30", "days": 91}, "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "MISSING_FX_HISTORY", "detail": null}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000008", "name": "P8 (closed form: one deposit, one year)", "reporting_currency": "USD",
+      "accounts": [{"account_id": "a8000000-0000-4000-8000-000000000001", "name": "K1"}],
+      "inception_base": "2025-01-01",
+      "events": [
+        {"ledger_seq": 1, "label": "K-E1", "event": {"event_id": "e8000000-0000-4000-8000-000000000001", "account_id": "a8000000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-01-02", "currency": "USD", "amount": {"amount": "4000", "currency": "USD"}, "source_reference": "P8-E1"}},
+        {"ledger_seq": 2, "label": "K-E2", "event": {"event_id": "e8000000-0000-4000-8000-000000000002", "account_id": "a8000000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-01-02", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-00000000f001", "quantity": "10", "amount": {"amount": "4000", "currency": "USD"}, "source_reference": "P8-E2"}}
+      ],
+      "assertions": [
+        {"id": "P8-M1", "as_of": "2026-01-01", "ledger_version": 2, "purpose": "The closed-form case: one deposit at the base and the end value; MWR = TWR = 4,300/4,000 - 1 = 3/40; Y = 1 (end-of-month rule; 2026-01-01 is not a session, the 2025-12-31 close 430.00 is used), so both annualized figures equal the period figures.",
+         "expect": [
+          {"kind": "twr", "window": {"request": {"rule": "TRAILING_MONTHS", "months": 12}, "base": "2025-01-01", "end": "2026-01-01", "days": 365}, "state": "AVAILABLE", "value": "0.075000000000", "exact": "3/40", "reason": null, "detail": null},
+          {"kind": "annualized_twr", "window": {"request": {"rule": "TRAILING_MONTHS", "months": 12}, "base": "2025-01-01", "end": "2026-01-01", "days": 365}, "year_fraction": "1", "state": "AVAILABLE", "value": "0.075000000000", "exact": "3/40", "reason": null, "detail": null},
+          {"kind": "mwr", "window": {"request": {"rule": "TRAILING_MONTHS", "months": 12}, "base": "2025-01-01", "end": "2026-01-01", "days": 365}, "state": "AVAILABLE", "value": "0.075000000000", "exact": null, "tolerance": "1e-10", "reason": null, "detail": null},
+          {"kind": "annualized_mwr", "window": {"request": {"rule": "TRAILING_MONTHS", "months": 12}, "base": "2025-01-01", "end": "2026-01-01", "days": 365}, "year_fraction": "1", "state": "AVAILABLE", "value": "0.075000000000", "exact": null, "tolerance": "1e-10", "reason": null, "detail": null}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-000000000009", "name": "P9 (Example M-3 realized: three IRRs)", "reporting_currency": "USD",
+      "accounts": [{"account_id": "a9000000-0000-4000-8000-000000000001", "name": "M1"}],
+      "inception_base": "2025-03-02",
+      "events": [
+        {"ledger_seq": 1, "label": "M-E1", "event": {"event_id": "e9000000-0000-4000-8000-000000000001", "account_id": "a9000000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-03-03", "currency": "USD", "amount": {"amount": "1800", "currency": "USD"}, "source_reference": "P9-E1"}},
+        {"ledger_seq": 2, "label": "M-E2", "event": {"event_id": "e9000000-0000-4000-8000-000000000002", "account_id": "a9000000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-03", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000001c0001", "quantity": "1800", "amount": {"amount": "1800", "currency": "USD"}, "source_reference": "P9-E2"}},
+        {"ledger_seq": 3, "label": "M-E3", "event": {"event_id": "e9000000-0000-4000-8000-000000000003", "account_id": "a9000000-0000-4000-8000-000000000001", "event_type": "SELL", "event_date": "2025-03-04", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000001c0001", "quantity": "1800", "amount": {"amount": "6300", "currency": "USD"}, "source_reference": "P9-E3"}},
+        {"ledger_seq": 4, "label": "M-E4", "event": {"event_id": "e9000000-0000-4000-8000-000000000004", "account_id": "a9000000-0000-4000-8000-000000000001", "event_type": "WITHDRAWAL", "event_date": "2025-03-04", "currency": "USD", "amount": {"amount": "6050", "currency": "USD"}, "source_reference": "P9-E4"}},
+        {"ledger_seq": 5, "label": "M-E5", "event": {"event_id": "e9000000-0000-4000-8000-000000000005", "account_id": "a9000000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-03-06", "currency": "USD", "amount": {"amount": "6750", "currency": "USD"}, "source_reference": "P9-E5"}},
+        {"ledger_seq": 6, "label": "M-E6", "event": {"event_id": "e9000000-0000-4000-8000-000000000006", "account_id": "a9000000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-06", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000001c0001", "quantity": "2000", "amount": {"amount": "7000", "currency": "USD"}, "source_reference": "P9-E6"}}
+      ],
+      "assertions": [
+        {"id": "P9-M1", "as_of": "2025-03-06", "ledger_version": 6, "purpose": "Investor flows -1,800, +6,050, -6,750, +2,500 at tau = 0, 1/3, 2/3, 1: roots g = 1, (10/9)^3, (5/4)^3. G = 0 so g* = 1; the running balance 1,800 - 6,050 < 0 fails the uniqueness test: MWR INSUFFICIENT_DATA. The TWR over the same window is AVAILABLE, 1/4.",
+         "expect": [
+          {"kind": "mwr", "window": {"request": {"rule": "CUSTOM", "base": "2025-03-03"}, "base": "2025-03-03", "end": "2025-03-06", "days": 3}, "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": null, "detail": ["IRR_UNIQUENESS_NOT_ESTABLISHED"]},
+          {"kind": "twr", "window": {"request": {"rule": "CUSTOM", "base": "2025-03-03"}, "base": "2025-03-03", "end": "2025-03-06", "days": 3}, "state": "AVAILABLE", "value": "0.250000000000", "exact": "1/4", "reason": null, "detail": null},
+          {"kind": "gain_absolute", "window": {"request": {"rule": "CUSTOM", "base": "2025-03-03"}, "base": "2025-03-03", "end": "2025-03-06", "days": 3}, "state": "AVAILABLE", "value": "0.00", "exact": "0", "reason": null, "detail": null}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-00000000000a", "name": "P10 (Example M-2 realized: interleaved flows, unique root)", "reporting_currency": "USD",
+      "accounts": [{"account_id": "aa000000-0000-4000-8000-000000000001", "name": "N1"}],
+      "inception_base": "2025-03-09",
+      "events": [
+        {"ledger_seq": 1, "label": "N-E1", "event": {"event_id": "ea000000-0000-4000-8000-000000000001", "account_id": "aa000000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-03-10", "currency": "USD", "amount": {"amount": "10000", "currency": "USD"}, "source_reference": "P10-E1"}},
+        {"ledger_seq": 2, "label": "N-E2", "event": {"event_id": "ea000000-0000-4000-8000-000000000002", "account_id": "aa000000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-10", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000001d0001", "quantity": "1000", "amount": {"amount": "10000", "currency": "USD"}, "source_reference": "P10-E2"}},
+        {"ledger_seq": 3, "label": "N-E3", "event": {"event_id": "ea000000-0000-4000-8000-000000000003", "account_id": "aa000000-0000-4000-8000-000000000001", "event_type": "SELL", "event_date": "2025-03-12", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000001d0001", "quantity": "200", "amount": {"amount": "2200", "currency": "USD"}, "source_reference": "P10-E3"}},
+        {"ledger_seq": 4, "label": "N-E4", "event": {"event_id": "ea000000-0000-4000-8000-000000000004", "account_id": "aa000000-0000-4000-8000-000000000001", "event_type": "WITHDRAWAL", "event_date": "2025-03-12", "currency": "USD", "amount": {"amount": "2000", "currency": "USD"}, "source_reference": "P10-E4"}},
+        {"ledger_seq": 5, "label": "N-E5", "event": {"event_id": "ea000000-0000-4000-8000-000000000005", "account_id": "aa000000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-03-14", "currency": "USD", "amount": {"amount": "3000", "currency": "USD"}, "source_reference": "P10-E5"}}
+      ],
+      "assertions": [
+        {"id": "P10-M1", "as_of": "2025-03-14", "ledger_version": 5, "purpose": "Investor flows -10,000, +2,000, -3,000, +12,000 at tau = 0, 2/4, 3/4, 1: three sign changes, yet the running balance at the root stays >= 0 (10,000; 8,500.447...; 11,710.551...), so the root is unique (Ruling 6.3) and the MWR is AVAILABLE. Not annualized (4 days; no annualized assertion here).",
+         "expect": [
+          {"kind": "mwr", "window": {"request": {"rule": "CUSTOM", "base": "2025-03-10"}, "base": "2025-03-10", "end": "2025-03-14", "days": 4}, "state": "AVAILABLE", "value": "0.102593873725", "exact": null, "tolerance": "1e-10", "reason": null, "detail": null},
+          {"kind": "twr", "window": {"request": {"rule": "CUSTOM", "base": "2025-03-10"}, "base": "2025-03-10", "end": "2025-03-14", "days": 4}, "state": "AVAILABLE", "value": "0.100000000000", "exact": "1/10", "reason": null, "detail": null},
+          {"kind": "gain_absolute", "window": {"request": {"rule": "CUSTOM", "base": "2025-03-10"}, "base": "2025-03-10", "end": "2025-03-14", "days": 4}, "state": "AVAILABLE", "value": "1000.00", "exact": "1000", "reason": null, "detail": null}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-00000000000b", "name": "P11 (negative base value; IRR not defined)", "reporting_currency": "USD",
+      "accounts": [{"account_id": "ab000000-0000-4000-8000-000000000001", "name": "Q1"}],
+      "inception_base": "2025-01-07",
+      "events": [
+        {"ledger_seq": 1, "label": "Q-E1", "event": {"event_id": "eb000000-0000-4000-8000-000000000001", "account_id": "ab000000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-01-08", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000000c0001", "quantity": "10", "amount": {"amount": "1020", "currency": "USD"}, "source_reference": "P11-E1"}},
+        {"ledger_seq": 2, "label": "Q-E2", "event": {"event_id": "eb000000-0000-4000-8000-000000000002", "account_id": "ab000000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-01-10", "currency": "USD", "amount": {"amount": "1020", "currency": "USD"}, "source_reference": "P11-E2"}}
+      ],
+      "assertions": [
+        {"id": "P11-M1", "as_of": "2025-01-10", "ledger_version": 2, "purpose": "Base 01-08 has value 1,010 - 1,020 = -10, so the first investor flow is +10 (positive): IRR_NOT_DEFINED (Ruling 6.4). The TWR's first run has a negative denominator: NON_POSITIVE_BASE. G = 1,020 - (-10) - 1,020 = 10.",
+         "expect": [
+          {"kind": "mwr", "window": {"request": {"rule": "CUSTOM", "base": "2025-01-08"}, "base": "2025-01-08", "end": "2025-01-10", "days": 2}, "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": null, "detail": ["IRR_NOT_DEFINED"]},
+          {"kind": "twr", "window": {"request": {"rule": "CUSTOM", "base": "2025-01-08"}, "base": "2025-01-08", "end": "2025-01-10", "days": 2}, "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": null, "detail": ["NON_POSITIVE_BASE"]},
+          {"kind": "gain_absolute", "window": {"request": {"rule": "CUSTOM", "base": "2025-01-08"}, "base": "2025-01-08", "end": "2025-01-10", "days": 2}, "state": "AVAILABLE", "value": "10.00", "exact": "10", "reason": null, "detail": null}
+        ]},
+        {"id": "P11-M2", "as_of": "2025-01-10", "ledger_version": 2, "purpose": "Since inception (V_B = 0): flows -1,020 at k = 2 and +1,020 at k = 3 of 3; G = 0 exactly, so g* = 1 and the MWR is exactly 0 (Ruling 6.2 step 3), unique. The TWR's first run is -10/0: NON_POSITIVE_BASE.",
+         "expect": [
+          {"kind": "mwr", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-07", "end": "2025-01-10", "days": 3}, "state": "AVAILABLE", "value": "0", "exact": "0", "reason": null, "detail": null},
+          {"kind": "twr", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-07", "end": "2025-01-10", "days": 3}, "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": null, "detail": ["NON_POSITIVE_BASE"]},
+          {"kind": "gain_absolute", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-01-07", "end": "2025-01-10", "days": 3}, "state": "AVAILABLE", "value": "0.00", "exact": "0", "reason": null, "detail": null}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-00000000000c", "name": "P12 (Example W re-dated to the fixture's FX: W')", "reporting_currency": "USD",
+      "accounts": [{"account_id": "ac000000-0000-4000-8000-000000000001", "name": "W1 (multi-currency US broker)"}],
+      "inception_base": "2025-03-30",
+      "events": [
+        {"ledger_seq": 1, "label": "W-E1", "event": {"event_id": "ec000000-0000-4000-8000-000000000001", "account_id": "ac000000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-03-31", "currency": "USD", "amount": {"amount": "10000", "currency": "USD"}, "source_reference": "P12-E1"}},
+        {"ledger_seq": 2, "label": "W-E2", "event": {"event_id": "ec000000-0000-4000-8000-000000000002", "account_id": "ac000000-0000-4000-8000-000000000001", "event_type": "CURRENCY_CONVERSION", "event_date": "2025-03-31", "currency": "USD", "amount": {"amount": "5000", "currency": "USD"}, "bought_amount": {"amount": "38800", "currency": "HKD"}, "source_reference": "P12-E2"}},
+        {"ledger_seq": 3, "label": "W-E3", "event": {"event_id": "ec000000-0000-4000-8000-000000000003", "account_id": "ac000000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-03-31", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-0000001a0001", "quantity": "100", "amount": {"amount": "38000", "currency": "HKD"}, "source_reference": "P12-E3"}},
+        {"ledger_seq": 4, "label": "W-E4", "event": {"event_id": "ec000000-0000-4000-8000-000000000004", "account_id": "ac000000-0000-4000-8000-000000000001", "event_type": "FEE", "event_date": "2025-03-31", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-0000001a0001", "amount": {"amount": "10", "currency": "HKD"}, "source_reference": "P12-E4 commission"}},
+        {"ledger_seq": 5, "label": "W-E5", "event": {"event_id": "ec000000-0000-4000-8000-000000000005", "account_id": "ac000000-0000-4000-8000-000000000001", "event_type": "WITHDRAWAL", "event_date": "2025-04-01", "currency": "USD", "amount": {"amount": "1000", "currency": "USD"}, "source_reference": "P12-E5"}},
+        {"ledger_seq": 6, "label": "W-E6", "event": {"event_id": "ec000000-0000-4000-8000-000000000006", "account_id": "ac000000-0000-4000-8000-000000000001", "event_type": "DIVIDEND", "event_date": "2025-04-02", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-0000001a0001", "amount": {"amount": "200", "currency": "HKD"}, "source_reference": "P12-E6 gross, no ex_date"}},
+        {"ledger_seq": 7, "label": "W-E7", "event": {"event_id": "ec000000-0000-4000-8000-000000000007", "account_id": "ac000000-0000-4000-8000-000000000001", "event_type": "TAX", "event_date": "2025-04-02", "currency": "HKD", "listing_id": "c0000000-0000-4000-8000-0000001a0001", "amount": {"amount": "20", "currency": "HKD"}, "source_reference": "P12-E7 withholding"}}
+      ],
+      "assertions": [
+        {"id": "P12-V1", "as_of": "2025-03-31", "ledger_version": 7, "purpose": "Day 1 at 5/39 USD per HKD.",
+         "expect": [
+          {"kind": "portfolio_value", "view": "REPORTING", "state": "AVAILABLE", "value": "10101.28", "exact": "393950/39", "reason": null, "detail": null}
+        ]},
+        {"id": "P12-V2", "as_of": "2025-04-01", "ledger_version": 7, "purpose": "Day 2 at 16/125 (the fixture's FX step), after the end-of-day withdrawal.",
+         "expect": [
+          {"kind": "portfolio_value", "view": "REPORTING", "state": "AVAILABLE", "value": "9221.12", "exact": "230528/25", "reason": null, "detail": null}
+        ]},
+        {"id": "P12-R1", "as_of": "2025-04-02", "ledger_version": 7, "purpose": "Example W's structure on the fixture's FX: TWR, MWR (flows -10,000 at k = 0, +1,000 at k = 2, +V_E at k = 3 of 3), G, and every cost and income line, including the conversion result -5,000 + 38,800 x 5/39 = -1,000/39.",
+         "expect": [
+          {"kind": "twr", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-30", "end": "2025-04-02", "days": 3}, "state": "AVAILABLE", "value": "0.024665861188", "exact": "2776451/112562500", "reason": null, "detail": null},
+          {"kind": "mwr", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-30", "end": "2025-04-02", "days": 3}, "state": "AVAILABLE", "value": "0.025250703431", "exact": null, "tolerance": "1e-10", "reason": null, "detail": null},
+          {"kind": "gain_absolute", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-30", "end": "2025-04-02", "days": 3}, "state": "AVAILABLE", "value": "244.16", "exact": "6104/25", "reason": null, "detail": null},
+          {"kind": "income_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-30", "end": "2025-04-02", "days": 3}, "state": "AVAILABLE", "value": "25.60", "exact": "128/5", "reason": null, "detail": null},
+          {"kind": "taxes_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-30", "end": "2025-04-02", "days": 3}, "state": "AVAILABLE", "value": "-2.56", "exact": "-64/25", "reason": null, "detail": null},
+          {"kind": "fees_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-30", "end": "2025-04-02", "days": 3}, "state": "AVAILABLE", "value": "-1.28", "exact": "-50/39", "reason": null, "detail": null},
+          {"kind": "financing_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-30", "end": "2025-04-02", "days": 3}, "state": "AVAILABLE", "value": "0", "exact": "0", "reason": null, "detail": null},
+          {"kind": "conversion_result_amount", "window": {"request": {"rule": "SINCE_INCEPTION"}, "base": "2025-03-30", "end": "2025-04-02", "days": 3}, "state": "AVAILABLE", "value": "-25.64", "exact": "-1000/39", "reason": null, "detail": null}
+        ]}
+      ]
+    },
+    {
+      "portfolio_id": "d0000000-0000-4000-8000-00000000000d", "name": "P13 (synthetic corroborated split missing from the ledger)", "reporting_currency": "USD",
+      "accounts": [{"account_id": "ad000000-0000-4000-8000-000000000001", "name": "S1"}],
+      "inception_base": "2025-02-02",
+      "events": [
+        {"ledger_seq": 1, "label": "S-E1", "event": {"event_id": "ed000000-0000-4000-8000-000000000001", "account_id": "ad000000-0000-4000-8000-000000000001", "event_type": "DEPOSIT", "event_date": "2025-02-03", "currency": "USD", "amount": {"amount": "10000", "currency": "USD"}, "source_reference": "P13-E1"}},
+        {"ledger_seq": 2, "label": "S-E2", "event": {"event_id": "ed000000-0000-4000-8000-000000000002", "account_id": "ad000000-0000-4000-8000-000000000001", "event_type": "BUY", "event_date": "2025-02-03", "currency": "USD", "listing_id": "c0000000-0000-4000-8000-0000001e0001", "quantity": "100", "amount": {"amount": "8000", "currency": "USD"}, "source_reference": "P13-E2"}}
+      ],
+      "assertions": [
+        {"id": "P13-S1", "as_of": "2025-03-04", "ledger_version": 2, "purpose": "market-data Ruling 4.8 item 4: synthetic feed + synthetic filing agree (corroborated within the synthetic world); the ledger has no split in W(K): outcome NOT_RECORDED, append BARRED (synthetic evidence), never WOULD_APPEND; the ledger is unchanged (L stays 2).",
+         "expect": [
+          {"kind": "split_outcome", "account_id": "ad000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000001e0001", "ex_date": "2025-03-03", "outcome": "NOT_RECORDED", "append": "BARRED_SYNTHETIC_EVIDENCE", "ledger_version_after": 2}
+        ]},
+        {"id": "P13-V1", "as_of": "2025-02-28", "ledger_version": 2, "purpose": "Before the ex-date: valued normally.",
+         "expect": [
+          {"kind": "portfolio_value", "view": "REPORTING", "state": "AVAILABLE", "value": "10000.00", "exact": "10000", "reason": null, "detail": null}
+        ]},
+        {"id": "P13-V2", "as_of": "2025-03-03", "ledger_version": 2, "purpose": "From the ex-date the quantity (100, pre-split) and the RAW price (20.00, post-split) are in different units: the holding is INSUFFICIENT_DATA + SOURCE_CONFLICT in both views (not 2,000, not 8,000); so is the total; the value of priced holdings is the cash, excluding 1.",
+         "expect": [
+          {"kind": "holding_value", "view": "NATIVE", "account_id": "ad000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000001e0001", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "SOURCE_CONFLICT", "detail": null},
+          {"kind": "holding_value", "view": "REPORTING", "account_id": "ad000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000001e0001", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "SOURCE_CONFLICT", "detail": null},
+          {"kind": "portfolio_value", "view": "REPORTING", "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "SOURCE_CONFLICT", "detail": null},
+          {"kind": "priced_holdings_value", "emitted": true, "state": "AVAILABLE", "value": "2000.00", "exact": "2000", "reason": null, "detail": null, "excluded_count": 1,
+           "excluded": [{"component": "position", "account_id": "ad000000-0000-4000-8000-000000000001", "listing_id": "c0000000-0000-4000-8000-0000001e0001", "native": "100", "reason": "SOURCE_CONFLICT"}]}
+        ]},
+        {"id": "P13-R1", "as_of": "2025-03-04", "ledger_version": 2, "purpose": "A window ending after the ex-date: TWR, MWR and G are all INSUFFICIENT_DATA + SOURCE_CONFLICT.",
+         "expect": [
+          {"kind": "twr", "window": {"request": {"rule": "CUSTOM", "base": "2025-02-28"}, "base": "2025-02-28", "end": "2025-03-04", "days": 4}, "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "SOURCE_CONFLICT", "detail": null},
+          {"kind": "mwr", "window": {"request": {"rule": "CUSTOM", "base": "2025-02-28"}, "base": "2025-02-28", "end": "2025-03-04", "days": 4}, "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "SOURCE_CONFLICT", "detail": null},
+          {"kind": "gain_absolute", "window": {"request": {"rule": "CUSTOM", "base": "2025-02-28"}, "base": "2025-02-28", "end": "2025-03-04", "days": 4}, "state": "INSUFFICIENT_DATA", "value": null, "exact": null, "reason": "SOURCE_CONFLICT", "detail": null}
+        ]}
+      ]
+    }
+  ],
+  "structural_assertions": [
+    {"id": "S2-1", "statement": "Every result is marked synthetic (market-data Ruling 4.8 item 2) and every manifest cites the ids in 'convention_sets'."},
+    {"id": "S2-2", "statement": "Identity I-6: for P2-M1, P7-R1 and P8-M1 (no external flow strictly inside the window) the MWR equals the TWR; and for every AVAILABLE mwr, f(1) = sum of investor flows = gain_absolute exactly (sign of the MWR = sign of G)."},
+    {"id": "S2-3", "statement": "Determinism of the solver: running every mwr assertion twice, and in another process, gives byte-identical presented values; the bracket and stop rule are those of Ruling 6.2 or its exact variant."},
+    {"id": "S2-4", "statement": "Synthetic evidence never appends: after computing P13 (dry run or not), P13's ledger version is still 2 and no SPLIT exists in it; real-evidence appending is not exercised here."},
+    {"id": "S2-5", "statement": "Ruling 8.6: income_amount + fees_amount + taxes_amount + financing_amount + conversion_result_amount over a window equal the corresponding attribution money lines once attribution exists (part 4); here they are asserted directly."}
+  ],
+  "item_counts": {
+    "note": "For FIXTURE_PINS: number of 'expect' items per assertion id.",
+    "P1-M1": 7, "P1-M2": 2, "P2-M1": 1, "P4-M1": 2, "P5-M1": 3,
+    "P7-V1": 3, "P7-V2": 4, "P7-V3": 2, "P7-V4": 2, "P7-R1": 7, "P7-R2": 2, "P7-R3": 2, "P7-R4": 6,
+    "P8-M1": 4, "P9-M1": 3, "P10-M1": 3, "P11-M1": 3, "P11-M2": 3,
+    "P12-V1": 1, "P12-V2": 1, "P12-R1": 8,
+    "P13-S1": 1, "P13-V1": 1, "P13-V2": 4, "P13-R1": 3,
+    "total": 78
+  }
+}

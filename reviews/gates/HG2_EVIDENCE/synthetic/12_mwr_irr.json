@@ -1,0 +1,831 @@
+{
+ "data": {
+  "rows": [
+   {
+    "annualized": {
+     "breakdown": [],
+     "causes": [
+      {
+       "detail": "PERIOD_SHORTER_THAN_ONE_YEAR",
+       "note": "PERIOD_SHORTER_THAN_ONE_YEAR: the window is 481/1460 years; the period return is the figure",
+       "reason": null,
+       "ref": "annualized",
+       "state": "INSUFFICIENT_DATA"
+      }
+     ],
+     "conformant": false,
+     "currency": null,
+     "details": [
+      "PERIOD_SHORTER_THAN_ONE_YEAR"
+     ],
+     "exact": null,
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [
+       "END_OF_DAY"
+      ],
+      "entries": [
+       {
+        "date_used": "2025-03-03",
+        "key": "CNY",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-01-06",
+        "key": "HKD",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-04-30",
+        "key": "SYN_CN_A",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XSHG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-04-30",
+        "key": "SYN_HKEX",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XHKG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-10",
+        "key": "SYN_NYSE",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XNYS"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       }
+      ],
+      "summary": "CURRENT"
+     },
+     "lineage": [
+      [
+       "fx_note:parity",
+       "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+      ],
+      [
+       "year_fraction",
+       "481/1460"
+      ]
+     ],
+     "manifest_id": "752261ae07538eb4e53211c253d1f2a126750a1f1fc7b2e2fb826857e818026b",
+     "method_id": "performance.returns/cp3b",
+     "metric_id": "return_mwr_annualized",
+     "numeric_basis": "DECIMAL_PREC50_HALF_EVEN",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": null,
+     "rounding_rule_id": null,
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "INSUFFICIENT_DATA",
+     "subject": [],
+     "synthetic": true,
+     "unit": "RATE_PER_YEAR",
+     "value": null,
+     "view": "PERIOD",
+     "window": {
+      "days": 119,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": null,
+      "rule": "SINCE_INCEPTION",
+      "since_snapshot": false,
+      "start": "2025-01-01"
+     }
+    },
+    "identity_I-6": "NOT_APPLICABLE",
+    "investor_flows": "6",
+    "mwr": {
+     "breakdown": [],
+     "causes": [],
+     "conformant": false,
+     "currency": null,
+     "details": [],
+     "exact": "1205229947539460195352529289291821463417133583107/10000000000000000000000000000000000000000000000000",
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [
+       "END_OF_DAY"
+      ],
+      "entries": [
+       {
+        "date_used": "2025-03-03",
+        "key": "CNY",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-01-06",
+        "key": "HKD",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-04-30",
+        "key": "SYN_CN_A",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XSHG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-04-30",
+        "key": "SYN_HKEX",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XHKG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-10",
+        "key": "SYN_NYSE",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XNYS"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       }
+      ],
+      "summary": "CURRENT"
+     },
+     "lineage": [
+      [
+       "fx_note:parity",
+       "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+      ],
+      [
+       "identity:I-6",
+       "NOT_APPLICABLE"
+      ],
+      [
+       "investor_flows",
+       "6"
+      ]
+     ],
+     "manifest_id": "752261ae07538eb4e53211c253d1f2a126750a1f1fc7b2e2fb826857e818026b",
+     "method_id": "performance.returns/cp3b",
+     "metric_id": "return_mwr",
+     "numeric_basis": "DECIMAL_PREC50_HALF_EVEN",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": null,
+     "rounding_rule_id": "performance/1.10#2.2-2.4",
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "AVAILABLE",
+     "subject": [],
+     "synthetic": true,
+     "unit": "RATIO",
+     "value": "0.120522994754",
+     "view": "PERIOD",
+     "window": {
+      "days": 119,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": null,
+      "rule": "SINCE_INCEPTION",
+      "since_snapshot": false,
+      "start": "2025-01-01"
+     }
+    },
+    "solver": {
+     "max_iterations": 400,
+     "precision_digits": 50,
+     "stop_relative": "0.000000000000000000000000000001"
+    },
+    "unsupported_case_states": {
+     "details": [],
+     "reason": null,
+     "state": "AVAILABLE"
+    },
+    "window": "SINCE_INCEPTION"
+   },
+   {
+    "annualized": {
+     "breakdown": [],
+     "causes": [
+      {
+       "detail": "PERIOD_SHORTER_THAN_ONE_YEAR",
+       "note": "PERIOD_SHORTER_THAN_ONE_YEAR: the window is 1/12 years; the period return is the figure",
+       "reason": null,
+       "ref": "annualized",
+       "state": "INSUFFICIENT_DATA"
+      }
+     ],
+     "conformant": false,
+     "currency": null,
+     "details": [
+      "PERIOD_SHORTER_THAN_ONE_YEAR"
+     ],
+     "exact": null,
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [
+       "END_OF_DAY"
+      ],
+      "entries": [
+       {
+        "date_used": "2025-03-31",
+        "key": "CNY",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "HKD",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_CN_A",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XSHG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_HKEX",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XHKG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_NYSE",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XNYS"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       }
+      ],
+      "summary": "CURRENT"
+     },
+     "lineage": [
+      [
+       "fx_note:parity",
+       "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+      ],
+      [
+       "year_fraction",
+       "1/12"
+      ]
+     ],
+     "manifest_id": "d1331a0c49db3e81780fc0f3ccaa2ca4942f6197fec33eb7b69518cc998565ba",
+     "method_id": "performance.returns/cp3b",
+     "metric_id": "return_mwr_annualized",
+     "numeric_basis": "DECIMAL_PREC50_HALF_EVEN",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": null,
+     "rounding_rule_id": null,
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "INSUFFICIENT_DATA",
+     "subject": [],
+     "synthetic": true,
+     "unit": "RATE_PER_YEAR",
+     "value": null,
+     "view": "PERIOD",
+     "window": {
+      "days": 30,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": null,
+      "rule": "CUSTOM",
+      "since_snapshot": false,
+      "start": "2025-03-31"
+     }
+    },
+    "identity_I-6": "NOT_APPLICABLE",
+    "investor_flows": "3",
+    "mwr": {
+     "breakdown": [],
+     "causes": [],
+     "conformant": false,
+     "currency": null,
+     "details": [],
+     "exact": "14380352431770822953865305613128054815905544041/2000000000000000000000000000000000000000000000000",
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [
+       "END_OF_DAY"
+      ],
+      "entries": [
+       {
+        "date_used": "2025-03-31",
+        "key": "CNY",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "HKD",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_CN_A",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XSHG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_HKEX",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XHKG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_NYSE",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XNYS"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       }
+      ],
+      "summary": "CURRENT"
+     },
+     "lineage": [
+      [
+       "fx_note:parity",
+       "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+      ],
+      [
+       "identity:I-6",
+       "NOT_APPLICABLE"
+      ],
+      [
+       "investor_flows",
+       "3"
+      ]
+     ],
+     "manifest_id": "d1331a0c49db3e81780fc0f3ccaa2ca4942f6197fec33eb7b69518cc998565ba",
+     "method_id": "performance.returns/cp3b",
+     "metric_id": "return_mwr",
+     "numeric_basis": "DECIMAL_PREC50_HALF_EVEN",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": null,
+     "rounding_rule_id": "performance/1.10#2.2-2.4",
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "AVAILABLE",
+     "subject": [],
+     "synthetic": true,
+     "unit": "RATIO",
+     "value": "0.007190176216",
+     "view": "PERIOD",
+     "window": {
+      "days": 30,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": null,
+      "rule": "CUSTOM",
+      "since_snapshot": false,
+      "start": "2025-03-31"
+     }
+    },
+    "solver": {
+     "max_iterations": 400,
+     "precision_digits": 50,
+     "stop_relative": "0.000000000000000000000000000001"
+    },
+    "unsupported_case_states": {
+     "details": [],
+     "reason": null,
+     "state": "AVAILABLE"
+    },
+    "window": "CUSTOM_FROM_2025-03-31"
+   },
+   {
+    "annualized": {
+     "breakdown": [],
+     "causes": [
+      {
+       "detail": "PERIOD_SHORTER_THAN_ONE_YEAR",
+       "note": "PERIOD_SHORTER_THAN_ONE_YEAR: the window is 1/12 years; the period return is the figure",
+       "reason": null,
+       "ref": "annualized",
+       "state": "INSUFFICIENT_DATA"
+      }
+     ],
+     "conformant": false,
+     "currency": null,
+     "details": [
+      "PERIOD_SHORTER_THAN_ONE_YEAR"
+     ],
+     "exact": null,
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [
+       "END_OF_DAY"
+      ],
+      "entries": [
+       {
+        "date_used": "2025-03-31",
+        "key": "CNY",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "HKD",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_CN_A",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XSHG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_HKEX",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XHKG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_NYSE",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XNYS"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       }
+      ],
+      "summary": "CURRENT"
+     },
+     "lineage": [
+      [
+       "fx_note:parity",
+       "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+      ],
+      [
+       "year_fraction",
+       "1/12"
+      ]
+     ],
+     "manifest_id": "9f7c6faa449e7e9feac6dcbb84270741f154dfb01344c6ccf2b316abf3342663",
+     "method_id": "performance.returns/cp3b",
+     "metric_id": "return_mwr_annualized",
+     "numeric_basis": "DECIMAL_PREC50_HALF_EVEN",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": null,
+     "rounding_rule_id": null,
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "INSUFFICIENT_DATA",
+     "subject": [],
+     "synthetic": true,
+     "unit": "RATE_PER_YEAR",
+     "value": null,
+     "view": "PERIOD",
+     "window": {
+      "days": 30,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": 1,
+      "rule": "TRAILING_MONTHS",
+      "since_snapshot": false,
+      "start": "2025-03-31"
+     }
+    },
+    "identity_I-6": "NOT_APPLICABLE",
+    "investor_flows": "3",
+    "mwr": {
+     "breakdown": [],
+     "causes": [],
+     "conformant": false,
+     "currency": null,
+     "details": [],
+     "exact": "14380352431770822953865305613128054815905544041/2000000000000000000000000000000000000000000000000",
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [
+       "END_OF_DAY"
+      ],
+      "entries": [
+       {
+        "date_used": "2025-03-31",
+        "key": "CNY",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "HKD",
+        "kind": "CURRENCY",
+        "mics": [],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_CN_A",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XSHG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_HKEX",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XHKG"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       },
+       {
+        "date_used": "2025-03-31",
+        "key": "SYN_NYSE",
+        "kind": "EXCHANGE_CALENDAR",
+        "mics": [
+         "XNYS"
+        ],
+        "missed": 0,
+        "state": "CURRENT"
+       }
+      ],
+      "summary": "CURRENT"
+     },
+     "lineage": [
+      [
+       "fx_note:parity",
+       "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+      ],
+      [
+       "identity:I-6",
+       "NOT_APPLICABLE"
+      ],
+      [
+       "investor_flows",
+       "3"
+      ]
+     ],
+     "manifest_id": "9f7c6faa449e7e9feac6dcbb84270741f154dfb01344c6ccf2b316abf3342663",
+     "method_id": "performance.returns/cp3b",
+     "metric_id": "return_mwr",
+     "numeric_basis": "DECIMAL_PREC50_HALF_EVEN",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": null,
+     "rounding_rule_id": "performance/1.10#2.2-2.4",
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "AVAILABLE",
+     "subject": [],
+     "synthetic": true,
+     "unit": "RATIO",
+     "value": "0.007190176216",
+     "view": "PERIOD",
+     "window": {
+      "days": 30,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": 1,
+      "rule": "TRAILING_MONTHS",
+      "since_snapshot": false,
+      "start": "2025-03-31"
+     }
+    },
+    "solver": {
+     "max_iterations": 400,
+     "precision_digits": 50,
+     "stop_relative": "0.000000000000000000000000000001"
+    },
+    "unsupported_case_states": {
+     "details": [],
+     "reason": null,
+     "state": "AVAILABLE"
+    },
+    "window": "TRAILING_1M"
+   },
+   {
+    "annualized": {
+     "breakdown": [],
+     "causes": [
+      {
+       "detail": "WINDOW_BEFORE_INCEPTION",
+       "note": "WINDOW_BEFORE_INCEPTION: the base 2024-12-31 is before inception 2025-01-01",
+       "reason": null,
+       "ref": "window",
+       "state": "INSUFFICIENT_DATA"
+      }
+     ],
+     "conformant": false,
+     "currency": null,
+     "details": [
+      "WINDOW_BEFORE_INCEPTION"
+     ],
+     "exact": null,
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [],
+      "entries": [],
+      "summary": "CURRENT"
+     },
+     "lineage": [],
+     "manifest_id": "a2f7dbf6ced8eebfeda9309aca08165a993b0a32f6eb7c531d0ea9f8ab011fda",
+     "method_id": "performance.returns/cp3b",
+     "metric_id": "return_mwr_annualized",
+     "numeric_basis": "RATIONAL",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": null,
+     "rounding_rule_id": null,
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "INSUFFICIENT_DATA",
+     "subject": [],
+     "synthetic": true,
+     "unit": "RATE_PER_YEAR",
+     "value": null,
+     "view": "PERIOD",
+     "window": {
+      "days": 120,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": null,
+      "rule": "YTD",
+      "since_snapshot": false,
+      "start": "2024-12-31"
+     }
+    },
+    "identity_I-6": null,
+    "investor_flows": null,
+    "mwr": {
+     "breakdown": [],
+     "causes": [
+      {
+       "detail": "WINDOW_BEFORE_INCEPTION",
+       "note": "WINDOW_BEFORE_INCEPTION: the base 2024-12-31 is before inception 2025-01-01",
+       "reason": null,
+       "ref": "window",
+       "state": "INSUFFICIENT_DATA"
+      }
+     ],
+     "conformant": false,
+     "currency": null,
+     "details": [
+      "WINDOW_BEFORE_INCEPTION"
+     ],
+     "exact": null,
+     "excluded": [],
+     "excluded_weight": null,
+     "excluded_weight_presented": null,
+     "freshness": {
+      "delays": [],
+      "entries": [],
+      "summary": "CURRENT"
+     },
+     "lineage": [],
+     "manifest_id": "a2f7dbf6ced8eebfeda9309aca08165a993b0a32f6eb7c531d0ea9f8ab011fda",
+     "method_id": "performance.returns/cp3b",
+     "metric_id": "return_mwr",
+     "numeric_basis": "RATIONAL",
+     "partial": false,
+     "portfolio_state": "ACTUAL",
+     "reason": null,
+     "rounding_rule_id": null,
+     "stale_weight": null,
+     "stale_weight_presented": null,
+     "state": "INSUFFICIENT_DATA",
+     "subject": [],
+     "synthetic": true,
+     "unit": "RATIO",
+     "value": null,
+     "view": "PERIOD",
+     "window": {
+      "days": 120,
+      "end": "2025-04-30",
+      "frequency": null,
+      "months": null,
+      "rule": "YTD",
+      "since_snapshot": false,
+      "start": "2024-12-31"
+     }
+    },
+    "solver": {
+     "max_iterations": 400,
+     "precision_digits": 50,
+     "stop_relative": "0.000000000000000000000000000001"
+    },
+    "unsupported_case_states": {
+     "details": [
+      "WINDOW_BEFORE_INCEPTION"
+     ],
+     "reason": null,
+     "state": "INSUFFICIENT_DATA"
+    },
+    "window": "YTD"
+   }
+  ]
+ },
+ "kind": "SYNTHETIC_DEMONSTRATION_A",
+ "labels": {
+  "all_results_synthetic": true,
+  "any_result_synthetic": true,
+  "demonstration_ledger": "DEMONSTRATION LEDGER: these events are not a user's holdings (P8); they exist to exercise the engine.",
+  "fx_sources_in_m": [
+   {
+    "source_id": "synthetic.ecb_direct",
+    "what_it_is": "synthetic.ecb_direct"
+   }
+  ],
+  "label": "SYNTHETIC: every result below was computed from a market-data version that holds synthetic files; none is a real market fact (market-data Ruling 4.8).",
+  "pd_0035_caveat": "PD-0035 section 3: Mainland China and Hong Kong price behaviour is shown on SYNTHETIC data only. No admissible real CN or HK price source exists (PD-0031, PD-0032); the real slice is US prices (Alpha Vantage, the last 100 sessions) and ECB FX only. A synthetic result is never a real market fact (market-data Ruling 4.8)."
+ },
+ "section": "12_mwr_irr",
+ "subject": "DEMO-A: US + HK + CN synthetic cross-border portfolio",
+ "title": "MWR / IRR where supported"
+}

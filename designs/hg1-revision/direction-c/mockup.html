@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Direction C — Briefing Room (SYNTHETIC, HG1 direction package, not an approval)</title>
+<style>
+  :root{
+    --bg:#f6f5f1;
+    --surface:#ffffff;
+    --ink:#1b2430;
+    --ink-soft:#4b5563;
+    --ink-faint:#8792a0;
+    --accent:#0f5c52;
+    --accent-soft:#e6efed;
+    --accent-strong:#0b433c;
+    --gold:#9c7a2e;
+    --line:#e2ded4;
+    --chip-bg:#eef2f1;
+    --chip-border:#bfd2cc;
+    --limited:#8a5a15;
+    --limited-bg:#fbf1df;
+    --limited-border:#e7cf9c;
+    --insufficient:#57606b;
+    --insufficient-bg:#f0efec;
+    --insufficient-border:#d8d5cd;
+    --warn:#8a3b1f;
+    --warn-bg:#f8ece5;
+    --attn:#8a6a15;
+    --attn-bg:#faf3df;
+    --stale:#5c7a86;
+    --stale-bg:#eaf1f3;
+    --scenario:#5b3a8a;
+    --scenario-bg:#f1ecf8;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:15px;
+    line-height:1.5;
+  }
+  h1,h2,h3{font-family:Georgia,"Iowan Old Style","Times New Roman",serif;font-weight:600;margin:0;}
+  .nav-radio, .depth-radio{position:absolute;opacity:0;pointer-events:none;width:0;height:0;}
+
+  /* ---------- synthetic banner ---------- */
+  .synthetic-banner{
+    background:var(--accent-strong);
+    color:#eef3f1;
+    font-size:12px;
+    letter-spacing:.03em;
+    text-align:center;
+    padding:6px 10px;
+  }
+
+  /* ---------- top bar / primary nav ---------- */
+  header.topbar{
+    background:var(--surface);
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    gap:22px;
+    padding:10px 26px;
+    position:sticky;
+    top:0;
+    z-index:5;
+  }
+  .brand{font-family:Georgia,serif;font-weight:700;font-size:17px;color:var(--accent-strong);white-space:nowrap;}
+  nav.tabs{display:flex;gap:4px;flex:1;}
+  nav.tabs label{
+    padding:7px 14px;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink-soft);
+    cursor:pointer;
+    user-select:none;
+  }
+  nav.tabs label:hover{background:var(--accent-soft);}
+  #nav-briefing:checked ~ header.topbar label[for="nav-briefing"],
+  #nav-portfolio:checked ~ header.topbar label[for="nav-portfolio"],
+  #nav-analytics:checked ~ header.topbar label[for="nav-analytics"],
+  #nav-scenario:checked ~ header.topbar label[for="nav-scenario"]{
+    background:var(--accent);
+    color:#fff;
+  }
+  .header-right{display:flex;align-items:center;gap:14px;}
+  details.ask-ai{position:relative;}
+  details.ask-ai summary{
+    list-style:none;
+    cursor:pointer;
+    padding:7px 14px;
+    border-radius:8px;
+    border:1px solid var(--accent);
+    color:var(--accent-strong);
+    font-weight:600;
+    font-size:13.5px;
+  }
+  details.ask-ai summary::-webkit-details-marker{display:none;}
+  details.ask-ai[open] summary{background:var(--accent);color:#fff;}
+  .ask-ai-panel{
+    position:absolute;
+    right:0;
+    top:40px;
+    width:360px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:0 10px 30px rgba(20,30,25,.14);
+    padding:16px;
+    z-index:20;
+  }
+  .settings-icon{
+    font-size:18px;
+    color:var(--ink-faint);
+    cursor:default;
+    border:1px solid var(--line);
+    border-radius:50%;
+    width:32px;height:32px;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  main{max-width:980px;margin:0 auto;padding:22px 20px 60px;}
+  .screen{display:none;}
+  #nav-briefing:checked ~ main #screen-briefing,
+  #nav-portfolio:checked ~ main #screen-portfolio,
+  #nav-analytics:checked ~ main #screen-analytics,
+  #nav-scenario:checked ~ main #screen-scenario{display:block;}
+
+  .screen-intro{font-size:13px;color:var(--ink-faint);margin-bottom:16px;}
+
+  /* ---------- freshness strip ---------- */
+  .freshness-strip{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:10px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:10px 16px;
+    margin-bottom:20px;
+    font-size:12.5px;
+  }
+  .freshness-strip .fs-label{font-weight:700;color:var(--ink-soft);margin-right:2px;}
+  .fs-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:3px 9px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:var(--bg);
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .fs-pill.live{border-color:#bcd9c4;background:#eef8f0;color:#2b6b3f;}
+  .fs-pill.eod{border-color:var(--stale-bg);background:var(--stale-bg);color:var(--stale);}
+  .fs-pill.delayed{border-color:var(--stale-bg);background:var(--stale-bg);color:var(--stale);}
+  .fs-least{margin-left:auto;font-weight:600;color:var(--warn);}
+
+  /* ---------- blocks ---------- */
+  .block{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px 24px 18px;
+    margin-bottom:20px;
+    box-shadow:0 1px 2px rgba(20,20,10,.03);
+  }
+  .block-header{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:10px;
+    margin-bottom:14px;
+  }
+  .block-kicker{
+    font-size:11.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:700;
+  }
+  .depth-tabs{display:flex;gap:3px;}
+  .depth-tabs label{
+    font-size:11.5px;
+    font-weight:600;
+    padding:4px 9px;
+    border-radius:6px;
+    color:var(--ink-faint);
+    cursor:pointer;
+    border:1px solid transparent;
+  }
+  .depth-tabs label:hover{color:var(--ink);}
+  .depth-content{display:none;}
+
+  /* generic depth-ladder active states, one rule set per block id */
+  #depth-a-quick:checked ~ .block-header label[for="depth-a-quick"],
+  #depth-a-simple:checked ~ .block-header label[for="depth-a-simple"],
+  #depth-a-investor:checked ~ .block-header label[for="depth-a-investor"],
+  #depth-a-professional:checked ~ .block-header label[for="depth-a-professional"],
+  #depth-b-quick:checked ~ .block-header label[for="depth-b-quick"],
+  #depth-b-simple:checked ~ .block-header label[for="depth-b-simple"],
+  #depth-b-investor:checked ~ .block-header label[for="depth-b-investor"],
+  #depth-b-professional:checked ~ .block-header label[for="depth-b-professional"],
+  #depth-c-quick:checked ~ .block-header label[for="depth-c-quick"],
+  #depth-c-simple:checked ~ .block-header label[for="depth-c-simple"],
+  #depth-c-investor:checked ~ .block-header label[for="depth-c-investor"],
+  #depth-c-professional:checked ~ .block-header label[for="depth-c-professional"],
+  #depth-d-quick:checked ~ .block-header label[for="depth-d-quick"],
+  #depth-d-simple:checked ~ .block-header label[for="depth-d-simple"],
+  #depth-d-investor:checked ~ .block-header label[for="depth-d-investor"],
+  #depth-d-professional:checked ~ .block-header label[for="depth-d-professional"],
+  #depth-vo-quick:checked ~ .block-header label[for="depth-vo-quick"],
+  #depth-vo-simple:checked ~ .block-header label[for="depth-vo-simple"],
+  #depth-vo-investor:checked ~ .block-header label[for="depth-vo-investor"],
+  #depth-vo-professional:checked ~ .block-header label[for="depth-vo-professional"],
+  #depth-be-quick:checked ~ .block-header label[for="depth-be-quick"],
+  #depth-be-simple:checked ~ .block-header label[for="depth-be-simple"],
+  #depth-be-investor:checked ~ .block-header label[for="depth-be-investor"],
+  #depth-be-professional:checked ~ .block-header label[for="depth-be-professional"],
+  #depth-cr-quick:checked ~ .block-header label[for="depth-cr-quick"],
+  #depth-cr-simple:checked ~ .block-header label[for="depth-cr-simple"],
+  #depth-cr-investor:checked ~ .block-header label[for="depth-cr-investor"],
+  #depth-cr-professional:checked ~ .block-header label[for="depth-cr-professional"],
+  #depth-cn-quick:checked ~ .block-header label[for="depth-cn-quick"],
+  #depth-cn-simple:checked ~ .block-header label[for="depth-cn-simple"],
+  #depth-cn-investor:checked ~ .block-header label[for="depth-cn-investor"],
+  #depth-cn-professional:checked ~ .block-header label[for="depth-cn-professional"]{
+    background:var(--accent);
+    color:#fff;
+    border-color:var(--accent);
+  }
+
+  #depth-a-quick:checked ~ .depth-body #content-a-quick,
+  #depth-a-simple:checked ~ .depth-body #content-a-simple,
+  #depth-a-investor:checked ~ .depth-body #content-a-investor,
+  #depth-a-professional:checked ~ .depth-body #content-a-professional,
+  #depth-b-quick:checked ~ .depth-body #content-b-quick,
+  #depth-b-simple:checked ~ .depth-body #content-b-simple,
+  #depth-b-investor:checked ~ .depth-body #content-b-investor,
+  #depth-b-professional:checked ~ .depth-body #content-b-professional,
+  #depth-c-quick:checked ~ .depth-body #content-c-quick,
+  #depth-c-simple:checked ~ .depth-body #content-c-simple,
+  #depth-c-investor:checked ~ .depth-body #content-c-investor,
+  #depth-c-professional:checked ~ .depth-body #content-c-professional,
+  #depth-d-quick:checked ~ .depth-body #content-d-quick,
+  #depth-d-simple:checked ~ .depth-body #content-d-simple,
+  #depth-d-investor:checked ~ .depth-body #content-d-investor,
+  #depth-d-professional:checked ~ .depth-body #content-d-professional,
+  #depth-vo-quick:checked ~ .depth-body #content-vo-quick,
+  #depth-vo-simple:checked ~ .depth-body #content-vo-simple,
+  #depth-vo-investor:checked ~ .depth-body #content-vo-investor,
+  #depth-vo-professional:checked ~ .depth-body #content-vo-professional,
+  #depth-be-quick:checked ~ .depth-body #content-be-quick,
+  #depth-be-simple:checked ~ .depth-body #content-be-simple,
+  #depth-be-investor:checked ~ .depth-body #content-be-investor,
+  #depth-be-professional:checked ~ .depth-body #content-be-professional,
+  #depth-cr-quick:checked ~ .depth-body #content-cr-quick,
+  #depth-cr-simple:checked ~ .depth-body #content-cr-simple,
+  #depth-cr-investor:checked ~ .depth-body #content-cr-investor,
+  #depth-cr-professional:checked ~ .depth-body #content-cr-professional,
+  #depth-cn-quick:checked ~ .depth-body #content-cn-quick,
+  #depth-cn-simple:checked ~ .depth-body #content-cn-simple,
+  #depth-cn-investor:checked ~ .depth-body #content-cn-investor,
+  #depth-cn-professional:checked ~ .depth-body #content-cn-professional{
+    display:block;
+  }
+
+  .conclusion{font-size:19px;font-weight:600;line-height:1.35;margin:0 0 6px;}
+  .key-number-row{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:10px 0 14px;}
+  .key-number{font-family:Georgia,serif;font-size:34px;font-weight:700;color:var(--accent-strong);}
+  .key-number-sub{font-size:13px;color:var(--ink-soft);}
+  .fresh-pill-inline{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--stale-bg);background:var(--stale-bg);color:var(--stale);}
+  .state-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:.02em;
+    padding:3px 9px;
+    border-radius:6px;
+    text-transform:uppercase;
+  }
+  .state-tag.limited{background:var(--limited-bg);color:var(--limited);border:1px solid var(--limited-border);}
+  .state-tag.insufficient{background:var(--insufficient-bg);color:var(--insufficient);border:1px solid var(--insufficient-border);}
+  .state-tag.stale{background:var(--stale-bg);color:var(--stale);}
+  .caveat-inline{font-size:13px;color:var(--limited);background:var(--limited-bg);border:1px solid var(--limited-border);border-radius:8px;padding:6px 10px;margin:6px 0 12px;display:inline-block;}
+  .visual-wrap{margin:6px 0 12px;}
+  .visual-caption{font-size:12px;color:var(--ink-faint);margin-top:4px;}
+
+  .subpanel{
+    border-top:1px dashed var(--line);
+    margin-top:14px;
+    padding-top:12px;
+  }
+  .subpanel h4{font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px;}
+  table.mini{width:100%;border-collapse:collapse;font-size:13.5px;}
+  table.mini th{text-align:left;font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.03em;padding:4px 8px;border-bottom:1px solid var(--line);}
+  table.mini td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top;}
+  table.mini tr:last-child td{border-bottom:none;}
+
+  .insight-row{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);}
+  .insight-row:last-child{border-bottom:none;}
+  .sev{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;padding:2px 8px;border-radius:5px;white-space:nowrap;margin-top:1px;}
+  .sev.warning{background:var(--warn-bg);color:var(--warn);}
+  .sev.attention{background:var(--attn-bg);color:var(--attn);}
+  .sev.observation{background:var(--insufficient-bg);color:var(--insufficient);}
+
+  /* ---------- evidence drawer ---------- */
+  details.evidence{margin-top:12px;}
+  details.evidence summary{
+    list-style:none;
+    cursor:pointer;
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--accent-strong);
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  details.evidence summary::-webkit-details-marker{display:none;}
+  details.evidence summary::before{content:"⤷ ";}
+  .evidence-body{
+    margin-top:8px;
+    padding:12px 14px;
+    background:var(--accent-soft);
+    border:1px solid var(--chip-border);
+    border-radius:8px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
+  .evidence-body dl{display:grid;grid-template-columns:140px 1fr;gap:4px 10px;margin:0;}
+  .evidence-body dt{font-weight:700;color:var(--ink);}
+  .evidence-body dd{margin:0;}
+  .evidence-body a{color:var(--accent-strong);font-weight:600;}
+
+  /* ---------- citation chips (AI narrative) ---------- */
+  .ai-narrative{font-size:15.5px;line-height:1.75;}
+  details.chip{display:inline-block;vertical-align:baseline;margin:0 1px;}
+  details.chip summary{
+    list-style:none;
+    display:inline;
+    cursor:pointer;
+    padding:1px 6px;
+    border-radius:5px;
+    background:var(--chip-bg);
+    border:1px solid var(--chip-border);
+    color:var(--accent-strong);
+    font-weight:700;
+    font-variant-numeric:tabular-nums;
+  }
+  details.chip summary::-webkit-details-marker{display:none;}
+  details.chip[open] summary{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .chip-note{
+    display:block;
+    margin:4px 0 6px;
+    padding:8px 10px;
+    background:var(--surface);
+    border:1px solid var(--chip-border);
+    border-radius:8px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    max-width:420px;
+  }
+  .chip-note a{color:var(--accent-strong);font-weight:700;}
+  .selector-text{color:var(--ink-soft);font-style:italic;}
+  .inline-qualifier{color:var(--limited);font-weight:600;}
+
+  .pd0008-note{
+    margin-top:14px;
+    padding:10px 12px;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:8px;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+
+  /* ---------- scenario lab shell ---------- */
+  .scenario-columns{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;}
+  .scenario-col{border-radius:10px;padding:14px;border:1px solid var(--line);}
+  .scenario-col.actual{background:var(--surface);}
+  .scenario-col.hypothetical{background:var(--scenario-bg);border:2px solid var(--scenario);}
+  .scenario-badge{
+    display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    padding:3px 9px;border-radius:6px;margin-bottom:8px;
+  }
+  .scenario-badge.actual{background:var(--accent-soft);color:var(--accent-strong);}
+  .scenario-badge.hypothetical{background:var(--scenario);color:#fff;}
+
+  .placeholder-note{
+    background:var(--surface);
+    border:1px dashed var(--line);
+    border-radius:10px;
+    padding:16px 18px;
+    font-size:13.5px;
+    color:var(--ink-soft);
+  }
+
+  footer.doc-footer{
+    max-width:980px;margin:0 auto;padding:20px;
+    font-size:11.5px;color:var(--ink-faint);border-top:1px solid var(--line);
+  }
+  .accent-a{color:var(--accent-strong);}
+</style>
+</head>
+<body>
+
+  <!-- primary navigation state (no JavaScript; CSS :checked drives all screen/tab switching) -->
+  <input type="radio" name="nav" id="nav-briefing" class="nav-radio" checked>
+  <input type="radio" name="nav" id="nav-portfolio" class="nav-radio">
+  <input type="radio" name="nav" id="nav-analytics" class="nav-radio">
+  <input type="radio" name="nav" id="nav-scenario" class="nav-radio">
+
+  <div class="synthetic-banner">
+    SYNTHETIC DATA &nbsp;·&nbsp; DIRECTION C — "BRIEFING ROOM" &nbsp;·&nbsp; ONE OF THREE COLD, INDEPENDENT DIRECTION PACKAGES
+    &nbsp;·&nbsp; HG1 UNDECIDED &nbsp;·&nbsp; NOT AN APPROVAL, NOT A SELECTION, NOT CP1
+  </div>
+
+  <header class="topbar">
+    <div class="brand">Portfolio Intelligence</div>
+    <nav class="tabs">
+      <label for="nav-briefing">Briefing</label>
+      <label for="nav-portfolio">Portfolio</label>
+      <label for="nav-analytics">Analytics</label>
+      <label for="nav-scenario">Scenario Lab</label>
+    </nav>
+    <div class="header-right">
+      <details class="ask-ai">
+        <summary>Ask your portfolio ▾</summary>
+        <div class="ask-ai-panel">
+          <div style="font-size:12px;color:var(--ink-faint);margin-bottom:8px;">
+            AI Analyst — persistent, contextual. Not a tab; reachable from anywhere except inside a Scenario Lab
+            hypothetical view without the hypothetical marker attached (P8).
+          </div>
+          <div style="font-size:13.5px;">
+            "Ask a follow-up" from any Briefing or Analytics block opens this panel already scoped to that
+            block's topic. Every numeral it states is a citation chip, identical mechanism to Block E below —
+            this header control is the persistent entry point, not a separate design.
+          </div>
+        </div>
+      </details>
+      <span class="settings-icon" title="Portfolio Settings / Policy — reporting currency, accounts, policy. Outside primary navigation by design.">⚙</span>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ================= BRIEFING (Overview) ================= -->
+    <section id="screen-briefing" class="screen">
+      <div class="screen-intro">
+        Representative Overview screen — deliverable 2. Five ranked blocks, one per owner question
+        (a fifth synthesizes). Default order shown is the no-active-warning baseline; see DIRECTION.md §2
+        for the ranking rule.
+      </div>
+
+      <div class="freshness-strip">
+        <span class="fs-label">Freshness</span>
+        <span class="fs-pill live">US equities · LIVE</span>
+        <span class="fs-pill eod">HK equities · END OF DAY</span>
+        <span class="fs-pill eod">Mainland China equities · END OF DAY</span>
+        <span class="fs-pill delayed">USD/HKD FX · DELAYED ~12m</span>
+        <span class="fs-pill delayed">USD/CNY FX · DELAYED ~12m</span>
+        <span class="fs-least">Least fresh: Mainland China equities (end of day) — see per-axis detail</span>
+      </div>
+
+      <!-- Block A — How am I doing -->
+      <div class="block" id="block-a">
+        <input type="radio" name="depth-a" id="depth-a-quick" class="depth-radio" checked>
+        <input type="radio" name="depth-a" id="depth-a-simple" class="depth-radio">
+        <input type="radio" name="depth-a" id="depth-a-investor" class="depth-radio">
+        <input type="radio" name="depth-a" id="depth-a-professional" class="depth-radio">
+        <div class="block-header">
+          <span class="block-kicker">How am I doing?</span>
+          <div class="depth-tabs">
+            <label for="depth-a-quick">Quick</label>
+            <label for="depth-a-simple">Simple</label>
+            <label for="depth-a-investor">Investor</label>
+            <label for="depth-a-professional">Professional</label>
+          </div>
+        </div>
+
+        <div class="key-number-row">
+          <span class="key-number">$1,284,600</span>
+          <span class="fresh-pill-inline">AVAILABLE · FX rates delayed ~12m</span>
+        </div>
+
+        <div class="depth-body">
+          <div class="depth-content" id="content-a-quick">
+            <p class="conclusion">You are ahead of your benchmark this year, by a meaningful margin.</p>
+            <div class="visual-wrap">
+              <svg viewBox="0 0 320 110" width="100%" height="110" role="img" aria-label="Portfolio vs benchmark cumulative return line chart">
+                <polyline points="0,92 40,86 80,90 120,72 160,62 200,52 240,46 280,36 320,26" fill="none" stroke="#0f5c52" stroke-width="3"/>
+                <polyline points="0,92 40,89 80,91 120,82 160,77 200,70 240,64 280,58 320,50" fill="none" stroke="#a9b3ad" stroke-width="2.5" stroke-dasharray="4 3"/>
+                <text x="4" y="12" font-size="9" fill="#0f5c52" font-weight="700">Portfolio +8.4%</text>
+                <text x="4" y="24" font-size="9" fill="#8792a0">Benchmark +6.1%</text>
+              </svg>
+              <div class="visual-caption">Cumulative return, year to date, reporting currency (USD). Not a forecast — historical only (P6).</div>
+            </div>
+          </div>
+
+          <div class="depth-content" id="content-a-simple">
+            <p class="conclusion">Your portfolio gained more than its benchmark so far this year.</p>
+            <p style="color:var(--ink-soft);">Both moved up together for most of the period; the gap widened from roughly midyear onward.
+            This describes what already happened — it does not project what happens next (P6).</p>
+          </div>
+
+          <div class="depth-content" id="content-a-investor">
+            <table class="mini" style="margin-bottom:6px;">
+              <tr><th>Metric</th><th>Value</th><th>Reference</th></tr>
+              <tr><td>Total portfolio value</td><td>$1,284,600</td><td>Reporting currency (USD), as of 2026-09-03 16:00 ET</td></tr>
+              <tr><td>Return, year to date</td><td>+8.4%</td><td>Time-weighted, reporting currency</td></tr>
+              <tr><td>Benchmark return, same period</td><td>+6.1%</td><td>Global 60/40 blended index</td></tr>
+              <tr><td>Gap vs. benchmark</td><td>+2.3 pts</td><td>Same period and method</td></tr>
+            </table>
+            <div class="subpanel">
+              <h4>Expandable key holdings</h4>
+              <table class="mini">
+                <tr><th>Position</th><th>Weight</th><th>State</th></tr>
+                <tr><td>Apple Inc. (AAPL · US)</td><td>18.2%</td><td>Available</td></tr>
+                <tr><td>Tencent Holdings (0700.HK)</td><td>14.6%</td><td><span class="state-tag limited">Limited</span></td></tr>
+                <tr><td>Taiwan Semiconductor ADR (TSM · US-listed, Taiwan-domiciled)</td><td>11.3%</td><td>Available</td></tr>
+                <tr><td>Kweichow Moutai (600519.SS)</td><td>9.8%</td><td><span class="state-tag insufficient">Insufficient data</span></td></tr>
+                <tr><td>AIA Group (1299.HK)</td><td>7.5%</td><td>Available <span class="fresh-pill-inline">stale (EOD)</span></td></tr>
+              </table>
+              <div class="visual-caption">Top 5 by weight — a selector, not a claim (PD-0008). Full ledger: Portfolio → Holdings.
+              Tencent's Limited state and Moutai's Insufficient-data state are unchanged, unelaborated, and un-averaged-away
+              at this depth, per D3.3.</div>
+            </div>
+          </div>
+
+          <div class="depth-content" id="content-a-professional">
+            <p style="color:var(--ink-soft);">Time-weighted return methodology; corporate-action and cash-flow adjusted; FX
+            conversion at transaction-date and period-end spot per methodology registry entry "Portfolio Return" and
+            "Portfolio Valuation" (§33). Known limitation: does not reconcile to a penny against a manual sum of holdings —
+            CP0 computes nothing; figures here are hand-authored synthetic data for this mockup only.</p>
+          </div>
+        </div>
+
+        <details class="evidence">
+          <summary>Evidence &amp; Methodology</summary>
+          <div class="evidence-body">
+            <dl>
+              <dt>Claim</dt><dd>Portfolio return, YTD, reporting currency</dd>
+              <dt>Judgment class</dt><dd>Fact (computed metric, benchmarked)</dd>
+              <dt>Snapshot</dt><dd>portfolio_snapshot_2026-09-03T16:00Z (synthetic)</dd>
+              <dt>Benchmark</dt><dd>Global 60/40 blended index</dd>
+              <dt>Period / frequency</dt><dd>YTD 2026, daily</dd>
+              <dt>Freshness</dt><dd>Prices mixed-live/EOD by market; FX delayed ~12m (see strip above)</dd>
+              <dt>Limitations</dt><dd>No tax effect; no attribution beyond FX/local split shown on Performance</dd>
+            </dl>
+            <p style="margin:8px 0 0;"><a href="#">Open full methodology registry entry →</a> (registry ships empty until CP1+, per D1 surface 11)</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- Block B — What is driving the portfolio -->
+      <div class="block" id="block-b">
+        <input type="radio" name="depth-b" id="depth-b-quick" class="depth-radio" checked>
+        <input type="radio" name="depth-b" id="depth-b-simple" class="depth-radio">
+        <input type="radio" name="depth-b" id="depth-b-investor" class="depth-radio">
+        <input type="radio" name="depth-b" id="depth-b-professional" class="depth-radio">
+        <div class="block-header">
+          <span class="block-kicker">What is driving the portfolio?</span>
+          <div class="depth-tabs">
+            <label for="depth-b-quick">Quick</label>
+            <label for="depth-b-simple">Simple</label>
+            <label for="depth-b-investor">Investor</label>
+            <label for="depth-b-professional">Professional</label>
+          </div>
+        </div>
+
+        <div class="key-number-row">
+          <span class="key-number">52%</span>
+          <span class="key-number-sub">economic exposure to Greater China (31% by listing market alone)</span>
+        </div>
+
+        <div class="depth-body">
+          <div class="depth-content" id="content-b-quick">
+            <p class="conclusion">Your real exposure to Greater China is substantially larger than where your holdings are listed.</p>
+            <div class="visual-wrap">
+              <svg viewBox="0 0 320 60" width="100%" height="60" role="img" aria-label="Listing market versus economic geography exposure bars">
+                <text x="0" y="10" font-size="9" fill="#8792a0">By listing market</text>
+                <rect x="0" y="14" width="173" height="12" fill="#0f5c52"/>
+                <rect x="173" y="14" width="98" height="12" fill="#9c7a2e"/>
+                <rect x="271" y="14" width="49" height="12" fill="#c9c2b2"/>
+                <text x="0" y="42" font-size="9" fill="#8792a0">By economic geography</text>
+                <rect x="0" y="46" width="121" height="12" fill="#0f5c52"/>
+                <rect x="121" y="46" width="166" height="12" fill="#9c7a2e"/>
+                <rect x="287" y="46" width="33" height="12" fill="#c9c2b2"/>
+              </svg>
+              <div class="visual-caption">Teal = United States, gold = Greater China, grey = other/diversified. §10.4 keeps these two views separate — never merged into one number.</div>
+            </div>
+          </div>
+          <div class="depth-content" id="content-b-simple">
+            <p class="conclusion">Where a security is listed is not the same as where its business risk sits.</p>
+            <p style="color:var(--ink-soft);">Several US-listed holdings are economically tied to Greater China (e.g. an ADR of a
+            Taiwan-domiciled company), which is why the economic-geography figure runs well above the listing-market one.</p>
+          </div>
+          <div class="depth-content" id="content-b-investor">
+            <table class="mini">
+              <tr><th>View</th><th>US</th><th>Greater China</th><th>Other</th></tr>
+              <tr><td>By listing market</td><td>54%</td><td>46% (31% HK + 15% Mainland)</td><td>0%</td></tr>
+              <tr><td>By economic geography</td><td>38%</td><td>52%</td><td>10%</td></tr>
+              <tr><td>Asset class</td><td colspan="3">Equities 71% · Fixed income 12% · Cash 17%</td></tr>
+            </table>
+          </div>
+          <div class="depth-content" id="content-b-professional">
+            <p style="color:var(--ink-soft);">Economic-geography classification per §10.4 (issuer domicile / revenue-derived
+            geography), distinct from listing-market classification (§10.3). Sector and currency breakdowns, concentration
+            (HHI, effective N), and the full correlation ladder live on Analytics/Exposure, not duplicated here.</p>
+          </div>
+        </div>
+
+        <details class="evidence">
+          <summary>Evidence &amp; Methodology</summary>
+          <div class="evidence-body">
+            <dl>
+              <dt>Claim</dt><dd>Economic-geography exposure, current snapshot</dd>
+              <dt>Judgment class</dt><dd>Fact (classification + aggregation, not an interpretation)</dd>
+              <dt>Methodology</dt><dd>Listing-vs-economic-geography registry entry (§10.4)</dd>
+              <dt>Snapshot</dt><dd>portfolio_snapshot_2026-09-03T16:00Z (synthetic)</dd>
+            </dl>
+            <p style="margin:8px 0 0;"><a href="#">Open full methodology registry entry →</a></p>
+          </div>
+        </details>
+      </div>
+
+      <!-- Block C — What are the main risks -->
+      <div class="block" id="block-c">
+        <input type="radio" name="depth-c" id="depth-c-quick" class="depth-radio" checked>
+        <input type="radio" name="depth-c" id="depth-c-simple" class="depth-radio">
+        <input type="radio" name="depth-c" id="depth-c-investor" class="depth-radio">
+        <input type="radio" name="depth-c" id="depth-c-professional" class="depth-radio">
+        <div class="block-header">
+          <span class="block-kicker">What are the main risks?</span>
+          <div class="depth-tabs">
+            <label for="depth-c-quick">Quick</label>
+            <label for="depth-c-simple">Simple</label>
+            <label for="depth-c-investor">Investor</label>
+            <label for="depth-c-professional">Professional</label>
+          </div>
+        </div>
+
+        <div class="key-number-row">
+          <span class="key-number">18.4%</span>
+          <span class="key-number-sub">annualized volatility, 90-day window (benchmark: 14.1%)</span>
+        </div>
+
+        <div class="depth-body">
+          <div class="depth-content" id="content-c-quick">
+            <p class="conclusion">Your portfolio has swung in value more than its benchmark recently.</p>
+            <div class="visual-wrap">
+              <svg viewBox="0 0 320 70" width="100%" height="70" role="img" aria-label="Rolling 90-day volatility sparkline, portfolio versus benchmark">
+                <polyline points="0,50 32,42 64,46 96,30 128,36 160,24 192,32 224,18 256,26 288,14 320,20" fill="none" stroke="#8a3b1f" stroke-width="2.5"/>
+                <polyline points="0,52 32,50 64,52 96,46 128,48 160,44 192,46 224,42 256,44 288,40 320,42" fill="none" stroke="#a9b3ad" stroke-width="2" stroke-dasharray="3 3"/>
+              </svg>
+              <div class="visual-caption">Rolling 90-day annualized volatility. Rust = portfolio, grey dashed = benchmark. Full risk detail: Analytics.</div>
+            </div>
+          </div>
+          <div class="depth-content" id="content-c-simple">
+            <p class="conclusion">The portfolio's day-to-day value has moved around more than a typical diversified benchmark, historically.</p>
+            <p style="color:var(--ink-soft);">This is a description of the recent past, not a prediction of future swings (P6).</p>
+          </div>
+          <div class="depth-content" id="content-c-investor">
+            <table class="mini">
+              <tr><th>Metric</th><th>Portfolio</th><th>Benchmark</th></tr>
+              <tr><td>Annualized volatility (90d)</td><td>18.4%</td><td>14.1%</td></tr>
+              <tr><td>Max drawdown (1Y)</td><td>-11.2%</td><td>-8.7%</td></tr>
+              <tr><td>Beta</td><td>1.28 <span class="state-tag limited">Limited</span></td><td>1.00 (ref.)</td></tr>
+            </table>
+          </div>
+          <div class="depth-content" id="content-c-professional">
+            <p style="color:var(--ink-soft);">Full regression, correlation-cluster, and concentration/contribution-to-risk detail —
+            including the Limited beta's sample-size disclosure — lives on the Analytics primary surface, not duplicated here
+            per §26's exclusion of dense risk diagnostics from Overview.</p>
+          </div>
+        </div>
+
+        <details class="evidence">
+          <summary>Evidence &amp; Methodology</summary>
+          <div class="evidence-body">
+            <dl>
+              <dt>Claim</dt><dd>Annualized volatility, 90-day rolling window</dd>
+              <dt>Methodology</dt><dd>Daily returns, annualized via √252, reporting currency</dd>
+              <dt>Benchmark</dt><dd>Global 60/40 blended index, same window</dd>
+            </dl>
+            <p style="margin:8px 0 0;"><a href="#">Open full methodology registry entry →</a></p>
+          </div>
+        </details>
+      </div>
+
+      <!-- Block D — What deserves my attention -->
+      <div class="block" id="block-d">
+        <input type="radio" name="depth-d" id="depth-d-quick" class="depth-radio" checked>
+        <input type="radio" name="depth-d" id="depth-d-simple" class="depth-radio">
+        <input type="radio" name="depth-d" id="depth-d-investor" class="depth-radio">
+        <input type="radio" name="depth-d" id="depth-d-professional" class="depth-radio">
+        <div class="block-header">
+          <span class="block-kicker">What deserves my attention?</span>
+          <div class="depth-tabs">
+            <label for="depth-d-quick">Quick</label>
+            <label for="depth-d-simple">Simple</label>
+            <label for="depth-d-investor">Investor</label>
+            <label for="depth-d-professional">Professional</label>
+          </div>
+        </div>
+
+        <div class="key-number-row">
+          <span class="key-number">2</span>
+          <span class="key-number-sub">items worth a look (1 Warning, 1 Attention)</span>
+        </div>
+
+        <div class="depth-body">
+          <div class="depth-content" id="content-d-quick">
+            <p class="conclusion">Hong Kong technology concentration rose 6 points over the last quarter.</p>
+          </div>
+          <div class="depth-content" id="content-d-simple">
+            <p class="conclusion">Hong Kong technology concentration rose 6 points over the last quarter.</p>
+            <p style="color:var(--ink-soft);">This compares your current sector weight to where it stood a quarter ago — an
+            observation about drift, not an instruction to act (§19, §20.2).</p>
+          </div>
+          <div class="depth-content" id="content-d-investor">
+            <div class="insight-row">
+              <span class="sev warning">Warning</span>
+              <div>
+                <div style="font-weight:600;">Hong Kong technology concentration rose 6 points over the last quarter.</div>
+                <div style="font-size:12px;color:var(--ink-faint);">Interpretation · drift-type (§19) · quarter-over-quarter comparison</div>
+              </div>
+            </div>
+            <div class="insight-row">
+              <span class="sev attention">Attention</span>
+              <div>
+                <div style="font-weight:600;">Kweichow Moutai's cost basis is missing — its unrealized gain/loss cannot be shown.</div>
+                <div style="font-size:12px;color:var(--ink-faint);">Fact · Insufficient data (reason: missing cost basis)</div>
+              </div>
+            </div>
+            <div class="insight-row">
+              <span class="sev observation">Observation</span>
+              <div>
+                <div style="font-weight:600;">Portfolio-to-benchmark correlation decreased slightly this quarter.</div>
+                <div style="font-size:12px;color:var(--ink-faint);">Shown only in "See all insights" — Attention block surfaces top severity items only, per this direction's Briefing/Insights split.</div>
+              </div>
+            </div>
+          </div>
+          <div class="depth-content" id="content-d-professional">
+            <p style="color:var(--ink-soft);">Severity taxonomy (Observation / Attention / Warning) and judgment class
+            (Fact / Interpretation / Preference-dependent judgment) per §20.1–§20.2, unmodified by this direction.
+            "Warning" is a taxonomy label, not an asserted emergency (D1 surface 6).</p>
+          </div>
+        </div>
+
+        <details class="evidence">
+          <summary>Evidence &amp; Methodology</summary>
+          <div class="evidence-body">
+            <dl>
+              <dt>Claim</dt><dd>Sector-concentration drift, Hong Kong technology</dd>
+              <dt>Judgment class</dt><dd>Interpretation</dd>
+              <dt>Comparison basis</dt><dd>Current snapshot vs. snapshot 1 quarter prior</dd>
+            </dl>
+            <p style="margin:8px 0 0;"><a href="#">Open Proof Packet →</a></p>
+          </div>
+        </details>
+      </div>
+
+      <!-- Block E — AI Portfolio Brief -->
+      <div class="block" id="block-e" style="border-color:var(--accent);">
+        <div class="block-header">
+          <span class="block-kicker">AI Portfolio Brief</span>
+          <span style="font-size:11.5px;color:var(--ink-faint);">Composed narrative — every number below is a citation, not an AI estimate</span>
+        </div>
+
+        <p class="ai-narrative">
+          This year your portfolio returned
+          <details class="chip"><summary>+8.4%</summary><span class="chip-note">Portfolio Return — time-weighted, reporting currency (USD), YTD as of 2026-09-03. <a href="#">Evidence →</a></span></details>,
+          ahead of its benchmark by
+          <details class="chip"><summary>+2.3 pts</summary><span class="chip-note">Portfolio Return vs. Benchmark (Global 60/40) — same period, same method. <a href="#">Evidence →</a></span></details>,
+          driven mainly by
+          <details class="chip"><summary>Hong Kong technology</summary><span class="chip-note">Contribution-to-Return — top single-sector contributor, YTD, reporting currency. This is a falsifiable attribution claim, not a bare selector (PD-0008) — see the note below. <a href="#">Evidence →</a></span></details>
+          holdings. Its historical sensitivity to the market is elevated at
+          <details class="chip"><summary>beta 1.28</summary><span class="chip-note">Regression beta vs. benchmark, trailing 24 monthly observations (36 preferred). <a href="#">Evidence →</a></span></details>
+          <span class="inline-qualifier">(short sample — 24 monthly observations, below the 36 preferred)</span>,
+          and volatility has run at
+          <details class="chip"><summary>18.4%</summary><span class="chip-note">Annualized volatility, 90-day rolling window, reporting currency. <a href="#">Evidence →</a></span></details>
+          against the benchmark's
+          <details class="chip"><summary>14.1%</summary><span class="chip-note">Same window and method, applied to the benchmark. <a href="#">Evidence →</a></span></details>.
+          By economic geography your largest exposure is
+          <details class="chip"><summary>Greater China at 52%</summary><span class="chip-note">Economic-geography exposure, current snapshot (§10.4). <a href="#">Evidence →</a></span></details>
+          — noticeably more concentrated than the
+          <details class="chip"><summary>31%</summary><span class="chip-note">Listing-market exposure, Hong Kong + Mainland China listings, current snapshot (§10.3). <a href="#">Evidence →</a></span></details>
+          figure by listing market alone would suggest. The item most worth your attention this week:
+          <details class="chip"><summary>Hong Kong technology concentration rose 6 points</summary><span class="chip-note">Sector-concentration drift Insight, quarter-over-quarter comparison (§19). Same claim as Block D's headline — not re-derived. <a href="#">Evidence →</a></span></details>
+          over the last quarter.
+        </p>
+
+        <div class="pd0008-note">
+          <strong>Reading this block:</strong> boxed, clickable terms are citation chips — each opens the exact deterministic
+          source behind that number or attribution. Plain, non-boxed connective words ("driven mainly by," "the item most
+          worth your attention this week") are the AI's own framing language. Compare: a phrase like "your top 3 holdings"
+          would be a <span class="selector-text">plain-text selector</span> (an ordering rule, asserting nothing falsifiable
+          about the portfolio) and correctly carries no chip — unlike "driven mainly by Hong Kong technology," which asserts
+          a computed attribution and must. The beta clause shows the rule this direction adds: a caveat attached to a chip's
+          claim (here, Limited/short-sample) must appear as visible inline text next to the chip, not only inside its
+          pop-out — a caveat must survive into the headline, not just the detail.
+        </div>
+
+        <details class="evidence" style="margin-top:14px;">
+          <summary>Ask a follow-up (opens full AI Analyst panel, scoped to this brief)</summary>
+          <div class="evidence-body">
+            This is the same slide-over panel reachable from the header "Ask your portfolio" control, opened here
+            pre-scoped to this brief's topic. Full conversational surface, per D1 surface 8 — not built out further in
+            this mockup; see DIRECTION.md §4 for the interaction design.
+          </div>
+        </details>
+      </div>
+
+    </section>
+
+    <!-- ================= PORTFOLIO (shell only) ================= -->
+    <section id="screen-portfolio" class="screen">
+      <div class="screen-intro">
+        Portfolio — secondary navigation shell only. Not one of this package's two required
+        representative screens (Briefing and Analytics were chosen — see DIRECTION.md §3 for why Analytics
+        was picked over Portfolio). Shown here only so the navigation model is visible, per the owner's
+        "not three complete implementations" instruction.
+      </div>
+      <div class="placeholder-note">
+        <strong>Secondary tabs (not built out):</strong> Holdings · Performance · Exposure · Transactions.
+        <br><br>
+        Holdings would render the full ledger-derived position table (D1 surface 2), reached directly here or
+        via Briefing Block A's "expandable key holdings" panel, which is a Quick-depth rendering of the same
+        claim objects, not a separate table. Performance and Exposure are, likewise, the full-depth homes for
+        Briefing Blocks A and B respectively. Transactions carries its own narrow D4 control on the
+        FX-converted amount only, per D1's own text — unchanged by this direction.
+      </div>
+    </section>
+
+    <!-- ================= ANALYTICS (Risk & Analytics) ================= -->
+    <section id="screen-analytics" class="screen">
+      <div class="screen-intro">
+        Representative Portfolio/Analytics screen — deliverable 3. Risk &amp; Analytics in full, same
+        block grammar as Briefing, denser and defaulting to Investor depth rather than Quick.
+      </div>
+
+      <!-- Volatility -->
+      <div class="block" id="block-vo">
+        <input type="radio" name="depth-vo" id="depth-vo-quick" class="depth-radio">
+        <input type="radio" name="depth-vo" id="depth-vo-simple" class="depth-radio">
+        <input type="radio" name="depth-vo" id="depth-vo-investor" class="depth-radio" checked>
+        <input type="radio" name="depth-vo" id="depth-vo-professional" class="depth-radio">
+        <div class="block-header">
+          <span class="block-kicker">Volatility</span>
+          <div class="depth-tabs">
+            <label for="depth-vo-quick">Quick</label>
+            <label for="depth-vo-simple">Simple</label>
+            <label for="depth-vo-investor">Investor</label>
+            <label for="depth-vo-professional">Professional</label>
+          </div>
+        </div>
+        <div class="depth-body">
+          <div class="depth-content" id="content-vo-quick">
+            <p class="conclusion">Portfolio risk has run above the benchmark this year.</p>
+          </div>
+          <div class="depth-content" id="content-vo-simple">
+            <p class="conclusion">Portfolio risk has run above the benchmark this year.</p>
+            <p style="color:var(--ink-soft);">Your holdings have swung in value more than the benchmark over the past 90 days —
+            historically less steady in this window, not necessarily going forward (P6).</p>
+          </div>
+          <div class="depth-content" id="content-vo-investor">
+            <div class="key-number-row">
+              <span class="key-number" style="font-size:28px;">18.4%</span>
+              <span class="key-number-sub">annualized, 90-day window (benchmark: 14.1%)</span>
+            </div>
+            <div class="visual-wrap">
+              <svg viewBox="0 0 320 70" width="100%" height="70" role="img" aria-label="Rolling 90-day volatility, portfolio versus benchmark">
+                <polyline points="0,50 32,42 64,46 96,30 128,36 160,24 192,32 224,18 256,26 288,14 320,20" fill="none" stroke="#8a3b1f" stroke-width="2.5"/>
+                <polyline points="0,52 32,50 64,52 96,46 128,48 160,44 192,46 224,42 256,44 288,40 320,42" fill="none" stroke="#a9b3ad" stroke-width="2" stroke-dasharray="3 3"/>
+              </svg>
+              <div class="visual-caption">Rust = portfolio, grey dashed = benchmark (Global 60/40).</div>
+            </div>
+          </div>
+          <div class="depth-content" id="content-vo-professional">
+            <p style="color:var(--ink-soft);">90 trading days, daily returns, annualized via √252. Benchmark: Global 60/40
+            blended index, same window. Known limitation: HK/China market closures reduce same-day overlapping observations
+            relative to a US-only portfolio.</p>
+          </div>
+        </div>
+        <details class="evidence">
+          <summary>Evidence &amp; Methodology</summary>
+          <div class="evidence-body">
+            <dl><dt>Claim</dt><dd>Annualized volatility, 90-day rolling</dd><dt>State</dt><dd>Available</dd></dl>
+            <p style="margin:8px 0 0;"><a href="#">Open full methodology registry entry →</a></p>
+          </div>
+        </details>
+      </div>
+
+      <!-- Beta (LIMITED) -->
+      <div class="block" id="block-be">
+        <input type="radio" name="depth-be" id="depth-be-quick" class="depth-radio">
+        <input type="radio" name="depth-be" id="depth-be-simple" class="depth-radio">
+        <input type="radio" name="depth-be" id="depth-be-investor" class="depth-radio" checked>
+        <input type="radio" name="depth-be" id="depth-be-professional" class="depth-radio">
+        <div class="block-header">
+          <span class="block-kicker">Beta</span>
+          <div class="depth-tabs">
+            <label for="depth-be-quick">Quick</label>
+            <label for="depth-be-simple">Simple</label>
+            <label for="depth-be-investor">Investor</label>
+            <label for="depth-be-professional">Professional</label>
+          </div>
+        </div>
+        <div class="depth-body">
+          <div class="depth-content" id="content-be-quick">
+            <p class="conclusion">Your portfolio has historically moved more than the market.</p>
+            <span class="state-tag limited">Limited — short sample</span>
+          </div>
+          <div class="depth-content" id="content-be-simple">
+            <p class="conclusion">Your portfolio has historically moved more than the market.</p>
+            <span class="caveat-inline">Limited: based on 24 monthly observations, fewer than the 36 preferred — direction and rough size are usable, precision is reduced.</span>
+            <p style="color:var(--ink-soft);">It tends to move in the same direction as the benchmark, and historically amplified
+            benchmark moves by roughly this factor over this specific period — not a guarantee going forward.</p>
+          </div>
+          <div class="depth-content" id="content-be-investor">
+            <div class="key-number-row">
+              <span class="key-number" style="font-size:28px;">1.28</span>
+              <span class="state-tag limited">Limited</span>
+              <span class="key-number-sub">vs. Global 60/40, monthly frequency, trailing 24 months</span>
+            </div>
+            <span class="caveat-inline">24 monthly observations available; 36 preferred minimum. Not suppressed — usable with reduced precision (PD-0007: Limited carries a value).</span>
+          </div>
+          <div class="depth-content" id="content-be-professional">
+            <table class="mini">
+              <tr><th>Field</th><th>Value</th></tr>
+              <tr><td>R²</td><td>0.61</td></tr>
+              <tr><td>Observations</td><td>24 (36 preferred minimum)</td></tr>
+              <tr><td>Frequency / window</td><td>Monthly, trailing 24 months</td></tr>
+              <tr><td>Benchmark</td><td>Global 60/40 blended index</td></tr>
+              <tr><td>FX treatment</td><td>Reporting-currency returns</td></tr>
+              <tr><td>Known limitation</td><td>Sample below preferred minimum — sign/rough magnitude usable, precision reduced</td></tr>
+            </table>
+          </div>
+        </div>
+        <details class="evidence">
+          <summary>Evidence &amp; Methodology</summary>
+          <div class="evidence-body">
+            <dl>
+              <dt>Claim</dt><dd>Beta vs. benchmark, trailing 24 months</dd>
+              <dt>State</dt><dd>Limited (reason: thin sample)</dd>
+              <dt>Structural rule</dt><dd>Same non-numeric treatment at every depth (D3.3) — the Limited tag above appears identically at Quick and Professional, compressed only in wording.</dd>
+            </dl>
+            <p style="margin:8px 0 0;"><a href="#">Open full methodology registry entry →</a></p>
+          </div>
+        </details>
+      </div>
+
+      <!-- Correlation / cluster -->
+      <div class="block" id="block-cr">
+        <input type="radio" name="depth-cr" id="depth-cr-quick" class="depth-radio">
+        <input type="radio" name="depth-cr" id="depth-cr-simple" class="depth-radio">
+        <input type="radio" name="depth-cr" id="depth-cr-investor" class="depth-radio" checked>
+        <input type="radio" name="depth-cr" id="depth-cr-professional" class="depth-radio">
+        <div class="block-header">
+          <span class="block-kicker">Correlation &amp; clusters</span>
+          <div class="depth-tabs">
+            <label for="depth-cr-quick">Quick</label>
+            <label for="depth-cr-simple">Simple</label>
+            <label for="depth-cr-investor">Investor</label>
+            <label for="depth-cr-professional">Professional</label>
+          </div>
+        </div>
+        <div class="depth-body">
+          <div class="depth-content" id="content-cr-quick">
+            <p class="conclusion">Your Hong Kong technology holdings have historically moved together, strongly, over this period.</p>
+          </div>
+          <div class="depth-content" id="content-cr-simple">
+            <p class="conclusion">Your Hong Kong technology holdings have historically moved together, strongly, over this period.</p>
+            <p style="color:var(--ink-soft);">Strong but not perfect co-movement, historically — diversification benefit among
+            these specific holdings is reduced, not eliminated. Not a claim about how often returns share direction.</p>
+          </div>
+          <div class="depth-content" id="content-cr-investor">
+            <p style="margin:0 0 8px;">Cluster interpretation: Tencent, AIA Group, and a Hong Kong-listed semiconductor holding
+            form a cluster averaging <strong>0.80</strong> pairwise correlation, 24-month monthly window — the conclusion
+            precedes the raw pairwise number per §18.2's own ladder.</p>
+          </div>
+          <div class="depth-content" id="content-cr-professional">
+            <div class="visual-wrap">
+              <svg viewBox="0 0 220 220" width="220" height="220" role="img" aria-label="Correlation heatmap, four holdings">
+                <text x="70" y="14" font-size="8" fill="#4b5563">Correlation, 24mo monthly</text>
+                <!-- row labels -->
+                <text x="4" y="52" font-size="8" fill="#4b5563">Tencent</text>
+                <text x="4" y="92" font-size="8" fill="#4b5563">AIA Grp</text>
+                <text x="4" y="132" font-size="8" fill="#4b5563">HK Semi</text>
+                <text x="4" y="172" font-size="8" fill="#4b5563">Apple</text>
+                <!-- column labels -->
+                <g font-size="8" fill="#4b5563">
+                  <text x="60" y="34" transform="rotate(-40 60 34)">Tencent</text>
+                  <text x="100" y="34" transform="rotate(-40 100 34)">AIA Grp</text>
+                  <text x="140" y="34" transform="rotate(-40 140 34)">HK Semi</text>
+                  <text x="180" y="34" transform="rotate(-40 180 34)">Apple</text>
+                </g>
+                <!-- grid: 4x4 cells, 36px each starting x=45,y=40 -->
+                <rect x="45" y="40" width="34" height="34" fill="#0f5c52"/>
+                <rect x="81" y="40" width="34" height="34" fill="#0f5c52" fill-opacity="0.8"/>
+                <rect x="117" y="40" width="34" height="34" fill="#0f5c52" fill-opacity="0.78"/>
+                <rect x="153" y="40" width="34" height="34" fill="#0f5c52" fill-opacity="0.25"/>
+
+                <rect x="45" y="76" width="34" height="34" fill="#0f5c52" fill-opacity="0.8"/>
+                <rect x="81" y="76" width="34" height="34" fill="#0f5c52"/>
+                <rect x="117" y="76" width="34" height="34" fill="#0f5c52" fill-opacity="0.74"/>
+                <rect x="153" y="76" width="34" height="34" fill="#0f5c52" fill-opacity="0.22"/>
+
+                <rect x="45" y="112" width="34" height="34" fill="#0f5c52" fill-opacity="0.78"/>
+                <rect x="81" y="112" width="34" height="34" fill="#0f5c52" fill-opacity="0.74"/>
+                <rect x="117" y="112" width="34" height="34" fill="#0f5c52"/>
+                <rect x="153" y="112" width="34" height="34" fill="#0f5c52" fill-opacity="0.20"/>
+
+                <rect x="45" y="148" width="34" height="34" fill="#0f5c52" fill-opacity="0.25"/>
+                <rect x="81" y="148" width="34" height="34" fill="#0f5c52" fill-opacity="0.22"/>
+                <rect x="117" y="148" width="34" height="34" fill="#0f5c52" fill-opacity="0.20"/>
+                <rect x="153" y="148" width="34" height="34" fill="#0f5c52"/>
+              </svg>
+              <div class="visual-caption">Darker = stronger positive correlation. Apple's low correlation to the HK-tech
+              cluster (light cells) is shown for contrast, not asserted as diversification advice.</div>
+            </div>
+          </div>
+        </div>
+        <details class="evidence">
+          <summary>Evidence &amp; Methodology</summary>
+          <div class="evidence-body">
+            <dl><dt>Claim</dt><dd>Pairwise/cluster correlation, 24-month monthly window</dd><dt>State</dt><dd>Available</dd></dl>
+            <p style="margin:8px 0 0;"><a href="#">Open full methodology registry entry →</a></p>
+          </div>
+        </details>
+      </div>
+
+      <!-- Concentration & contribution to risk (INSUFFICIENT_DATA example) -->
+      <div class="block" id="block-cn">
+        <input type="radio" name="depth-cn" id="depth-cn-quick" class="depth-radio">
+        <input type="radio" name="depth-cn" id="depth-cn-simple" class="depth-radio">
+        <input type="radio" name="depth-cn" id="depth-cn-investor" class="depth-radio" checked>
+        <input type="radio" name="depth-cn" id="depth-cn-professional" class="depth-radio">
+        <div class="block-header">
+          <span class="block-kicker">Concentration &amp; contribution to risk</span>
+          <div class="depth-tabs">
+            <label for="depth-cn-quick">Quick</label>
+            <label for="depth-cn-simple">Simple</label>
+            <label for="depth-cn-investor">Investor</label>
+            <label for="depth-cn-professional">Professional</label>
+          </div>
+        </div>
+        <div class="depth-body">
+          <div class="depth-content" id="content-cn-quick">
+            <p class="conclusion">A small number of positions account for most of your portfolio's risk.</p>
+          </div>
+          <div class="depth-content" id="content-cn-simple">
+            <p class="conclusion">A small number of positions account for most of your portfolio's risk.</p>
+            <p style="color:var(--ink-soft);">Your top 5 holdings make up more than three-fifths of total value, so a move in
+            any one of them has an outsized effect on the whole portfolio.</p>
+          </div>
+          <div class="depth-content" id="content-cn-investor">
+            <div class="visual-wrap">
+              <svg viewBox="0 0 320 26" width="100%" height="26" role="img" aria-label="Top 5 holdings versus remaining portfolio, share of value">
+                <rect x="0" y="4" width="195" height="18" fill="#0f5c52"/>
+                <rect x="195" y="4" width="125" height="18" fill="#c9c2b2"/>
+                <text x="8" y="17" font-size="10" fill="#fff" font-weight="700">Top 5 · 61%</text>
+                <text x="203" y="17" font-size="10" fill="#4b5563">Remaining · 39%</text>
+              </svg>
+            </div>
+            <table class="mini" style="margin-top:8px;">
+              <tr><th>Metric</th><th>Value</th></tr>
+              <tr><td>Top-5 concentration</td><td>61% of portfolio value</td></tr>
+              <tr><td>Effective N</td><td>≈ 6.4 positions</td></tr>
+              <tr><td>HHI</td><td>0.14</td></tr>
+              <tr>
+                <td>Sortino ratio</td>
+                <td><span class="state-tag insufficient">Insufficient data</span></td>
+              </tr>
+            </table>
+            <div class="visual-caption">Sortino ratio: insufficient data. Reason: fewer than the minimum required
+            downside-return observations (19 available, 36 required). No numeric glyph rendered — not "0", not a blank
+            cell, not a dash standing alone (D3.2).</div>
+          </div>
+          <div class="depth-content" id="content-cn-professional">
+            <p style="color:var(--ink-soft);">HHI and effective-N per concentration methodology registry entry. Sortino
+            ratio requires a minimum count of negative-return observations to be considered statistically meaningful;
+            this portfolio's downside-observation count (19) is below that minimum (36) over the available history —
+            rendered as Insufficient data per §32/D3.2, not as zero or a fabricated approximation.</p>
+          </div>
+        </div>
+        <details class="evidence">
+          <summary>Evidence &amp; Methodology</summary>
+          <div class="evidence-body">
+            <dl>
+              <dt>Claim</dt><dd>Top-5 concentration, HHI, effective N</dd>
+              <dt>Second claim (Sortino)</dt><dd>State: Insufficient data — reason: below minimum downside-observation count</dd>
+            </dl>
+            <p style="margin:8px 0 0;"><a href="#">Open full methodology registry entry →</a></p>
+          </div>
+        </details>
+      </div>
+
+    </section>
+
+    <!-- ================= SCENARIO LAB (shell only) ================= -->
+    <section id="screen-scenario" class="screen">
+      <div class="screen-intro">
+        Scenario Lab — structural shell only, showing the persistent Actual/Scenario separation this
+        direction inherits unmodified from D1 surface 7 and the cross-cutting P8 mechanism. Not a full
+        representative screen for this package.
+      </div>
+      <div class="scenario-columns">
+        <div class="scenario-col actual">
+          <span class="scenario-badge actual">Actual</span>
+          <table class="mini">
+            <tr><th>Metric</th><th>Value</th></tr>
+            <tr><td>Volatility (90d)</td><td>18.4%</td></tr>
+            <tr><td>Greater China exposure</td><td>52%</td></tr>
+            <tr><td>Top-5 concentration</td><td>61%</td></tr>
+          </table>
+        </div>
+        <div class="scenario-col hypothetical">
+          <span class="scenario-badge hypothetical">Scenario — hypothetical, not a holding</span>
+          <table class="mini">
+            <tr><th>Metric</th><th>Value</th></tr>
+            <tr><td>Volatility (90d)</td><td>15.9%</td></tr>
+            <tr><td>Greater China exposure</td><td>41%</td></tr>
+            <tr><td>Top-5 concentration</td><td>48%</td></tr>
+          </table>
+          <div class="visual-caption">Modeled: reduce Tencent weight by 6pts, add cash. Evidence control on this column
+          opens the same methodology as Actual, plus a Proof Packet listing exactly which inputs were user-modified
+          (D1 surface 7's own rule, unchanged here).</div>
+        </div>
+      </div>
+      <div class="placeholder-note" style="margin-top:16px;">
+        Construction controls, the full current-vs-scenario metric set (§24.3), and per-column Evidence controls are
+        specified in D1 surface 7 and inherited unmodified by this direction — not rebuilt here. This shell exists
+        only to make the P8 separation visible in the navigation model, per the owner's "not three complete
+        implementations" instruction. Neither Overview/Briefing nor Portfolio, in this mockup, contains any
+        Scenario-typed value — confirmed by inspection of both sections above.
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="doc-footer">
+    Direction C — "Briefing Room." Static mockup, zero JavaScript, zero network dependencies, zero external
+    fonts/assets. All interactivity is native HTML (<code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code>)
+    and CSS (<code>:checked</code> radio-sibling selectors) only. Synthetic data, hand-authored, not
+    reconciled to the cent. Source: <code>designs/hg1-revision/direction-c/</code>. Not an approval; HG1
+    remains undecided. See <code>DIRECTION.md</code> in this same directory for the full nine-deliverable
+    package this mockup accompanies, including strengths, weaknesses, and the verification note (this file
+    was not loaded in a browser prior to handoff).
+  </footer>
+
+</body>
+</html>

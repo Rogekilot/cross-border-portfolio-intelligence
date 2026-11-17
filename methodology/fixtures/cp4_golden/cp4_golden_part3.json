@@ -1,0 +1,3440 @@
+{
+ "fixture_id": "cp4_golden/1.9-part3",
+ "part": 3,
+ "scope": "risk/1.4, part 3: (1.2) the selection log with REVERSAL and correction records; a flat benchmark; a LAGGED date inside a statistic's window; stale FX on the benchmark leg only; two sources for one benchmark (agreement, disagreement, a gap filled by the second source); ETF proxies (corroborated, single-source and disputed dividends); DAILY and MONTHLY benchmark statistics; Current mode (D_c(t), a benchmark level and fixing not yet available at t, against the historical twin); account scope (an internal transfer as a flow); snapshot portfolios (NOT_RECONSTRUCTABLE, history from S); zero-capital periods; split suppression and its recorded twin; the PD-0040 default view.",
+ "change_notes": [
+  "1.9-part3 (2026-10-03, risk/1.9 and market-data/1.14; review finding CP4F-13 and the engineer's paid_amount field): (1) declared precision for every multi-source series: official_decimals and precision_decimals on both SYN4_BM_US_TR2 sources, precision_decimals on SYN33's second price source; new two-source benchmarks SYN4_BM_US_TR5 (a coarser declared source) and SYN4_BM_US_TR4 (precision undeclared); R4 selection seqs 2 and 3; R4-S4 and R4-S6. (2) A one-sided issuer payment (market-data Ruling 4.5 (1.14)): SYN35's CNY 3.25 dividend ex 2026-02-02, with the feed alone stating USD 0.44; R5-E10. (3) Review finding CP4F-15 (the paid fields when the declared dividend is corroborated): SYN35's CNY 3.25 dividend ex 2026-03-02 with the FILING alone stating USD 0.43 (R5-E11: used as stated, whichever side states it) and ex 2026-03-16 with FEED 0.46 against FILING 0.47 (R5-E12: a DISAGREEMENT, SOURCE_CONFLICT). R5-E10 alone could pass with the first statement's paid fields kept, because the FEED is listed first. Mutations M-C43 to M-C46. No 1.8-part3 value, state, reason or detail changes; R5-E9 (3 items) gains the bite M-C21, since the disputed 2026-03-16 dividend of the same proxy would suppress the whole series under that mutation. (4) DERIVATION-TOOL DEFECT CORRECTED: R10-S1's MAX_AVAILABLE beta now carries max_available_start INCEPTION in its effective_window. Risk Ruling 2.3 requires that lineage on every MAX_AVAILABLE result; the part-2 calculator, which part 3 reuses for benchmark-relative kinds, dropped it, and 1.0-part3 to 1.8-part3 recorded the omission. Its value, state and window are unchanged. Minimums risk/1.9, market-data/1.14; 107 items.",
+  "1.8-part3 (2026-10-03, risk/1.8; review finding CP4F-12): a proxy dividend declared in another currency (Ruling 5.5 (1.8)). New ETF SYN35 (USD) with three CNY-declared dividends (one converted at a fresh ex-date fixing, one at a 2-fixings-stale one, one with the issuer's stated USD payment), new benchmark SYN4_BM_ETF_PROXY_FX, R5 selection seq 5; R5-E9 (3 items); mutations M-C38 to M-C42. Corporate-action records may carry paid_currency and paid_amount (market-data Ruling 7.1). No 1.7-part3 item changes. Minimum risk/1.8; 101 items.",
+  "1.7-part3 (2026-10-03, risk/1.7; tech plan 17.23 decision 1): the identity of a dividend across sources for an ETF proxy (Ruling 5.5 (1.7)). New ETF SYN34 with four one-sided dividend statements, new benchmark SYN4_BM_ETF_PROXY_ID, R5 selection seq 4; R5-E7 (two statements 2 sessions apart that share no date: one disputed dividend, the chain breaks at both ex-dates) and R5-E8 (two statements far apart: two dividends, both applied); mutations M-C36, M-C37. No 1.6-part3 item changes. Minimum risk/1.7; 98 items.",
+  "1.6-part3 (2026-10-03, risk/1.6; final CP4 review findings CP4F-5 and CP4F-10): (1) ETF proxy disagreements (Ruling 5.5 (1.6)): new ETF SYN33 with a second price source disagreeing on Wednesday 2025-08-06 and Friday 2026-01-09, new benchmark SYN4_BM_ETF_PROXY_PX, R5 selection record seq 3; R5-E4 (a window after the disputed SYN32 dividend's ex-date: AVAILABLE), R5-E5 (a disputed interior print: linked around, AVAILABLE), R5-E6 (a disputed print at g_n: SOURCE_CONFLICT). (2) R11-V1: the default view of an active return refused by its portfolio leg falls back (Ruling 7.7 (1.6)). Mutations M-C32 to M-C35. No 1.5-part3 item changes (R5-E2 and R5-E3 hold under the new break rule). Minimum risk/1.6; 95 items.",
+  "1.5-part3 (2026-10-03, risk/1.5; the CP4 exit matrix's open finding): R9-Z3 (3 items): the active return over a window containing a ZERO_CAPITAL_PERIOD is INSUFFICIENT_DATA, detail ZERO_CAPITAL_PERIOD (Ruling 6.9 (1.5)), with the benchmark return over the same window and an active return after the gap as controls; R6-W0 (2 items): a refused window with no selection keeps the window-independent MISSING_BENCHMARK cause (Ruling 7.3 (1.5)); mutations M-C30, M-C31. Minimum risk/1.5. No 1.4-part3 item changes; 88 items.",
+  "1.4-part3 (2026-10-03, market-data/1.13 Ruling 0.1 (1.13); review finding CP4M-10): release cases RB-6 to RB-9 and mutations M-R5 to M-R7 for the two refusals now stated: a file of a segmented series holding a row outside its declared coverage (REFUSED_ROW_OUTSIDE_COVERAGE; RB-6 the 06-13 backfill smuggled into V2, RB-7 a row before V3's start, RB-9 a row in a hole, which the hull would admit) and a file whose coverage cannot be stated (REFUSED_COVERAGE_UNDETERMINED, RB-8). Minimum market-data/1.13. No item changes; 83 items, 9 release cases.",
+  "1.3-part3 (2026-10-02, market-data/1.12 Ruling 0.1 (1.12)): (1) market_data.retrieval now states that each vintage's rows range is the file's declared COVERAGE interval, that the three vintages are SEGMENTS of one series (disjoint coverage, one identity, a vintage-stable kind), and that no vintage label goes into any identity field (adjustment_anchor stays null for these raw and as-published series). (2) New block release_cases RB-1 to RB-5 (the release-build outcome of five file sets on SYN42) with mutations M-R1 to M-R3, checked by the calculator's --release. Minimum market-data/1.12. No item of 1.2-part3 changes; 83 items.",
+  "1.2-part3 (2026-10-02, risk/1.4 Ruling 5.6 (1.4); review finding CP4M-4): NEW PORTFOLIO R13 with a selection log of ten records (SELECT, CLEAR, REVERSAL, and two correction pairs) and seven assertions at versions 2, 3, 4, 5, 7, 8 and 10 (13 items); the new item kind selection_resolution; the selection-log record fields record_type, reverses_selection_id, corrects_selection_id and atomic_with_seq; mutations M-C25 to M-C29. Minimum risk/1.4. No 1.1-part3 item changes. 83 items.",
+  "1.1-part3 (2026-10-02, performance Ruling 11.6 / risk Ruling 11.4): (1) INPUT ERROR CORRECTED. 1.0 declared every file retrieved at 2022-11-30T00:00:00Z, before all its rows; under market-data Ruling 3.1's after-retrieval test every series is then contradicted and every valuation is MISSING_PRICE_HISTORY. That was my error, not intended. market_data.retrieval now declares three vintages per series (V1 rows to 2026-01-08, V2 the rows of 2026-01-09 each retrieved at its own availability instant, V3 the rest), so that every file is retrieved after its rows exist and, at both Current-mode instants, M_t holds exactly the rows due at t. No expected value changes: the 1.0 values already assumed that M_t (verified by the new --retrieval check). A single file per series retrieved after its last session (the engineer's kit) is refused by --retrieval too: M_t would then be empty at 2026-01-09 and R7-C1 and R7-C2 would fail. (2) NEW ASSERTION R2-L2 (3 items) and mutation M-C24: the item that separates the two readings of which causes give the reason (risk Ruling 7.3 (1.3)). (3) Minimum risk/1.3 (no 1.0-part3 value, state, reason or detail changes under it). 70 items.",
+  "1.0-part3 (2026-10-02): first issue, authored and ratified by quant-analyst. Expected values are hand-derived (CP4_GOLDEN_PART3_DERIVATION.md) and re-derived from this file's inputs by derivation/cp4_part3_calculator.py (standard library only; reuses the part-2 and part-1 calculators; imports nothing from src/). Every item names the mutations that must fail it; --mutations verifies each changes exactly those items. No value comes from the engine. convention_sets are MINIMUM versions (risk Ruling 11.4)."
+ ],
+ "convention_sets": {
+  "risk": "risk/1.9",
+  "performance": "performance/1.12",
+  "market_data": "market-data/1.14",
+  "ledger_replay": "ledger-replay/1.5 (FIFO/1 mode)",
+  "minor_units": "minor-units/1.1",
+  "lot_relief": "FIFO/1 (no assertion in part 3 depends on it)"
+ },
+ "authored_by": "quant-analyst (independent derivation; see CP4_GOLDEN_PART3_DERIVATION.md)",
+ "authored_on": "2026-10-02",
+ "format": {
+  "inherits": "Every rule of cp4_golden parts 1 and 2 'format' applies (including benchmark_expected, comparability, v_beta, decomposition_view, bites).",
+  "valuation_mode": "Assertion level. Absent = historical mode with 'as_of'. 'CURRENT' with 'instant' t (UTC): the engine resolves the as-of date D_c(t) by performance Ruling 1.7 (1.12); each item asserts it as 'as_of_resolved'. Risk Ruling 5.8 (1.2) governs the benchmark, its fixing and the risk-free quote at t.",
+  "scope": "Item level. Absent = the portfolio. {kind: ACCOUNT, account_id}: the account scope of risk Ruling 0.1 (internal transfers are flows of the account); benchmark-dependent items use the portfolio's selection.",
+  "default_view": "Kind 'default_view' (risk Ruling 7.7 (1.2), PD-0040): a SERVICE-LEVEL composition, not a metric. Input: metric, frequency, default_request. Output: 'fallback' (true when the default request was refused for history and MAX_AVAILABLE is shown), 'refused' (the default request's result summary when it fell back, else null), 'shown' (the summary of what the view shows: request, requested_base, effective_window, state, reason, value, exact, exact_square, sign, details_include). The engine exposes the composition as one function; the two underlying results are ordinary metric results and reproduce on their own.",
+  "kinds": {"default_view": "Ruling 7.7 (1.2)", "selection_resolution": "(1.2-part3) Ruling 5.6 (1.4)", "others": "as parts 1 and 2"},
+  "benchmark_selections": "(1.2-part3) As part 2, plus per record: record_type SELECT | CLEAR | REVERSAL (absent = SELECT when benchmark_id is set, else CLEAR); reverses_selection_id (REVERSAL); corrects_selection_id (the replacement of a correction pair); atomic_with_seq (the two records of a correction pair are appended in ONE transaction, migration 0015).",
+  "selection_resolution": "(1.2-part3) Item kind. Asserts the resolution of the pinned selection-log version alone: selection {state NONE | CLEARED | IN_FORCE | REFUSED, selection_id, seq, benchmark_id} of the record in force (risk Ruling 5.6 (1.4)). REFUSED: the version cuts a correction pair, so it cannot be pinned (the engine's refusal, whatever its error type).",
+  "synthetic": "Every result computed for this fixture is synthetic (market-data Ruling 4.8)."
+ },
+ "mutation_catalog": {
+  "M-C1": "Current mode reads the benchmark level and its FX fixing by date, ignoring the instant t",
+  "M-C2": "Current mode resolves the as-of date to UTC-date(t), without the close and publication test",
+  "M-C3": "the second source of a benchmark is ignored (primary only)",
+  "M-C4": "when two benchmark sources disagree, the primary's level is used",
+  "M-C5": "the ETF proxy ignores dividends (a price-return proxy)",
+  "M-C6": "the ETF proxy uses CORROBORATED dividends only (SINGLE_SOURCE dropped)",
+  "M-C7": "the ETF proxy takes the feed amount when feed and filing disagree",
+  "M-C8": "no suppression for a corroborated split missing from the ledger",
+  "M-C9": "a period with no capital is counted as a zero return",
+  "M-C10": "internal transfers are not flows at account scope",
+  "M-C11": "a window before a snapshot is accepted",
+  "M-C12": "the default view always falls back to MAX_AVAILABLE",
+  "M-C13": "the default view never falls back",
+  "M-C14": "beta, R-squared and alpha reported as 0 when the benchmark did not move (undefined shown as 0)",
+  "M-C15": "the portfolio leg's lag ignores price staleness",
+  "M-C16": "the benchmark leg's lag ignores FX staleness",
+  "M-C17": "tracking error with divisor n",
+  "M-C18": "beta = S_rb / S_rr",
+  "M-C19": "volatility with divisor n",
+  "M-C20": "the benchmark is not translated into R (native levels)",
+  "M-C21": "a disputed dividend suppresses the whole proxy series, not only from its ex-date",
+  "M-C22": "the benchmark leg of a window fact measured from the requested base B instead of g_0",
+  "M-C23": "a ledger SPLIT event does not change the quantity held",
+  "M-C24": "the reason code is chosen among the causes at every level (the performance 1.0 wording), not only at the result's own level",
+  "M-C25": "a REVERSAL is ignored: the reversed record still counts",
+  "M-C26": "after a REVERSAL, no selection is in force (NONE) instead of the latest remaining record",
+  "M-C27": "a pinned version that cuts a correction pair (a REVERSAL without its replacement) is accepted",
+  "M-C28": "the EARLIEST live record is in force instead of the latest",
+  "M-C29": "a replacement is ordered by its own sequence number, not by the position of the record it corrects",
+  "M-C30": "the active return over a window containing a ZERO_CAPITAL_PERIOD takes the TWR's factor-1 value (AVAILABLE)",
+  "M-C31": "a refused window suppresses the window-independent benchmark causes (no selection: reason none, not MISSING_BENCHMARK)",
+  "M-C32": "a disputed proxy dividend suppresses every proxy level from its ex-date on (the 1.2 reading), not only the ratios that span it",
+  "M-C33": "a disputed ETF print withholds that print and every later one (no chain around it)",
+  "M-C34": "a disputed ETF print is treated as a missing print (the previous print used, counted stale), not as SOURCE_CONFLICT",
+  "M-C35": "the default view does not fall back when an active return is refused by its portfolio leg TWR(g_0, g_n]",
+  "M-C36": "two dividend statements of different sides that share no date are two dividends, both applied, however close their ex-dates (no linking window)",
+  "M-C37": "any two unpaired dividend statements of different sides are one disputed dividend, however far apart",
+  "M-C38": "a proxy dividend declared in another currency is added to the price unconverted (CP4F-12)",
+  "M-C39": "a proxy dividend is converted at the ECB fixing of its PAY date, not its ex-date",
+  "M-C40": "the freshness of a proxy dividend's conversion is ignored",
+  "M-C41": "an amount the issuer states as paid in the price currency is ignored (ECB conversion used instead)",
+  "M-C42": "a proxy dividend in another currency is refused: the proxy is unavailable from its ex-date (the interim order)",
+  "M-C43": "a paid amount stated by one side only makes the dividend a DISAGREEMENT (market-data Ruling 4.5 (1.14) compares paid fields only when both sides state them)",
+  "M-C44": "a multi-source benchmark with no declared precision is reconciled anyway (precision inferred, not declared)",
+  "M-C45": "a benchmark source's precision is inferred as the most decimals any of its level texts shows (CP4F-13), not declared",
+  "M-C46": "when the declared dividend is corroborated, only the first (FEED) statement's paid fields are kept: a FILING-only payment is ignored and two different payments are not a DISAGREEMENT (CP4F-15)"
+ },
+ "market_data": {
+  "synthetic": true,
+  "upstream": "synthetic",
+  "how_to_load": "As cp4_golden parts 1 and 2: the loader expands these compact definitions into synthetic files in the real layouts, registers them with upstream 'synthetic' (the two sources of SYN4_BM_US_TR2 with the declared upstreams synthetic_a and synthetic_b, the two sides of risk Ruling 5.7 (1.2)), and ingests them into one release M. (1.1) Each series is delivered in the three files (vintages) of 'retrieval', by row date, with the declared retrieval times; the 1.0 declaration 'retrieval_time_all_files' (2022-11-30T00:00:00Z) is withdrawn: a file cannot hold closes after its retrieval time (market-data Ruling 3.1, after-retrieval test), so every series would have been contradicted.",
+  "retrieval": {
+   "rule": "A file's retrieval_time is at or after the availability instant (scheduled close; for FX and risk-free rates, publication) of every row it holds (market-data Ruling 3.1). At each Current-mode instant of this fixture, M_t (performance Ruling 1.7: the files retrieved at or before t) holds exactly the rows whose availability instant is at or before t. Historical-mode assertions read all of M. cp4_part3_calculator.py --retrieval verifies both properties.",
+   "vintages": [
+    {"vintage": "V1", "rows_through": "2026-01-08", "retrieval_time": "2026-01-09T00:00:00Z"},
+    {"vintage": "V2", "rows_from": "2026-01-09", "rows_through": "2026-01-09", "retrieval_time_by_calendar": {"SYN4_SSE": "2026-01-09T07:00:00Z", "SYN4_HKEX": "2026-01-09T08:10:00Z", "SYN4_RF_HKD": "2026-01-09T09:00:00Z", "SYN4_ECB": "2026-01-09T15:00:00Z", "SYN4_NYSE": "2026-01-09T21:00:00Z", "SYN4_RF_USD": "2026-01-09T23:00:00Z"}},
+    {"vintage": "V3", "rows_from": "2026-01-10", "retrieval_time": "2026-04-01T00:00:00Z"}
+   ],
+   "files": "One file per (series, vintage); the ECB file per vintage holds every currency; a series on calendar c takes the V2 time of c. A vintage with no row for a series is not delivered for it.",
+   "segments": "(1.3-part3; market-data Ruling 0.1 (1.12)) Each vintage's rows range is its file's declared COVERAGE interval: V1 [the series' first date, 2026-01-08], V2 [2026-01-09, 2026-01-09], V3 [2026-01-10, the series' last date]. The three files of a series are SEGMENTS of ONE series: disjoint coverage, one identity (source, subject, adjustment status, anchor, declared fields, synthetic flag), and every series here is vintage-stable (RAW prices, ECB fixings, published benchmark levels, risk-free quotes). The vintage is the file's retrieval_time; no vintage label is written into adjustment_anchor or any other identity field (anchor null). The release build joins the segments; the read path sees one series.",
+   "corporate_actions_retrieval_time": "2026-01-09T00:00:00Z",
+   "calendars": "registered, not retrieved (market-data Ruling 5.3)"
+  },
+  "calendars": [
+   {
+    "calendar_id": "SYN4_NYSE",
+    "kind": "EXCHANGE_SESSIONS",
+    "applies_to": ["XNYS", "XNAS"],
+    "timezone": "America/New_York",
+    "coverage": {"from": "2022-12-01", "to": "2026-03-31"},
+    "actual_through": "2026-03-31",
+    "sessions_rule": "every Monday to Friday in coverage except closed_weekdays",
+    "closed_weekdays": [],
+    "close": {"default": "16:00", "overrides": []},
+    "evidence": "synthetic, holiday-free; also the US benchmarks' and the ETF proxies' calendar."
+   },
+   {
+    "calendar_id": "SYN4_HKEX",
+    "kind": "EXCHANGE_SESSIONS",
+    "applies_to": ["XHKG"],
+    "timezone": "Asia/Hong_Kong",
+    "coverage": {"from": "2022-12-01", "to": "2026-03-31"},
+    "actual_through": "2026-03-31",
+    "sessions_rule": "every Monday to Friday in coverage except closed_weekdays",
+    "closed_weekdays": [],
+    "close": {"default": "16:10", "overrides": []},
+    "evidence": "synthetic, holiday-free."
+   },
+   {
+    "calendar_id": "SYN4_SSE",
+    "kind": "EXCHANGE_SESSIONS",
+    "applies_to": ["XSHG", "XSHE"],
+    "timezone": "Asia/Shanghai",
+    "coverage": {"from": "2022-12-01", "to": "2026-03-31"},
+    "actual_through": "2026-03-31",
+    "sessions_rule": "every Monday to Friday in coverage except closed_weekdays",
+    "closed_weekdays": [],
+    "close": {"default": "15:00", "overrides": []},
+    "evidence": "synthetic, holiday-free; the CN benchmark's calculation calendar."
+   },
+   {
+    "calendar_id": "SYN4_ECB",
+    "kind": "ECB_FIXINGS",
+    "applies_to": ["ECB"],
+    "timezone": "Europe/Berlin",
+    "coverage": {"from": "2022-12-01", "to": "2026-03-31"},
+    "actual_through": "2026-03-31",
+    "sessions_rule": "every Monday to Friday in coverage except closed_weekdays",
+    "closed_weekdays": [],
+    "fixing": {"time": "14:10", "publication": "16:00"},
+    "evidence": "synthetic; no TARGET closing days."
+   },
+   {
+    "calendar_id": "SYN4_RF_USD",
+    "kind": "RATE_PUBLICATIONS",
+    "applies_to": ["SYN4_UST13_USD"],
+    "timezone": "America/New_York",
+    "coverage": {"from": "2022-12-01", "to": "2026-03-31"},
+    "actual_through": "2026-03-31",
+    "sessions_rule": "every Monday to Friday in coverage except closed_weekdays",
+    "closed_weekdays": [],
+    "publication": {"time": "18:00"},
+    "evidence": "synthetic publication calendar (risk Ruling 4.5)."
+   },
+   {
+    "calendar_id": "SYN4_RF_HKD",
+    "kind": "RATE_PUBLICATIONS",
+    "applies_to": ["SYN4_EFB91_HKD"],
+    "timezone": "Asia/Hong_Kong",
+    "coverage": {"from": "2022-12-01", "to": "2026-03-31"},
+    "actual_through": "2026-03-31",
+    "sessions_rule": "every Monday to Friday in coverage except closed_weekdays",
+    "closed_weekdays": [],
+    "publication": {"time": "17:00"},
+    "evidence": "synthetic publication calendar (risk Ruling 4.5)."
+   }
+  ],
+  "fx": {
+   "layout": "ECB eurofxref-hist (EUR-based quotes, units of currency per 1 EUR)",
+   "rows_rule": "as part 2; a date in gaps_by_currency[c] has no quote for c",
+   "first": "2022-12-01",
+   "last": "2026-03-31",
+   "steps": {"USD": [{"from": "2022-12-01", "rate": "1.0800"}], "HKD": [{"from": "2022-12-01", "rate": "8.4000"}], "CNY": [{"from": "2022-12-01", "rate": "7.8000"}]},
+   "cycles": {"HKD": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "rates": ["8.4000", "8.4420"]}, "CNY": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "rates": ["7.8000", "7.8390"]}},
+   "gaps_by_currency": {"CNY": ["2025-03-13", "2025-03-14"]},
+   "note": "USD 1.0800. HKD and CNY alternate weekly from Friday 2023-01-06 (even cycle index: 8.4000 / 7.8000; odd: 8.4420 / 7.8390). CNY has no quote on 2025-03-13 and 2025-03-14."
+  },
+  "prices": {
+   "layout": "RAW official closes; every row has volume '1000'",
+   "rows_rule": "as part 2; 'cycle' may be a LIST of cycles, each with its own from/until (SYN43: before and after its split)",
+   "series": [
+    {
+     "listing_id": "c4000000-0000-4000-8000-000000000021",
+     "ticker": "SYN21",
+     "calendar": "SYN4_NYSE",
+     "currency": "USD",
+     "first": "2022-12-01",
+     "last": "2026-03-31",
+     "steps": [{"from": "2022-12-01", "close": "100.00"}],
+     "cycle": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "closes": ["100.00", "104.00", "101.00", "98.00"]},
+     "gaps": []
+    },
+    {
+     "listing_id": "c4000000-0000-4000-8000-000000000042",
+     "ticker": "SYN42",
+     "calendar": "SYN4_NYSE",
+     "currency": "USD",
+     "first": "2022-12-01",
+     "last": "2026-03-31",
+     "steps": [{"from": "2022-12-01", "close": "100.00"}],
+     "cycle": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "closes": ["100.00", "103.00", "99.00", "101.00"]},
+     "gaps": ["2025-06-13"]
+    },
+    {
+     "listing_id": "c4000000-0000-4000-8000-000000000043",
+     "ticker": "SYN43",
+     "calendar": "SYN4_NYSE",
+     "currency": "USD",
+     "first": "2022-12-01",
+     "last": "2026-03-31",
+     "steps": [{"from": "2022-12-01", "close": "100.00"}, {"from": "2025-09-08", "close": "49.00"}],
+     "cycle": [
+      {"from": "2023-01-06", "every_days": 7, "until": "2025-09-05", "closes": ["100.00", "104.00", "101.00", "98.00"]},
+      {"from": "2025-09-12", "every_days": 7, "until": "2026-03-31", "closes": ["50.00", "52.00", "50.50", "49.00"]}
+     ],
+     "gaps": []
+    },
+    {
+     "listing_id": "c4000000-0000-4000-8000-000000000031",
+     "ticker": "SYN31",
+     "calendar": "SYN4_NYSE",
+     "currency": "USD",
+     "first": "2022-12-01",
+     "last": "2026-03-31",
+     "steps": [{"from": "2022-12-01", "close": "50.00"}],
+     "cycle": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "closes": ["50.00", "51.00", "50.50", "49.50"]},
+     "gaps": []
+    },
+    {
+     "listing_id": "c4000000-0000-4000-8000-000000000032",
+     "ticker": "SYN32",
+     "calendar": "SYN4_NYSE",
+     "currency": "USD",
+     "first": "2022-12-01",
+     "last": "2026-03-31",
+     "steps": [{"from": "2022-12-01", "close": "50.00"}],
+     "cycle": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "closes": ["50.00", "51.00", "50.50", "49.50"]},
+     "gaps": []
+    },
+    {
+     "listing_id": "c4000000-0000-4000-8000-000000000035",
+     "ticker": "SYN35",
+     "calendar": "SYN4_NYSE",
+     "currency": "USD",
+     "first": "2022-12-01",
+     "last": "2026-03-31",
+     "steps": [{"from": "2022-12-01", "close": "50.00"}],
+     "cycle": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "closes": ["50.00", "51.00", "50.50", "49.50"]},
+     "gaps": []
+    },
+    {
+     "listing_id": "c4000000-0000-4000-8000-000000000034",
+     "ticker": "SYN34",
+     "calendar": "SYN4_NYSE",
+     "currency": "USD",
+     "first": "2022-12-01",
+     "last": "2026-03-31",
+     "steps": [{"from": "2022-12-01", "close": "50.00"}],
+     "cycle": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "closes": ["50.00", "51.00", "50.50", "49.50"]},
+     "gaps": []
+    },
+    {
+     "listing_id": "c4000000-0000-4000-8000-000000000033",
+     "ticker": "SYN33",
+     "calendar": "SYN4_NYSE",
+     "currency": "USD",
+     "first": "2022-12-01",
+     "last": "2026-03-31",
+     "steps": [{"from": "2022-12-01", "close": "50.00"}],
+     "cycle": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "closes": ["50.00", "51.00", "50.50", "49.50"]},
+     "gaps": [],
+     "second_source": {
+      "note": "(1.6-part3; risk Ruling 5.5 (1.6)) A second price source for SYN33 (upstream synthetic_b, priority 2, synthetic): every row equals the primary's except these, which DISAGREE (market-data Ruling 4.3): Wednesday 2025-08-06 (50.50 primary) and Friday 2026-01-09 (51.00 primary).",
+      "source_id": "synthetic_b",
+      "upstream": "synthetic_b",
+      "source_priority": 2,
+      "precision_decimals": 2,
+      "price_overrides": [{"date": "2025-08-06", "close": "50.60"}, {"date": "2026-01-09", "close": "51.10"}]
+     }
+    },
+    {
+     "listing_id": "c4000000-0000-4000-8000-000000000022",
+     "ticker": "SYN22",
+     "calendar": "SYN4_HKEX",
+     "currency": "HKD",
+     "first": "2022-12-01",
+     "last": "2026-03-31",
+     "steps": [{"from": "2022-12-01", "close": "100.00"}],
+     "cycle": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "closes": ["100.00", "105.00", "100.00", "95.00"]},
+     "gaps": []
+    }
+   ]
+  },
+  "risk_free": {
+   "layout": "as part 2",
+   "series": [
+    {
+     "series_id": "SYN4_UST13_USD",
+     "currency": "USD",
+     "instrument": "synthetic 13-week sovereign bill",
+     "quote_type": "SIMPLE_YIELD",
+     "day_count_basis": 365,
+     "tenor_days": 91,
+     "unit": "PERCENT",
+     "calendar": "SYN4_RF_USD",
+     "first": "2022-12-01",
+     "last": "2026-03-31",
+     "steps": [{"from": "2022-12-01", "rate": "3.65"}],
+     "gaps": []
+    },
+    {
+     "series_id": "SYN4_EFB91_HKD",
+     "currency": "HKD",
+     "instrument": "synthetic 91-day sovereign bill, bank discount",
+     "quote_type": "BANK_DISCOUNT",
+     "day_count_basis": 360,
+     "tenor_days": 91,
+     "unit": "PERCENT",
+     "calendar": "SYN4_RF_HKD",
+     "first": "2022-12-01",
+     "last": "2026-03-31",
+     "steps": [{"from": "2022-12-01", "rate": "3.60"}, {"from": "2025-07-01", "rate": "5.40"}],
+     "gaps": []
+    }
+   ]
+  },
+  "benchmarks": [
+   {
+    "benchmark_id": "SYN4_BM_US_TR",
+    "name": "Synthetic US index, gross total return",
+    "provider": "synthetic",
+    "source_id": "synthetic",
+    "licensing": "synthetic fixture data; no licence",
+    "currency": "USD",
+    "return_basis": "TOTAL_RETURN_GROSS",
+    "calendar": "SYN4_NYSE",
+    "first": "2022-12-01",
+    "last": "2026-03-31",
+    "steps": [{"from": "2022-12-01", "level": "1000.00"}],
+    "cycle": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "levels": ["1000.00", "1030.00", "1010.00", "990.00"]},
+    "gaps": [],
+    "synthetic": true
+   },
+   {
+    "benchmark_id": "SYN4_BM_FLAT",
+    "name": "Synthetic flat index, gross total return",
+    "provider": "synthetic",
+    "source_id": "synthetic",
+    "licensing": "synthetic fixture data; no licence",
+    "currency": "USD",
+    "return_basis": "TOTAL_RETURN_GROSS",
+    "calendar": "SYN4_NYSE",
+    "first": "2022-12-01",
+    "last": "2026-03-31",
+    "steps": [{"from": "2022-12-01", "level": "1000.00"}],
+    "cycle": null,
+    "gaps": [],
+    "synthetic": true
+   },
+   {
+    "benchmark_id": "SYN4_BM_CN_TR",
+    "name": "Synthetic CN index, net total return",
+    "provider": "synthetic",
+    "source_id": "synthetic",
+    "licensing": "synthetic fixture data; no licence",
+    "currency": "CNY",
+    "return_basis": "TOTAL_RETURN_NET",
+    "calendar": "SYN4_SSE",
+    "first": "2022-12-01",
+    "last": "2026-03-31",
+    "steps": [{"from": "2022-12-01", "level": "5000.00"}],
+    "cycle": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "levels": ["5000.00", "5100.00", "5050.00", "4950.00"]},
+    "gaps": [],
+    "synthetic": true
+   },
+   {
+    "benchmark_id": "SYN4_BM_US_TR2",
+    "name": "Synthetic US index (two sources), gross total return",
+    "provider": "synthetic",
+    "source_id": "synthetic_a",
+    "licensing": "synthetic fixture data; no licence",
+    "currency": "USD",
+    "return_basis": "TOTAL_RETURN_GROSS",
+    "calendar": "SYN4_NYSE",
+    "first": "2022-12-01",
+    "last": "2026-03-31",
+    "steps": [{"from": "2022-12-01", "level": "1000.00"}],
+    "cycle": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "levels": ["1000.00", "1030.00", "1010.00", "990.00"]},
+    "gaps": ["2025-09-12"],
+    "synthetic": true,
+    "source_priority": 1,
+    "upstream": "synthetic_a",
+    "official_decimals": 2,
+    "precision_decimals": 2
+   },
+   {
+    "benchmark_id": "SYN4_BM_US_TR2",
+    "name": "Synthetic US index (two sources), gross total return",
+    "provider": "synthetic",
+    "source_id": "synthetic_b",
+    "licensing": "synthetic fixture data; no licence",
+    "currency": "USD",
+    "return_basis": "TOTAL_RETURN_GROSS",
+    "calendar": "SYN4_NYSE",
+    "first": "2022-12-01",
+    "last": "2026-03-31",
+    "steps": [{"from": "2022-12-01", "level": "1000.00"}],
+    "cycle": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "levels": ["1000.00", "1030.00", "1010.00", "990.00"]},
+    "gaps": [],
+    "synthetic": true,
+    "source_priority": 2,
+    "upstream": "synthetic_b",
+    "level_overrides": [{"date": "2025-08-08", "level": "991.00"}],
+    "official_decimals": 2,
+    "precision_decimals": 2
+   },
+   {
+    "benchmark_id": "SYN4_BM_US_TR5",
+    "name": "Synthetic US index (two sources, one coarser), gross total return",
+    "provider": "synthetic",
+    "source_id": "synthetic_a",
+    "licensing": "synthetic fixture data; no licence",
+    "currency": "USD",
+    "return_basis": "TOTAL_RETURN_GROSS",
+    "calendar": "SYN4_NYSE",
+    "first": "2022-12-01",
+    "last": "2026-03-31",
+    "steps": [{"from": "2022-12-01", "level": "1000.00"}],
+    "cycle": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "levels": ["1000.00", "1030.00", "1010.00", "990.00"]},
+    "gaps": [],
+    "synthetic": true,
+    "source_priority": 1,
+    "upstream": "synthetic_a",
+    "level_overrides": [{"date": "2025-08-08", "level": "990.30"}],
+    "official_decimals": 2,
+    "precision_decimals": 2
+   },
+   {
+    "benchmark_id": "SYN4_BM_US_TR5",
+    "name": "Synthetic US index (two sources, one coarser), gross total return",
+    "provider": "synthetic",
+    "source_id": "synthetic_b",
+    "licensing": "synthetic fixture data; no licence",
+    "currency": "USD",
+    "return_basis": "TOTAL_RETURN_GROSS",
+    "calendar": "SYN4_NYSE",
+    "first": "2022-12-01",
+    "last": "2026-03-31",
+    "steps": [{"from": "2022-12-01", "level": "1000"}],
+    "cycle": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "levels": ["1000", "1030", "1010", "990"]},
+    "gaps": [],
+    "synthetic": true,
+    "source_priority": 2,
+    "upstream": "synthetic_b",
+    "official_decimals": 2,
+    "precision_decimals": 1,
+    "note": "(1.9-part3) A coarser rendition: it rounds to 1 decimal (declared), and its texts happen to show none (1000, 990). Its bound is 0.05; the primary's is 0 (it publishes the official 2 decimals)."
+   },
+   {
+    "benchmark_id": "SYN4_BM_US_TR4",
+    "name": "Synthetic US index (two sources, precision undeclared), gross total return",
+    "provider": "synthetic",
+    "source_id": "synthetic_a",
+    "licensing": "synthetic fixture data; no licence",
+    "currency": "USD",
+    "return_basis": "TOTAL_RETURN_GROSS",
+    "calendar": "SYN4_NYSE",
+    "first": "2022-12-01",
+    "last": "2026-03-31",
+    "steps": [{"from": "2022-12-01", "level": "1000.00"}],
+    "cycle": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "levels": ["1000.00", "1030.00", "1010.00", "990.00"]},
+    "gaps": [],
+    "synthetic": true,
+    "source_priority": 1,
+    "upstream": "synthetic_a"
+   },
+   {
+    "benchmark_id": "SYN4_BM_US_TR4",
+    "name": "Synthetic US index (two sources, precision undeclared), gross total return",
+    "provider": "synthetic",
+    "source_id": "synthetic_b",
+    "licensing": "synthetic fixture data; no licence",
+    "currency": "USD",
+    "return_basis": "TOTAL_RETURN_GROSS",
+    "calendar": "SYN4_NYSE",
+    "first": "2022-12-01",
+    "last": "2026-03-31",
+    "steps": [{"from": "2022-12-01", "level": "1000.00"}],
+    "cycle": {"from": "2023-01-06", "every_days": 7, "until": "2026-03-31", "levels": ["1000.00", "1030.00", "1010.00", "990.00"]},
+    "gaps": [],
+    "synthetic": true,
+    "source_priority": 2,
+    "upstream": "synthetic_b"
+   },
+   {
+    "benchmark_id": "SYN4_BM_ETF_PROXY",
+    "name": "Proxy: SYN31 (an ETF), gross total return built by the engine",
+    "provider": "proxy: SYN31",
+    "source_id": "synthetic",
+    "licensing": "synthetic fixture data; no licence",
+    "currency": "USD",
+    "return_basis": "TOTAL_RETURN_GROSS",
+    "calendar": "SYN4_NYSE",
+    "construction": "ETF_PROXY",
+    "listing_id": "c4000000-0000-4000-8000-000000000031",
+    "synthetic": true
+   },
+   {
+    "benchmark_id": "SYN4_BM_ETF_PROXY_CONFLICT",
+    "name": "Proxy: SYN32 (an ETF), gross total return built by the engine",
+    "provider": "proxy: SYN32",
+    "source_id": "synthetic",
+    "licensing": "synthetic fixture data; no licence",
+    "currency": "USD",
+    "return_basis": "TOTAL_RETURN_GROSS",
+    "calendar": "SYN4_NYSE",
+    "construction": "ETF_PROXY",
+    "listing_id": "c4000000-0000-4000-8000-000000000032",
+    "synthetic": true
+   },
+   {
+    "benchmark_id": "SYN4_BM_ETF_PROXY_PX",
+    "name": "Proxy: SYN33 (an ETF whose two price sources disagree on two days), gross total return built by the engine",
+    "provider": "proxy: SYN33",
+    "source_id": "synthetic",
+    "licensing": "synthetic fixture data; no licence",
+    "currency": "USD",
+    "return_basis": "TOTAL_RETURN_GROSS",
+    "calendar": "SYN4_NYSE",
+    "construction": "ETF_PROXY",
+    "listing_id": "c4000000-0000-4000-8000-000000000033",
+    "synthetic": true
+   },
+   {
+    "benchmark_id": "SYN4_BM_ETF_PROXY_ID",
+    "name": "Proxy: SYN34 (an ETF whose dividends are stated by one side each), gross total return built by the engine",
+    "provider": "proxy: SYN34",
+    "source_id": "synthetic",
+    "licensing": "synthetic fixture data; no licence",
+    "currency": "USD",
+    "return_basis": "TOTAL_RETURN_GROSS",
+    "calendar": "SYN4_NYSE",
+    "construction": "ETF_PROXY",
+    "listing_id": "c4000000-0000-4000-8000-000000000034",
+    "synthetic": true
+   },
+   {
+    "benchmark_id": "SYN4_BM_ETF_PROXY_FX",
+    "name": "Proxy: SYN35 (a USD-traded ETF that declares its dividends in CNY), gross total return built by the engine",
+    "provider": "proxy: SYN35",
+    "source_id": "synthetic",
+    "licensing": "synthetic fixture data; no licence",
+    "currency": "USD",
+    "return_basis": "TOTAL_RETURN_GROSS",
+    "calendar": "SYN4_NYSE",
+    "construction": "ETF_PROXY",
+    "listing_id": "c4000000-0000-4000-8000-000000000035",
+    "synthetic": true
+   }
+  ],
+  "benchmarks_rule": "As part 2, plus: (a) several entries with one benchmark_id are the SOURCES of that benchmark, ordered by source_priority (1 = primary); 'level_overrides' replaces the level of single calculation days of that source only (Ruling 5.7 (1.2)). (1.9-part3) A benchmark with several sources declares 'official_decimals' (the index's published precision) and each source 'precision_decimals' (Ruling 5.7 (1.9)); a level's text shows at most its source's declared decimals. (b) construction ETF_PROXY: no levels are supplied; the engine builds the gross total-return index from the listing's RAW closes and its cash dividends in corporate_actions (Ruling 5.5 (1.2)).",
+  "corporate_actions": [
+   {
+    "listing_id": "c4000000-0000-4000-8000-000000000043",
+    "type": "SPLIT",
+    "ex_date": "2025-09-08",
+    "ratio": {"new_units": "2", "old_units": "1"},
+    "records": [{"side": "FEED", "upstream": "synthetic", "synthetic": true}, {"side": "FILING", "upstream": "synthetic", "synthetic": true}]
+   },
+   {
+    "listing_id": "c4000000-0000-4000-8000-000000000031",
+    "type": "CASH_DIVIDEND",
+    "ex_date": "2025-03-03",
+    "pay_date": "2025-03-10",
+    "currency": "USD",
+    "records": [{"side": "FEED", "amount": "0.50", "upstream": "synthetic", "synthetic": true}, {"side": "FILING", "amount": "0.50", "upstream": "synthetic", "synthetic": true}]
+   },
+   {
+    "listing_id": "c4000000-0000-4000-8000-000000000031",
+    "type": "CASH_DIVIDEND",
+    "ex_date": "2025-09-02",
+    "pay_date": "2025-09-09",
+    "currency": "USD",
+    "records": [{"side": "FEED", "amount": "0.40", "upstream": "synthetic", "synthetic": true}]
+   },
+   {
+    "listing_id": "c4000000-0000-4000-8000-000000000032",
+    "type": "CASH_DIVIDEND",
+    "ex_date": "2025-06-02",
+    "pay_date": "2025-06-09",
+    "currency": "USD",
+    "records": [{"side": "FEED", "amount": "0.30", "upstream": "synthetic", "synthetic": true}, {"side": "FILING", "amount": "0.35", "upstream": "synthetic", "synthetic": true}]
+   },
+   {
+    "listing_id": "c4000000-0000-4000-8000-000000000034",
+    "type": "CASH_DIVIDEND",
+    "ex_date": "2025-03-03",
+    "pay_date": "2025-03-10",
+    "currency": "USD",
+    "records": [{"side": "FEED", "amount": "0.50", "upstream": "synthetic", "synthetic": true}]
+   },
+   {
+    "listing_id": "c4000000-0000-4000-8000-000000000034",
+    "type": "CASH_DIVIDEND",
+    "ex_date": "2025-03-05",
+    "pay_date": "2025-03-12",
+    "currency": "USD",
+    "records": [{"side": "FILING", "amount": "0.50", "upstream": "synthetic", "synthetic": true}]
+   },
+   {
+    "listing_id": "c4000000-0000-4000-8000-000000000034",
+    "type": "CASH_DIVIDEND",
+    "ex_date": "2025-09-02",
+    "pay_date": "2025-09-09",
+    "currency": "USD",
+    "records": [{"side": "FEED", "amount": "0.40", "upstream": "synthetic", "synthetic": true}]
+   },
+   {
+    "listing_id": "c4000000-0000-4000-8000-000000000034",
+    "type": "CASH_DIVIDEND",
+    "ex_date": "2025-12-01",
+    "pay_date": "2025-12-08",
+    "currency": "USD",
+    "records": [{"side": "FILING", "amount": "0.40", "upstream": "synthetic", "synthetic": true}]
+   },
+   {
+    "listing_id": "c4000000-0000-4000-8000-000000000035",
+    "type": "CASH_DIVIDEND",
+    "ex_date": "2025-03-03",
+    "pay_date": "2025-03-10",
+    "currency": "CNY",
+    "records": [{"side": "FEED", "amount": "3.60", "upstream": "synthetic", "synthetic": true}, {"side": "FILING", "amount": "3.60", "upstream": "synthetic", "synthetic": true}]
+   },
+   {
+    "listing_id": "c4000000-0000-4000-8000-000000000035",
+    "type": "CASH_DIVIDEND",
+    "ex_date": "2025-03-14",
+    "pay_date": "2025-03-21",
+    "currency": "CNY",
+    "records": [{"side": "FEED", "amount": "2.00", "upstream": "synthetic", "synthetic": true}, {"side": "FILING", "amount": "2.00", "upstream": "synthetic", "synthetic": true}]
+   },
+   {
+    "listing_id": "c4000000-0000-4000-8000-000000000035",
+    "type": "CASH_DIVIDEND",
+    "ex_date": "2025-09-02",
+    "pay_date": "2025-09-09",
+    "currency": "CNY",
+    "records": [{"side": "FEED", "amount": "3.30", "paid_currency": "USD", "paid_amount": "0.46", "upstream": "synthetic", "synthetic": true}, {"side": "FILING", "amount": "3.30", "paid_currency": "USD", "paid_amount": "0.46", "upstream": "synthetic", "synthetic": true}]
+   },
+   {
+    "listing_id": "c4000000-0000-4000-8000-000000000035",
+    "type": "CASH_DIVIDEND",
+    "ex_date": "2026-02-02",
+    "pay_date": "2026-02-09",
+    "currency": "CNY",
+    "records": [{"side": "FEED", "amount": "3.25", "paid_currency": "USD", "paid_amount": "0.44", "upstream": "synthetic", "synthetic": true}, {"side": "FILING", "amount": "3.25", "upstream": "synthetic", "synthetic": true}]
+   },
+   {
+    "listing_id": "c4000000-0000-4000-8000-000000000035",
+    "type": "CASH_DIVIDEND",
+    "ex_date": "2026-03-02",
+    "pay_date": "2026-03-09",
+    "currency": "CNY",
+    "records": [{"side": "FEED", "amount": "3.25", "upstream": "synthetic", "synthetic": true}, {"side": "FILING", "amount": "3.25", "paid_currency": "USD", "paid_amount": "0.43", "upstream": "synthetic", "synthetic": true}]
+   },
+   {
+    "listing_id": "c4000000-0000-4000-8000-000000000035",
+    "type": "CASH_DIVIDEND",
+    "ex_date": "2026-03-16",
+    "pay_date": "2026-03-23",
+    "currency": "CNY",
+    "records": [{"side": "FEED", "amount": "3.25", "paid_currency": "USD", "paid_amount": "0.46", "upstream": "synthetic", "synthetic": true}, {"side": "FILING", "amount": "3.25", "paid_currency": "USD", "paid_amount": "0.47", "upstream": "synthetic", "synthetic": true}]
+   }
+  ],
+  "corporate_actions_rule": "As cp3_golden: synthetic FEED and FILING records, both synthetic, are the two sides of market-data Ruling 4.5 (Ruling 4.8 item 4(a)). For a CASH_DIVIDEND each record carries its own amount; equal amounts on both sides = CORROBORATED, one side only = SINGLE_SOURCE, different amounts = DISAGREEMENT. (1.7-part3) For an ETF proxy, statements of separate entries are matched across sides by risk Ruling 5.5 (1.7): equal statements pair; statements sharing the record date, ex-date or pay date are one dividend; unpaired statements of the two sides whose ex-dates are at most 20 sessions apart are one possibly mis-dated dividend (DISAGREEMENT); the rest are SINGLE_SOURCE. (1.8-part3) A CASH_DIVIDEND entry's 'currency' is the declared currency; a record may add 'paid_currency' and 'paid_amount', the issuer's stated payment (market-data Ruling 7.1). A proxy converts by risk Ruling 5.5 (1.8)."
+ },
+ "listings": [
+  {"listing_id": "c4000000-0000-4000-8000-000000000021", "ticker": "SYN21", "mic": "XNYS", "trading_currency": "USD", "security_type": "COMMON_STOCK"},
+  {"listing_id": "c4000000-0000-4000-8000-000000000042", "ticker": "SYN42", "mic": "XNYS", "trading_currency": "USD", "security_type": "COMMON_STOCK"},
+  {"listing_id": "c4000000-0000-4000-8000-000000000043", "ticker": "SYN43", "mic": "XNYS", "trading_currency": "USD", "security_type": "COMMON_STOCK"},
+  {"listing_id": "c4000000-0000-4000-8000-000000000031", "ticker": "SYN31", "mic": "XNYS", "trading_currency": "USD", "security_type": "ETF"},
+  {"listing_id": "c4000000-0000-4000-8000-000000000032", "ticker": "SYN32", "mic": "XNYS", "trading_currency": "USD", "security_type": "ETF"},
+  {"listing_id": "c4000000-0000-4000-8000-000000000033", "ticker": "SYN33", "mic": "XNYS", "trading_currency": "USD", "security_type": "ETF"},
+  {"listing_id": "c4000000-0000-4000-8000-000000000034", "ticker": "SYN34", "mic": "XNYS", "trading_currency": "USD", "security_type": "ETF"},
+  {"listing_id": "c4000000-0000-4000-8000-000000000035", "ticker": "SYN35", "mic": "XNYS", "trading_currency": "USD", "security_type": "ETF"},
+  {"listing_id": "c4000000-0000-4000-8000-000000000022", "ticker": "SYN22", "mic": "XHKG", "trading_currency": "HKD", "security_type": "COMMON_STOCK"}
+ ],
+ "portfolios": [
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000301",
+   "name": "R1 (USD; SYN21) against a FLAT total-return index",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4301000-0000-4000-8000-000000000001", "name": "A1"}],
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "R1-E1",
+     "event": {
+      "event_id": "e4301000-0000-4000-8000-000000000001",
+      "account_id": "a4301000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "R1-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "R1-E2",
+     "event": {
+      "event_id": "e4301000-0000-4000-8000-000000000002",
+      "account_id": "a4301000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "listing_id": "c4000000-0000-4000-8000-000000000021",
+      "quantity": "100",
+      "source_reference": "R1-E2 at 100.00"
+     }
+    }
+   ],
+   "benchmark_selections": [{"seq": 1, "selection_id": "f4301000-0000-4000-8000-000000000001", "portfolio_id": "d4000000-0000-4000-8000-000000000301", "benchmark_id": "SYN4_BM_FLAT", "recorded_at": "2022-12-30T12:00:00Z"}],
+   "assertions": [
+    {
+     "id": "R1-F1",
+     "as_of": "2026-01-02",
+     "selection_log_version": 1,
+     "purpose": "A benchmark that never moves (S_bb = 0): beta, R-squared and alpha are undefined (ZERO_BENCHMARK_VARIANCE); TE equals the portfolio's volatility; IR is the portfolio's mean return over its volatility; the window facts are omitted (against a flat index they cannot discriminate).",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_FLAT", "selection_id": "f4301000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": null,
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD", "ZERO_BENCHMARK_VARIANCE"],
+       "bites": ["M-C14"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "r_squared",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": null,
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD", "ZERO_BENCHMARK_VARIANCE"],
+       "bites": ["M-C14"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "alpha_jensen",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": null,
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD", "ZERO_BENCHMARK_VARIANCE"],
+       "bites": ["M-C14"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "tracking_error",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.222352722900",
+       "exact": null,
+       "exact_square": "2470301597923/49964906040000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 53, "points": []}},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C17"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "information_ratio",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.108689960134",
+       "exact": null,
+       "exact_square": "29182926291/2470301597923",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 53, "points": []}},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C17"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000302",
+   "name": "R2 (USD; SYN42, whose 2025-06-13 print is missing) against the US index",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4302000-0000-4000-8000-000000000001", "name": "A1"}],
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "R2-E1",
+     "event": {
+      "event_id": "e4302000-0000-4000-8000-000000000001",
+      "account_id": "a4302000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "R2-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "R2-E2",
+     "event": {
+      "event_id": "e4302000-0000-4000-8000-000000000002",
+      "account_id": "a4302000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "listing_id": "c4000000-0000-4000-8000-000000000042",
+      "quantity": "100",
+      "source_reference": "R2-E2 at 100.00"
+     }
+    }
+   ],
+   "benchmark_selections": [{"seq": 1, "selection_id": "f4302000-0000-4000-8000-000000000001", "portfolio_id": "d4000000-0000-4000-8000-000000000302", "benchmark_id": "SYN4_BM_US_TR", "recorded_at": "2022-12-30T12:00:00Z"}],
+   "assertions": [
+    {
+     "id": "R2-L1",
+     "as_of": "2026-01-02",
+     "selection_log_version": 1,
+     "purpose": "A LAGGED grid date inside a statistic's window: on Friday 2025-06-13 the holding is valued at Thursday's close (1 session missed, AVAILABLE + STALE_DATA) while the benchmark is current. 3Y: AVAILABLE + STALE_DATA, comparability LIMITED, one lagged point (1 against 0).",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR", "selection_id": "f4302000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": "STALE_DATA",
+       "value": "0.660162275211",
+       "exact": "1934548885378277/2930414169393477",
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "LIMITED", "seam": null, "lagged": {"count": 1, "of": 157, "points": [{"date": "2025-06-13", "portfolio_lag": 1, "benchmark_lag": 0}]}},
+       "v_beta": "469808842168317145209977600000/60111290429274431991742351046703",
+       "details_include": ["STALE_PERIODS"],
+       "bites": ["M-C15", "M-C18"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "tracking_error",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": "STALE_DATA",
+       "value": "0.174829765648",
+       "exact": null,
+       "exact_square": "15075484895168/493219841233185",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "LIMITED", "seam": null, "lagged": {"count": 1, "of": 157, "points": [{"date": "2025-06-13", "portfolio_lag": 1, "benchmark_lag": 0}]}},
+       "details_include": ["STALE_PERIODS"],
+       "bites": ["M-C15", "M-C17"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R2-L2",
+     "as_of": "2026-01-02",
+     "selection_log_version": 1,
+     "purpose": "(1.1) Which causes give the reason (risk Ruling 7.3 (1.3), performance Ruling 1.5 (1.1)): over 1Y the result is LIMITED by its count (a cause with no code), and the 06-13 period is AVAILABLE + STALE_DATA (a lower-level cause with a code). The reason is none; STALE_PERIODS stays in the details. Reading the reason from every level would give STALE_DATA (M-C24).",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR", "selection_id": "f4302000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.677597793454",
+       "exact": "220626908343053/325601574377053",
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "LIMITED", "seam": null, "lagged": {"count": 1, "of": 53, "points": [{"date": "2025-06-13", "portfolio_lag": 1, "benchmark_lag": 0}]}},
+       "v_beta": "2477789244655816573086790400/106016385236815576705012964809",
+       "details_include": ["STALE_PERIODS", "OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C15", "M-C18", "M-C24"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "tracking_error",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.172834670342",
+       "exact": null,
+       "exact_square": "538639550192/18031693120353",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "LIMITED", "seam": null, "lagged": {"count": 1, "of": 53, "points": [{"date": "2025-06-13", "portfolio_lag": 1, "benchmark_lag": 0}]}},
+       "details_include": ["STALE_PERIODS", "OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C15", "M-C17", "M-C24"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.195473282810",
+       "exact": null,
+       "exact_square": "6889874651937689/180316931203530000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["STALE_PERIODS", "OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C19", "M-C24"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000303",
+   "name": "R3 (USD; SYN21) against a CN index in CNY whose translation is stale on 2025-03-14",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4303000-0000-4000-8000-000000000001", "name": "A1"}],
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "R3-E1",
+     "event": {
+      "event_id": "e4303000-0000-4000-8000-000000000001",
+      "account_id": "a4303000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "R3-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "R3-E2",
+     "event": {
+      "event_id": "e4303000-0000-4000-8000-000000000002",
+      "account_id": "a4303000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "listing_id": "c4000000-0000-4000-8000-000000000021",
+      "quantity": "100",
+      "source_reference": "R3-E2 at 100.00"
+     }
+    }
+   ],
+   "benchmark_selections": [{"seq": 1, "selection_id": "f4303000-0000-4000-8000-000000000001", "portfolio_id": "d4000000-0000-4000-8000-000000000303", "benchmark_id": "SYN4_BM_CN_TR", "recorded_at": "2022-12-30T12:00:00Z"}],
+   "assertions": [
+    {
+     "id": "R3-X1",
+     "as_of": "2026-01-02",
+     "selection_log_version": 1,
+     "purpose": "Stale FX on the benchmark leg only: CNY quotes missing 2025-03-13/14, so at 03-14 the benchmark's translation is 2 fixings stale (LIMITED + STALE_DATA) and its lag is 2 against the portfolio's 0 (LAGGED). The portfolio holds no foreign currency. SEAM: {NYSE} against {ECB, SSE}. The window facts read 2025-01-10 and 2026-01-02 only, so they are not stale.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_CN_TR", "selection_id": "f4303000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_NET", "currency": "CNY", "currency_treatment": "TRANSLATED_UNHEDGED (ECB fixing u(g))"},
+     "expect": [
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": "STALE_DATA",
+       "value": "1.656671508147",
+       "exact": "16983505461893140203/10251582995405240860",
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {
+        "class": "LIMITED",
+        "seam": {"portfolio_calendars": ["SYN4_NYSE"], "benchmark_calendars": ["SYN4_ECB", "SYN4_SSE"], "max_offset_minutes_at_last_grid_date": 840},
+        "lagged": {"count": 1, "of": 53, "points": [{"date": "2025-03-14", "portfolio_lag": 0, "benchmark_lag": 2}]}
+       },
+       "v_beta": "10948903683947703112893042142322368983/750678242226299218883389796818668140000",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C16", "M-C18", "M-C20"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "tracking_error",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": "STALE_DATA",
+       "value": "0.128516250735",
+       "exact": null,
+       "exact_square": "1165887100737119128679/70589548315034816760000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {
+        "class": "LIMITED",
+        "seam": {"portfolio_calendars": ["SYN4_NYSE"], "benchmark_calendars": ["SYN4_ECB", "SYN4_SSE"], "max_offset_minutes_at_last_grid_date": 840},
+        "lagged": {"count": 1, "of": 53, "points": [{"date": "2025-03-14", "portfolio_lag": 0, "benchmark_lag": 2}]}
+       },
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C16", "M-C17", "M-C20"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-08"},
+       "requested_base": "2025-01-08",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.023755656109",
+       "exact": "-21/884",
+       "thresholds": null,
+       "comparability": {"class": "LIMITED", "seam": {"portfolio_calendars": ["SYN4_NYSE"], "benchmark_calendars": ["SYN4_ECB", "SYN4_SSE"], "max_offset_minutes_at_last_grid_date": 840}, "lagged": {"count": 0, "of": 2, "points": []}},
+       "decomposition_view": {"portfolio_twr": "-0.038461538462", "benchmark_return": "-0.014705882353", "active_return": "-0.023755656109"},
+       "details_include": [],
+       "bites": ["M-C20", "M-C22"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "benchmark_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-08"},
+       "requested_base": "2025-01-08",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.014705882353",
+       "exact": "-1/68",
+       "thresholds": null,
+       "details_include": [],
+       "bites": ["M-C20", "M-C22"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000304",
+   "name": "R4 (USD; SYN21) against a US index published by two sources",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4304000-0000-4000-8000-000000000001", "name": "A1"}],
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "R4-E1",
+     "event": {
+      "event_id": "e4304000-0000-4000-8000-000000000001",
+      "account_id": "a4304000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "R4-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "R4-E2",
+     "event": {
+      "event_id": "e4304000-0000-4000-8000-000000000002",
+      "account_id": "a4304000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "listing_id": "c4000000-0000-4000-8000-000000000021",
+      "quantity": "100",
+      "source_reference": "R4-E2 at 100.00"
+     }
+    }
+   ],
+   "benchmark_selections": [
+    {"seq": 1, "selection_id": "f4304000-0000-4000-8000-000000000001", "portfolio_id": "d4000000-0000-4000-8000-000000000304", "benchmark_id": "SYN4_BM_US_TR2", "recorded_at": "2022-12-30T12:00:00Z"},
+    {"seq": 2, "selection_id": "f4304000-0000-4000-8000-000000000002", "portfolio_id": "d4000000-0000-4000-8000-000000000304", "benchmark_id": "SYN4_BM_US_TR5", "recorded_at": "2026-01-15T09:00:00Z"},
+    {"seq": 3, "selection_id": "f4304000-0000-4000-8000-000000000003", "portfolio_id": "d4000000-0000-4000-8000-000000000304", "benchmark_id": "SYN4_BM_US_TR4", "recorded_at": "2026-01-16T09:00:00Z"}
+   ],
+   "assertions": [
+    {
+     "id": "R4-S1",
+     "as_of": "2026-01-02",
+     "selection_log_version": 1,
+     "purpose": "Two sources (Ruling 5.7): they disagree on 2025-08-08 only (990.00 against 991.00), so that day's level is INSUFFICIENT_DATA + SOURCE_CONFLICT and every statistic whose window contains it is too. The window facts read 2025-01-10 and 2026-01-02, where the sources agree: AVAILABLE.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR2", "selection_id": "f4304000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "SOURCE_CONFLICT",
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": null,
+       "details_include": ["BENCHMARK_SOURCE_CONFLICT", "OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C3", "M-C4"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "tracking_error",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "SOURCE_CONFLICT",
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": null,
+       "details_include": ["BENCHMARK_SOURCE_CONFLICT", "OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C3", "M-C4"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-08"},
+       "requested_base": "2025-01-08",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.009335324869",
+       "exact": "-25/2678",
+       "thresholds": null,
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 2, "points": []}},
+       "decomposition_view": {"portfolio_twr": "-0.038461538462", "benchmark_return": "-0.029126213592", "active_return": "-0.009335324870"},
+       "details_include": [],
+       "bites": ["M-C22"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "benchmark_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-08"},
+       "requested_base": "2025-01-08",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.029126213592",
+       "exact": "-3/103",
+       "thresholds": null,
+       "details_include": [],
+       "bites": ["M-C22"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R4-S2",
+     "as_of": "2025-08-08",
+     "selection_log_version": 1,
+     "purpose": "A window fact ending on the disagreement: INSUFFICIENT_DATA + SOURCE_CONFLICT.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR2", "selection_id": "f4304000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-07-04"},
+       "requested_base": "2025-07-04",
+       "effective_window": {"base_date": "2025-07-04", "last_period_end": "2025-08-08", "observation_count": 5, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "SOURCE_CONFLICT",
+       "value": null,
+       "exact": null,
+       "thresholds": null,
+       "comparability": null,
+       "details_include": ["BENCHMARK_SOURCE_CONFLICT"],
+       "bites": ["M-C3", "M-C4"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R4-S3",
+     "as_of": "2025-09-12",
+     "selection_log_version": 1,
+     "purpose": "The primary source has no level on Friday 2025-09-12; the second source has it, so the datum exists (SINGLE_SOURCE), is current, and is used.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR2", "selection_id": "f4304000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-08-15"},
+       "requested_base": "2025-08-15",
+       "effective_window": {"base_date": "2025-08-15", "last_period_end": "2025-09-12", "observation_count": 4, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.000000000000",
+       "exact": "0",
+       "thresholds": null,
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 2, "points": []}},
+       "decomposition_view": {"portfolio_twr": "0.000000000000", "benchmark_return": "0.000000000000", "active_return": "0.000000000000"},
+       "details_include": [],
+       "bites": ["M-C3"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "benchmark_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-08-15"},
+       "requested_base": "2025-08-15",
+       "effective_window": {"base_date": "2025-08-15", "last_period_end": "2025-09-12", "observation_count": 4, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.000000000000",
+       "exact": "0",
+       "thresholds": null,
+       "details_include": [],
+       "bites": ["M-C3"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R4-S4",
+     "as_of": "2025-08-08",
+     "selection_log_version": 2,
+     "purpose": "(1.9-part3; risk Ruling 5.7 (1.9), review finding CP4F-13) SYN4_BM_US_TR5: the index publishes 2 decimals (official_decimals 2); source a renders them (precision 2: bound 0), source b rounds to 1 decimal (precision 1, declared: bound 0.05) and its texts happen to show none (990). On 2025-08-08 a says 990.30, b says 990: |0.30| > 0 + 0.05, a DISAGREEMENT. Inferring b's precision from its texts (0 decimals: bound 0.5, M-C45) would call them in agreement and use 990.30.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR5", "selection_id": "f4304000-0000-4000-8000-000000000002", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-07-04"},
+       "requested_base": "2025-07-04",
+       "effective_window": {"base_date": "2025-07-04", "last_period_end": "2025-08-08", "observation_count": 5, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "SOURCE_CONFLICT",
+       "value": null,
+       "exact": null,
+       "thresholds": null,
+       "comparability": null,
+       "details_include": ["BENCHMARK_SOURCE_CONFLICT"],
+       "bites": ["M-C3", "M-C4", "M-C28", "M-C45"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R4-S6",
+     "as_of": "2026-01-02",
+     "selection_log_version": 3,
+     "purpose": "(1.9-part3; risk Ruling 5.7 (1.9)) SYN4_BM_US_TR4 is served by two sources with no declared precision: it cannot be reconciled, so it is not a usable series: MISSING_BENCHMARK, BENCHMARK_SERIES_UNAVAILABLE. Reconciling it anyway (M-C44) gives a number.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR4", "selection_id": "f4304000-0000-4000-8000-000000000003"},
+     "expect": [
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-08"},
+       "requested_base": "2025-01-08",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "MISSING_BENCHMARK",
+       "value": null,
+       "exact": null,
+       "thresholds": null,
+       "comparability": null,
+       "details_include": ["BENCHMARK_SERIES_UNAVAILABLE"],
+       "bites": ["M-C28", "M-C44"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000305",
+   "name": "R5 (USD; SYN21) against two ETF proxies",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4305000-0000-4000-8000-000000000001", "name": "A1"}],
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "R5-E1",
+     "event": {
+      "event_id": "e4305000-0000-4000-8000-000000000001",
+      "account_id": "a4305000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "R5-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "R5-E2",
+     "event": {
+      "event_id": "e4305000-0000-4000-8000-000000000002",
+      "account_id": "a4305000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "listing_id": "c4000000-0000-4000-8000-000000000021",
+      "quantity": "100",
+      "source_reference": "R5-E2 at 100.00"
+     }
+    }
+   ],
+   "benchmark_selections": [
+    {"seq": 1, "selection_id": "f4305000-0000-4000-8000-000000000001", "portfolio_id": "d4000000-0000-4000-8000-000000000305", "benchmark_id": "SYN4_BM_ETF_PROXY", "recorded_at": "2022-12-30T12:00:00Z"},
+    {"seq": 2, "selection_id": "f4305000-0000-4000-8000-000000000002", "portfolio_id": "d4000000-0000-4000-8000-000000000305", "benchmark_id": "SYN4_BM_ETF_PROXY_CONFLICT", "recorded_at": "2026-01-05T09:00:00Z"},
+    {"seq": 3, "selection_id": "f4305000-0000-4000-8000-000000000003", "portfolio_id": "d4000000-0000-4000-8000-000000000305", "benchmark_id": "SYN4_BM_ETF_PROXY_PX", "recorded_at": "2026-01-12T09:00:00Z"},
+    {"seq": 4, "selection_id": "f4305000-0000-4000-8000-000000000004", "portfolio_id": "d4000000-0000-4000-8000-000000000305", "benchmark_id": "SYN4_BM_ETF_PROXY_ID", "recorded_at": "2026-01-13T09:00:00Z"},
+    {"seq": 5, "selection_id": "f4305000-0000-4000-8000-000000000005", "portfolio_id": "d4000000-0000-4000-8000-000000000305", "benchmark_id": "SYN4_BM_ETF_PROXY_FX", "recorded_at": "2026-01-14T09:00:00Z"}
+   ],
+   "assertions": [
+    {
+     "id": "R5-E1",
+     "as_of": "2026-01-02",
+     "selection_log_version": 1,
+     "purpose": "ETF proxy (Ruling 5.5 as of 1.2): total return built from SYN31's RAW closes and its dividends: 0.50 on 2025-03-03 (feed and filing agree: CORROBORATED) and 0.40 on 2025-09-02 (feed only: SINGLE_SOURCE, used).",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_ETF_PROXY", "selection_id": "f4305000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "1.871637516963",
+       "exact": "21966244511636576867925/11736377537076681451991",
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 53, "points": []}},
+       "v_beta": "25772852430555972739638968142499137301514700/6749385326947107454205156322173258953855339969",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C5", "M-C6", "M-C18"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "tracking_error",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.112801200308",
+       "exact": null,
+       "exact_square": "956758364571978900604247/75192552179111804456250000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 53, "points": []}},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C5", "M-C6", "M-C17"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-08"},
+       "requested_base": "2025-01-08",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.036500754148",
+       "exact": "-121/3315",
+       "thresholds": null,
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 2, "points": []}},
+       "decomposition_view": {"portfolio_twr": "-0.038461538462", "benchmark_return": "-0.001960784314", "active_return": "-0.036500754148"},
+       "details_include": [],
+       "bites": ["M-C5", "M-C6", "M-C22"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "benchmark_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-08"},
+       "requested_base": "2025-01-08",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.001960784314",
+       "exact": "-1/510",
+       "thresholds": null,
+       "details_include": [],
+       "bites": ["M-C5", "M-C6", "M-C22"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R5-E2",
+     "as_of": "2026-01-02",
+     "selection_log_version": 2,
+     "purpose": "The second proxy's 2025-06-02 dividend is 0.30 in the feed and 0.35 in the filing (DISAGREEMENT): the proxy is INSUFFICIENT_DATA + SOURCE_CONFLICT from that ex-date on, until a resolution record exists.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_ETF_PROXY_CONFLICT", "selection_id": "f4305000-0000-4000-8000-000000000002", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "SOURCE_CONFLICT",
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": null,
+       "details_include": ["BENCHMARK_SOURCE_CONFLICT", "OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C7", "M-C28"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-08"},
+       "requested_base": "2025-01-08",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "SOURCE_CONFLICT",
+       "value": null,
+       "exact": null,
+       "thresholds": null,
+       "comparability": null,
+       "details_include": ["BENCHMARK_SOURCE_CONFLICT"],
+       "bites": ["M-C7", "M-C28"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R5-E3",
+     "as_of": "2025-05-30",
+     "selection_log_version": 2,
+     "purpose": "The same proxy over a window that ends before the disputed ex-date: AVAILABLE.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_ETF_PROXY_CONFLICT", "selection_id": "f4305000-0000-4000-8000-000000000002", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-15"},
+       "requested_base": "2025-01-15",
+       "effective_window": {"base_date": "2025-01-17", "last_period_end": "2025-05-30", "observation_count": 19, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.019801980198",
+       "exact": "2/101",
+       "thresholds": null,
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 2, "points": []}},
+       "decomposition_view": {"portfolio_twr": "0.029702970297", "benchmark_return": "0.009900990099", "active_return": "0.019801980198"},
+       "details_include": [],
+       "bites": ["M-C21", "M-C22", "M-C28"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R5-E4",
+     "as_of": "2026-01-02",
+     "selection_log_version": 2,
+     "purpose": "(1.6-part3; risk Ruling 5.5 (1.6)) The disputed SYN32 dividend (ex 2025-06-02) BREAKS the proxy chain at its ex-date: a window after it (g_0 = 2025-06-06) needs no ratio that spans the break, so it is AVAILABLE. Benchmark 50/50.50 - 1 = -1/101 (06-06 phase 2 to 01-02 phase 0, no dividend after the break); portfolio 100/101 - 1 = -1/101; active 0.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_ETF_PROXY_CONFLICT", "selection_id": "f4305000-0000-4000-8000-000000000002", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-06-04"},
+       "requested_base": "2025-06-04",
+       "effective_window": {"base_date": "2025-06-06", "last_period_end": "2026-01-02", "observation_count": 30, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.000000000000",
+       "exact": "0",
+       "thresholds": null,
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 2, "points": []}},
+       "decomposition_view": {"portfolio_twr": "-0.009900990099", "benchmark_return": "-0.009900990099", "active_return": "0.000000000000"},
+       "details_include": [],
+       "bites": ["M-C21", "M-C22", "M-C28", "M-C32"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "benchmark_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-06-04"},
+       "requested_base": "2025-06-04",
+       "effective_window": {"base_date": "2025-06-06", "last_period_end": "2026-01-02", "observation_count": 30, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.009900990099",
+       "exact": "-1/101",
+       "thresholds": null,
+       "details_include": [],
+       "bites": ["M-C21", "M-C22", "M-C28", "M-C32"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R5-E5",
+     "as_of": "2026-01-02",
+     "selection_log_version": 3,
+     "purpose": "(1.6-part3; risk Ruling 5.5 (1.6)) SYN33's two price sources disagree on Wednesday 2025-08-06, an interior non-grid day: that print is withheld, the chain links 08-05 to 08-07 around it (no price of 08-06 is needed), and no grid date uses it. So the 1Y beta and the window facts are what they would be without the dispute. Withholding every later print (M-C33, the engineer's current proxy) refuses them.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_ETF_PROXY_PX", "selection_id": "f4305000-0000-4000-8000-000000000003", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "1.895463177773",
+       "exact": "16450205576673/8678726007224",
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 53, "points": []}},
+       "v_beta": "51408243702670034842024275/14762775881259381726836490496",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C18", "M-C28", "M-C33"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-08"},
+       "requested_base": "2025-01-08",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.018853695324",
+       "exact": "-25/1326",
+       "thresholds": null,
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 2, "points": []}},
+       "decomposition_view": {"portfolio_twr": "-0.038461538462", "benchmark_return": "-0.019607843137", "active_return": "-0.018853695325"},
+       "details_include": [],
+       "bites": ["M-C22", "M-C28", "M-C33"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R5-E6",
+     "as_of": "2026-01-09",
+     "selection_log_version": 3,
+     "purpose": "(1.6-part3) The second SYN33 dispute falls on Friday 2026-01-09, g_n itself: the level g_n needs is withheld, so the window facts are INSUFFICIENT_DATA + SOURCE_CONFLICT (BENCHMARK_SOURCE_CONFLICT). Treating the disputed print as a missing one (M-C34) would use Thursday's level, 1 print stale, and report a number.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_ETF_PROXY_PX", "selection_id": "f4305000-0000-4000-8000-000000000003", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-15"},
+       "requested_base": "2025-01-15",
+       "effective_window": {"base_date": "2025-01-17", "last_period_end": "2026-01-09", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "SOURCE_CONFLICT",
+       "value": null,
+       "exact": null,
+       "thresholds": null,
+       "comparability": null,
+       "details_include": ["BENCHMARK_SOURCE_CONFLICT"],
+       "bites": ["M-C28", "M-C34"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "benchmark_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-15"},
+       "requested_base": "2025-01-15",
+       "effective_window": {"base_date": "2025-01-17", "last_period_end": "2026-01-09", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "SOURCE_CONFLICT",
+       "value": null,
+       "exact": null,
+       "thresholds": null,
+       "details_include": ["BENCHMARK_SOURCE_CONFLICT"],
+       "bites": ["M-C28", "M-C34"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R5-E7",
+     "as_of": "2026-01-02",
+     "selection_log_version": 4,
+     "purpose": "(1.7-part3; risk Ruling 5.5 (1.7)) SYN34: the feed states a 0.50 dividend ex 2025-03-03 (pay 03-10), the filing a 0.50 dividend ex 2025-03-05 (pay 03-12). They share no date, and their ex-dates are 2 sessions apart: possibly ONE dividend stated with different dates, so a DISAGREEMENT, and the chain breaks at both ex-dates. A window spanning them is INSUFFICIENT_DATA + SOURCE_CONFLICT. Applying both as two single-source dividends (M-C36, the engineer's decision 1) double-counts 0.50 and gives a number.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_ETF_PROXY_ID", "selection_id": "f4305000-0000-4000-8000-000000000004", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-08"},
+       "requested_base": "2025-01-08",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "SOURCE_CONFLICT",
+       "value": null,
+       "exact": null,
+       "thresholds": null,
+       "comparability": null,
+       "details_include": ["BENCHMARK_SOURCE_CONFLICT"],
+       "bites": ["M-C7", "M-C28", "M-C36"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R5-E8",
+     "as_of": "2026-01-02",
+     "selection_log_version": 4,
+     "purpose": "(1.7-part3) After the break (g_0 = 2025-06-06): the feed's 0.40 ex 2025-09-02 and the filing's 0.40 ex 2025-12-01 share no date and are far more than 20 sessions apart: two dividends, each SINGLE_SOURCE, both applied. Benchmark (50/50.50)(50.90/50.50)(49.90/49.50) - 1 = 6065/1009899; portfolio -1/101; active -16064/1009899.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_ETF_PROXY_ID", "selection_id": "f4305000-0000-4000-8000-000000000004", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-06-04"},
+       "requested_base": "2025-06-04",
+       "effective_window": {"base_date": "2025-06-06", "last_period_end": "2026-01-02", "observation_count": 30, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.015906541149",
+       "exact": "-16064/1009899",
+       "thresholds": null,
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 2, "points": []}},
+       "decomposition_view": {"portfolio_twr": "-0.009900990099", "benchmark_return": "0.006005551050", "active_return": "-0.015906541149"},
+       "details_include": [],
+       "bites": ["M-C5", "M-C6", "M-C21", "M-C22", "M-C28", "M-C32", "M-C37"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "benchmark_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-06-04"},
+       "requested_base": "2025-06-04",
+       "effective_window": {"base_date": "2025-06-06", "last_period_end": "2026-01-02", "observation_count": 30, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.006005551050",
+       "exact": "6065/1009899",
+       "thresholds": null,
+       "details_include": [],
+       "bites": ["M-C5", "M-C6", "M-C21", "M-C22", "M-C28", "M-C32", "M-C37"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R5-E9",
+     "as_of": "2026-01-02",
+     "selection_log_version": 5,
+     "purpose": "(1.8-part3; risk Ruling 5.5 (1.8), review finding CP4F-12) SYN35 trades in USD and declares dividends in CNY. (a) CNY 3.60 ex 2025-03-03 is converted at the ECB fixing of its ex-date: 3.60 x 1.08/7.80 = 162/325 USD. (b) CNY 2.00 ex 2025-03-14 falls in the CNY gap: converted at 03-12's fixing (1.08/7.839), 2 fixings missed, LIMITED + STALE_DATA for every ratio spanning 03-14. (c) CNY 3.30 ex 2025-09-02 with the issuer's stated USD payment 0.46: used as stated. Benchmark (50/51)(50 + 162/325)/50 (50.50 + 240/871)/50.50 (50.96/50.50) - 1 = 77252531/16659508125.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_ETF_PROXY_FX", "selection_id": "f4305000-0000-4000-8000-000000000005", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": "STALE_DATA",
+       "value": "1.872821671440",
+       "exact": "18082320782957133953359699858125/9655121498595324349788768923492",
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 53, "points": []}},
+       "v_beta": "50890039303024418802738741570356043981449759197640160609375/11652671394079702732526405033221909169429095978510341068684258",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C5", "M-C18", "M-C21", "M-C28", "M-C38", "M-C39", "M-C40", "M-C41", "M-C42"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "benchmark_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-08"},
+       "requested_base": "2025-01-08",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": "STALE_DATA",
+       "value": "0.004637143571",
+       "exact": "77252531/16659508125",
+       "thresholds": null,
+       "details_include": [],
+       "bites": ["M-C5", "M-C21", "M-C22", "M-C28", "M-C38", "M-C39", "M-C40", "M-C41", "M-C42"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-08"},
+       "requested_base": "2025-01-08",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": "STALE_DATA",
+       "value": "-0.043098682033",
+       "exact": "-1436005687/33319016250",
+       "thresholds": null,
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 2, "points": []}},
+       "decomposition_view": {"portfolio_twr": "-0.038461538462", "benchmark_return": "0.004637143571", "active_return": "-0.043098682033"},
+       "details_include": [],
+       "bites": ["M-C5", "M-C21", "M-C22", "M-C28", "M-C38", "M-C39", "M-C40", "M-C41", "M-C42"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R5-E10",
+     "as_of": "2026-02-06",
+     "selection_log_version": 5,
+     "purpose": "(1.9-part3; market-data Ruling 4.5 (1.14)) SYN35's CNY 3.25 dividend ex 2026-02-02: both sides state the declared fields equally, only the feed states the issuer's USD payment 0.44 (the ECB conversion would give 3.25 x 1.08/7.80 = 0.45). Corroborated, with the one-sided paid amount used as stated: benchmark (51/50.50)(50.44/50) - 1 = 1186/63125; portfolio 104/101 - 1 = 3/101; active 689/63125.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_ETF_PROXY_FX", "selection_id": "f4305000-0000-4000-8000-000000000005", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "benchmark_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2026-01-14"},
+       "requested_base": "2026-01-14",
+       "effective_window": {"base_date": "2026-01-16", "last_period_end": "2026-02-06", "observation_count": 3, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.018788118812",
+       "exact": "1186/63125",
+       "thresholds": null,
+       "details_include": [],
+       "bites": ["M-C5", "M-C21", "M-C22", "M-C28", "M-C38", "M-C41", "M-C42", "M-C43"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2026-01-14"},
+       "requested_base": "2026-01-14",
+       "effective_window": {"base_date": "2026-01-16", "last_period_end": "2026-02-06", "observation_count": 3, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.010914851485",
+       "exact": "689/63125",
+       "thresholds": null,
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 2, "points": []}},
+       "decomposition_view": {"portfolio_twr": "0.029702970297", "benchmark_return": "0.018788118812", "active_return": "0.010914851485"},
+       "details_include": [],
+       "bites": ["M-C5", "M-C21", "M-C22", "M-C28", "M-C38", "M-C41", "M-C42", "M-C43"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R5-E11",
+     "as_of": "2026-03-06",
+     "selection_log_version": 5,
+     "purpose": "(1.9-part3; market-data Ruling 4.5 (1.14), review finding CP4F-15) SYN35's CNY 3.25 dividend ex 2026-03-02: both sides state the declared fields equally, only the FILING states the issuer's USD payment 0.43 (the mirror of R5-E10; the ECB conversion would give 3.25 x 1.08/7.80 = 0.45). Corroborated, with the one-sided paid amount used as stated, whichever side states it: benchmark (51/50)(50.43/50) - 1 = 7193/250000. Keeping only the first (FEED) statement's paid fields (M-C46) drops the payment and converts: (51/50)(50.45/50) - 1 = 1459/50000.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_ETF_PROXY_FX", "selection_id": "f4305000-0000-4000-8000-000000000005", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "benchmark_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2026-02-25"},
+       "requested_base": "2026-02-25",
+       "effective_window": {"base_date": "2026-02-27", "last_period_end": "2026-03-06", "observation_count": 1, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.028772000000",
+       "exact": "7193/250000",
+       "thresholds": null,
+       "details_include": [],
+       "bites": ["M-C5", "M-C21", "M-C22", "M-C28", "M-C38", "M-C41", "M-C42", "M-C43", "M-C46"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R5-E12",
+     "as_of": "2026-03-20",
+     "selection_log_version": 5,
+     "purpose": "(1.9-part3; market-data Ruling 4.5 (1.14), review finding CP4F-15) SYN35's CNY 3.25 dividend ex 2026-03-16: both sides state the declared fields equally, and both state an issuer's USD payment, FEED 0.46 and FILING 0.47. Paid fields stated by both sides are compared (Ruling 4.5 (1.14)); they differ, so the record is a DISAGREEMENT and the series breaks at 03-16 (risk Ruling 5.5 (1.7)): every window spanning 03-16 is INSUFFICIENT_DATA, SOURCE_CONFLICT, BENCHMARK_SOURCE_CONFLICT. Keeping only the FEED payment (M-C46) would compute (49.50/50.50)(50.96/50.50) - 1 = -2773/255025 silently.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_ETF_PROXY_FX", "selection_id": "f4305000-0000-4000-8000-000000000005", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "benchmark_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2026-03-11"},
+       "requested_base": "2026-03-11",
+       "effective_window": {"base_date": "2026-03-13", "last_period_end": "2026-03-20", "observation_count": 1, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "SOURCE_CONFLICT",
+       "value": null,
+       "exact": null,
+       "thresholds": null,
+       "details_include": ["BENCHMARK_SOURCE_CONFLICT"],
+       "bites": ["M-C7", "M-C28", "M-C46"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000306",
+   "name": "R6 (USD; SYN21) against the US index: daily and monthly statistics; default views",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4306000-0000-4000-8000-000000000001", "name": "A1"}],
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "R6-E1",
+     "event": {
+      "event_id": "e4306000-0000-4000-8000-000000000001",
+      "account_id": "a4306000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "R6-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "R6-E2",
+     "event": {
+      "event_id": "e4306000-0000-4000-8000-000000000002",
+      "account_id": "a4306000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "listing_id": "c4000000-0000-4000-8000-000000000021",
+      "quantity": "100",
+      "source_reference": "R6-E2 at 100.00"
+     }
+    }
+   ],
+   "benchmark_selections": [{"seq": 1, "selection_id": "f4306000-0000-4000-8000-000000000001", "portfolio_id": "d4000000-0000-4000-8000-000000000306", "benchmark_id": "SYN4_BM_US_TR", "recorded_at": "2022-12-30T12:00:00Z"}],
+   "assertions": [
+    {
+     "id": "R6-D1",
+     "as_of": "2026-01-02",
+     "selection_log_version": 1,
+     "purpose": "Benchmark statistics at DAILY (1Y, n = 261, LIMITED) and MONTHLY (3Y, n = 35, AVAILABLE; 1Y, n = 11, LIMITED).",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR", "selection_id": "f4306000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "beta",
+       "frequency": "DAILY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-02", "last_period_end": "2026-01-02", "observation_count": 261, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "1.444722023148",
+       "exact": "1294896284006483763/896294417375100016",
+       "thresholds": {"insufficient_below": 259, "available_from": 781},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 262, "points": []}},
+       "v_beta": "923222103348955809536133699965625/8618118914710159709366036902744390912",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C18"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "tracking_error",
+       "frequency": "DAILY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-02", "last_period_end": "2026-01-02", "observation_count": 261, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.072217579633",
+       "exact": null,
+       "exact_square": "64380066928027396019/12344274365749235910000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 259, "available_from": 781},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 262, "points": []}},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C17"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "beta",
+       "frequency": "MONTHLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-31", "last_period_end": "2025-12-31", "observation_count": 35, "stub_start_days": 29, "stub_end_days": 2},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "1.442194137666",
+       "exact": "1208083389532705719/837670434223085008",
+       "thresholds": {"insufficient_below": 11, "available_from": 35},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 36, "points": []}},
+       "v_beta": "80210971908224017994068652165625/100241679481641683855753409256337152",
+       "details_include": [],
+       "bites": ["M-C18"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "tracking_error",
+       "frequency": "MONTHLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": {"base_date": "2023-01-31", "last_period_end": "2025-12-31", "observation_count": 35, "stub_start_days": 29, "stub_end_days": 2},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.020401169975",
+       "exact": null,
+       "exact_square": "59213544690864089297/142269207222965597775000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 11, "available_from": 35},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 36, "points": []}},
+       "details_include": [],
+       "bites": ["M-C17"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "beta",
+       "frequency": "MONTHLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-31", "last_period_end": "2025-12-31", "observation_count": 11, "stub_start_days": 29, "stub_end_days": 2},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "1.404062150872",
+       "exact": "144404762661/102847842292",
+       "thresholds": {"insufficient_below": 11, "available_from": 35},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 12, "points": []}},
+       "v_beta": "49412929503817266475/95199107977080934319376",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C18"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R6-V1",
+     "as_of": "2026-01-02",
+     "selection_log_version": 1,
+     "purpose": "Default view (Ruling 7.7): the 3Y request is available, so it is shown; no fallback.",
+     "expect": [
+      {
+       "kind": "default_view",
+       "metric": "beta",
+       "frequency": "WEEKLY",
+       "default_request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "fallback": false,
+       "refused": null,
+       "shown": {
+        "request": {"rule": "TRAILING_MONTHS", "months": 36},
+        "requested_base": "2023-01-02",
+        "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+        "state": "AVAILABLE",
+        "reason": null,
+        "value": "1.442146079944",
+        "exact": "505685421350637/350647849329134",
+        "details_include": []
+       },
+       "bites": ["M-C12", "M-C18"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R6-V0",
+     "as_of": "2026-01-02",
+     "selection_log_version": 0,
+     "purpose": "Default view with no benchmark in force: the 3Y request is refused for MISSING_BENCHMARK, which is not a history refusal, so there is no fallback; the refusal is what is shown.",
+     "expect": [
+      {
+       "kind": "default_view",
+       "metric": "beta",
+       "frequency": "WEEKLY",
+       "default_request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "fallback": false,
+       "refused": null,
+       "shown": {
+        "request": {"rule": "TRAILING_MONTHS", "months": 36},
+        "requested_base": "2023-01-02",
+        "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+        "state": "INSUFFICIENT_DATA",
+        "reason": "MISSING_BENCHMARK",
+        "value": null,
+        "exact": null,
+        "details_include": ["NO_BENCHMARK_SELECTED"]
+       },
+       "bites": ["M-C12"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R6-W0",
+     "as_of": "2026-01-02",
+     "selection_log_version": 0,
+     "purpose": "(1.5-part3; risk Ruling 7.3 (1.5)) A refused window (60 months on a 3-year portfolio: WINDOW_BEFORE_INCEPTION, no code) with no benchmark selected: the window-independent benchmark cause still counts, and MISSING_BENCHMARK outranks (the exit test's P7/P8 cells). Window-dependent causes (benchmark levels, coverage, staleness, the count) are not evaluated for a window that was refused.",
+     "benchmark_expected": {"benchmark_id": null, "selection_id": null},
+     "expect": [
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 60},
+       "requested_base": "2021-01-02",
+       "effective_window": null,
+       "state": "INSUFFICIENT_DATA",
+       "reason": "MISSING_BENCHMARK",
+       "value": null,
+       "comparability": null,
+       "details_include": ["NO_BENCHMARK_SELECTED", "WINDOW_BEFORE_INCEPTION"],
+       "bites": ["M-C31"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "benchmark_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 60},
+       "requested_base": "2021-01-02",
+       "effective_window": null,
+       "state": "INSUFFICIENT_DATA",
+       "reason": "MISSING_BENCHMARK",
+       "value": null,
+       "comparability": null,
+       "details_include": ["NO_BENCHMARK_SELECTED", "WINDOW_BEFORE_INCEPTION"],
+       "bites": ["M-C31"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000307",
+   "name": "R7 (HKD reporting; SYN22 received in kind) against the US index (USD into HKD): Current mode",
+   "reporting_currency": "HKD",
+   "accounts": [{"account_id": "a4307000-0000-4000-8000-000000000001", "name": "A1 (HK broker)"}],
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "R7-E1",
+     "event": {
+      "event_id": "e4307000-0000-4000-8000-000000000001",
+      "account_id": "a4307000-0000-4000-8000-000000000001",
+      "event_type": "TRANSFER_IN",
+      "event_date": "2022-12-30",
+      "currency": "HKD",
+      "listing_id": "c4000000-0000-4000-8000-000000000022",
+      "quantity": "100",
+      "source_reference": "R7-E1 external, in kind"
+     }
+    }
+   ],
+   "benchmark_selections": [{"seq": 1, "selection_id": "f4307000-0000-4000-8000-000000000001", "portfolio_id": "d4000000-0000-4000-8000-000000000307", "benchmark_id": "SYN4_BM_US_TR", "recorded_at": "2022-12-30T12:00:00Z"}],
+   "assertions": [
+    {
+     "id": "R7-C1",
+     "valuation_mode": "CURRENT",
+     "instant": "2026-01-09T09:00:00Z",
+     "selection_log_version": 1,
+     "purpose": "Current mode at 2026-01-09 09:00 UTC: the HKEX close (08:10 UTC) is past, so D_c(t) = 2026-01-09 (HKD only: no ECB test). The US close of 01-09 (21:00 UTC) and the ECB publication of 01-09 (15:00 UTC) are not yet available at t (Ruling 5.8): the benchmark uses Thursday 01-08's level and fixing, with 0 missed (not stale). SEAM offset 1140 minutes.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR", "selection_id": "f4307000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "TRANSLATED_UNHEDGED (ECB fixing u(g))"},
+     "expect": [
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-09",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-09", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "1.917988745497",
+       "exact": "24359718959946954940527600/12700657924679573112508601",
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "LIMITED", "seam": {"portfolio_calendars": ["SYN4_HKEX"], "benchmark_calendars": ["SYN4_ECB", "SYN4_NYSE"], "max_offset_minutes_at_last_grid_date": 1140}, "lagged": {"count": 0, "of": 53, "points": []}},
+       "v_beta": "4494349277421184881686034092874621237734028826800/161306711719726041049101233232853275672931298977201",
+       "as_of_resolved": "2026-01-09",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C1", "M-C18", "M-C20"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "tracking_error",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-09",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-09", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.242105930714",
+       "exact": null,
+       "exact_square": "3776702407160140999815602333/64432043973494721455085000000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "LIMITED", "seam": {"portfolio_calendars": ["SYN4_HKEX"], "benchmark_calendars": ["SYN4_ECB", "SYN4_NYSE"], "max_offset_minutes_at_last_grid_date": 1140}, "lagged": {"count": 0, "of": 53, "points": []}},
+       "as_of_resolved": "2026-01-09",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C1", "M-C17", "M-C20"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-15"},
+       "requested_base": "2025-01-15",
+       "effective_window": {"base_date": "2025-01-17", "last_period_end": "2026-01-09", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.059900990099",
+       "exact": "121/2020",
+       "thresholds": null,
+       "comparability": {"class": "LIMITED", "seam": {"portfolio_calendars": ["SYN4_HKEX"], "benchmark_calendars": ["SYN4_ECB", "SYN4_NYSE"], "max_offset_minutes_at_last_grid_date": 1140}, "lagged": {"count": 0, "of": 2, "points": []}},
+       "decomposition_view": {"portfolio_twr": "0.050000000000", "benchmark_return": "-0.009900990099", "active_return": "0.059900990099"},
+       "as_of_resolved": "2026-01-09",
+       "details_include": [],
+       "bites": ["M-C1", "M-C20", "M-C22"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "benchmark_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-15"},
+       "requested_base": "2025-01-15",
+       "effective_window": {"base_date": "2025-01-17", "last_period_end": "2026-01-09", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.009900990099",
+       "exact": "-1/101",
+       "thresholds": null,
+       "as_of_resolved": "2026-01-09",
+       "details_include": [],
+       "bites": ["M-C1", "M-C22"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R7-H1",
+     "as_of": "2026-01-09",
+     "selection_log_version": 1,
+     "purpose": "The same requests in historical mode as of 2026-01-09: the 01-09 US close and fixing are used, so the values differ. Current mode never reads a level that did not exist at t.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR", "selection_id": "f4307000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "TRANSLATED_UNHEDGED (ECB fixing u(g))"},
+     "expect": [
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-09",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-09", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "1.893236476689",
+       "exact": "11931872014978823555868000/6302367486519737416854973",
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "LIMITED", "seam": {"portfolio_calendars": ["SYN4_HKEX"], "benchmark_calendars": ["SYN4_ECB", "SYN4_NYSE"], "max_offset_minutes_at_last_grid_date": 770}, "lagged": {"count": 0, "of": 53, "points": []}},
+       "v_beta": "142297926430232861834412461820451911674241120000/5674262276448730370108421058242119424610073547247",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C18", "M-C20"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "tracking_error",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-09",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-09", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.237458889372",
+       "exact": null,
+       "exact_square": "290648951155037926990743156121/5154563517879577716406800000000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "LIMITED", "seam": {"portfolio_calendars": ["SYN4_HKEX"], "benchmark_calendars": ["SYN4_ECB", "SYN4_NYSE"], "max_offset_minutes_at_last_grid_date": 770}, "lagged": {"count": 0, "of": 53, "points": []}},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C17", "M-C20"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-15"},
+       "requested_base": "2025-01-15",
+       "effective_window": {"base_date": "2025-01-17", "last_period_end": "2026-01-09", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.025099009901",
+       "exact": "507/20200",
+       "thresholds": null,
+       "comparability": {"class": "LIMITED", "seam": {"portfolio_calendars": ["SYN4_HKEX"], "benchmark_calendars": ["SYN4_ECB", "SYN4_NYSE"], "max_offset_minutes_at_last_grid_date": 770}, "lagged": {"count": 0, "of": 2, "points": []}},
+       "decomposition_view": {"portfolio_twr": "0.050000000000", "benchmark_return": "0.024900990099", "active_return": "0.025099009901"},
+       "details_include": [],
+       "bites": ["M-C20", "M-C22"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "benchmark_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-15"},
+       "requested_base": "2025-01-15",
+       "effective_window": {"base_date": "2025-01-17", "last_period_end": "2026-01-09", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.024900990099",
+       "exact": "503/20200",
+       "thresholds": null,
+       "details_include": [],
+       "bites": ["M-C20", "M-C22"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R7-C2",
+     "valuation_mode": "CURRENT",
+     "instant": "2026-01-09T07:00:00Z",
+     "selection_log_version": 1,
+     "purpose": "Current mode at 2026-01-09 07:00 UTC, before the HKEX close: D_c(t) = 2026-01-08, so the last weekly grid date is 2026-01-02.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR", "selection_id": "f4307000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "TRANSLATED_UNHEDGED (ECB fixing u(g))"},
+     "expect": [
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-15"},
+       "requested_base": "2025-01-15",
+       "effective_window": {"base_date": "2025-01-17", "last_period_end": "2026-01-02", "observation_count": 50, "stub_start_days": 2, "stub_end_days": 6},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.009900990099",
+       "exact": "1/101",
+       "thresholds": null,
+       "comparability": {"class": "LIMITED", "seam": {"portfolio_calendars": ["SYN4_HKEX"], "benchmark_calendars": ["SYN4_ECB", "SYN4_NYSE"], "max_offset_minutes_at_last_grid_date": 770}, "lagged": {"count": 0, "of": 2, "points": []}},
+       "decomposition_view": {"portfolio_twr": "0.000000000000", "benchmark_return": "-0.009900990099", "active_return": "0.009900990099"},
+       "as_of_resolved": "2026-01-08",
+       "details_include": [],
+       "bites": ["M-C2", "M-C22"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "benchmark_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-15"},
+       "requested_base": "2025-01-15",
+       "effective_window": {"base_date": "2025-01-17", "last_period_end": "2026-01-02", "observation_count": 50, "stub_start_days": 2, "stub_end_days": 6},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.009900990099",
+       "exact": "-1/101",
+       "thresholds": null,
+       "as_of_resolved": "2026-01-08",
+       "details_include": [],
+       "bites": ["M-C2", "M-C22"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000308",
+   "name": "R8 (USD; two accounts: A1 holds SYN21, A2 holds cash until it is transferred to A1 on 2025-06-11)",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4308000-0000-4000-8000-000000000001", "name": "A1 (securities)"}, {"account_id": "a4308000-0000-4000-8000-000000000002", "name": "A2 (cash)"}],
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "R8-E1",
+     "event": {
+      "event_id": "e4308000-0000-4000-8000-000000000001",
+      "account_id": "a4308000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "R8-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "R8-E2",
+     "event": {
+      "event_id": "e4308000-0000-4000-8000-000000000002",
+      "account_id": "a4308000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "listing_id": "c4000000-0000-4000-8000-000000000021",
+      "quantity": "100",
+      "source_reference": "R8-E2 at 100.00"
+     }
+    },
+    {
+     "ledger_seq": 3,
+     "label": "R8-E3",
+     "event": {
+      "event_id": "e4308000-0000-4000-8000-000000000003",
+      "account_id": "a4308000-0000-4000-8000-000000000002",
+      "event_type": "DEPOSIT",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10100", "currency": "USD"},
+      "source_reference": "R8-E3"
+     }
+    },
+    {
+     "ledger_seq": 4,
+     "label": "R8-E4",
+     "event": {
+      "event_id": "e4308000-0000-4000-8000-000000000004",
+      "account_id": "a4308000-0000-4000-8000-000000000002",
+      "event_type": "TRANSFER_OUT",
+      "event_date": "2025-06-11",
+      "currency": "USD",
+      "amount": {"amount": "10100", "currency": "USD"},
+      "counterparty_account_id": "a4308000-0000-4000-8000-000000000001",
+      "source_reference": "R8-E4 internal, to A1"
+     }
+    },
+    {
+     "ledger_seq": 5,
+     "label": "R8-E5",
+     "event": {
+      "event_id": "e4308000-0000-4000-8000-000000000005",
+      "account_id": "a4308000-0000-4000-8000-000000000001",
+      "event_type": "TRANSFER_IN",
+      "event_date": "2025-06-11",
+      "currency": "USD",
+      "amount": {"amount": "10100", "currency": "USD"},
+      "counterparty_account_id": "a4308000-0000-4000-8000-000000000002",
+      "source_reference": "R8-E5 internal, from A2"
+     }
+    },
+    {
+     "ledger_seq": 6,
+     "label": "R8-E6",
+     "event": {
+      "event_id": "e4308000-0000-4000-8000-000000000006",
+      "account_id": "a4308000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2025-06-11",
+      "currency": "USD",
+      "amount": {"amount": "10100", "currency": "USD"},
+      "listing_id": "c4000000-0000-4000-8000-000000000021",
+      "quantity": "100",
+      "source_reference": "R8-E6 at 101.00"
+     }
+    }
+   ],
+   "benchmark_selections": [{"seq": 1, "selection_id": "f4308000-0000-4000-8000-000000000001", "portfolio_id": "d4000000-0000-4000-8000-000000000308", "benchmark_id": "SYN4_BM_US_TR", "recorded_at": "2022-12-30T12:00:00Z"}],
+   "assertions": [
+    {
+     "id": "R8-K1",
+     "as_of": "2026-01-02",
+     "selection_log_version": 1,
+     "purpose": "Account scope (Ruling 0.1): at A1's scope the internal transfer is a cash inflow, so A1's returns are SYN21's and its statistics equal part 2's Q1 (beta 1.442146079944). At A2's scope the account is empty after 06-11: ZERO_CAPITAL_PERIOD, and MAX_AVAILABLE has no full period after it. At portfolio scope the transfer is neutral. The benchmark is the portfolio's selection at every scope.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR", "selection_id": "f4308000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "scope": {"kind": "ACCOUNT", "account_id": "a4308000-0000-4000-8000-000000000001"},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "1.442146079944",
+       "exact": "505685421350637/350647849329134",
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 53, "points": []}},
+       "v_beta": "134276068632682083352522223925/254545340953594199668736128506409",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C10", "M-C18"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "tracking_error",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "scope": {"kind": "ACCOUNT", "account_id": "a4308000-0000-4000-8000-000000000001"},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.072168023510",
+       "exact": null,
+       "exact_square": "9019413160671125809/1731763807278702120000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 53, "points": []}},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C10", "M-C17"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "scope": {"kind": "ACCOUNT", "account_id": "a4308000-0000-4000-8000-000000000001"},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.222352722900",
+       "exact": null,
+       "exact_square": "2470301597923/49964906040000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C10", "M-C19"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "scope": {"kind": "ACCOUNT", "account_id": "a4308000-0000-4000-8000-000000000002"},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["ZERO_CAPITAL_PERIOD", "PERIOD_INSUFFICIENT", "OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C9"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "MAX_AVAILABLE"},
+       "scope": {"kind": "ACCOUNT", "account_id": "a4308000-0000-4000-8000-000000000002"},
+       "requested_base": "2022-12-29",
+       "effective_window": null,
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "details_include": ["NO_FULL_PERIOD"],
+       "bites": ["M-C9"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "1.126616183578",
+       "exact": "2807386797237209885907/2491875084131148150526",
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 53, "points": []}},
+       "v_beta": "965733294322085732405586881238798954207018432/321377403265747872944069366892950665763180962225",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C18"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.182543501278",
+       "exact": null,
+       "exact_square": "10089955477672660305819113/302800436839669551829300800",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C19"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000309",
+   "name": "R9 (USD; cash withdrawn on 2025-03-05 and re-deposited and invested on 2025-04-02)",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4309000-0000-4000-8000-000000000001", "name": "A1"}],
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "R9-E1",
+     "event": {
+      "event_id": "e4309000-0000-4000-8000-000000000001",
+      "account_id": "a4309000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2024-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "R9-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "R9-E2",
+     "event": {
+      "event_id": "e4309000-0000-4000-8000-000000000002",
+      "account_id": "a4309000-0000-4000-8000-000000000001",
+      "event_type": "WITHDRAWAL",
+      "event_date": "2025-03-05",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "R9-E2"
+     }
+    },
+    {
+     "ledger_seq": 3,
+     "label": "R9-E3",
+     "event": {
+      "event_id": "e4309000-0000-4000-8000-000000000003",
+      "account_id": "a4309000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2025-04-02",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "R9-E3"
+     }
+    },
+    {
+     "ledger_seq": 4,
+     "label": "R9-E4",
+     "event": {
+      "event_id": "e4309000-0000-4000-8000-000000000004",
+      "account_id": "a4309000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2025-04-02",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "listing_id": "c4000000-0000-4000-8000-000000000021",
+      "quantity": "100",
+      "source_reference": "R9-E4 at 100.00"
+     }
+    }
+   ],
+   "benchmark_selections": [{"seq": 1, "selection_id": "f4309000-0000-4000-8000-000000000001", "portfolio_id": "d4000000-0000-4000-8000-000000000309", "benchmark_id": "SYN4_BM_US_TR", "recorded_at": "2022-12-30T12:00:00Z"}],
+   "assertions": [
+    {
+     "id": "R9-Z1",
+     "as_of": "2026-01-02",
+     "selection_log_version": 1,
+     "purpose": "Zero-capital periods (Ruling 2.4): the weeks ending 03-14, 03-21 and 03-28 hold no capital at any time. 1Y: INSUFFICIENT_DATA, ZERO_CAPITAL_PERIOD. MAX_AVAILABLE starts at 03-28 (40 weeks): volatility INSUFFICIENT by count, maximum drawdown AVAILABLE. The default view falls back to MAX_AVAILABLE.",
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["ZERO_CAPITAL_PERIOD", "PERIOD_INSUFFICIENT", "OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C9"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "MAX_AVAILABLE"},
+       "requested_base": "2024-12-29",
+       "effective_window": {"base_date": "2025-03-28", "last_period_end": "2026-01-02", "observation_count": 40, "stub_start_days": 89, "stub_end_days": 0, "max_available_start": "AFTER_INSUFFICIENT_PERIOD"},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["INSUFFICIENT_OBSERVATIONS"],
+       "bites": ["M-C9"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "max_drawdown",
+       "frequency": "WEEKLY",
+       "request": {"rule": "MAX_AVAILABLE"},
+       "requested_base": "2024-12-29",
+       "effective_window": {"base_date": "2025-03-28", "last_period_end": "2026-01-02", "observation_count": 40, "stub_start_days": 89, "stub_end_days": 0, "max_available_start": "AFTER_INSUFFICIENT_PERIOD"},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.057692307692",
+       "exact": "-3/52",
+       "thresholds": null,
+       "peak_date": "2025-04-04",
+       "trough_date": "2025-04-18",
+       "recovery_date": "2025-05-02",
+       "details_include": [],
+       "bites": ["M-C9"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "default_view",
+       "metric": "volatility",
+       "frequency": "WEEKLY",
+       "default_request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "fallback": true,
+       "refused": {
+        "request": {"rule": "TRAILING_MONTHS", "months": 36},
+        "requested_base": "2023-01-02",
+        "effective_window": null,
+        "state": "INSUFFICIENT_DATA",
+        "reason": null,
+        "value": null,
+        "details_include": ["WINDOW_BEFORE_INCEPTION"]
+       },
+       "shown": {
+        "request": {"rule": "MAX_AVAILABLE"},
+        "requested_base": "2024-12-29",
+        "effective_window": {"base_date": "2025-03-28", "last_period_end": "2026-01-02", "observation_count": 40, "stub_start_days": 89, "stub_end_days": 0, "max_available_start": "AFTER_INSUFFICIENT_PERIOD"},
+        "state": "INSUFFICIENT_DATA",
+        "reason": null,
+        "value": null,
+        "exact": null,
+        "details_include": ["INSUFFICIENT_OBSERVATIONS"]
+       },
+       "bites": ["M-C9", "M-C13"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R9-Z2",
+     "as_of": "2025-04-04",
+     "selection_log_version": 1,
+     "purpose": "The series around the gap: the week ending 03-07 (withdrawal at the end of Wednesday) is an observation with return 0; three zero-capital weeks; the week ending 04-04 (deposit at the start of Wednesday) is an observation with return 4 %.",
+     "expect": [
+      {
+       "kind": "return_series",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-02-28"},
+       "requested_base": "2025-02-28",
+       "effective_window": {"base_date": "2025-02-28", "last_period_end": "2025-04-04", "observation_count": 5, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "returns": [
+        {"period_end": "2025-03-07", "exact": "0", "state": "AVAILABLE"},
+        {"period_end": "2025-03-14", "exact": null, "state": "INSUFFICIENT_DATA"},
+        {"period_end": "2025-03-21", "exact": null, "state": "INSUFFICIENT_DATA"},
+        {"period_end": "2025-03-28", "exact": null, "state": "INSUFFICIENT_DATA"},
+        {"period_end": "2025-04-04", "exact": "1/25", "state": "AVAILABLE"}
+       ],
+       "details_include": ["ZERO_CAPITAL_PERIOD", "PERIOD_INSUFFICIENT"],
+       "bites": ["M-C9"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R9-Z3",
+     "as_of": "2026-01-02",
+     "selection_log_version": 1,
+     "purpose": "(1.5-part3; risk Ruling 6.9 (1.5)) The active return over a window that contains a ZERO_CAPITAL_PERIOD (the weeks ending 03-14, 03-21, 03-28) is INSUFFICIENT_DATA, detail ZERO_CAPITAL_PERIOD: the TWR's factor 1 for the empty weeks is an accounting convention, and set against the benchmark's real return over those weeks it would become a measured 0 % (M-C30 gives AVAILABLE 0). The benchmark return over the same window is unaffected; a window that starts after the gap (base 2025-04-01) is AVAILABLE.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR", "selection_id": "f4309000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "thresholds": null,
+       "comparability": null,
+       "details_include": ["ZERO_CAPITAL_PERIOD"],
+       "bites": ["M-C9", "M-C30"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "benchmark_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "0.000000000000",
+       "exact": "0",
+       "thresholds": null,
+       "details_include": [],
+       "bites": ["M-C22"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-04-01"},
+       "requested_base": "2025-04-01",
+       "effective_window": {"base_date": "2025-04-04", "last_period_end": "2026-01-02", "observation_count": 39, "stub_start_days": 3, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.009335324869",
+       "exact": "-25/2678",
+       "thresholds": null,
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 2, "points": []}},
+       "decomposition_view": {"portfolio_twr": "-0.038461538462", "benchmark_return": "-0.029126213592", "active_return": "-0.009335324870"},
+       "details_include": [],
+       "bites": ["M-C22"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000310",
+   "name": "R10 (USD; a snapshot on 2024-11-29: 100 SYN21 and 500 USD)",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4310000-0000-4000-8000-000000000001", "name": "A1 (snapshot)"}],
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "R10-E1",
+     "event": {
+      "event_id": "e4310000-0000-4000-8000-000000000001",
+      "account_id": "a4310000-0000-4000-8000-000000000001",
+      "event_type": "OPENING_POSITION",
+      "event_date": "2024-11-29",
+      "currency": "USD",
+      "listing_id": "c4000000-0000-4000-8000-000000000021",
+      "quantity": "100",
+      "source_reference": "R10-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "R10-E2",
+     "event": {
+      "event_id": "e4310000-0000-4000-8000-000000000002",
+      "account_id": "a4310000-0000-4000-8000-000000000001",
+      "event_type": "OPENING_CASH",
+      "event_date": "2024-11-29",
+      "currency": "USD",
+      "amount": {"amount": "500", "currency": "USD"},
+      "source_reference": "R10-E2"
+     }
+    }
+   ],
+   "benchmark_selections": [{"seq": 1, "selection_id": "f4310000-0000-4000-8000-000000000001", "portfolio_id": "d4000000-0000-4000-8000-000000000310", "benchmark_id": "SYN4_BM_US_TR", "recorded_at": "2022-12-30T12:00:00Z"}],
+   "assertions": [
+    {
+     "id": "R10-S1",
+     "as_of": "2026-01-02",
+     "selection_log_version": 1,
+     "purpose": "Snapshot portfolio: history starts at S = 2024-11-29. 3Y: NOT_RECONSTRUCTABLE (WINDOW_BEFORE_SNAPSHOT). 1Y: valid, LIMITED. MAX_AVAILABLE: from S, 57 weeks, LIMITED. The default view (PD-0040) falls back to MAX_AVAILABLE and keeps the 3Y refusal.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR", "selection_id": "f4310000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2023-01-02",
+       "effective_window": null,
+       "state": "INSUFFICIENT_DATA",
+       "reason": "NOT_RECONSTRUCTABLE",
+       "value": null,
+       "details_include": ["WINDOW_BEFORE_SNAPSHOT"],
+       "bites": ["M-C11"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.211854161947",
+       "exact": null,
+       "exact_square": "11913536395267481/265440199653461700",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C19"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "MAX_AVAILABLE"},
+       "requested_base": "2024-11-29",
+       "effective_window": {"base_date": "2024-11-29", "last_period_end": "2026-01-02", "observation_count": 57, "stub_start_days": 0, "stub_end_days": 0, "max_available_start": "INCEPTION"},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.210590228707",
+       "exact": null,
+       "exact_square": "39470175925365211/890005375308665700",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C19"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "MAX_AVAILABLE"},
+       "requested_base": "2024-11-29",
+       "effective_window": {"base_date": "2024-11-29", "last_period_end": "2026-01-02", "observation_count": 57, "stub_start_days": 0, "stub_end_days": 0, "max_available_start": "INCEPTION"},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "1.376190369476",
+       "exact": "6646491904136442380/4829631169900600693",
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 58, "points": []}},
+       "v_beta": "97048659018676221516638835323500/213993919608031604745712677451670461",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C18"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "default_view",
+       "metric": "volatility",
+       "frequency": "WEEKLY",
+       "default_request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "fallback": true,
+       "refused": {
+        "request": {"rule": "TRAILING_MONTHS", "months": 36},
+        "requested_base": "2023-01-02",
+        "effective_window": null,
+        "state": "INSUFFICIENT_DATA",
+        "reason": "NOT_RECONSTRUCTABLE",
+        "value": null,
+        "details_include": ["WINDOW_BEFORE_SNAPSHOT"]
+       },
+       "shown": {
+        "request": {"rule": "MAX_AVAILABLE"},
+        "requested_base": "2024-11-29",
+        "effective_window": {"base_date": "2024-11-29", "last_period_end": "2026-01-02", "observation_count": 57, "stub_start_days": 0, "stub_end_days": 0, "max_available_start": "INCEPTION"},
+        "state": "LIMITED",
+        "reason": null,
+        "value": "0.210590228707",
+        "exact": null,
+        "exact_square": "39470175925365211/890005375308665700",
+        "sign": 1,
+        "details_include": ["OBSERVATIONS_BELOW_STANDARD"]
+       },
+       "bites": ["M-C11", "M-C13", "M-C19"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000311",
+   "name": "R11 (USD; SYN43, whose corroborated 2:1 split of 2025-09-08 is NOT in the ledger)",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4311000-0000-4000-8000-000000000001", "name": "A1"}],
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "R11-E1",
+     "event": {
+      "event_id": "e4311000-0000-4000-8000-000000000001",
+      "account_id": "a4311000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "R11-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "R11-E2",
+     "event": {
+      "event_id": "e4311000-0000-4000-8000-000000000002",
+      "account_id": "a4311000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "listing_id": "c4000000-0000-4000-8000-000000000043",
+      "quantity": "100",
+      "source_reference": "R11-E2 at 100.00"
+     }
+    }
+   ],
+   "benchmark_selections": [{"seq": 1, "selection_id": "f4311000-0000-4000-8000-000000000001", "portfolio_id": "d4000000-0000-4000-8000-000000000311", "benchmark_id": "SYN4_BM_US_TR", "recorded_at": "2022-12-30T12:00:00Z"}],
+   "assertions": [
+    {
+     "id": "R11-X1",
+     "as_of": "2026-01-02",
+     "selection_log_version": 1,
+     "purpose": "Split suppression (market-data Ruling 6.4 item 2): every valuation from 2025-09-08 is INSUFFICIENT_DATA + SOURCE_CONFLICT, so is every statistic over a window that reaches it, and MAX_AVAILABLE has no full period after it.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR", "selection_id": "f4311000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "SOURCE_CONFLICT",
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": null,
+       "details_include": ["PERIOD_INSUFFICIENT", "OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C8"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "SOURCE_CONFLICT",
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["PERIOD_INSUFFICIENT", "OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C8"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "MAX_AVAILABLE"},
+       "requested_base": "2022-12-29",
+       "effective_window": null,
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "details_include": ["NO_FULL_PERIOD"],
+       "bites": ["M-C8"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R11-X2",
+     "as_of": "2025-09-05",
+     "selection_log_version": 1,
+     "purpose": "A window fact that ends before the ex-date: AVAILABLE.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR", "selection_id": "f4311000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-08"},
+       "requested_base": "2025-01-08",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2025-09-05", "observation_count": 34, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "value": "-0.018857356236",
+       "exact": "-101/5356",
+       "thresholds": null,
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 2, "points": []}},
+       "decomposition_view": {"portfolio_twr": "-0.057692307692", "benchmark_return": "-0.038834951456", "active_return": "-0.018857356236"},
+       "details_include": [],
+       "bites": ["M-C22"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R11-X3",
+     "as_of": "2025-09-12",
+     "selection_log_version": 1,
+     "purpose": "A window fact that ends after the ex-date: INSUFFICIENT_DATA + SOURCE_CONFLICT.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR", "selection_id": "f4311000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "active_return",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-01-08"},
+       "requested_base": "2025-01-08",
+       "effective_window": {"base_date": "2025-01-10", "last_period_end": "2025-09-12", "observation_count": 35, "stub_start_days": 2, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "SOURCE_CONFLICT",
+       "value": null,
+       "exact": null,
+       "thresholds": null,
+       "comparability": null,
+       "details_include": [],
+       "bites": ["M-C8"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R11-V1",
+     "as_of": "2026-01-02",
+     "selection_log_version": 1,
+     "purpose": "(1.6-part3; risk Ruling 7.7 (1.6), PD-0040 addendum) Default view of the ACTIVE RETURN: the 3Y request is refused by its portfolio leg (TWR(g_0, g_n] is INSUFFICIENT_DATA + SOURCE_CONFLICT: the uncovered split suppresses the valuations from 2025-09-08), a gap in the portfolio's own history, so the view falls back to MAX_AVAILABLE, as volatility and drawdown do beside it. Here MAX_AVAILABLE has no full period after the gap (NO_FULL_PERIOD), and that is what is shown, with the 3Y refusal in the evidence.",
+     "expect": [
+      {
+       "kind": "default_view",
+       "metric": "active_return",
+       "frequency": "WEEKLY",
+       "default_request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "fallback": true,
+       "refused": {
+        "request": {"rule": "TRAILING_MONTHS", "months": 36},
+        "requested_base": "2023-01-02",
+        "effective_window": {"base_date": "2023-01-06", "last_period_end": "2026-01-02", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+        "state": "INSUFFICIENT_DATA",
+        "reason": "SOURCE_CONFLICT",
+        "value": null,
+        "exact": null,
+        "details_include": []
+       },
+       "shown": {
+        "request": {"rule": "MAX_AVAILABLE"},
+        "requested_base": "2022-12-29",
+        "effective_window": null,
+        "state": "INSUFFICIENT_DATA",
+        "reason": null,
+        "value": null,
+        "details_include": ["NO_FULL_PERIOD"]
+       },
+       "bites": ["M-C8", "M-C13", "M-C35"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000312",
+   "name": "R12 (USD; SYN43 with the 2:1 split recorded in the ledger on its ex-date)",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4312000-0000-4000-8000-000000000001", "name": "A1"}],
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "R12-E1",
+     "event": {
+      "event_id": "e4312000-0000-4000-8000-000000000001",
+      "account_id": "a4312000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "R12-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "R12-E2",
+     "event": {
+      "event_id": "e4312000-0000-4000-8000-000000000002",
+      "account_id": "a4312000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "listing_id": "c4000000-0000-4000-8000-000000000043",
+      "quantity": "100",
+      "source_reference": "R12-E2 at 100.00"
+     }
+    },
+    {
+     "ledger_seq": 3,
+     "label": "R12-E3",
+     "event": {
+      "event_id": "e4312000-0000-4000-8000-000000000003",
+      "account_id": "a4312000-0000-4000-8000-000000000001",
+      "event_type": "SPLIT",
+      "event_date": "2025-09-08",
+      "currency": "USD",
+      "listing_id": "c4000000-0000-4000-8000-000000000043",
+      "split_ratio": {"new_units": "2", "old_units": "1"},
+      "source_reference": "R12-E3"
+     }
+    }
+   ],
+   "benchmark_selections": [{"seq": 1, "selection_id": "f4312000-0000-4000-8000-000000000001", "portfolio_id": "d4000000-0000-4000-8000-000000000312", "benchmark_id": "SYN4_BM_US_TR", "recorded_at": "2022-12-30T12:00:00Z"}],
+   "assertions": [
+    {
+     "id": "R12-X1",
+     "as_of": "2026-01-02",
+     "selection_log_version": 1,
+     "purpose": "The same holding with the split recorded: valuation is continuous (100 at 98.00 = 200 at 49.00), the periodic returns are SYN21's, and beta equals part 2's Q1.",
+     "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR", "selection_id": "f4312000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "1.442146079944",
+       "exact": "505685421350637/350647849329134",
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 53, "points": []}},
+       "v_beta": "134276068632682083352522223925/254545340953594199668736128506409",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C18", "M-C23"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "volatility",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2025-01-02",
+       "effective_window": {"base_date": "2025-01-03", "last_period_end": "2026-01-02", "observation_count": 52, "stub_start_days": 1, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.222352722900",
+       "exact": null,
+       "exact_square": "2470301597923/49964906040000",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-C19", "M-C23"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R12-X2",
+     "as_of": "2025-09-12",
+     "selection_log_version": 1,
+     "purpose": "The series across the ex-date: the week ending 2025-09-12 returns 200 x 50 / (100 x 98) - 1 = 1/49, as the unsplit cycle.",
+     "expect": [
+      {
+       "kind": "return_series",
+       "frequency": "WEEKLY",
+       "request": {"rule": "CUSTOM", "base": "2025-08-29"},
+       "requested_base": "2025-08-29",
+       "effective_window": {"base_date": "2025-08-29", "last_period_end": "2025-09-12", "observation_count": 2, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "returns": [{"period_end": "2025-09-05", "exact": "-3/101", "state": "AVAILABLE"}, {"period_end": "2025-09-12", "exact": "1/49", "state": "AVAILABLE"}],
+       "details_include": [],
+       "bites": ["M-C23"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d4000000-0000-4000-8000-000000000313",
+   "name": "R13 (USD; SYN21): a selection log with reversals and corrections",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a4313000-0000-4000-8000-000000000001", "name": "A1"}],
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "R13-E1",
+     "event": {
+      "event_id": "e4313000-0000-4000-8000-000000000001",
+      "account_id": "a4313000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "R13-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "R13-E2",
+     "event": {
+      "event_id": "e4313000-0000-4000-8000-000000000002",
+      "account_id": "a4313000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2022-12-30",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "listing_id": "c4000000-0000-4000-8000-000000000021",
+      "quantity": "100",
+      "source_reference": "R13-E2 at 100.00"
+     }
+    }
+   ],
+   "benchmark_selections": [
+    {"seq": 1, "selection_id": "f4313000-0000-4000-8000-000000000001", "portfolio_id": "d4000000-0000-4000-8000-000000000313", "record_type": "SELECT", "benchmark_id": "SYN4_BM_US_TR", "recorded_at": "2025-01-02T12:00:00Z"},
+    {"seq": 2, "selection_id": "f4313000-0000-4000-8000-000000000002", "portfolio_id": "d4000000-0000-4000-8000-000000000313", "record_type": "SELECT", "benchmark_id": "SYN4_BM_CN_TR", "recorded_at": "2025-02-03T12:00:00Z"},
+    {"seq": 3, "selection_id": "f4313000-0000-4000-8000-000000000003", "portfolio_id": "d4000000-0000-4000-8000-000000000313", "record_type": "REVERSAL", "benchmark_id": null, "reverses_selection_id": "f4313000-0000-4000-8000-000000000002", "recorded_at": "2025-02-04T12:00:00Z"},
+    {"seq": 4, "selection_id": "f4313000-0000-4000-8000-000000000004", "portfolio_id": "d4000000-0000-4000-8000-000000000313", "record_type": "CLEAR", "benchmark_id": null, "recorded_at": "2025-03-03T12:00:00Z"},
+    {"seq": 5, "selection_id": "f4313000-0000-4000-8000-000000000005", "portfolio_id": "d4000000-0000-4000-8000-000000000313", "record_type": "REVERSAL", "benchmark_id": null, "reverses_selection_id": "f4313000-0000-4000-8000-000000000004", "recorded_at": "2025-03-04T12:00:00Z"},
+    {"seq": 6, "selection_id": "f4313000-0000-4000-8000-000000000006", "portfolio_id": "d4000000-0000-4000-8000-000000000313", "record_type": "SELECT", "benchmark_id": "SYN4_BM_CN_TR", "recorded_at": "2025-04-01T12:00:00Z"},
+    {"seq": 7, "selection_id": "f4313000-0000-4000-8000-000000000007", "portfolio_id": "d4000000-0000-4000-8000-000000000313", "record_type": "REVERSAL", "benchmark_id": null, "reverses_selection_id": "f4313000-0000-4000-8000-000000000001", "recorded_at": "2025-05-02T12:00:00Z", "atomic_with_seq": 8},
+    {"seq": 8, "selection_id": "f4313000-0000-4000-8000-000000000008", "portfolio_id": "d4000000-0000-4000-8000-000000000313", "record_type": "SELECT", "benchmark_id": "SYN4_BM_ETF_PROXY", "corrects_selection_id": "f4313000-0000-4000-8000-000000000001", "recorded_at": "2025-05-02T12:00:00Z", "atomic_with_seq": 7},
+    {"seq": 9, "selection_id": "f4313000-0000-4000-8000-000000000009", "portfolio_id": "d4000000-0000-4000-8000-000000000313", "record_type": "REVERSAL", "benchmark_id": null, "reverses_selection_id": "f4313000-0000-4000-8000-000000000006", "recorded_at": "2025-06-02T12:00:00Z", "atomic_with_seq": 10},
+    {"seq": 10, "selection_id": "f4313000-0000-4000-8000-000000000010", "portfolio_id": "d4000000-0000-4000-8000-000000000313", "record_type": "SELECT", "benchmark_id": "SYN4_BM_US_TR2", "corrects_selection_id": "f4313000-0000-4000-8000-000000000006", "recorded_at": "2025-06-02T12:00:00Z", "atomic_with_seq": 9}
+   ],
+   "assertions": [
+    {"id": "R13-V2", "as_of": "2026-01-02", "selection_log_version": 2, "purpose": "Two SELECTs: the latest (seq 2, the CN index) is in force.", "benchmark_expected": {"benchmark_id": "SYN4_BM_CN_TR", "selection_id": "f4313000-0000-4000-8000-000000000002", "return_basis": "TOTAL_RETURN_NET", "currency": "CNY", "currency_treatment": "TRANSLATED_UNHEDGED (ECB fixing u(g))"}, "expect": [{"kind": "selection_resolution", "selection": {"state": "IN_FORCE", "selection_id": "f4313000-0000-4000-8000-000000000002", "seq": 2, "benchmark_id": "SYN4_BM_CN_TR"}, "bites": ["M-C28"], "tolerance": "0"}, {"kind": "benchmark_return", "frequency": "WEEKLY", "request": {"rule": "CUSTOM", "base": "2025-01-08"}, "requested_base": "2025-01-08", "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0}, "state": "AVAILABLE", "reason": null, "value": "-0.014705882353", "exact": "-1/68", "thresholds": null, "details_include": [], "bites": ["M-C20", "M-C22", "M-C28"], "tolerance": "0"}]},
+    {"id": "R13-V3", "as_of": "2026-01-02", "selection_log_version": 3, "purpose": "Seq 3 reverses seq 2 (recorded in error): seq 2 is void, so the latest remaining record, seq 1 (the US index), is in force again. Not NONE: seq 1 was never withdrawn.", "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR", "selection_id": "f4313000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"}, "expect": [{"kind": "selection_resolution", "selection": {"state": "IN_FORCE", "selection_id": "f4313000-0000-4000-8000-000000000001", "seq": 1, "benchmark_id": "SYN4_BM_US_TR"}, "bites": ["M-C25", "M-C26"], "tolerance": "0"}, {"kind": "benchmark_return", "frequency": "WEEKLY", "request": {"rule": "CUSTOM", "base": "2025-01-08"}, "requested_base": "2025-01-08", "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0}, "state": "AVAILABLE", "reason": null, "value": "-0.029126213592", "exact": "-3/103", "thresholds": null, "details_include": [], "bites": ["M-C22", "M-C25", "M-C26"], "tolerance": "0"}]},
+    {"id": "R13-V4", "as_of": "2026-01-02", "selection_log_version": 4, "purpose": "Seq 4 is a CLEAR, the latest live record: CLEARED, MISSING_BENCHMARK.", "benchmark_expected": {"benchmark_id": null, "selection_id": "f4313000-0000-4000-8000-000000000004"}, "expect": [{"kind": "selection_resolution", "selection": {"state": "CLEARED", "selection_id": "f4313000-0000-4000-8000-000000000004", "seq": 4, "benchmark_id": null}, "bites": ["M-C28"], "tolerance": "0"}, {"kind": "benchmark_return", "frequency": "WEEKLY", "request": {"rule": "CUSTOM", "base": "2025-01-08"}, "requested_base": "2025-01-08", "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0}, "state": "INSUFFICIENT_DATA", "reason": "MISSING_BENCHMARK", "value": null, "exact": null, "thresholds": null, "details_include": ["NO_BENCHMARK_SELECTED"], "bites": ["M-C28"], "tolerance": "0"}]},
+    {"id": "R13-V5", "as_of": "2026-01-02", "selection_log_version": 5, "purpose": "Seq 5 reverses the CLEAR: seq 1 is in force again.", "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR", "selection_id": "f4313000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"}, "expect": [{"kind": "selection_resolution", "selection": {"state": "IN_FORCE", "selection_id": "f4313000-0000-4000-8000-000000000001", "seq": 1, "benchmark_id": "SYN4_BM_US_TR"}, "bites": ["M-C25", "M-C26"], "tolerance": "0"}, {"kind": "benchmark_return", "frequency": "WEEKLY", "request": {"rule": "CUSTOM", "base": "2025-01-08"}, "requested_base": "2025-01-08", "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0}, "state": "AVAILABLE", "reason": null, "value": "-0.029126213592", "exact": "-3/103", "thresholds": null, "details_include": [], "bites": ["M-C22", "M-C25", "M-C26"], "tolerance": "0"}]},
+    {"id": "R13-V7", "as_of": "2026-01-02", "selection_log_version": 7, "purpose": "Version 7 holds the REVERSAL of a correction pair (seq 7) without its replacement (seq 8), which was appended atomically with it: no such state was ever committed, so the pin is refused.", "expect": [{"kind": "selection_resolution", "selection": {"state": "REFUSED", "selection_id": null, "seq": null, "benchmark_id": null}, "bites": ["M-C27"], "tolerance": "0"}]},
+    {"id": "R13-V8", "as_of": "2026-01-02", "selection_log_version": 8, "purpose": "Seqs 7-8 correct seq 1 (an old, superseded record) to the ETF proxy. The replacement takes seq 1's position, so the user's later choice, seq 6 (the CN index), stays in force.", "benchmark_expected": {"benchmark_id": "SYN4_BM_CN_TR", "selection_id": "f4313000-0000-4000-8000-000000000006", "return_basis": "TOTAL_RETURN_NET", "currency": "CNY", "currency_treatment": "TRANSLATED_UNHEDGED (ECB fixing u(g))"}, "expect": [{"kind": "selection_resolution", "selection": {"state": "IN_FORCE", "selection_id": "f4313000-0000-4000-8000-000000000006", "seq": 6, "benchmark_id": "SYN4_BM_CN_TR"}, "bites": ["M-C28", "M-C29"], "tolerance": "0"}, {"kind": "benchmark_return", "frequency": "WEEKLY", "request": {"rule": "CUSTOM", "base": "2025-01-08"}, "requested_base": "2025-01-08", "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0}, "state": "AVAILABLE", "reason": null, "value": "-0.014705882353", "exact": "-1/68", "thresholds": null, "details_include": [], "bites": ["M-C20", "M-C22", "M-C28", "M-C29"], "tolerance": "0"}]},
+    {"id": "R13-V10", "as_of": "2026-01-02", "selection_log_version": 10, "purpose": "Seqs 9-10 correct the latest record (seq 6) to the two-source US index: the replacement takes seq 6's position, the latest, and is in force.", "benchmark_expected": {"benchmark_id": "SYN4_BM_US_TR2", "selection_id": "f4313000-0000-4000-8000-000000000010", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"}, "expect": [{"kind": "selection_resolution", "selection": {"state": "IN_FORCE", "selection_id": "f4313000-0000-4000-8000-000000000010", "seq": 10, "benchmark_id": "SYN4_BM_US_TR2"}, "bites": ["M-C28"], "tolerance": "0"}, {"kind": "benchmark_return", "frequency": "WEEKLY", "request": {"rule": "CUSTOM", "base": "2025-01-08"}, "requested_base": "2025-01-08", "effective_window": {"base_date": "2025-01-10", "last_period_end": "2026-01-02", "observation_count": 51, "stub_start_days": 2, "stub_end_days": 0}, "state": "AVAILABLE", "reason": null, "value": "-0.029126213592", "exact": "-3/103", "thresholds": null, "details_include": [], "bites": ["M-C22", "M-C28"], "tolerance": "0"}]}
+   ]
+  }
+ ],
+ "structural_assertions": [
+  {
+   "id": "S3-1",
+   "statement": "Every result is synthetic; every manifest cites the convention_sets (minimum versions), registry_id and registry_digest (risk Ruling 9.2 (1.2): the registry file of the risk version cited; under risk/1.9, RISK_1.9_REGISTRY.json), the benchmark series and source ids with content hashes, the selection id and log version; Current-mode results also record valuation_mode, as_of_rule D_c(t), the instant t and M (performance Ruling 1.7 (1.12) item 5)."
+  },
+  {
+   "id": "S3-2",
+   "statement": "Metamorphic: R8's account-scope A1 statistics, and R12's (split recorded), equal part 2's Q1 exactly (beta 505685421350637/350647849329134). R1's tracking error equals the portfolio's volatility, and its IR equals the portfolio's mean return over its volatility (the benchmark contributes nothing)."
+  },
+  {
+   "id": "S3-3",
+   "statement": "No look-ahead in Current mode: R7-C1 and R7-H1 differ, and R7-C1's benchmark level date (2026-01-08) and fixing date (2026-01-08) are both before the instant's unavailable 2026-01-09 close and publication."
+  },
+  {
+   "id": "S3-4",
+   "statement": "RD-1 and RS-1 (parts 1 and 2) hold on every part-3 item with a value; account-scope identities: the account-level money gains sum to the portfolio's (performance Ruling 4.5), the account-level returns do not."
+  },
+  {"id": "S3-5", "statement": "Determinism: byte-identical canonical results across runs and PYTHONHASHSEED values."},
+  {"id": "S3-6", "statement": "(1.2-part3) Selection-log appends refused (risk Ruling 5.6 (1.4)): a REVERSAL of a REVERSAL; a second REVERSAL of one record; a REVERSAL or replacement naming another portfolio's record; a replacement whose REVERSAL is not in the same append. A result pinned at R13 version 2 names seq 2 (the CN index) and reproduces so for ever; at version 3 the selection in force is seq 1, so the version-2 result is superseded, and the cause the evidence states is the reversal (seq 3) of the record it used."}
+ ],
+ "release_cases": {
+  "rule": "(1.3-part3; 1.4-part3 adds RB-6 to RB-9 and the two outcomes of market-data Ruling 0.1 (1.13)) The outcome of building M from each case's file set, all files being of ONE series key unless a case says otherwise. Checked in order: identity (adjustment_status, anchor, synthetic flag, and every other declared field) -> REFUSED_IDENTITY; a series in several files that is not vintage-stable -> REFUSED_NOT_SEGMENTABLE; (1.13) a file of a series in several files whose coverage cannot be stated -> REFUSED_COVERAGE_UNDETERMINED; (1.13) a file of a series in several files holding a row outside its declared coverage -> REFUSED_ROW_OUTSIDE_COVERAGE; any two files whose COVERAGE intervals share a date -> REFUSED_OVERLAP, with the union of the shared intervals; otherwise ADMITTED as one series of 'segments' files. 'rows': 'series' = the fixture's SYN42 rows inside the coverage (no row on 2025-06-13), or inside 'rows_range' when the coverage is null; a map = exactly those rows; 'extra_rows' = rows the file ALSO holds. These cases are release-build outcomes, not metric items; the engine's refusal is its TwoVintages error (or equivalent), whatever its type name. They bite the points-only reading.",
+  "series_key": {"source": "synthetic", "listing_id": "c4000000-0000-4000-8000-000000000042", "calendar": "SYN4_NYSE"},
+  "mutation_catalog": {
+   "M-R1": "disjoint POINTS (rows held) instead of disjoint coverage",
+   "M-R2": "a vendor-adjusted series may be segmented",
+   "M-R3": "overlapping files are admitted when their rows agree on every date of the overlap",
+   "M-R4": "a series in more than one file is always refused (Ruling 0.1 as written in 1.11)",
+   "M-R5": "a row outside the declared coverage WIDENS the coverage to the hull of the interval and the rows",
+   "M-R6": "a row outside the declared coverage is ignored (the coverage is the declared interval, rows are not checked against it)",
+   "M-R7": "a segment whose coverage cannot be stated is given the hull of its rows"
+  },
+  "cases": [
+   {
+    "id": "RB-1",
+    "purpose": "The fixture's own vintages of SYN42: three disjoint coverage segments of one RAW series.",
+    "files": [
+     {"file": "V1", "coverage": ["2022-12-01", "2026-01-08"], "retrieval_time": "2026-01-09T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"},
+     {"file": "V2", "coverage": ["2026-01-09", "2026-01-09"], "retrieval_time": "2026-01-09T21:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"},
+     {"file": "V3", "coverage": ["2026-01-10", "2026-03-31"], "retrieval_time": "2026-04-01T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"}
+    ],
+    "expected": {"outcome": "ADMITTED", "segments": 3, "overlap": null},
+    "bites": ["M-R4"]
+   },
+   {
+    "id": "RB-2",
+    "purpose": "A backfill: file V1b, retrieved with V1, holds a 101.00 print for 2025-06-13, the date V1 covers WITHOUT a row (no print). The points are disjoint, the coverage is not: 'no print' became 'a print', a revision of 2025-06-13. Admitting it would also silently change R2 (its 06-13 staleness and lag).",
+    "files": [
+     {"file": "V1", "coverage": ["2022-12-01", "2026-01-08"], "retrieval_time": "2026-01-09T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"},
+     {"file": "V1b", "coverage": ["2025-06-13", "2025-06-13"], "retrieval_time": "2026-01-09T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": {"2025-06-13": "101.00"}},
+     {"file": "V2", "coverage": ["2026-01-09", "2026-01-09"], "retrieval_time": "2026-01-09T21:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"},
+     {"file": "V3", "coverage": ["2026-01-10", "2026-03-31"], "retrieval_time": "2026-04-01T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"}
+    ],
+    "expected": {"outcome": "REFUSED_OVERLAP", "segments": null, "overlap": ["2025-06-13", "2025-06-13"]},
+    "bites": ["M-R1", "M-R4"]
+   },
+   {
+    "id": "RB-3",
+    "purpose": "A re-download of V3's dates (V3r, retrieved a day later) with identical rows: still two vintages of 2026-01-10..2026-03-31, refused even though every value agrees.",
+    "files": [
+     {"file": "V1", "coverage": ["2022-12-01", "2026-01-08"], "retrieval_time": "2026-01-09T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"},
+     {"file": "V2", "coverage": ["2026-01-09", "2026-01-09"], "retrieval_time": "2026-01-09T21:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"},
+     {"file": "V3", "coverage": ["2026-01-10", "2026-03-31"], "retrieval_time": "2026-04-01T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"},
+     {"file": "V3r", "coverage": ["2026-01-10", "2026-03-31"], "retrieval_time": "2026-04-02T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"}
+    ],
+    "expected": {"outcome": "REFUSED_OVERLAP", "segments": null, "overlap": ["2026-01-10", "2026-03-31"]},
+    "bites": ["M-R1", "M-R3", "M-R4"]
+   },
+   {
+    "id": "RB-4",
+    "purpose": "A vendor-adjusted series (DIVIDEND_ADJUSTED, SUBTRACTIVE, anchor LATEST) in two disjoint segments: refused, because each retrieval re-bases the whole history (Ruling 2.3) and the join would be a false jump.",
+    "files": [
+     {"file": "A1", "coverage": ["2022-12-01", "2026-01-08"], "retrieval_time": "2026-01-09T00:00:00Z", "adjustment_status": "DIVIDEND_ADJUSTED", "anchor": "LATEST", "synthetic": true, "rows": "series"},
+     {"file": "A2", "coverage": ["2026-01-09", "2026-03-31"], "retrieval_time": "2026-04-01T00:00:00Z", "adjustment_status": "DIVIDEND_ADJUSTED", "anchor": "LATEST", "synthetic": true, "rows": "series"}
+    ],
+    "expected": {"outcome": "REFUSED_NOT_SEGMENTABLE", "segments": null, "overlap": null},
+    "bites": ["M-R2", "M-R4"]
+   },
+   {
+    "id": "RB-5",
+    "purpose": "Control: V2 declared real (synthetic false) among synthetic segments: one identity is required (market-data Ruling 4.8: a synthetic and a real series never meet).",
+    "files": [
+     {"file": "V1", "coverage": ["2022-12-01", "2026-01-08"], "retrieval_time": "2026-01-09T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"},
+     {"file": "V2", "coverage": ["2026-01-09", "2026-01-09"], "retrieval_time": "2026-01-09T21:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": false, "rows": "series"},
+     {"file": "V3", "coverage": ["2026-01-10", "2026-03-31"], "retrieval_time": "2026-04-01T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"}
+    ],
+    "expected": {"outcome": "REFUSED_IDENTITY", "segments": null, "overlap": null},
+    "bites": ["M-R4"]
+   },
+   {
+    "id": "RB-6",
+    "purpose": "(1.4-part3; review finding CP4M-10) V2 declares coverage 2026-01-09 only but also holds a 101.00 row for 2025-06-13, a date V1 covers with no row. The row outside V2's declared coverage refuses the build (market-data Ruling 0.1 (1.13) item 1(c)). Ignoring it (M-R6) re-creates RB-2 with two readings of 06-13; widening V2's coverage to the hull (M-R5) refuses for a different, fabricated overlap 2025-06-13..2026-01-08.",
+    "files": [
+     {"file": "V1", "coverage": ["2022-12-01", "2026-01-08"], "retrieval_time": "2026-01-09T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"},
+     {"file": "V2", "coverage": ["2026-01-09", "2026-01-09"], "retrieval_time": "2026-01-09T21:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series", "extra_rows": {"2025-06-13": "101.00"}},
+     {"file": "V3", "coverage": ["2026-01-10", "2026-03-31"], "retrieval_time": "2026-04-01T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"}
+    ],
+    "expected": {"outcome": "REFUSED_ROW_OUTSIDE_COVERAGE", "segments": null, "overlap": null},
+    "bites": ["M-R4", "M-R5", "M-R6"]
+   },
+   {
+    "id": "RB-7",
+    "purpose": "(1.4-part3) V3 declares coverage from 2026-01-10 but also holds the 2026-01-09 row (103.00, the same value V2 holds): a row before its declared start, a second reading of 01-09. Refused (item 1(c)), whatever the values.",
+    "files": [
+     {"file": "V1", "coverage": ["2022-12-01", "2026-01-08"], "retrieval_time": "2026-01-09T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"},
+     {"file": "V2", "coverage": ["2026-01-09", "2026-01-09"], "retrieval_time": "2026-01-09T21:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"},
+     {"file": "V3", "coverage": ["2026-01-10", "2026-03-31"], "retrieval_time": "2026-04-01T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series", "extra_rows": {"2026-01-09": "103.00"}}
+    ],
+    "expected": {"outcome": "REFUSED_ROW_OUTSIDE_COVERAGE", "segments": null, "overlap": null},
+    "bites": ["M-R4", "M-R5", "M-R6"]
+   },
+   {
+    "id": "RB-8",
+    "purpose": "(1.4-part3) V2 states no coverage (no requested range, not a full-history file): in a series of several files its coverage cannot be stated, so disjointness cannot be shown. REFUSED_COVERAGE_UNDETERMINED (item 1(b)). Inferring it from the rows (M-R7) would let the content define its own claim.",
+    "files": [
+     {"file": "V1", "coverage": ["2022-12-01", "2026-01-08"], "retrieval_time": "2026-01-09T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"},
+     {"file": "V2", "coverage": null, "rows_range": ["2026-01-09", "2026-01-09"], "retrieval_time": "2026-01-09T21:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"},
+     {"file": "V3", "coverage": ["2026-01-10", "2026-03-31"], "retrieval_time": "2026-04-01T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"}
+    ],
+    "expected": {"outcome": "REFUSED_COVERAGE_UNDETERMINED", "segments": null, "overlap": null},
+    "bites": ["M-R4", "M-R7"]
+   },
+   {
+    "id": "RB-9",
+    "purpose": "(1.4-part3) Why not the hull: no V2, so 2026-01-09 lies in a hole no file covers, and V3 (declared from 2026-01-10) holds a 2026-01-09 row anyway. The hull (M-R5) would ADMIT it, so a row the file was not asked for, outside the file's own statement of what it holds, would value 01-09. Refused (item 1(c)).",
+    "files": [
+     {"file": "V1", "coverage": ["2022-12-01", "2026-01-08"], "retrieval_time": "2026-01-09T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series"},
+     {"file": "V3", "coverage": ["2026-01-10", "2026-03-31"], "retrieval_time": "2026-04-01T00:00:00Z", "adjustment_status": "RAW", "anchor": null, "synthetic": true, "rows": "series", "extra_rows": {"2026-01-09": "103.00"}}
+    ],
+    "expected": {"outcome": "REFUSED_ROW_OUTSIDE_COVERAGE", "segments": null, "overlap": null},
+    "bites": ["M-R4", "M-R5", "M-R6"]
+   }
+  ]
+ },
+ "item_counts": {
+  "note": "For FIXTURE_PINS: number of 'expect' items per assertion id.",
+  "R1-F1": 5,
+  "R2-L1": 2,
+  "R2-L2": 3,
+  "R3-X1": 4,
+  "R4-S1": 4,
+  "R4-S2": 1,
+  "R4-S3": 2,
+  "R4-S4": 1,
+  "R4-S6": 1,
+  "R5-E1": 4,
+  "R5-E2": 2,
+  "R5-E3": 1,
+  "R5-E4": 2,
+  "R5-E5": 2,
+  "R5-E6": 2,
+  "R5-E7": 1,
+  "R5-E8": 2,
+  "R5-E9": 3,
+  "R5-E10": 2,
+  "R5-E11": 1,
+  "R5-E12": 1,
+  "R6-D1": 5,
+  "R6-V1": 1,
+  "R6-V0": 1,
+  "R6-W0": 2,
+  "R7-C1": 4,
+  "R7-H1": 4,
+  "R7-C2": 2,
+  "R8-K1": 7,
+  "R9-Z1": 4,
+  "R9-Z2": 1,
+  "R9-Z3": 3,
+  "R10-S1": 5,
+  "R11-X1": 3,
+  "R11-X2": 1,
+  "R11-X3": 1,
+  "R11-V1": 1,
+  "R12-X1": 2,
+  "R12-X2": 1,
+  "R13-V2": 2,
+  "R13-V3": 2,
+  "R13-V4": 2,
+  "R13-V5": 2,
+  "R13-V7": 1,
+  "R13-V8": 2,
+  "R13-V10": 2
+ }
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "finweb.cp7.synthetic-quotes/1",
+  "source_id": "finweb.cp7.synthetic",
+  "label": "FICTIONAL DEMONSTRATION ONLY - no real security or market fact",
+  "as_of": "2026-01-02",
+  "retrieved_at": "2026-01-03T00:00:00Z",
+  "currency": "USD",
+  "mic": "XNYS",
+  "quotes": [
+    {"symbol": "SYN-A", "issuer": "Fictional demonstration Alpha", "price": "100", "volume": "1000"},
+    {"symbol": "SYN-B", "issuer": "Fictional demonstration Beta", "price": "50", "volume": "1000"}
+  ],
+  "corporate_actions": [],
+  "coverage_note": "Snapshot-only fictional world: no historical or real corporate-action coverage assertion."
+}

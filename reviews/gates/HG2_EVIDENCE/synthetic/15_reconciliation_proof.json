@@ -1,0 +1,413 @@
+{
+ "data": {
+  "failed": [],
+  "identities_run_per_computation": {
+   "attribution:CUSTOM_FROM_2025-03-31": [
+    "I-2",
+    "I-3",
+    "I-4",
+    "I-9"
+   ],
+   "attribution:SINCE_INCEPTION": [
+    "I-2",
+    "I-3",
+    "I-4",
+    "I-9"
+   ],
+   "attribution:TRAILING_1M": [
+    "I-2",
+    "I-3",
+    "I-4",
+    "I-9"
+   ],
+   "attribution:YTD": [
+    "I-2",
+    "I-3",
+    "I-4",
+    "I-9"
+   ],
+   "gains:CUSTOM_FROM_2025-03-31": [
+    "I-5",
+    "I-8"
+   ],
+   "gains:SINCE_INCEPTION": [
+    "I-5",
+    "I-8"
+   ],
+   "gains:TRAILING_1M": [
+    "I-5",
+    "I-8"
+   ],
+   "gains:YTD": [
+    "I-5",
+    "I-8"
+   ],
+   "valuation@2024-12-31": [
+    "I-1"
+   ],
+   "valuation@2025-01-01": [
+    "I-1"
+   ],
+   "valuation@2025-03-31": [
+    "I-1"
+   ],
+   "valuation@2025-04-23": [
+    "I-1"
+   ],
+   "valuation@2025-04-30": [
+    "I-1"
+   ],
+   "window:CUSTOM_FROM_2025-03-31": [
+    "I-2",
+    "I-3",
+    "I-6"
+   ],
+   "window:SINCE_INCEPTION": [
+    "I-2",
+    "I-3",
+    "I-6"
+   ],
+   "window:TRAILING_1M": [
+    "I-2",
+    "I-3",
+    "I-6"
+   ],
+   "window:YTD": []
+  },
+  "identity_I-7_method_independence": [
+   {
+    "identity": "I-7",
+    "status": "NOT_APPLICABLE",
+    "why": "the ledger has ['TRANSFER_IN', 'TRANSFER_OUT']: lots carried or opened are outside this identity's domain",
+    "window": "SINCE_INCEPTION"
+   },
+   {
+    "identity": "I-7",
+    "status": "NOT_APPLICABLE",
+    "why": "only the since-inception window holds every sale",
+    "window": "CUSTOM_FROM_2025-03-31"
+   },
+   {
+    "identity": "I-7",
+    "status": "NOT_APPLICABLE",
+    "why": "only the since-inception window holds every sale",
+    "window": "TRAILING_1M"
+   },
+   {
+    "identity": "I-7",
+    "status": "NOT_APPLICABLE",
+    "why": "only the since-inception window holds every sale",
+    "window": "YTD"
+   }
+  ],
+  "identity_status_counts_over_every_metric_carrying_one": {
+   "I-1": {
+    "PASS": 5
+   },
+   "I-2": {
+    "PASS": 9
+   },
+   "I-3": {
+    "PASS": 9
+   },
+   "I-4": {
+    "PASS": 6
+   },
+   "I-5": {
+    "PASS": 89
+   },
+   "I-6": {
+    "NOT_APPLICABLE": 3
+   },
+   "I-7": {
+    "NOT_APPLICABLE": 4
+   },
+   "I-8": {
+    "NOT_COMPUTABLE": 4,
+    "PASS": 16
+   },
+   "I-9": {
+    "PASS": 6
+   }
+  },
+  "reading": "PASS means the identity ran and held exactly (tier E, tolerance 0); NOT_COMPUTABLE means its inputs do not exist (it is not a pass); NOT_RUN means it is not required in that call",
+  "reproduction": [
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "b7a3a8cffa3464d50cbc7afff6147d4e91432d4ef52cae6dce8bb08b622f2167",
+    "identities_run": [
+     "I-1"
+    ],
+    "key": "valuation@2025-04-30",
+    "kind": "valuation",
+    "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   },
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "83d4fa7b2c7b7093cfcf1accdd43ae606905bc4bde907ed6e769ba1236274ca6",
+    "identities_run": [
+     "I-1"
+    ],
+    "key": "valuation@2025-04-23",
+    "kind": "valuation",
+    "manifest_id": "4ee7019bacbddc3c1a1cb2569ea40e42a32494f060904e6d5c357516110b1e0f",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   },
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "43d34d1bafdc379b9ee8fb79b635989013454d18387365d0c6fe53d3445f09e2",
+    "identities_run": [
+     "I-2",
+     "I-3",
+     "I-6"
+    ],
+    "key": "window:SINCE_INCEPTION",
+    "kind": "window",
+    "manifest_id": "752261ae07538eb4e53211c253d1f2a126750a1f1fc7b2e2fb826857e818026b",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   },
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "77151e8a086947a8d8c93fa8104a4b5c36014e06178611474eeba73cf48d8c4e",
+    "identities_run": [
+     "I-5",
+     "I-8"
+    ],
+    "key": "gains:SINCE_INCEPTION",
+    "kind": "gains",
+    "manifest_id": "ebf57afcc0af965c0ea3e973447cd9cb1d87545a5726431851e5dbaa3edacbc4",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   },
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "800120c232566519949947bce3a557aa0b1fa6b6d62e0eccd4cb1a20d2242dcd",
+    "identities_run": [
+     "I-2",
+     "I-3",
+     "I-4",
+     "I-9"
+    ],
+    "key": "attribution:SINCE_INCEPTION",
+    "kind": "attribution",
+    "manifest_id": "679691f4f17470521f4e0438d08ced2b33e32b547a9bb567ae4be332d6d8648a",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   },
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "718b5c8543ce76b0d4b8c5ecb31167a2bbcb95268bfeed27200c8936a68e9a74",
+    "identities_run": [
+     "I-1"
+    ],
+    "key": "valuation@2025-01-01",
+    "kind": "valuation",
+    "manifest_id": "12174ebc0e817bf427872683c16903d86217b51b9d6436be1fcdf8112bb2f5c3",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   },
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "fc4aeb7228a9b93458ab0f7d5b8e083a0a7859b194754e6cf6a86c2f29972ead",
+    "identities_run": [
+     "I-2",
+     "I-3",
+     "I-6"
+    ],
+    "key": "window:CUSTOM_FROM_2025-03-31",
+    "kind": "window",
+    "manifest_id": "d1331a0c49db3e81780fc0f3ccaa2ca4942f6197fec33eb7b69518cc998565ba",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   },
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "7cc87e18e7f643ce9ee1ed9ba750ce891cb72ae074d4bc0bf2d3e888fbd51818",
+    "identities_run": [
+     "I-5",
+     "I-8"
+    ],
+    "key": "gains:CUSTOM_FROM_2025-03-31",
+    "kind": "gains",
+    "manifest_id": "8b4065464ba7c6a726662ca572cfa5e63b0eb9cc99d795f2af1873767b854aa0",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   },
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "48b6e9f6a3b0eb3f301a37075fc17f6234193e0d6b95f5f7ac73fe34a479d25d",
+    "identities_run": [
+     "I-2",
+     "I-3",
+     "I-4",
+     "I-9"
+    ],
+    "key": "attribution:CUSTOM_FROM_2025-03-31",
+    "kind": "attribution",
+    "manifest_id": "2c2bc30ffab09ba776164758812aebaf47b54269ef58be74c8c5f938c70e9dba",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   },
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "91113ba5bd7fc13005e96f4edad10c82d99fc0686f6608249dbd27315e29c07f",
+    "identities_run": [
+     "I-1"
+    ],
+    "key": "valuation@2025-03-31",
+    "kind": "valuation",
+    "manifest_id": "6612c14e5d6a0515684480ecbe7d24bb3bbea1e9a5db1e1a3ba5b1d339181d7d",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   },
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "9652b1107fa7555316ae829412c3e770b8252a32a74ed2ee431639d628b385ea",
+    "identities_run": [
+     "I-2",
+     "I-3",
+     "I-6"
+    ],
+    "key": "window:TRAILING_1M",
+    "kind": "window",
+    "manifest_id": "9f7c6faa449e7e9feac6dcbb84270741f154dfb01344c6ccf2b316abf3342663",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   },
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "c2020ae891259424bcd770707e2eef91e480f8a228feec05cb163507c2d908e2",
+    "identities_run": [
+     "I-5",
+     "I-8"
+    ],
+    "key": "gains:TRAILING_1M",
+    "kind": "gains",
+    "manifest_id": "5814e842257629e36476f9f61d00e8ecd674ffaf0ebf0aff034aaad567c3c292",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   },
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "dfed5cfa200e31b19339fbf9641a83e17f07b02642f3002617a869f2ff889886",
+    "identities_run": [
+     "I-2",
+     "I-3",
+     "I-4",
+     "I-9"
+    ],
+    "key": "attribution:TRAILING_1M",
+    "kind": "attribution",
+    "manifest_id": "465ccf3f4220a51e94d1dd521ca3102f46d51f87ced54f53a5414b3ccdfd646e",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   },
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "2a8590c097172d3bc0c6edcbb66a86c9f65bcf5c4b1e5f92976af97a823b63f6",
+    "identities_run": [],
+    "key": "window:YTD",
+    "kind": "window",
+    "manifest_id": "a2f7dbf6ced8eebfeda9309aca08165a993b0a32f6eb7c531d0ea9f8ab011fda",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   },
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "f9cf96d6dbaa00cb2d3f49729ceca8a56787c6759a2c189e302941f803059833",
+    "identities_run": [
+     "I-5",
+     "I-8"
+    ],
+    "key": "gains:YTD",
+    "kind": "gains",
+    "manifest_id": "4875b0249fedcfa0acca21a14d9bcc0414fae9a400f51de2600a1fa57a0965a3",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   },
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "cc4d3ffbbf0fb025ced82706d41dba5e87cb1708ecdbc57974a8273e423c5d51",
+    "identities_run": [
+     "I-2",
+     "I-3",
+     "I-4",
+     "I-9"
+    ],
+    "key": "attribution:YTD",
+    "kind": "attribution",
+    "manifest_id": "d18a8fcd41d1a97b1f1c3c259f04bb9206649774c4fc661bb707040f4b636b9f",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   },
+   {
+    "detail": "",
+    "engine_id": "performance/cp3f-0.10",
+    "expected_result_digest": "ef3e6d745d278a956f08adfb4a43b9c5ed07f786fe167ded0d71a6407d61585a",
+    "identities_run": [
+     "I-1"
+    ],
+    "key": "valuation@2024-12-31",
+    "kind": "valuation",
+    "manifest_id": "64ef6c0e84fd635418a5d501dc57feb7b9c3b9fe4b007090f4b94639c630e6bc",
+    "reproduced": true,
+    "reproduction": "REPRODUCED",
+    "synthetic": true
+   }
+  ],
+  "reproduction_reading": "REPRODUCED = a re-run reproduced the result digest recorded when the number was computed; RESULT_NOT_COMPARED (no expected digest) is never counted as reproduced"
+ },
+ "kind": "SYNTHETIC_DEMONSTRATION_A",
+ "labels": {
+  "all_results_synthetic": true,
+  "any_result_synthetic": true,
+  "demonstration_ledger": "DEMONSTRATION LEDGER: these events are not a user's holdings (P8); they exist to exercise the engine.",
+  "fx_sources_in_m": [
+   {
+    "source_id": "synthetic.ecb_direct",
+    "what_it_is": "synthetic.ecb_direct"
+   }
+  ],
+  "label": "SYNTHETIC: every result below was computed from a market-data version that holds synthetic files; none is a real market fact (market-data Ruling 4.8).",
+  "pd_0035_caveat": "PD-0035 section 3: Mainland China and Hong Kong price behaviour is shown on SYNTHETIC data only. No admissible real CN or HK price source exists (PD-0031, PD-0032); the real slice is US prices (Alpha Vantage, the last 100 sessions) and ECB FX only. A synthetic result is never a real market fact (market-data Ruling 4.8)."
+ },
+ "section": "15_reconciliation_proof",
+ "subject": "DEMO-A: US + HK + CN synthetic cross-border portfolio",
+ "title": "Reconciliation proof"
+}

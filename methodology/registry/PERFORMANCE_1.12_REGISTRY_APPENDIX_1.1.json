@@ -1,0 +1,989 @@
+{
+  "registry_id": "performance/1.12",
+  "appendix_id": "performance-registry/1.1",
+  "issued": "2026-10-24",
+  "change_note": "performance-registry/1.0 -> performance-registry/1.1 (2026-10-24, quant-analyst subagent): appendix_id; issued; change_note; common.implementation_version cites market-data/1.15, the market-data label the code runs since PD-0067 decision 6 (review M-2 of the code-label move, 2026-10-24); common.historical_version_note says so. registry_id stays performance/1.12: no performance ruling changes, and every other field, the 24 entries included, is the performance-registry/1.0 text as authored by quant-analyst (native Codex). PERFORMANCE_1.12_REGISTRY.json (performance-registry/1.0) stays unchanged as the record.",
+  "authored_by": "quant-analyst (native Codex)",
+  "status": "Documentary CP3 registry appendix, no numeric method changes; runtime wiring separately verified",
+  "common": {
+    "authority": "Documentary transcription of CP3_PERFORMANCE_CONVENTIONS.md performance/1.12, especially §14; no numeric convention changes. Registry was owed before HG3.",
+    "notation": "R reporting currency; D calendar date; B,E period endpoints; X(c->R,d) exact admitted historical FX; q units; P raw listing close; V complete portfolio value; I_cash/I_kind external inflows; O external outflows; beta return base. Full definitions in the cited performance ruling.",
+    "implementation_version": [
+      "performance/1.12",
+      "ledger-replay/1.5",
+      "market-data/1.15",
+      "FIFO/1",
+      "minor-units/1.1"
+    ],
+    "historical_version_note": "Existing historic manifests and values are not rewritten. market-data/1.15 is the market-data label the code runs (PD-0067 decision 6); performance-registry/1.0 cited market-data/1.14, and performance/1.12's original §14 cited market-data/1.11.",
+    "fx": "Native facts retain currency; reporting values use exact historical currency cross. Current mode chooses D_c(t), restricts market files to M_t; identity and source registries pinned at computation time. No current FX substituted for historical acquisition/event FX.",
+    "corporate_actions": "Raw close times ledger units; confirmed ledger splits preserve value, unresolved or unapplied splits suppress affected quantities/basis; recorded dividend accrual ex-date and payment settlement per §§1,3,8.",
+    "state_rule": "performance §1.5: worst applicable cause, reason selected only from own-severity causes; never present any result number when INSUFFICIENT_DATA. Preserve causes and freshness.",
+    "presentation": "Exact rational arithmetic; derived money quantum from minor-units/1.1; ratios 1e-12; ROUND_HALF_UP; native recorded facts exact/padded per §2.2; decomposition uses §2.4.",
+    "states": {
+      "valuation": "AVAILABLE if inputs complete; LIMITED for limited market inputs; INSUFFICIENT_DATA for unavailable required quantity/price/FX, split suppression or unreconstructable ledger. Missing cost basis alone is not a valuation refusal.",
+      "partial": "Per §1.4a: subtotal over all valued positions/cash/receivables only when complete total suppressed by unvalued components and set is known, with excluded count/list. Included-state worst; no valued component => unavailable NO_VALUED_COMPONENT. Before any snapshot: not emitted. Never used as return/weight denominator.",
+      "window": "Window before inception/snapshot refused; required endpoint/flow failures propagate; known zero gain valid even without a positive return base.",
+      "return": "Window and required segment inputs propagate; nonpositive base with gain, negative return factor and unavailable history refused per §5.3/§5.5; zero-capital empty segments factor 1 with disclosed ZERO_CAPITAL_PERIOD.",
+      "annual": "Underlying return state; Y<1 => INSUFFICIENT_DATA, PERIOD_SHORTER_THAN_ONE_YEAR; total loss => INSUFFICIENT_DATA, TOTAL_LOSS. No annualization fallback.",
+      "mwr": "Input failures; NO_CAPITAL; IRR_NOT_DEFINED; IRR_OUT_OF_RANGE; IRR_UNIQUENESS_NOT_ESTABLISHED => unavailable; limited inputs propagate; uniqueness required.",
+      "annual_mwr": "common.states.mwr plus common.states.annual.",
+      "amount": "A line with no recorded event is AVAILABLE zero; missing required event-date FX suppresses only its line; other states propagate.",
+      "gain": "MISSING_COST_BASIS/UNKNOWN_BASIS, acquisition date/FX unavailable, split suppression, mixed native currencies and replay failures per §§3.8-3.9. Full unsupported position/sale value suppressed.",
+      "gain_total": "§3.10 explicit allowed exclusions produce LIMITED only with measurable gross exclusion weight. Unknown sales/quantities or unpriced denominator => unavailable; all contributors excluded => unavailable; no sales => AVAILABLE zero.",
+      "basis": "Unknown lot, unavailable acquisition FX, flagged replay or split suppression => unavailable; limited FX => LIMITED; no partial basis represented as full.",
+      "since": "Basis/valuation/acquisition FX state; ENTRY in reporting currency has FX=1; recorded acquired_on used; absent foreign acquisition date => unavailable, never today FX.",
+      "attribution_money": "All required daily inputs propagate. Missing return base or total-loss logarithm alone does not suppress money lines; exact sum remains G.",
+      "attribution_return": "Money-input state plus NON_POSITIVE_BASE, NEGATIVE_VALUE or TOTAL_LOSS refusal for percentage lines; no logarithm at total loss."
+    },
+    "references": [
+      "CP3_PERFORMANCE_CONVENTIONS.md §§1-10 and §14",
+      "CP1_LEDGER_REPLAY_CONVENTIONS.md FIFO/1",
+      "CP2_MARKET_DATA_CONVENTIONS.md"
+    ],
+    "independent_correctness": "Existing methodology/fixtures/cp3_golden parts 1-4 and their independent derivation calculators; this appendix does not replace or regenerate fixture values."
+  },
+  "entries": [
+    {
+      "metric_id": "holding_value",
+      "metric_name": "Holding value",
+      "human_definition": "Market value of a listing position at the selected as-of.",
+      "formula": "q(D)*P(listing,D)*X(quotation_currency->R,D); NATIVE omits X.",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned reconstructed ledger state",
+        "listing identity, raw closes, required FX",
+        "dividend receivable state where applicable"
+      ],
+      "minimum_observations": "one reconstructable quantity, admissible raw close and required FX",
+      "frequency": "AS_OF end-of-day",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.valuation",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Cost basis unnecessary; non-synchronous closes and price freshness disclosed."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "RECORDED_LEDGER_AND_MARKET_INPUTS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.valuation"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§1.1, 1.2, 1.8",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "cash_value",
+      "metric_name": "Cash value",
+      "human_definition": "Native cash balance or its reporting-currency translation.",
+      "formula": "cash_native(D)*X(native->R,D); NATIVE is the exact recorded balance.",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned reconstructed ledger state",
+        "listing identity, raw closes, required FX",
+        "dividend receivable state where applicable"
+      ],
+      "minimum_observations": "one reconstructable currency cash balance and required FX",
+      "frequency": "AS_OF end-of-day",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.valuation",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Native currencies are not summed together; a known cash balance is not a missing price."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "RECORDED_LEDGER_AND_MARKET_INPUTS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.valuation"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§1.3",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "receivable_value",
+      "metric_name": "Accrued dividend receivable value",
+      "human_definition": "Unpaid ledger dividend receivable translated at the as-of date.",
+      "formula": "sum unpaid accrued dividend native amounts at D * X(native->R,D); NATIVE retains currency.",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned reconstructed ledger state",
+        "listing identity, raw closes, required FX",
+        "dividend receivable state where applicable"
+      ],
+      "minimum_observations": "recorded dividend with ex-date, unpaid at D, and required FX",
+      "frequency": "AS_OF end-of-day",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.valuation",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Market-feed dividend alone is not a user ledger receivable; payment is not income twice."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "RECORDED_LEDGER_AND_MARKET_INPUTS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.valuation"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§1.3, 8.1",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "portfolio_value",
+      "metric_name": "Complete portfolio value",
+      "human_definition": "Value of all positions, cash and accrued receivables in R.",
+      "formula": "sum(all holding_value_R, cash_value_R, receivable_value_R) using exact values.",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned reconstructed ledger state",
+        "listing identity, raw closes, required FX",
+        "dividend receivable state where applicable"
+      ],
+      "minimum_observations": "every nonzero capital component valued",
+      "frequency": "AS_OF end-of-day",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.valuation",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Any unvalued component suppresses the total; a partial total is a different metric."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "RECORDED_LEDGER_AND_MARKET_INPUTS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.valuation"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§1.4",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "portfolio_value_priced_holdings",
+      "metric_name": "Value of priced holdings",
+      "human_definition": "Explicit partial subtotal of valued positions, cash and receivables when complete NAV is unavailable.",
+      "formula": "sum reporting-currency values of every complete-NAV component whose own value is AVAILABLE or LIMITED; never a denominator for any other metric.",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned reconstructed ledger state",
+        "listing identity, raw closes, required FX",
+        "dividend receivable state where applicable"
+      ],
+      "minimum_observations": "at least one computable capital component if complete NAV is suppressed for unvalued components; full set of components known",
+      "frequency": "AS_OF end-of-day",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.partial",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Includes valued cash and receivables as well as positions; excluded component count/list required; not total NAV; not emitted when complete NAV is already computable or any account is before its snapshot."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "RECORDED_LEDGER_AND_MARKET_INPUTS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.partial"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§1.4a",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "gain_absolute",
+      "metric_name": "Absolute period gain",
+      "human_definition": "Reporting-currency money gain excluding external capital flows.",
+      "formula": "V_E-V_B-sum_D(I_cash_D+I_kind_D-O_D).",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§5.1"
+      ],
+      "minimum_observations": "endpoint valuations and every external flow valued in the declared window",
+      "frequency": "calendar-day flow timing; declared (B,E] window, with required segment or daily observations as cited",
+      "lookback": "declared (B,E]; never silently truncated; since-snapshot labelled",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.window",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Includes FX, income and costs; not a return or taxable gain; zero/negative base does not by itself invalidate money gain."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "PORTFOLIO_HISTORY",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.window"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§5.1",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "return_twr",
+      "metric_name": "Time-weighted return",
+      "human_definition": "Geometrically linked portfolio return with the specified daily external-flow timing.",
+      "formula": "beta_D=V_(D-1)+I_cash_D; r_D=(V_D+O_D-I_kind_D-beta_D)/beta_D; TWR=product_D(1+r_D)-1; equivalent flow-boundary segment form §5.2.",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§5.1-5.5"
+      ],
+      "minimum_observations": "valid reconstructed window and required segment boundary/flow valuations",
+      "frequency": "calendar-day flow timing; declared (B,E] window, with required segment or daily observations as cited",
+      "lookback": "declared (B,E]; never silently truncated; since-snapshot labelled",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.return",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Cash inflows at day start, outflows/in-kind at day end; not Modified Dietz; pre-snapshot history unavailable."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "PORTFOLIO_HISTORY",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.return"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§5.1-5.5",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "return_annualized",
+      "metric_name": "Annualized time-weighted return",
+      "human_definition": "Constant annual compounded rate equivalent to the historical TWR.",
+      "formula": "(1+TWR)^(1/Y)-1, Y=m/12 + stub_days/365, m=max integer with add_months(B,m)<=E under the end-of-month rule, stub_days=E-add_months(B,m).",
+      "annualization_convention": "Geometric (1+period_return)^(1/Y)-1; Y=whole_calendar_months/12 + remaining_days/365 (§7.1); Y>=1",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§7.1-7.2"
+      ],
+      "minimum_observations": "valid TWR and Y>=1",
+      "frequency": "calendar-day flow timing; declared (B,E] window, with required segment or daily observations as cited",
+      "lookback": "declared (B,E]; never silently truncated; since-snapshot labelled",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.annual",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Historical geometric average, not forecast; never annualizes less than one year."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "PORTFOLIO_HISTORY",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.annual"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§7.1-7.2",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "return_mwr",
+      "metric_name": "Period money-weighted return",
+      "human_definition": "Unique supported internal rate for investor-side cash flows in the stated window.",
+      "formula": "rho=g-1 where sum_i CF_i*g^(-tau_i)=0, g>0; CF/time schedule and uniqueness test exactly §§6.1-6.4.",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§6.1-6.4"
+      ],
+      "minimum_observations": "valid window, valued flows, permitted sign pattern, bracket and established unique root",
+      "frequency": "calendar-day flow timing; declared (B,E] window, with required segment or daily observations as cited",
+      "lookback": "declared (B,E]; never silently truncated; since-snapshot labelled",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.mwr",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Unsupported or unproved roots refused; snapshot result is since snapshot, not lifetime return."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "PORTFOLIO_HISTORY",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.mwr"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§6.1-6.4",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "return_mwr_annualized",
+      "metric_name": "Annualized money-weighted return",
+      "human_definition": "Annual compounded equivalent of the supported period internal rate.",
+      "formula": "(1+rho)^(1/Y)-1 with rho from §§6.1-6.4 and Y from §7.1.",
+      "annualization_convention": "Geometric (1+period_return)^(1/Y)-1; Y=whole_calendar_months/12 + remaining_days/365 (§7.1); Y>=1",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§6.1-6.4, 7.1-7.2"
+      ],
+      "minimum_observations": "supported unique period MWR and Y>=1",
+      "frequency": "calendar-day flow timing; declared (B,E] window, with required segment or daily observations as cited",
+      "lookback": "declared (B,E]; never silently truncated; since-snapshot labelled",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.annual_mwr",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Inherits MWR limitations; no annualization below one year."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "PORTFOLIO_HISTORY",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.annual_mwr"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§6.1-6.4, 7.1-7.2",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "income_amount",
+      "metric_name": "Recorded income amount",
+      "human_definition": "Recorded dividends and interest recognized in the period.",
+      "formula": "sum_D DIVIDEND_amount*X(native->R,recognition_date) + INTEREST_amount*X(native->R,booking_date). Dividend ex-date when recorded, otherwise cash date.",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§8.1-8.3, 8.6"
+      ],
+      "minimum_observations": "ledger income events and their recognition-date FX",
+      "frequency": "calendar-day flow timing; declared (B,E] window, with required segment or daily observations as cited",
+      "lookback": "declared (B,E]; never silently truncated; since-snapshot labelled",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.amount",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Net-only dividends do not reveal withholding; absence of income events yields a known zero."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "RECORDED_LEDGER_AND_MARKET_INPUTS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.amount"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§8.1-8.3, 8.6",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "fees_amount",
+      "metric_name": "Recorded fee amount",
+      "human_definition": "Negative signed fees recorded in the period.",
+      "formula": "-sum_(FEE events in window) amount*X(event_currency->R,event_date).",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§8.4, 8.6"
+      ],
+      "minimum_observations": "ledger fee events and event-date FX",
+      "frequency": "calendar-day flow timing; declared (B,E] window, with required segment or daily observations as cited",
+      "lookback": "declared (B,E]; never silently truncated; since-snapshot labelled",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.amount",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Fees are not capitalized into basis; absent fee events yield zero, not estimated costs."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "RECORDED_LEDGER_AND_MARKET_INPUTS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.amount"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§8.4, 8.6",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "taxes_amount",
+      "metric_name": "Known tax amount",
+      "human_definition": "Negative signed tax cash flows actually recorded.",
+      "formula": "-sum_(TAX events in window) amount*X(event_currency->R,event_date).",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§8.2, 8.4, 8.6"
+      ],
+      "minimum_observations": "ledger tax events and event-date FX",
+      "frequency": "calendar-day flow timing; declared (B,E] window, with required segment or daily observations as cited",
+      "lookback": "declared (B,E]; never silently truncated; since-snapshot labelled",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.amount",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Known taxes only; computes no liability and cannot infer tax hidden in a net dividend."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "RECORDED_LEDGER_AND_MARKET_INPUTS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.amount"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§8.2, 8.4, 8.6",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "financing_amount",
+      "metric_name": "Recorded financing-cost amount",
+      "human_definition": "Negative signed charged interest recorded in the period.",
+      "formula": "-sum_(INTEREST_CHARGED events in window) amount*X(event_currency->R,event_date).",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§8.4, 8.6"
+      ],
+      "minimum_observations": "ledger financing events and event-date FX",
+      "frequency": "calendar-day flow timing; declared (B,E] window, with required segment or daily observations as cited",
+      "lookback": "declared (B,E]; never silently truncated; since-snapshot labelled",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.amount",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Not netted against interest income; no inferred financing cost."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "RECORDED_LEDGER_AND_MARKET_INPUTS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.amount"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§8.4, 8.6",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "conversion_result_amount",
+      "metric_name": "Currency conversion result",
+      "human_definition": "Recorded conversion spread and timing difference versus the reference FX fixing.",
+      "formula": "sum_conversion[-sold_amount*X(sold->R,event_date)+bought_amount*X(bought->R,event_date)].",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§8.5-8.6"
+      ],
+      "minimum_observations": "both conversion legs and both event-date FX rates",
+      "frequency": "calendar-day flow timing; declared (B,E] window, with required segment or daily observations as cited",
+      "lookback": "declared (B,E]; never silently truncated; since-snapshot labelled",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.amount",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "May be positive or negative; not labelled a transaction fee or pure spread."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "RECORDED_LEDGER_AND_MARKET_INPUTS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.amount"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§8.5-8.6",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "realized_gain",
+      "metric_name": "Realized sale gain",
+      "human_definition": "Sale proceeds minus FIFO-relieved cost basis.",
+      "formula": "RG_R=sale_amount*X(sale_currency->R,sale_date)-sum_relief(u_lot*unit_basis_R_at_acquisition). NATIVE only when known relieved basis currencies equal proceeds currency.",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§3.7-3.8"
+      ],
+      "minimum_observations": "sale relief, known cost basis and acquisition/proceeds FX",
+      "frequency": "calendar-day flow timing; declared (B,E] window, with required segment or daily observations as cited",
+      "lookback": "declared (B,E]; never silently truncated; since-snapshot labelled",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.gain",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Fees excluded from basis; transfers do not realize gains; not taxable gain; mixed native basis refuses native view."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "RECORDED_COST_BASIS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.gain"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§3.7-3.8",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "realized_gain_total",
+      "metric_name": "Realized gain over a window",
+      "human_definition": "Supported realized gains on sales during the window, with any allowed exclusions stated.",
+      "formula": "sum computable RG_R for sales in (B,E], under §3.10 exclusion and gross-proceeds-coverage rules.",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§3.10"
+      ],
+      "minimum_observations": "reconstructable sales and computable proceeds for every exclusion",
+      "frequency": "calendar-day flow timing; declared (B,E] window, with required segment or daily observations as cited",
+      "lookback": "declared (B,E]; never silently truncated; since-snapshot labelled",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.gain_total",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "All sales excluded => unavailable; no sales => AVAILABLE zero; partial aggregate LIMITED with excluded proceeds share."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "RECORDED_COST_BASIS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.gain_total"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§3.10",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "unrealized_gain",
+      "metric_name": "Unrealized position gain",
+      "human_definition": "As-of market value minus remaining FIFO cost basis.",
+      "formula": "UG_R=MV_R(D)-sum_remaining(u_lot*unit_basis_R_at_acquisition). NATIVE only when every known basis currency equals listing quotation currency.",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§3.9"
+      ],
+      "minimum_observations": "as-of valuation and known remaining basis/acquisition FX",
+      "frequency": "AS_OF end-of-day",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.gain",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Partially unknown position basis cannot produce a partial position gain; not taxable gain."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "RECORDED_COST_BASIS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.gain"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§3.9",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "unrealized_gain_total",
+      "metric_name": "Unrealized portfolio gain",
+      "human_definition": "Sum of supported position unrealized gains, with allowed excluded position weights.",
+      "formula": "sum computable UG_R at D, under §3.10; excluded weight=sum abs(MV_R excluded)/sum abs(MV_R all security positions).",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§3.10"
+      ],
+      "minimum_observations": "all position market values known; at least one supported gain if positions exist",
+      "frequency": "AS_OF end-of-day",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.gain_total",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Unvalued position prevents measurable exclusion and suppresses aggregate; no arbitrary exclusion-share cutoff."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "RECORDED_COST_BASIS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.gain_total"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§3.10",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "remaining_basis",
+      "metric_name": "Remaining FIFO cost basis",
+      "human_definition": "Known basis of units still held, by native basis currency or in R.",
+      "formula": "NATIVE per basis currency k: sum_remaining(u_lot*c_lot); REPORTING: sum_remaining(u_lot*c_R_lot).",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§3.9a"
+      ],
+      "minimum_observations": "every lot basis known; reporting needs recorded acquisition FX where applicable",
+      "frequency": "AS_OF end-of-day",
+      "lookback": "AS_OF",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.basis",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Not tax basis; split suppression withholds basis; fees not capitalized; no native cross-currency sum."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "RECORDED_LEDGER_AND_MARKET_INPUTS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.basis"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§3.9a",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "since_acquisition",
+      "metric_name": "Since-acquisition gain decomposition",
+      "human_definition": "Local gain at purchase FX, FX on cost and interaction for a remaining lot.",
+      "formula": "UG_R=(V-K)*X_a + K*(X_D-X_a) + (V-K)*(X_D-X_a); V in paid currency per §9.7; sum lots after individual acquisition FX.",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§9.7"
+      ],
+      "minimum_observations": "remaining lots, basis, valuation and acquisition FX where applicable",
+      "frequency": "AS_OF end-of-day",
+      "lookback": "recorded acquisition date to as-of, per lot",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.since",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Different question from daily attribution; Southbound local term is gain in currency paid and includes HKD/CNY movement."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "RECORDED_COST_BASIS",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.since"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§9.7",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "attribution_money",
+      "metric_name": "Money gain attribution",
+      "human_definition": "Eight exact money components reconciling to absolute period gain.",
+      "formula": "M_k=sum_D m_(k,D), daily component definitions §9.1; sum_k M_k=G exactly; fixed line ids/order §9.2.",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§9.1-9.3, 9.5"
+      ],
+      "minimum_observations": "every daily valuation, required start/end prices and event/valuation FX",
+      "frequency": "calendar-day flow timing; declared (B,E] window, with required segment or daily observations as cited",
+      "lookback": "declared (B,E]; never silently truncated; since-snapshot labelled",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.attribution_money",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Price-FX interaction separate; actual trades compared to closes; money lines remain valid without a positive return base."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "PORTFOLIO_HISTORY",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.attribution_money"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§9.1-9.3, 9.5",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "attribution_return",
+      "metric_name": "Time-weighted return attribution",
+      "human_definition": "Eight Carino-linked components reconciling to the period TWR.",
+      "formula": "c_(k,D)=m_(k,D)/beta_D; kappa_D=ln(1+r_D)/r_D and kappa=ln(1+TWR)/TWR, continuous value 1 at zero; C_k=sum_D kappa_D*c_(k,D)/kappa.",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§9.4-9.5"
+      ],
+      "minimum_observations": "all attribution money inputs plus valid return bases and logarithms",
+      "frequency": "calendar-day flow timing; declared (B,E] window, with required segment or daily observations as cited",
+      "lookback": "declared (B,E]; never silently truncated; since-snapshot labelled",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.attribution_return",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Total loss or negative factor suppresses return attribution; no annualization; not dividend yield; Decimal precision 50 for logarithms."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "PORTFOLIO_HISTORY",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.attribution_return"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§9.4-9.5",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    },
+    {
+      "metric_id": "attribution_breakdown",
+      "metric_name": "Attributed gain breakdown",
+      "human_definition": "Per-holding, per-currency or per-account allocation of money attribution under explicit grouping.",
+      "formula": "Group the §9.1 money contributions by §9.6 identity/timing rules; sum children exactly equals each parent line; display via §2.4 largest remainder.",
+      "annualization_convention": "never (annualized returns have separate metric ids)",
+      "data_inputs": [
+        "pinned ledger and market-data versions",
+        "inputs named in formula and CP3_PERFORMANCE_CONVENTIONS.md §§9.6, 2.4"
+      ],
+      "minimum_observations": "daily attributed inputs and unambiguous grouping identities",
+      "frequency": "calendar-day flow timing; declared (B,E] window, with required segment or daily observations as cited",
+      "lookback": "declared (B,E]; never silently truncated; since-snapshot labelled",
+      "benchmark_dependency": "none",
+      "risk_free_rate_dependency": "none",
+      "missing_data_handling": "common.state_rule; common.states.attribution_money",
+      "fx_treatment": "common.fx; exact dates/roles in formula and cited ruling",
+      "corporate_action_treatment": "common.corporate_actions",
+      "known_limitations": [
+        "Contribution basis is fixed in §9.6; per-group result is not standalone group return or causal counterfactual."
+      ],
+      "implementation_version": "common.implementation_version",
+      "judgment_class": "FACT",
+      "reference_point": "PORTFOLIO_HISTORY",
+      "presentation": "common.presentation",
+      "states": [
+        "common.states.attribution_money"
+      ],
+      "defined_in": "CP3_PERFORMANCE_CONVENTIONS.md §§9.6, 2.4",
+      "wording": {
+        "must_keep": "historical window/as-of, native/reporting currency, state, exclusions and supported scope",
+        "forbidden": [
+          "forecast",
+          "tax liability",
+          "invented cost basis",
+          "invented withholding"
+        ]
+      }
+    }
+  ]
+}

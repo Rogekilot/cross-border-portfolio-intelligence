@@ -1,0 +1,517 @@
+{
+ "data": {
+  "dividend_and_cost_events": [
+   {
+    "account": "A1 (US)",
+    "amount": {
+     "amount": "2",
+     "currency": "USD"
+    },
+    "currency": "USD",
+    "date": "2025-04-02",
+    "event_id": "e0000000-0000-4000-8000-000000000011",
+    "ledger_seq": 11,
+    "listing": "-",
+    "quantity": null,
+    "type": "FEE"
+   },
+   {
+    "account": "A2 (HK)",
+    "amount": {
+     "amount": "1000",
+     "currency": "HKD"
+    },
+    "currency": "HKD",
+    "date": "2025-04-24",
+    "event_id": "e1000000-0000-4000-8000-000000000028",
+    "ex_date": "2025-04-10",
+    "ledger_seq": 28,
+    "listing": "0700@XHKG",
+    "quantity": null,
+    "type": "DIVIDEND"
+   },
+   {
+    "account": "A2 (HK)",
+    "amount": {
+     "amount": "100",
+     "currency": "HKD"
+    },
+    "currency": "HKD",
+    "date": "2025-04-24",
+    "event_id": "e1000000-0000-4000-8000-000000000029",
+    "ledger_seq": 29,
+    "listing": "0700@XHKG",
+    "quantity": null,
+    "type": "TAX"
+   }
+  ],
+  "dividends_recorded_by_currency_native_sum": {
+   "HKD": "1000"
+  },
+  "income_and_cost_amounts_by_window": [
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "-8",
+    "manifest_id": "752261ae07538eb4e53211c253d1f2a126750a1f1fc7b2e2fb826857e818026b",
+    "metric_id": "conversion_result_amount",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "-8",
+    "view": "PERIOD",
+    "window": "SINCE_INCEPTION"
+   },
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "-2",
+    "manifest_id": "752261ae07538eb4e53211c253d1f2a126750a1f1fc7b2e2fb826857e818026b",
+    "metric_id": "fees_amount",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "-2",
+    "view": "PERIOD",
+    "window": "SINCE_INCEPTION"
+   },
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "0",
+    "manifest_id": "752261ae07538eb4e53211c253d1f2a126750a1f1fc7b2e2fb826857e818026b",
+    "metric_id": "financing_amount",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "0",
+    "view": "PERIOD",
+    "window": "SINCE_INCEPTION"
+   },
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "128",
+    "manifest_id": "752261ae07538eb4e53211c253d1f2a126750a1f1fc7b2e2fb826857e818026b",
+    "metric_id": "income_amount",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "128",
+    "view": "PERIOD",
+    "window": "SINCE_INCEPTION"
+   },
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "-64/5",
+    "manifest_id": "752261ae07538eb4e53211c253d1f2a126750a1f1fc7b2e2fb826857e818026b",
+    "metric_id": "taxes_amount",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "-12.8",
+    "view": "PERIOD",
+    "window": "SINCE_INCEPTION"
+   },
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "-8",
+    "manifest_id": "d1331a0c49db3e81780fc0f3ccaa2ca4942f6197fec33eb7b69518cc998565ba",
+    "metric_id": "conversion_result_amount",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "-8",
+    "view": "PERIOD",
+    "window": "CUSTOM_FROM_2025-03-31"
+   },
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "-2",
+    "manifest_id": "d1331a0c49db3e81780fc0f3ccaa2ca4942f6197fec33eb7b69518cc998565ba",
+    "metric_id": "fees_amount",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "-2",
+    "view": "PERIOD",
+    "window": "CUSTOM_FROM_2025-03-31"
+   },
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "0",
+    "manifest_id": "d1331a0c49db3e81780fc0f3ccaa2ca4942f6197fec33eb7b69518cc998565ba",
+    "metric_id": "financing_amount",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "0",
+    "view": "PERIOD",
+    "window": "CUSTOM_FROM_2025-03-31"
+   },
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "128",
+    "manifest_id": "d1331a0c49db3e81780fc0f3ccaa2ca4942f6197fec33eb7b69518cc998565ba",
+    "metric_id": "income_amount",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "128",
+    "view": "PERIOD",
+    "window": "CUSTOM_FROM_2025-03-31"
+   },
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "-64/5",
+    "manifest_id": "d1331a0c49db3e81780fc0f3ccaa2ca4942f6197fec33eb7b69518cc998565ba",
+    "metric_id": "taxes_amount",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "-12.8",
+    "view": "PERIOD",
+    "window": "CUSTOM_FROM_2025-03-31"
+   },
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "-8",
+    "manifest_id": "9f7c6faa449e7e9feac6dcbb84270741f154dfb01344c6ccf2b316abf3342663",
+    "metric_id": "conversion_result_amount",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "-8",
+    "view": "PERIOD",
+    "window": "TRAILING_1M"
+   },
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "-2",
+    "manifest_id": "9f7c6faa449e7e9feac6dcbb84270741f154dfb01344c6ccf2b316abf3342663",
+    "metric_id": "fees_amount",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "-2",
+    "view": "PERIOD",
+    "window": "TRAILING_1M"
+   },
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "0",
+    "manifest_id": "9f7c6faa449e7e9feac6dcbb84270741f154dfb01344c6ccf2b316abf3342663",
+    "metric_id": "financing_amount",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "0",
+    "view": "PERIOD",
+    "window": "TRAILING_1M"
+   },
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "128",
+    "manifest_id": "9f7c6faa449e7e9feac6dcbb84270741f154dfb01344c6ccf2b316abf3342663",
+    "metric_id": "income_amount",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "128",
+    "view": "PERIOD",
+    "window": "TRAILING_1M"
+   },
+   {
+    "currency": "USD",
+    "details": [],
+    "exact": "-64/5",
+    "manifest_id": "9f7c6faa449e7e9feac6dcbb84270741f154dfb01344c6ccf2b316abf3342663",
+    "metric_id": "taxes_amount",
+    "reason": null,
+    "state": "AVAILABLE",
+    "subject": [],
+    "synthetic": true,
+    "value": "-12.8",
+    "view": "PERIOD",
+    "window": "TRAILING_1M"
+   },
+   {
+    "currency": "USD",
+    "details": [
+     "WINDOW_BEFORE_INCEPTION"
+    ],
+    "exact": null,
+    "manifest_id": "a2f7dbf6ced8eebfeda9309aca08165a993b0a32f6eb7c531d0ea9f8ab011fda",
+    "metric_id": "conversion_result_amount",
+    "reason": null,
+    "state": "INSUFFICIENT_DATA",
+    "subject": [],
+    "synthetic": true,
+    "value": null,
+    "view": "PERIOD",
+    "window": "YTD"
+   },
+   {
+    "currency": "USD",
+    "details": [
+     "WINDOW_BEFORE_INCEPTION"
+    ],
+    "exact": null,
+    "manifest_id": "a2f7dbf6ced8eebfeda9309aca08165a993b0a32f6eb7c531d0ea9f8ab011fda",
+    "metric_id": "fees_amount",
+    "reason": null,
+    "state": "INSUFFICIENT_DATA",
+    "subject": [],
+    "synthetic": true,
+    "value": null,
+    "view": "PERIOD",
+    "window": "YTD"
+   },
+   {
+    "currency": "USD",
+    "details": [
+     "WINDOW_BEFORE_INCEPTION"
+    ],
+    "exact": null,
+    "manifest_id": "a2f7dbf6ced8eebfeda9309aca08165a993b0a32f6eb7c531d0ea9f8ab011fda",
+    "metric_id": "financing_amount",
+    "reason": null,
+    "state": "INSUFFICIENT_DATA",
+    "subject": [],
+    "synthetic": true,
+    "value": null,
+    "view": "PERIOD",
+    "window": "YTD"
+   },
+   {
+    "currency": "USD",
+    "details": [
+     "WINDOW_BEFORE_INCEPTION"
+    ],
+    "exact": null,
+    "manifest_id": "a2f7dbf6ced8eebfeda9309aca08165a993b0a32f6eb7c531d0ea9f8ab011fda",
+    "metric_id": "income_amount",
+    "reason": null,
+    "state": "INSUFFICIENT_DATA",
+    "subject": [],
+    "synthetic": true,
+    "value": null,
+    "view": "PERIOD",
+    "window": "YTD"
+   },
+   {
+    "currency": "USD",
+    "details": [
+     "WINDOW_BEFORE_INCEPTION"
+    ],
+    "exact": null,
+    "manifest_id": "a2f7dbf6ced8eebfeda9309aca08165a993b0a32f6eb7c531d0ea9f8ab011fda",
+    "metric_id": "taxes_amount",
+    "reason": null,
+    "state": "INSUFFICIENT_DATA",
+    "subject": [],
+    "synthetic": true,
+    "value": null,
+    "view": "PERIOD",
+    "window": "YTD"
+   }
+  ],
+  "reading": "income is recognized on the ex-date when the ledger records one before the pay date (accrual), else on the pay date; the receivable is revalued by FX until it settles (Ruling 8.1)",
+  "receivable_on_the_day_before_each_pay_date": [
+   {
+    "date": "2025-04-23",
+    "receivable_metrics": [
+     {
+      "breakdown": [],
+      "causes": [],
+      "conformant": false,
+      "currency": "HKD",
+      "details": [],
+      "exact": "1000",
+      "excluded": [],
+      "excluded_weight": null,
+      "excluded_weight_presented": null,
+      "freshness": {
+       "delays": [],
+       "entries": [],
+       "summary": "CURRENT"
+      },
+      "lineage": [
+       [
+        "ex_date",
+        "2025-04-10"
+       ],
+       [
+        "fx_date_used",
+        "2025-04-23"
+       ],
+       [
+        "fx_note:parity",
+        "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+       ],
+       [
+        "pay_date",
+        "2025-04-24"
+       ]
+      ],
+      "manifest_id": "4ee7019bacbddc3c1a1cb2569ea40e42a32494f060904e6d5c357516110b1e0f",
+      "method_id": "performance.valuation/cp3b",
+      "metric_id": "receivable_value",
+      "numeric_basis": "RATIONAL",
+      "partial": false,
+      "portfolio_state": "ACTUAL",
+      "reason": null,
+      "rounding_rule_id": null,
+      "stale_weight": null,
+      "stale_weight_presented": null,
+      "state": "AVAILABLE",
+      "subject": [
+       [
+        "account",
+        "a1000000-0000-4000-8000-000000000002"
+       ],
+       [
+        "event",
+        "e1000000-0000-4000-8000-000000000028"
+       ]
+      ],
+      "synthetic": true,
+      "unit": "CURRENCY_AMOUNT",
+      "value": "1000",
+      "view": "NATIVE",
+      "window": {
+       "days": 0,
+       "end": "2025-04-23",
+       "frequency": null,
+       "months": null,
+       "rule": "AS_OF",
+       "since_snapshot": false,
+       "start": "2025-04-23"
+      }
+     },
+     {
+      "breakdown": [],
+      "causes": [],
+      "conformant": false,
+      "currency": "USD",
+      "details": [],
+      "exact": "128",
+      "excluded": [],
+      "excluded_weight": null,
+      "excluded_weight_presented": null,
+      "freshness": {
+       "delays": [
+        "END_OF_DAY"
+       ],
+       "entries": [
+        {
+         "date_used": "2025-04-23",
+         "key": "HKD",
+         "kind": "CURRENCY",
+         "mics": [],
+         "missed": 0,
+         "state": "CURRENT"
+        }
+       ],
+       "summary": "CURRENT"
+      },
+      "lineage": [
+       [
+        "ex_date",
+        "2025-04-10"
+       ],
+       [
+        "fx_date_used",
+        "2025-04-23"
+       ],
+       [
+        "fx_note:parity",
+        "PARITY_CHECK_NOT_RUN: no central-parity source is admitted, so the CNY band check did not run (Ruling 1.5a); no state effect"
+       ],
+       [
+        "pay_date",
+        "2025-04-24"
+       ]
+      ],
+      "manifest_id": "4ee7019bacbddc3c1a1cb2569ea40e42a32494f060904e6d5c357516110b1e0f",
+      "method_id": "performance.valuation/cp3b",
+      "metric_id": "receivable_value",
+      "numeric_basis": "RATIONAL",
+      "partial": false,
+      "portfolio_state": "ACTUAL",
+      "reason": null,
+      "rounding_rule_id": null,
+      "stale_weight": null,
+      "stale_weight_presented": null,
+      "state": "AVAILABLE",
+      "subject": [
+       [
+        "account",
+        "a1000000-0000-4000-8000-000000000002"
+       ],
+       [
+        "event",
+        "e1000000-0000-4000-8000-000000000028"
+       ]
+      ],
+      "synthetic": true,
+      "unit": "CURRENCY_AMOUNT",
+      "value": "128",
+      "view": "REPORTING",
+      "window": {
+       "days": 0,
+       "end": "2025-04-23",
+       "frequency": null,
+       "months": null,
+       "rule": "AS_OF",
+       "since_snapshot": false,
+       "start": "2025-04-23"
+      }
+     }
+    ]
+   }
+  ],
+  "receivables_at_as_of": []
+ },
+ "kind": "SYNTHETIC_DEMONSTRATION_A",
+ "labels": {
+  "all_results_synthetic": true,
+  "any_result_synthetic": true,
+  "demonstration_ledger": "DEMONSTRATION LEDGER: these events are not a user's holdings (P8); they exist to exercise the engine.",
+  "fx_sources_in_m": [
+   {
+    "source_id": "synthetic.ecb_direct",
+    "what_it_is": "synthetic.ecb_direct"
+   }
+  ],
+  "label": "SYNTHETIC: every result below was computed from a market-data version that holds synthetic files; none is a real market fact (market-data Ruling 4.8).",
+  "pd_0035_caveat": "PD-0035 section 3: Mainland China and Hong Kong price behaviour is shown on SYNTHETIC data only. No admissible real CN or HK price source exists (PD-0031, PD-0032); the real slice is US prices (Alpha Vantage, the last 100 sessions) and ECB FX only. A synthetic result is never a real market fact (market-data Ruling 4.8)."
+ },
+ "section": "08_dividends",
+ "subject": "DEMO-A: US + HK + CN synthetic cross-border portfolio",
+ "title": "Dividends"
+}

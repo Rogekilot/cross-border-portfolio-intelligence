@@ -1,0 +1,389 @@
+{
+ "data": {
+  "rows": [
+   {
+    "G_investment_gain": {
+     "currency": "USD",
+     "details": [],
+     "exact": "3652798/1885",
+     "manifest_id": "752261ae07538eb4e53211c253d1f2a126750a1f1fc7b2e2fb826857e818026b",
+     "metric_id": "gain_absolute",
+     "reason": null,
+     "state": "AVAILABLE",
+     "subject": [],
+     "synthetic": true,
+     "value": "1937.82",
+     "view": "PERIOD"
+    },
+    "V_B": {
+     "currency": "USD",
+     "details": [],
+     "exact": "0",
+     "manifest_id": "12174ebc0e817bf427872683c16903d86217b51b9d6436be1fcdf8112bb2f5c3",
+     "metric_id": "portfolio_value",
+     "reason": null,
+     "state": "AVAILABLE",
+     "subject": [
+      [
+       "currency",
+       "USD"
+      ]
+     ],
+     "synthetic": true,
+     "value": "0",
+     "view": "REPORTING"
+    },
+    "V_E": {
+     "currency": "USD",
+     "details": [],
+     "exact": "3214446/145",
+     "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+     "metric_id": "portfolio_value",
+     "reason": null,
+     "state": "AVAILABLE",
+     "subject": [
+      [
+       "currency",
+       "USD"
+      ]
+     ],
+     "synthetic": true,
+     "value": "22168.59",
+     "view": "REPORTING"
+    },
+    "base": "2025-01-01",
+    "end": "2025-04-30",
+    "external_flows": [
+     {
+      "class": "EXTERNAL_INFLOW_CASH",
+      "currency": "USD",
+      "date": "2025-01-02",
+      "event_id": "e0000000-0000-4000-8000-000000000001",
+      "listing": "-",
+      "native_amount": "10000",
+      "quantity": null,
+      "timing": "START",
+      "type": "DEPOSIT"
+     },
+     {
+      "class": "EXTERNAL_INFLOW_CASH",
+      "currency": "HKD",
+      "date": "2025-01-06",
+      "event_id": "e0000000-0000-4000-8000-000000000003",
+      "listing": "-",
+      "native_amount": "20000",
+      "quantity": null,
+      "timing": "START",
+      "type": "DEPOSIT"
+     },
+     {
+      "class": "EXTERNAL_INFLOW_CASH",
+      "currency": "CNY",
+      "date": "2025-03-03",
+      "event_id": "e1000000-0000-4000-8000-000000000026",
+      "listing": "-",
+      "native_amount": "30000",
+      "quantity": null,
+      "timing": "START",
+      "type": "DEPOSIT"
+     },
+     {
+      "class": "EXTERNAL_INFLOW_KIND",
+      "currency": "USD",
+      "date": "2025-03-10",
+      "event_id": "e0000000-0000-4000-8000-000000000009",
+      "listing": "MSFT@XNYS",
+      "native_amount": null,
+      "quantity": "10",
+      "timing": "END",
+      "type": "TRANSFER_IN"
+     },
+     {
+      "class": "EXTERNAL_OUTFLOW_CASH",
+      "currency": "USD",
+      "date": "2025-04-15",
+      "event_id": "e1000000-0000-4000-8000-000000000030",
+      "listing": "-",
+      "native_amount": "500",
+      "quantity": null,
+      "timing": "END",
+      "type": "WITHDRAWAL"
+     }
+    ],
+    "net_external_flow_derived_as_VE_minus_VB_minus_G": "263000/13",
+    "reading": "deposits and withdrawals are external flows and are not gains; G is the change in value that is not an external flow (Ruling 5.1)",
+    "window": "SINCE_INCEPTION"
+   },
+   {
+    "G_investment_gain": {
+     "currency": "USD",
+     "details": [],
+     "exact": "2715182/16965",
+     "manifest_id": "d1331a0c49db3e81780fc0f3ccaa2ca4942f6197fec33eb7b69518cc998565ba",
+     "metric_id": "gain_absolute",
+     "reason": null,
+     "state": "AVAILABLE",
+     "subject": [],
+     "synthetic": true,
+     "value": "160.05",
+     "view": "PERIOD"
+    },
+    "V_B": {
+     "currency": "USD",
+     "details": [],
+     "exact": "2633500/117",
+     "manifest_id": "6612c14e5d6a0515684480ecbe7d24bb3bbea1e9a5db1e1a3ba5b1d339181d7d",
+     "metric_id": "portfolio_value",
+     "reason": null,
+     "state": "AVAILABLE",
+     "subject": [
+      [
+       "currency",
+       "USD"
+      ]
+     ],
+     "synthetic": true,
+     "value": "22508.55",
+     "view": "REPORTING"
+    },
+    "V_E": {
+     "currency": "USD",
+     "details": [],
+     "exact": "3214446/145",
+     "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+     "metric_id": "portfolio_value",
+     "reason": null,
+     "state": "AVAILABLE",
+     "subject": [
+      [
+       "currency",
+       "USD"
+      ]
+     ],
+     "synthetic": true,
+     "value": "22168.59",
+     "view": "REPORTING"
+    },
+    "base": "2025-03-31",
+    "end": "2025-04-30",
+    "external_flows": [
+     {
+      "class": "EXTERNAL_OUTFLOW_CASH",
+      "currency": "USD",
+      "date": "2025-04-15",
+      "event_id": "e1000000-0000-4000-8000-000000000030",
+      "listing": "-",
+      "native_amount": "500",
+      "quantity": null,
+      "timing": "END",
+      "type": "WITHDRAWAL"
+     }
+    ],
+    "net_external_flow_derived_as_VE_minus_VB_minus_G": "-500",
+    "reading": "deposits and withdrawals are external flows and are not gains; G is the change in value that is not an external flow (Ruling 5.1)",
+    "window": "CUSTOM_FROM_2025-03-31"
+   },
+   {
+    "G_investment_gain": {
+     "currency": "USD",
+     "details": [],
+     "exact": "2715182/16965",
+     "manifest_id": "9f7c6faa449e7e9feac6dcbb84270741f154dfb01344c6ccf2b316abf3342663",
+     "metric_id": "gain_absolute",
+     "reason": null,
+     "state": "AVAILABLE",
+     "subject": [],
+     "synthetic": true,
+     "value": "160.05",
+     "view": "PERIOD"
+    },
+    "V_B": {
+     "currency": "USD",
+     "details": [],
+     "exact": "2633500/117",
+     "manifest_id": "6612c14e5d6a0515684480ecbe7d24bb3bbea1e9a5db1e1a3ba5b1d339181d7d",
+     "metric_id": "portfolio_value",
+     "reason": null,
+     "state": "AVAILABLE",
+     "subject": [
+      [
+       "currency",
+       "USD"
+      ]
+     ],
+     "synthetic": true,
+     "value": "22508.55",
+     "view": "REPORTING"
+    },
+    "V_E": {
+     "currency": "USD",
+     "details": [],
+     "exact": "3214446/145",
+     "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+     "metric_id": "portfolio_value",
+     "reason": null,
+     "state": "AVAILABLE",
+     "subject": [
+      [
+       "currency",
+       "USD"
+      ]
+     ],
+     "synthetic": true,
+     "value": "22168.59",
+     "view": "REPORTING"
+    },
+    "base": "2025-03-31",
+    "end": "2025-04-30",
+    "external_flows": [
+     {
+      "class": "EXTERNAL_OUTFLOW_CASH",
+      "currency": "USD",
+      "date": "2025-04-15",
+      "event_id": "e1000000-0000-4000-8000-000000000030",
+      "listing": "-",
+      "native_amount": "500",
+      "quantity": null,
+      "timing": "END",
+      "type": "WITHDRAWAL"
+     }
+    ],
+    "net_external_flow_derived_as_VE_minus_VB_minus_G": "-500",
+    "reading": "deposits and withdrawals are external flows and are not gains; G is the change in value that is not an external flow (Ruling 5.1)",
+    "window": "TRAILING_1M"
+   },
+   {
+    "G_investment_gain": {
+     "currency": "USD",
+     "details": [
+      "WINDOW_BEFORE_INCEPTION"
+     ],
+     "exact": null,
+     "manifest_id": "a2f7dbf6ced8eebfeda9309aca08165a993b0a32f6eb7c531d0ea9f8ab011fda",
+     "metric_id": "gain_absolute",
+     "reason": null,
+     "state": "INSUFFICIENT_DATA",
+     "subject": [],
+     "synthetic": true,
+     "value": null,
+     "view": "PERIOD"
+    },
+    "V_B": {
+     "currency": "USD",
+     "details": [],
+     "exact": "0",
+     "manifest_id": "64ef6c0e84fd635418a5d501dc57feb7b9c3b9fe4b007090f4b94639c630e6bc",
+     "metric_id": "portfolio_value",
+     "reason": null,
+     "state": "AVAILABLE",
+     "subject": [
+      [
+       "currency",
+       "USD"
+      ]
+     ],
+     "synthetic": true,
+     "value": "0",
+     "view": "REPORTING"
+    },
+    "V_E": {
+     "currency": "USD",
+     "details": [],
+     "exact": "3214446/145",
+     "manifest_id": "93d0cb616f9f792379ab6a207023c4a5eb6003cfb72d51014766fe8cdfdfc517",
+     "metric_id": "portfolio_value",
+     "reason": null,
+     "state": "AVAILABLE",
+     "subject": [
+      [
+       "currency",
+       "USD"
+      ]
+     ],
+     "synthetic": true,
+     "value": "22168.59",
+     "view": "REPORTING"
+    },
+    "base": "2024-12-31",
+    "end": "2025-04-30",
+    "external_flows": [
+     {
+      "class": "EXTERNAL_INFLOW_CASH",
+      "currency": "USD",
+      "date": "2025-01-02",
+      "event_id": "e0000000-0000-4000-8000-000000000001",
+      "listing": "-",
+      "native_amount": "10000",
+      "quantity": null,
+      "timing": "START",
+      "type": "DEPOSIT"
+     },
+     {
+      "class": "EXTERNAL_INFLOW_CASH",
+      "currency": "HKD",
+      "date": "2025-01-06",
+      "event_id": "e0000000-0000-4000-8000-000000000003",
+      "listing": "-",
+      "native_amount": "20000",
+      "quantity": null,
+      "timing": "START",
+      "type": "DEPOSIT"
+     },
+     {
+      "class": "EXTERNAL_INFLOW_CASH",
+      "currency": "CNY",
+      "date": "2025-03-03",
+      "event_id": "e1000000-0000-4000-8000-000000000026",
+      "listing": "-",
+      "native_amount": "30000",
+      "quantity": null,
+      "timing": "START",
+      "type": "DEPOSIT"
+     },
+     {
+      "class": "EXTERNAL_INFLOW_KIND",
+      "currency": "USD",
+      "date": "2025-03-10",
+      "event_id": "e0000000-0000-4000-8000-000000000009",
+      "listing": "MSFT@XNYS",
+      "native_amount": null,
+      "quantity": "10",
+      "timing": "END",
+      "type": "TRANSFER_IN"
+     },
+     {
+      "class": "EXTERNAL_OUTFLOW_CASH",
+      "currency": "USD",
+      "date": "2025-04-15",
+      "event_id": "e1000000-0000-4000-8000-000000000030",
+      "listing": "-",
+      "native_amount": "500",
+      "quantity": null,
+      "timing": "END",
+      "type": "WITHDRAWAL"
+     }
+    ],
+    "net_external_flow_derived_as_VE_minus_VB_minus_G": null,
+    "reading": "deposits and withdrawals are external flows and are not gains; G is the change in value that is not an external flow (Ruling 5.1)",
+    "window": "YTD"
+   }
+  ]
+ },
+ "kind": "SYNTHETIC_DEMONSTRATION_A",
+ "labels": {
+  "all_results_synthetic": true,
+  "any_result_synthetic": true,
+  "demonstration_ledger": "DEMONSTRATION LEDGER: these events are not a user's holdings (P8); they exist to exercise the engine.",
+  "fx_sources_in_m": [
+   {
+    "source_id": "synthetic.ecb_direct",
+    "what_it_is": "synthetic.ecb_direct"
+   }
+  ],
+  "label": "SYNTHETIC: every result below was computed from a market-data version that holds synthetic files; none is a real market fact (market-data Ruling 4.8).",
+  "pd_0035_caveat": "PD-0035 section 3: Mainland China and Hong Kong price behaviour is shown on SYNTHETIC data only. No admissible real CN or HK price source exists (PD-0031, PD-0032); the real slice is US prices (Alpha Vantage, the last 100 sessions) and ECB FX only. A synthetic result is never a real market fact (market-data Ruling 4.8)."
+ },
+ "section": "06_deposits_vs_gains",
+ "subject": "DEMO-A: US + HK + CN synthetic cross-border portfolio",
+ "title": "Deposits versus investment gains"
+}

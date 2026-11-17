@@ -1,0 +1,121 @@
+{
+  "reviewer": "/root/designer_cp7d",
+  "commonContextDepthChecks": [
+    {
+      "language": "en",
+      "depth": "Simple",
+      "sharedScope": true,
+      "commonReferences": 12,
+      "localUnknownRetained": true,
+      "evidenceActions": 12
+    },
+    {
+      "language": "en",
+      "depth": "Professional",
+      "sharedScope": true,
+      "commonReferences": 12,
+      "localUnknownRetained": true,
+      "evidenceActions": 12
+    },
+    {
+      "language": "zh-CN",
+      "depth": "速览",
+      "sharedScope": true,
+      "commonReferences": 12,
+      "localUnknownRetained": true,
+      "evidenceActions": 12
+    },
+    {
+      "language": "zh-CN",
+      "depth": "简明",
+      "sharedScope": true,
+      "commonReferences": 12,
+      "localUnknownRetained": true,
+      "evidenceActions": 12
+    },
+    {
+      "language": "zh-CN",
+      "depth": "专业",
+      "sharedScope": true,
+      "commonReferences": 12,
+      "localUnknownRetained": true,
+      "evidenceActions": 12
+    },
+    {
+      "language": "en",
+      "depth": "Quick",
+      "sharedScope": true,
+      "commonReferences": 12,
+      "localUnknownRetained": true,
+      "evidenceActions": 12
+    }
+  ],
+  "finalLegacyLocalLabelChecks": [
+    {
+      "language": "EN",
+      "depth": "Quick",
+      "largestLocalLimitations": [
+        "A complete valuation is unavailable, so its dependent metrics remain unavailable. A separately labelled partial amount is not the portfolio total/NAV."
+      ],
+      "effectiveLocalLimitations": [
+        "A complete valuation is unavailable, so its dependent metrics remain unavailable. A separately labelled partial amount is not the portfolio total/NAV."
+      ]
+    },
+    {
+      "language": "EN",
+      "depth": "Simple",
+      "largestLocalLimitations": [
+        "A complete valuation is unavailable, so its dependent metrics remain unavailable. A separately labelled partial amount is not the portfolio total/NAV."
+      ],
+      "effectiveLocalLimitations": [
+        "A complete valuation is unavailable, so its dependent metrics remain unavailable. A separately labelled partial amount is not the portfolio total/NAV."
+      ]
+    },
+    {
+      "language": "EN",
+      "depth": "Professional",
+      "largestLocalLimitations": [
+        "A complete valuation is unavailable, so its dependent metrics remain unavailable. A separately labelled partial amount is not the portfolio total/NAV."
+      ],
+      "effectiveLocalLimitations": [
+        "A complete valuation is unavailable, so its dependent metrics remain unavailable. A separately labelled partial amount is not the portfolio total/NAV."
+      ]
+    },
+    {
+      "language": "简体中文",
+      "depth": "速览",
+      "largestLocalLimitations": [
+        "无法得到完整估值，依赖它的指标仍不可用。另行明确标识的部分金额不等于组合总值／净值。"
+      ],
+      "effectiveLocalLimitations": [
+        "无法得到完整估值，依赖它的指标仍不可用。另行明确标识的部分金额不等于组合总值／净值。"
+      ]
+    },
+    {
+      "language": "简体中文",
+      "depth": "简明",
+      "largestLocalLimitations": [
+        "无法得到完整估值，依赖它的指标仍不可用。另行明确标识的部分金额不等于组合总值／净值。"
+      ],
+      "effectiveLocalLimitations": [
+        "无法得到完整估值，依赖它的指标仍不可用。另行明确标识的部分金额不等于组合总值／净值。"
+      ]
+    },
+    {
+      "language": "简体中文",
+      "depth": "专业",
+      "largestLocalLimitations": [
+        "无法得到完整估值，依赖它的指标仍不可用。另行明确标识的部分金额不等于组合总值／净值。"
+      ],
+      "effectiveLocalLimitations": [
+        "无法得到完整估值，依赖它的指标仍不可用。另行明确标识的部分金额不等于组合总值／净值。"
+      ]
+    }
+  ],
+  "cleanup": {
+    "guest": true,
+    "portfolioNameCleared": true,
+    "privatePartialCleared": true,
+    "privateExcludedWeightCleared": true
+  }
+}

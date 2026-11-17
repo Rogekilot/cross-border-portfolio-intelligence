@@ -1,0 +1,42 @@
+{
+  "catalog_id": "benchmarks:1",
+  "owner": "main session (PM); sources attested by the human product owner",
+  "updated": "2026-10-02",
+  "governing_text": "risk/1.9 Rulings 5.1-5.8 (BenchmarkSeries contract, total return, ETF proxies, selection, two sources, Current mode); PD-0039 D1/D5",
+  "rules": [
+    "An entry is selectable by a user (migration 0015) only if it is listed under 'entries'. 'candidates' are never selectable and never read by the engine.",
+    "Every entry's source_id must be a source in SOURCES.json whose terms_check passes (market-data Ruling 4.7); synthetic fixture series are never catalogued here (market-data Ruling 4.8: synthetic data stays in fixtures and tests).",
+    "return_basis is one of TOTAL_RETURN_NET, TOTAL_RETURN_GROSS, PRICE_RETURN. A PRICE_RETURN entry may be listed for display but is refused for risk metrics (Ruling 5.4).",
+    "A change to any field of an entry is a new catalog_id version; manifests cite catalog_id (pinned by benchmark selections as catalog_version).",
+    "A benchmark served by more than one admitted source requires a unique positive-integer source_priority on each of those sources in SOURCES.json (1 = primary; risk/1.2 Ruling 5.7). A missing or repeated priority refuses the benchmark (MISSING_BENCHMARK, BENCHMARK_SERIES_UNAVAILABLE)."
+  ],
+  "entry_fields": {
+    "benchmark_id": "stable id, independent of the source",
+    "name": "index name, or 'proxy: <listing>' (Ruling 5.5)",
+    "provider": "index provider, or the ETF issuer for a proxy",
+    "source_id": "SOURCES.json source id",
+    "licensing": "licence reference and permitted use (PRD 11.4)",
+    "currency": "ISO 4217 code of the levels",
+    "return_basis": "TOTAL_RETURN_NET | TOTAL_RETURN_GROSS | PRICE_RETURN, with the provider's dividend-treatment statement",
+    "dividend_treatment": "provider's statement (for NET: the withholding basis)",
+    "calendar_id": "index calculation calendar (EXCHANGE_SESSIONS kind)",
+    "series_form": "LEVELS | RETURNS (returns are compounded into levels exactly, Ruling 5.1)",
+    "proxy_of": "null, or the index an ETF proxy stands for (Ruling 5.5)",
+    "synthetic": "always false in this catalog",
+    "proxy_listing_id": "UUID of the ETF listing an ETF proxy is built from (Ruling 5.5); null unless proxy_of is set",
+    "additional_sources": "optional list of {source_id, return_basis, precision_decimals} for further SOURCES.json sources serving this benchmark; each must carry the entry's return_basis and declare precision_decimals (risk/1.6-1.9 Rulings 5.7); a source not listed is never used; a multi-source entry with any precision undeclared is refused (BENCHMARK_SERIES_UNAVAILABLE); absent from digests when empty",
+    "official_decimals": "integer: the index's official published decimals (risk/1.9 declared precision)",
+    "precision_decimals": "integer: the primary source's declared published decimals (risk/1.9; market-data Ruling 4.2 per-source bound)"
+  },
+  "entries": [],
+  "candidates": [
+    {
+      "note": "Not admitted. PD-0039 D1: real benchmark data is decided by the owner before HG3. Any real source must provide TOTAL RETURN (risk/1.1 Ruling 5.4). Listed so the decision has a starting point; details are from memory and unverified.",
+      "examples": [
+        "US broad-market total-return index (e.g. S&P 500 TR) or a labelled ETF proxy (e.g. SPY with dividends reinvested)",
+        "Mainland China (e.g. CSI 300 total return)",
+        "Hong Kong (e.g. Hang Seng Index total return)"
+      ]
+    }
+  ]
+}

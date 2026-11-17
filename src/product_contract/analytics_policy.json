@@ -1,0 +1,23 @@
+{
+  "schema": "finweb.approved_analytics_policy/1",
+  "policy_id": "analytics-capital-universe/PD-0041",
+  "choice": "FULL_NAV",
+  "origin": "USER_CONFIRMED",
+  "scope_kind": "GLOBAL_PRODUCT",
+  "product_id": "cross-border-portfolio-intelligence",
+  "portfolio_id": null,
+  "account_id": null,
+  "decision": {
+    "decision_id": "PD-0041",
+    "path": "decisions/product/PD-0041-hg3-approved-with-conditions-and-cp6-start.md",
+    "sha256": "62af1421c47b878252ef361c989151acac0db7f5aef67cec13d554c1ca1dc925",
+    "decided_on": "2026-10-19",
+    "status": "APPROVED_WITH_CONDITIONS",
+    "owner_statement": "同意上述四项推荐，HG3 有条件通过。记录决定并按所列条件开始 CP6，不恢复夜间自动任务。"
+  },
+  "presentation": {
+    "concentration_label": "listing-and-cash-bucket concentration",
+    "largest_security_weight": "SEPARATE"
+  },
+  "personal_preferences": []
+}

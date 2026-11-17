@@ -1,0 +1,514 @@
+{
+ "fixture_id": "cp4_golden/1.0-part4",
+ "part": 4,
+ "scope": "risk/1.9, part 4: two paths that run on admitted sources today and that parts 1 to 3 do not pin (risk §15.1, last paragraph). (1) The risk-free quote at instant t in Current mode (Ruling 5.8 items 4, 5 and 7 with Rulings 4.3 and 4.4): a quote published and retrieved before t, a quote due but not yet retrieved at t (missed), and a quote not yet due at t (not missed), with the effect on a Sharpe ratio. (2) The default view of a benchmark-relative statistic (Ruling 7.7 as of 1.6): a 3Y beta refused for the portfolio's history falls back to MAX_AVAILABLE; a 3Y beta refused because the benchmark does not cover the window does not.",
+ "change_notes": [
+  "1.0-part4 (2026-10-03): first issue, authored by quant-analyst under the frozen risk/1.9 (no ruling changes). A new, separate file, so that cp4_golden/1.9-part3 is not re-pinned. Expected values are hand-derived (CP4_GOLDEN_PART4_DERIVATION.md), evaluated as arithmetic by derivation/cp4_part4_closed_forms.py, and re-derived from this file's inputs by derivation/cp4_part4_calculator.py (standard library only; reuses the part-3, part-2 and part-1 calculators; imports nothing from src/). No value comes from the engine. convention_sets are MINIMUM versions (risk Ruling 11.4)."
+ ],
+ "convention_sets": {
+  "risk": "risk/1.9",
+  "performance": "performance/1.12",
+  "market_data": "market-data/1.14",
+  "ledger_replay": "ledger-replay/1.5 (FIFO/1 mode)",
+  "minor_units": "minor-units/1.1",
+  "lot_relief": "FIFO/1 (no assertion in part 4 depends on it)"
+ },
+ "authored_by": "quant-analyst (independent derivation; see CP4_GOLDEN_PART4_DERIVATION.md)",
+ "authored_on": "2026-10-03",
+ "format": {
+  "inherits": "Every rule of cp4_golden parts 1, 2 and 3 'format' applies, including valuation_mode / instant / as_of_resolved (part 3), default_view (part 3), rates (part 1: {period_start, period_end, quote_date f_k, missed_publications m_k, exact rf_k}), benchmark_expected, comparability, v_beta and bites.",
+  "retrieval": "market_data.retrieval.files lists every file of M: the series it belongs to (listing_id, benchmark_id, risk-free series_id, or ECB), its declared coverage interval (market-data Ruling 0.1 (1.12)/(1.13): the files of one series are disjoint segments of it), and its retrieval_time. A file holds exactly the series' rows inside its coverage. late_rows states, for each Current-mode instant, the rows that are due at t (published) but whose file is not in M_t; at every other instant and for every other row, a row is in M_t exactly when it is due.",
+  "synthetic": "Every result computed for this fixture is synthetic (market-data Ruling 4.8)."
+ },
+ "mutation_catalog": {
+  "M-D1": "Current mode reads the risk-free quote by date, ignoring t and M_t (the historical rule at D_c(t))",
+  "M-D2": "a quote that is due at t but whose file is not yet in M_t is not counted as missed",
+  "M-D3": "a quote not yet due at t (published after t) is counted as missed",
+  "M-D4": "Current mode applies the publication test to the risk-free quote but not M_t (a file retrieved after t is read)",
+  "M-D5": "the risk-free return of a period uses the latest quote on or before the period's END g_k, not its start g_{k-1} (Ruling 4.3's rejected alternative)",
+  "M-D6": "the default view falls back on ANY INSUFFICIENT_DATA default request, benchmark-side causes included",
+  "M-D7": "the default view never falls back for a benchmark-relative statistic (the fallback applied to single-leg metrics only)",
+  "M-D8": "a request whose base is before inception is answered from inception under the requested label, not refused (Rulings 2.3 and 7.2)",
+  "M-D9": "a MAX_AVAILABLE result of a benchmark-relative statistic omits max_available_start from its effective window (Ruling 2.3)",
+  "M-D10": "a benchmark level missing before the series' first calculation day is back-filled with the first level, not refused (Ruling 5.2)"
+ },
+ "market_data": {
+  "synthetic": true,
+  "upstream": "synthetic",
+  "how_to_load": "As cp4_golden parts 1 to 3: the loader expands these compact definitions into synthetic files in the real layouts (calendar files with explicit date lists, an ECB-layout EUR quote file, RAW price files, published benchmark level files, a RATE_PUBLICATIONS calendar and a risk-free quote file), one file per entry of retrieval.files holding the series' rows inside its coverage, registers them with upstream 'synthetic' and the declared retrieval times, and ingests them into one release M.",
+  "retrieval": {
+   "rule": "A file's retrieval_time is at or after the availability instant of every row it holds (scheduled close; for ECB fixings and risk-free quotes, publication; market-data Ruling 3.1). M_t is the set of files retrieved at or before t (performance Ruling 1.7 (1.2)). cp4_part4_calculator.py --retrieval verifies both the after-retrieval test and late_rows.",
+   "files": [
+    {"file": "PX-SYN51-1", "series": "c5000000-0000-4000-8000-000000000051", "calendar": "SYN5_NYSE", "coverage": ["2021-12-01", "2025-11-26"], "retrieval_time": "2025-11-26T22:00:00Z"},
+    {"file": "PX-SYN51-2", "series": "c5000000-0000-4000-8000-000000000051", "calendar": "SYN5_NYSE", "coverage": ["2025-11-27", "2025-11-28"], "retrieval_time": "2025-11-28T22:00:00Z"},
+    {"file": "BM-US-1", "series": "SYN5_BM_US_TR", "calendar": "SYN5_NYSE", "coverage": ["2021-12-01", "2025-11-26"], "retrieval_time": "2025-11-26T22:00:00Z"},
+    {"file": "BM-US-2", "series": "SYN5_BM_US_TR", "calendar": "SYN5_NYSE", "coverage": ["2025-11-27", "2025-11-28"], "retrieval_time": "2025-11-28T22:00:00Z"},
+    {"file": "BM-YOUNG-1", "series": "SYN5_BM_YOUNG_TR", "calendar": "SYN5_NYSE", "coverage": ["2024-06-03", "2025-11-26"], "retrieval_time": "2025-11-26T22:00:00Z"},
+    {"file": "BM-YOUNG-2", "series": "SYN5_BM_YOUNG_TR", "calendar": "SYN5_NYSE", "coverage": ["2025-11-27", "2025-11-28"], "retrieval_time": "2025-11-28T22:00:00Z"},
+    {"file": "ECB-1", "series": "ECB", "calendar": "SYN5_ECB", "coverage": ["2021-12-01", "2025-11-26"], "retrieval_time": "2025-11-26T16:00:00Z"},
+    {"file": "ECB-2", "series": "ECB", "calendar": "SYN5_ECB", "coverage": ["2025-11-27", "2025-11-28"], "retrieval_time": "2025-11-28T16:00:00Z"},
+    {"file": "RF-1", "series": "SYN5_UST13_USD", "calendar": "SYN5_RF_USD", "coverage": ["2021-12-01", "2025-11-25"], "retrieval_time": "2025-11-26T02:00:00Z"},
+    {"file": "RF-2", "series": "SYN5_UST13_USD", "calendar": "SYN5_RF_USD", "coverage": ["2025-11-26", "2025-11-26"], "retrieval_time": "2025-11-27T01:15:00Z"},
+    {"file": "RF-3", "series": "SYN5_UST13_USD", "calendar": "SYN5_RF_USD", "coverage": ["2025-11-27", "2025-11-28"], "retrieval_time": "2025-11-29T02:00:00Z"}
+   ],
+   "late_rows": [
+    {"instant": "2025-11-27T01:10:00Z", "series": "SYN5_UST13_USD", "rows": ["2025-11-26"], "note": "published 2025-11-27T01:00:00Z (20:00 New York on 11-26), file RF-2 retrieved at 01:15"}
+   ],
+   "calendars": "registered, not retrieved (market-data Ruling 5.3)"
+  },
+  "calendars": [
+   {
+    "calendar_id": "SYN5_NYSE",
+    "kind": "EXCHANGE_SESSIONS",
+    "applies_to": ["XNYS"],
+    "timezone": "America/New_York",
+    "coverage": {"from": "2021-12-01", "to": "2025-11-28"},
+    "actual_through": "2025-11-28",
+    "sessions_rule": "every Monday to Friday in coverage except closed_weekdays",
+    "closed_weekdays": ["2025-11-27"],
+    "close": {"default": "16:00", "overrides": []},
+    "evidence": "synthetic; one closed weekday, Thursday 2025-11-27 (US Thanksgiving). The benchmarks' calculation calendar too."
+   },
+   {
+    "calendar_id": "SYN5_ECB",
+    "kind": "ECB_FIXINGS",
+    "applies_to": ["ECB"],
+    "timezone": "Europe/Berlin",
+    "coverage": {"from": "2021-12-01", "to": "2025-11-28"},
+    "actual_through": "2025-11-28",
+    "sessions_rule": "every Monday to Friday in coverage except closed_weekdays",
+    "closed_weekdays": [],
+    "fixing": {"time": "14:10", "publication": "16:00"},
+    "evidence": "synthetic; no TARGET closing days. No item of part 4 translates (USD only)."
+   },
+   {
+    "calendar_id": "SYN5_RF_USD",
+    "kind": "RATE_PUBLICATIONS",
+    "applies_to": ["SYN5_UST13_USD"],
+    "timezone": "America/New_York",
+    "coverage": {"from": "2021-12-01", "to": "2025-11-28"},
+    "actual_through": "2025-11-28",
+    "sessions_rule": "every Monday to Friday in coverage except closed_weekdays",
+    "closed_weekdays": ["2025-11-27"],
+    "publication": {"time": "20:00"},
+    "evidence": "synthetic publication calendar (risk Ruling 4.5). The publication time 20:00 New York (01:00 UTC the next day in winter) is deliberately late: with any same-day publication before 00:00 UTC of the next day, a quote dated g_{n-1} or earlier is always published before t, and the not-yet-due case cannot arise (CP4_GOLDEN_PART4_DERIVATION.md section 1.1)."
+   }
+  ],
+  "fx": {
+   "layout": "ECB eurofxref-hist (EUR-based quotes, units of currency per 1 EUR)",
+   "rows_rule": "every fixing day in coverage",
+   "first": "2021-12-01",
+   "last": "2025-11-28",
+   "steps": {"USD": [{"from": "2021-12-01", "rate": "1.0800"}]},
+   "note": "USD only. Present because a release has an ECB file; no item reads it."
+  },
+  "prices": {
+   "layout": "RAW official closes; every row has volume '1000'",
+   "rows_rule": "one row per session of the listing's calendar from first to last; 'cycle' sets the close on each Monday from 'from' (every 7 days, the closes in turn), kept until the next Monday",
+   "series": [
+    {
+     "listing_id": "c5000000-0000-4000-8000-000000000051",
+     "ticker": "SYN51",
+     "calendar": "SYN5_NYSE",
+     "currency": "USD",
+     "first": "2021-12-01",
+     "last": "2025-11-28",
+     "steps": [{"from": "2021-12-01", "close": "100.00"}],
+     "cycle": {"from": "2022-01-03", "every_days": 7, "until": "2025-11-28", "closes": ["100.00", "104.00"]},
+     "gaps": []
+    }
+   ]
+  },
+  "risk_free": {
+   "layout": "as part 1",
+   "series": [
+    {
+     "series_id": "SYN5_UST13_USD",
+     "currency": "USD",
+     "instrument": "synthetic 13-week sovereign bill",
+     "quote_type": "SIMPLE_YIELD",
+     "day_count_basis": 365,
+     "tenor_days": 91,
+     "unit": "PERCENT",
+     "calendar": "SYN5_RF_USD",
+     "first": "2021-12-01",
+     "last": "2025-11-28",
+     "steps": [{"from": "2021-12-01", "rate": "3.65"}, {"from": "2025-11-26", "rate": "7.30"}],
+     "gaps": []
+    }
+   ]
+  },
+  "benchmarks": [
+   {
+    "benchmark_id": "SYN5_BM_US_TR",
+    "name": "Synthetic US index, gross total return",
+    "provider": "synthetic",
+    "source_id": "synthetic",
+    "licensing": "synthetic fixture data; no licence",
+    "currency": "USD",
+    "return_basis": "TOTAL_RETURN_GROSS",
+    "calendar": "SYN5_NYSE",
+    "first": "2021-12-01",
+    "last": "2025-11-28",
+    "steps": [{"from": "2021-12-01", "level": "1000.00"}],
+    "cycle": {"from": "2022-01-03", "every_days": 7, "until": "2025-11-28", "levels": ["1000.00", "1010.00", "1000.00", "1020.00"]},
+    "gaps": [],
+    "synthetic": true
+   },
+   {
+    "benchmark_id": "SYN5_BM_YOUNG_TR",
+    "name": "Synthetic US index launched 2024-06-03, gross total return",
+    "provider": "synthetic",
+    "source_id": "synthetic",
+    "licensing": "synthetic fixture data; no licence",
+    "currency": "USD",
+    "return_basis": "TOTAL_RETURN_GROSS",
+    "calendar": "SYN5_NYSE",
+    "first": "2024-06-03",
+    "last": "2025-11-28",
+    "steps": [{"from": "2024-06-03", "level": "1000.00"}],
+    "cycle": {"from": "2022-01-03", "every_days": 7, "until": "2025-11-28", "levels": ["1000.00", "1010.00", "1000.00", "1020.00"]},
+    "gaps": [],
+    "synthetic": true
+   }
+  ],
+  "corporate_actions": []
+ },
+ "listings": [
+  {"listing_id": "c5000000-0000-4000-8000-000000000051", "ticker": "SYN51", "mic": "XNYS", "trading_currency": "USD", "security_type": "COMMON_STOCK"}
+ ],
+ "portfolios": [
+  {
+   "portfolio_id": "d5000000-0000-4000-8000-000000000401",
+   "name": "P41 (USD; 100 SYN51 from 2024-11-01) against the US index: the risk-free quote at t; the fallback of a 3Y beta",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a5401000-0000-4000-8000-000000000001", "name": "A1"}],
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "P41-E1",
+     "event": {
+      "event_id": "e5401000-0000-4000-8000-000000000001",
+      "account_id": "a5401000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2024-11-01",
+      "currency": "USD",
+      "amount": {"amount": "10400", "currency": "USD"},
+      "source_reference": "P41-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "P41-E2",
+     "event": {
+      "event_id": "e5401000-0000-4000-8000-000000000002",
+      "account_id": "a5401000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2024-11-01",
+      "currency": "USD",
+      "amount": {"amount": "10400", "currency": "USD"},
+      "listing_id": "c5000000-0000-4000-8000-000000000051",
+      "quantity": "100",
+      "source_reference": "P41-E2 at 104.00"
+     }
+    }
+   ],
+   "benchmark_selections": [{"seq": 1, "selection_id": "f5401000-0000-4000-8000-000000000001", "portfolio_id": "d5000000-0000-4000-8000-000000000401", "benchmark_id": "SYN5_BM_US_TR", "recorded_at": "2024-11-01T12:00:00Z"}],
+   "assertions": [
+    {
+     "id": "R41-C3",
+     "valuation_mode": "CURRENT",
+     "instant": "2025-11-27T00:30:00Z",
+     "selection_log_version": 1,
+     "purpose": "Not yet due. t = 2025-11-27 00:30 UTC (19:30 New York on Wednesday 11-26). NYSE is closed on Thursday 11-27, so D_c(t) = UTC-date(t) = 2025-11-27 (performance Ruling 1.7). The last DAILY period is (11-26, 11-27]; its quote is the latest on or before 11-26. The 11-26 quote (7.30 %) is published at 20:00 New York = 01:00 UTC, after t: it is not used and NOT counted as missed (Ruling 5.8 items 4 and 5). So f = 11-25 (3.65 %), m = 0, rf = 1/10000, AVAILABLE. Sharpe over the 261 weekdays of (2024-11-27, 2025-11-27]: mean excess 35/2,610,000.",
+     "expect": [
+      {
+       "kind": "risk_free_rates",
+       "frequency": "DAILY",
+       "request": {"rule": "CUSTOM", "base": "2025-11-25"},
+       "requested_base": "2025-11-25",
+       "effective_window": {"base_date": "2025-11-25", "last_period_end": "2025-11-27", "observation_count": 2, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "rates": [
+        {"period_start": "2025-11-25", "period_end": "2025-11-26", "quote_date": "2025-11-25", "missed_publications": 0, "exact": "1/10000"},
+        {"period_start": "2025-11-26", "period_end": "2025-11-27", "quote_date": "2025-11-25", "missed_publications": 0, "exact": "1/10000"}
+       ],
+       "as_of_resolved": "2025-11-27",
+       "details_include": [],
+       "bites": ["M-D1", "M-D3"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sharpe",
+       "frequency": "DAILY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2024-11-27",
+       "effective_window": {"base_date": "2024-11-27", "last_period_end": "2025-11-27", "observation_count": 261, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.012322690673",
+       "exact": null,
+       "exact_square": "15379/101278440",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 259, "available_from": 781},
+       "as_of_resolved": "2025-11-27",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-D1", "M-D3"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R41-C2",
+     "valuation_mode": "CURRENT",
+     "instant": "2025-11-27T01:10:00Z",
+     "selection_log_version": 1,
+     "purpose": "Due but not retrieved. t = 01:10 UTC: the 11-26 quote was published at 01:00 UTC, but its file RF-2 is retrieved at 01:15, so it is not in M_t. It is missed (Ruling 5.8 item 7): f = 11-25, m = 1, rf = 1/10000, AVAILABLE + STALE_DATA, RISK_FREE_STALE. The Sharpe value equals R41-C3's; its lineage now carries RISK_FREE_STALE, and the reason stays none (the result is LIMITED by its count; Ruling 7.3 (1.3) item 4).",
+     "expect": [
+      {
+       "kind": "risk_free_rates",
+       "frequency": "DAILY",
+       "request": {"rule": "CUSTOM", "base": "2025-11-25"},
+       "requested_base": "2025-11-25",
+       "effective_window": {"base_date": "2025-11-25", "last_period_end": "2025-11-27", "observation_count": 2, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": "STALE_DATA",
+       "rates": [
+        {"period_start": "2025-11-25", "period_end": "2025-11-26", "quote_date": "2025-11-25", "missed_publications": 0, "exact": "1/10000"},
+        {"period_start": "2025-11-26", "period_end": "2025-11-27", "quote_date": "2025-11-25", "missed_publications": 1, "exact": "1/10000"}
+       ],
+       "as_of_resolved": "2025-11-27",
+       "details_include": ["RISK_FREE_STALE"],
+       "bites": ["M-D1", "M-D2", "M-D4", "M-D5"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sharpe",
+       "frequency": "DAILY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2024-11-27",
+       "effective_window": {"base_date": "2024-11-27", "last_period_end": "2025-11-27", "observation_count": 261, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.012322690673",
+       "exact": null,
+       "exact_square": "15379/101278440",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 259, "available_from": 781},
+       "as_of_resolved": "2025-11-27",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD", "RISK_FREE_STALE"],
+       "bites": ["M-D1", "M-D2", "M-D4"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R41-C1",
+     "valuation_mode": "CURRENT",
+     "instant": "2025-11-27T01:30:00Z",
+     "selection_log_version": 1,
+     "purpose": "Published and retrieved before t. t = 01:30 UTC: the 11-26 quote is published (01:00) and in M_t (01:15). f = 11-26, m = 0, rf = 7.30 %/365 x 1 day = 1/5000, AVAILABLE. Sharpe: mean excess 34/2,610,000, so the ratio is exactly 34/35 of R41-C3's. This is the historical value at 2025-11-27.",
+     "expect": [
+      {
+       "kind": "risk_free_rates",
+       "frequency": "DAILY",
+       "request": {"rule": "CUSTOM", "base": "2025-11-25"},
+       "requested_base": "2025-11-25",
+       "effective_window": {"base_date": "2025-11-25", "last_period_end": "2025-11-27", "observation_count": 2, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "AVAILABLE",
+       "reason": null,
+       "rates": [
+        {"period_start": "2025-11-25", "period_end": "2025-11-26", "quote_date": "2025-11-25", "missed_publications": 0, "exact": "1/10000"},
+        {"period_start": "2025-11-26", "period_end": "2025-11-27", "quote_date": "2025-11-26", "missed_publications": 0, "exact": "1/5000"}
+       ],
+       "as_of_resolved": "2025-11-27",
+       "details_include": [],
+       "bites": ["M-D5"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "sharpe",
+       "frequency": "DAILY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 12},
+       "requested_base": "2024-11-27",
+       "effective_window": {"base_date": "2024-11-27", "last_period_end": "2025-11-27", "observation_count": 261, "stub_start_days": 0, "stub_end_days": 0},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "0.011970613796",
+       "exact": null,
+       "exact_square": "634933/4430931750",
+       "sign": 1,
+       "thresholds": {"insufficient_below": 259, "available_from": 781},
+       "as_of_resolved": "2025-11-27",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-D5"],
+       "tolerance": "0"
+      }
+     ]
+    },
+    {
+     "id": "R41-V1",
+     "as_of": "2025-11-28",
+     "selection_log_version": 1,
+     "purpose": "The default view of a 3Y WEEKLY beta for a portfolio first funded on 2024-11-01 (I_0 = 2024-10-31). The 3Y request (B = 2022-11-28) is refused for the portfolio's history (WINDOW_BEFORE_INCEPTION), so the view falls back to MAX_AVAILABLE (Ruling 7.7 (1.6)): 56 weekly periods from Friday 2024-11-01, LIMITED (51 <= 56 < 155), with max_available_start INCEPTION. Items 2 and 3 are the same X and Y as ordinary results.",
+     "benchmark_expected": {"benchmark_id": "SYN5_BM_US_TR", "selection_id": "f5401000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "default_view",
+       "metric": "beta",
+       "frequency": "WEEKLY",
+       "default_request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "fallback": true,
+       "refused": {
+        "request": {"rule": "TRAILING_MONTHS", "months": 36},
+        "requested_base": "2022-11-28",
+        "effective_window": null,
+        "state": "INSUFFICIENT_DATA",
+        "reason": null,
+        "value": null,
+        "details_include": ["WINDOW_BEFORE_INCEPTION"]
+       },
+       "shown": {
+        "request": {"rule": "MAX_AVAILABLE"},
+        "requested_base": "2024-10-31",
+        "effective_window": {"base_date": "2024-11-01", "last_period_end": "2025-11-28", "observation_count": 56, "stub_start_days": 1, "stub_end_days": 0, "max_available_start": "INCEPTION"},
+        "state": "LIMITED",
+        "reason": null,
+        "value": "2.376312948639",
+        "exact": "10736765004/4518245381",
+        "details_include": ["OBSERVATIONS_BELOW_STANDARD"]
+       },
+       "bites": ["M-D7", "M-D8", "M-D9"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2022-11-28",
+       "effective_window": null,
+       "state": "INSUFFICIENT_DATA",
+       "reason": null,
+       "value": null,
+       "exact": null,
+       "comparability": null,
+       "details_include": ["WINDOW_BEFORE_INCEPTION"],
+       "bites": ["M-D8"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "MAX_AVAILABLE"},
+       "requested_base": "2024-10-31",
+       "effective_window": {"base_date": "2024-11-01", "last_period_end": "2025-11-28", "observation_count": 56, "stub_start_days": 1, "stub_end_days": 0, "max_available_start": "INCEPTION"},
+       "state": "LIMITED",
+       "reason": null,
+       "value": "2.376312948639",
+       "exact": "10736765004/4518245381",
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": {"class": "FULL", "seam": null, "lagged": {"count": 0, "of": 57, "points": []}},
+       "v_beta": "702493264139944336/61243623968783505483",
+       "details_include": ["OBSERVATIONS_BELOW_STANDARD"],
+       "bites": ["M-D9"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "portfolio_id": "d5000000-0000-4000-8000-000000000402",
+   "name": "P42 (USD; 100 SYN51 from 2022-01-07) against an index launched 2024-06-03: a benchmark-side refusal",
+   "reporting_currency": "USD",
+   "accounts": [{"account_id": "a5402000-0000-4000-8000-000000000001", "name": "A1"}],
+   "events": [
+    {
+     "ledger_seq": 1,
+     "label": "P42-E1",
+     "event": {
+      "event_id": "e5402000-0000-4000-8000-000000000001",
+      "account_id": "a5402000-0000-4000-8000-000000000001",
+      "event_type": "DEPOSIT",
+      "event_date": "2022-01-07",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "source_reference": "P42-E1"
+     }
+    },
+    {
+     "ledger_seq": 2,
+     "label": "P42-E2",
+     "event": {
+      "event_id": "e5402000-0000-4000-8000-000000000002",
+      "account_id": "a5402000-0000-4000-8000-000000000001",
+      "event_type": "BUY",
+      "event_date": "2022-01-07",
+      "currency": "USD",
+      "amount": {"amount": "10000", "currency": "USD"},
+      "listing_id": "c5000000-0000-4000-8000-000000000051",
+      "quantity": "100",
+      "source_reference": "P42-E2 at 100.00"
+     }
+    }
+   ],
+   "benchmark_selections": [{"seq": 1, "selection_id": "f5402000-0000-4000-8000-000000000001", "portfolio_id": "d5000000-0000-4000-8000-000000000402", "benchmark_id": "SYN5_BM_YOUNG_TR", "recorded_at": "2022-01-07T12:00:00Z"}],
+   "assertions": [
+    {
+     "id": "R42-V0",
+     "as_of": "2025-11-28",
+     "selection_log_version": 1,
+     "purpose": "The default view of a 3Y WEEKLY beta when the portfolio's history covers the window (I_0 = 2022-01-06 < B = 2022-11-28; 156 periods from Friday 2022-12-02) but the selected benchmark starts on 2024-06-03. L(g) has no level on or before g_0 = 2022-12-02: INSUFFICIENT_DATA, MISSING_BENCHMARK, BENCHMARK_NOT_COVERING_WINDOW (Ruling 5.2). That is a benchmark-side cause, never a fallback trigger (Ruling 7.7 (1.6)): the view shows the refusal. MAX_AVAILABLE would start at the portfolio's inception, still before the index's launch, and be refused for the same cause (Ruling 7.7 item 5).",
+     "benchmark_expected": {"benchmark_id": "SYN5_BM_YOUNG_TR", "selection_id": "f5402000-0000-4000-8000-000000000001", "return_basis": "TOTAL_RETURN_GROSS", "currency": "USD", "currency_treatment": "NONE (benchmark already in R)"},
+     "expect": [
+      {
+       "kind": "default_view",
+       "metric": "beta",
+       "frequency": "WEEKLY",
+       "default_request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "fallback": false,
+       "refused": null,
+       "shown": {
+        "request": {"rule": "TRAILING_MONTHS", "months": 36},
+        "requested_base": "2022-11-28",
+        "effective_window": {"base_date": "2022-12-02", "last_period_end": "2025-11-28", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+        "state": "INSUFFICIENT_DATA",
+        "reason": "MISSING_BENCHMARK",
+        "value": null,
+        "exact": null,
+        "details_include": ["BENCHMARK_NOT_COVERING_WINDOW"]
+       },
+       "bites": ["M-D6", "M-D10"],
+       "tolerance": "0"
+      },
+      {
+       "kind": "beta",
+       "frequency": "WEEKLY",
+       "request": {"rule": "TRAILING_MONTHS", "months": 36},
+       "requested_base": "2022-11-28",
+       "effective_window": {"base_date": "2022-12-02", "last_period_end": "2025-11-28", "observation_count": 156, "stub_start_days": 4, "stub_end_days": 0},
+       "state": "INSUFFICIENT_DATA",
+       "reason": "MISSING_BENCHMARK",
+       "value": null,
+       "exact": null,
+       "thresholds": {"insufficient_below": 51, "available_from": 155},
+       "comparability": null,
+       "details_include": ["BENCHMARK_NOT_COVERING_WINDOW"],
+       "bites": ["M-D10"],
+       "tolerance": "0"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "item_counts": {
+  "note": "For FIXTURE_PINS: number of 'expect' items per assertion id.",
+  "R41-C3": 2,
+  "R41-C2": 2,
+  "R41-C1": 2,
+  "R41-V1": 3,
+  "R42-V0": 2
+ }
+}

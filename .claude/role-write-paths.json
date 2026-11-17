@@ -1,0 +1,24 @@
+{
+  "$comment": "Where each specialist SUBAGENT may write with Write/Edit/NotebookEdit. Read by .claude/hooks/guard_write.py on every call, so edits take effect immediately. The main session (PM) may edit this file directly; record why in a decisions/product/PD-*.md when a grant changes. Entries ending in '/' are directories; others are exact files. Keys are the agent names in .claude/agents/.",
+  "designer": [
+    "designs/",
+    "reviews/DESIGN_REVIEW.md"
+  ],
+  "engineer": [
+    "src/",
+    "web/",
+    "tests/product/",
+    "implementation/",
+    "reviews/ENGINEERING_SELF_VALIDATION.md",
+    "reviews/CP7_B_EVIDENCE/validation/web-engineer-playwright.log",
+    "reviews/CP7_B_EVIDENCE/validation/web-engineer-freeze.json",
+    "pyproject.toml",
+    "uv.lock"
+  ],
+  "quant-analyst": [
+    "methodology/"
+  ],
+  "technical-reviewer": [
+    "reviews/TECH_REVIEW.md"
+  ]
+}
